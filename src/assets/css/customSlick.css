@@ -1,0 +1,20 @@
+button.slick-arrow.slick-prev {
+    margin-left: -38px ;
+}
+button.slick-arrow.slick-next {
+    margin-right: -38px;
+}
+ 
+ 
+.slik_slider .slick-slide {
+    width: 315px !important;
+    padding: 10px;
+    box-sizing: border-box;
+  }
+ 
+  .slik_slider img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+  }
+ 

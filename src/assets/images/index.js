@@ -18,6 +18,11 @@ import bed from "./common/bed.png";
 import ruler from "./common/ruler.png";
 import pop1 from "./common/pop1.webp";
 import banner from "./common/banner.jpg";
+import about_banner from "./common/about_banner.jpg";
+import about_banner2 from "./common/about_banner2.jpg";
+
+import vission from "./common/vission.png";
+import mission from "./common/mission.png";
 
 import facebook from "./common/facebook.png";
 import twitter from "./common/twitter.png";
@@ -99,6 +104,10 @@ export {
   ads_banner,
   ads_banner2,
   bath,
+  vission,
+  mission,
+  about_banner,
+  about_banner2,
 
   //property
   propert1,

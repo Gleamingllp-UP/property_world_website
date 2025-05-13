@@ -1,5 +1,7 @@
 import { footer_line } from "@/assets/images";
 import Copyright from "./Copyright";
+import { Link } from "react-router-dom";
+import { pageRoutes } from "../router/pageRoutes";
 
 function Footer() {
   return (
@@ -49,7 +51,7 @@ function Footer() {
                   <a href="index.php">Home</a>
                 </li>
                 <li>
-                  <a href="about-us.php">About Us</a>
+                  <Link to={pageRoutes.ABOUT_US}>About Us</Link>
                 </li>
                 <li>
                   <a href="property-listing.php">Buy</a>
@@ -66,7 +68,7 @@ function Footer() {
                   </a>
                 </li>
                 <li>
-                  <a href="contact-us.php">Contact Us</a>
+                 <Link to={pageRoutes.CONTACT_US}>Contact Us</Link>
                 </li>
               </ul>
             </div>
@@ -77,7 +79,8 @@ function Footer() {
               </h4>
               <ul className="cs-footer-links">
                 <li>
-                  <a href="buyer-guide.php">Buyer Guide</a>
+                
+                  
                 </li>
                 <li>
                   <a href="seller-guide.php">Seller Guide</a>
@@ -89,7 +92,7 @@ function Footer() {
                   <a href="landlord-guide.php">Landlord Guide</a>
                 </li>
                 <li>
-                  <a href="blogs.php">Blogs</a>
+                  <Link to={pageRoutes.BLOG}>Blogs</Link>
                 </li>
                 <li>
                   <a href="agents.php">Agents & Agencies</a>

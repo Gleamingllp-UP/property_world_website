@@ -4,7 +4,7 @@ import Blog from "./Blog";
 import BlogCatSec from "./BlogCatSec";
 import Exploremoreproperties from '../../Custom_Components/Exploremoreproperties' 
 import JoinUsNow from './../../Custom_Components/JoinUsNow';
-export const MainBlog = () => {
+function MainBlog  () {
      useEffect(() => {
         window.scrollTo(0, 0);
       }, []);
@@ -28,3 +28,4 @@ export const MainBlog = () => {
     </>
   )
 }
+export default MainBlog

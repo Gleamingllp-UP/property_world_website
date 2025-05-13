@@ -78,7 +78,7 @@ const BlogCatSec = () => {
 
     
       <div className="text-center mt-3 m-auto">
-        <img src={insta} className="img-fluid m-auto" alt="News Display" />
+        <img src={blogimg1} className="img-fluid m-auto" alt="News Display" />
       </div>
     </div>
   );

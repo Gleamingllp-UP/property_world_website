@@ -2,7 +2,7 @@ import  { useEffect, useState } from "react";
 import BlogBanner from "./BlogBanner";
 import Blog from "./Blog";
 import BlogCatSec from "./BlogCatSec";
-import Exploremoreproperties from '../../Custom_Components/Exploremoreproperties' 
+import ExploreMoreProperties from '../../Custom_Components/ExploreMoreProperties' 
 import JoinUsNow from './../../Custom_Components/JoinUsNow';
 function MainBlog  () {
      useEffect(() => {
@@ -23,7 +23,7 @@ function MainBlog  () {
 		
 	</div>
 </section>
-<Exploremoreproperties />
+<ExploreMoreProperties />
  <JoinUsNow />
     </>
   )

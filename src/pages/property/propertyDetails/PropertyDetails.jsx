@@ -1,30 +1,39 @@
 import React, { useState } from "react";
-import { email, facebook, g_email, propert1, propert2, propert3, propert4, propert5, propert6, twitter } from "@/assets/images";
+import {
+  email,
+  facebook,
+  g_email,
+  propert1,
+  propert2,
+  propert3,
+  propert4,
+  propert5,
+  propert6,
+  twitter,
+} from "@/assets/images";
 
 function PropertyDetails() {
-
-    const [isVisible,setIsVisible]=useState(false)
+  const [isVisible, setIsVisible] = useState(false);
   return (
     <div className="container">
       <div id="gallery" className="photos-grid-container gallery">
         <div className="main-photo img-box">
-          <a
-            href={propert2}
-            className="glightbox"
-            data-glightbox="type: image"
-          >
+          <a href={propert2} className="glightbox" data-glightbox="type: image">
             <img src={propert2} alt="image" />
           </a>
           <div className="share_post ">
             <button>
               <i className="ri-heart-line" />
             </button>
-            <button className="toggle" onClick={()=>setIsVisible(!isVisible)}>
+            <button className="toggle" onClick={() => setIsVisible(!isVisible)}>
               <i className="ri-share-line" /> Share
             </button>
-            <div id="target" style={{
-                display: isVisible?'block':'none'
-            }}>
+            <div
+              id="target"
+              style={{
+                display: isVisible ? "block" : "none",
+              }}
+            >
               <ul>
                 <li>
                   <a href="#">
@@ -99,11 +108,7 @@ function PropertyDetails() {
           </div>
         </div>
         <div id="more-img" className="extra-images-container hide-element">
-          <a
-            href={propert6}
-            className="glightbox"
-            data-glightbox="type: image"
-          >
+          <a href={propert6} className="glightbox" data-glightbox="type: image">
             <img src={propert6} alt="image" />
           </a>
         </div>

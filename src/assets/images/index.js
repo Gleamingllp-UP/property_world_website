@@ -20,6 +20,12 @@ import pop1 from "./common/pop1.webp";
 import banner from "./common/banner.jpg";
 import about_banner from "./common/about_banner.jpg";
 import about_banner2 from "./common/about_banner2.jpg";
+import agency_banner from "./common/agency_banner.jpg";
+import seller_guide from "./common/seller-guide.jpg";
+import landlord_guide from "./common/landlord-guide.jpg";
+import contact_photo from "./common/contact_photo.jpg";
+import agency1 from "./common/agency1.jpg";
+import agency2 from "./common/agency2.webp";
 
 import vission from "./common/vission.png";
 import mission from "./common/mission.png";
@@ -108,6 +114,12 @@ export {
   mission,
   about_banner,
   about_banner2,
+  agency_banner,
+  seller_guide,
+  landlord_guide,
+  contact_photo,
+  agency1,
+  agency2,
 
   //property
   propert1,

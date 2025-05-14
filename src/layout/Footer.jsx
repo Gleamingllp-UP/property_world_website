@@ -135,10 +135,10 @@ function Footer() {
               </h4>
               <ul className="cs-footer-links">
                 <li>
-                  <a href="terms-and-conditions.php">Terms & Conditions</a>
+                  <Link to={pageRoutes.TERMCONDITIONS}>Terms & Conditions</Link>
                 </li>
                 <li>
-                  <a href="cookies-policy.php">Cookies Policy</a>
+                  <Link to={pageRoutes.COOKIESPOLICY}>Cookies Policy</Link>
                 </li>
                 <li>
                   <a href="privacy-policy.php">Privacy Policy</a>

@@ -13,4 +13,8 @@ export const pageRoutes = {
   BLOG : "/blog",
   //BUYERGUIDE  Page 
   BUYERGUIDE : "/buyer-guide",
+  //Terms & Conditions  Page 
+  TERMCONDITIONS : "/terms-and-conditions",
+  //Terms & Conditions  Page 
+  COOKIESPOLICY : "/cookies-policy",
 };

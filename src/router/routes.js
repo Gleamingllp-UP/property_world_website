@@ -9,6 +9,8 @@ const AboutMain = lazy(() => import("@/pages/aboutus/AboutMain"));
 const BuyerMain = lazy(() => import("@/pages/buyerguide/BuyerMain"));
 const ContactMain = lazy(() => import("@/pages/contactus/ContactMain"));
 const MainBlog = lazy(() => import("@/pages/blog/MainBlog"));
+const Maintermsconditionimport = lazy(() => import("@/pages/termsandconditions/Maintermscondition"));
+
 
 
 const routes = [
@@ -60,6 +62,13 @@ const routes = [
     name: "Buyer Guide",
     path: pageRoutes?.BUYERGUIDE,
     Component: BuyerMain,
+  },
+    {
+    id: 8,
+    isPrivate: true,
+    name: "Terms & Conditions",
+    path: pageRoutes?.TERMCONDITIONS,
+    Component: Maintermsconditionimport,
   },
 ];
 export { routes };

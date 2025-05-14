@@ -2,7 +2,7 @@ import React from 'react';
 import shapeBg from '../assets/images/Img/shape_bg.png';
 
 
-const Exploremoreproperties = () => {
+const ExploreMoreProperties = () => {
   return (
   <>
     <section className="sugg" style={{ backgroundImage: `url(${shapeBg})` }}>
@@ -39,4 +39,4 @@ const Exploremoreproperties = () => {
   )
 }
 
-export default Exploremoreproperties
+export default ExploreMoreProperties

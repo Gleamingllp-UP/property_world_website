@@ -1,4 +1,6 @@
 import { property_world_logo } from "@/assets/images";
+import { Link } from "react-router-dom";
+import { pageRoutes } from "../router/pageRoutes";
 
 function Header() {
   return (
@@ -139,7 +141,7 @@ function Header() {
                 </li>
 
                 <li className="menu-item">
-                  <a href="agents.php">Find an Agent</a>
+                  <Link to={pageRoutes.AGENTS}>Find an Agent</Link>
                 </li>
 
                 <li className="menu-item">

@@ -1,7 +1,7 @@
 import  { useEffect, useState } from "react";
 import Banner from './Banner';
 import BuyerGuide from './BuyerGuide';
-import Exploremoreproperties from '../../Custom_Components/Exploremoreproperties' 
+import ExploreMoreProperties from '../../Custom_Components/ExploreMoreProperties' 
 import JoinUsNow from './../../Custom_Components/JoinUsNow';
 const BuyerMain = () => {
    useEffect(() => {
@@ -15,7 +15,7 @@ const BuyerMain = () => {
     <BuyerGuide />
     </div>
  </section>
- <Exploremoreproperties />
+ <ExploreMoreProperties />
  <JoinUsNow />
     </>
   )

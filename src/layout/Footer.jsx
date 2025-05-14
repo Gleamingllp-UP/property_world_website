@@ -68,7 +68,7 @@ function Footer() {
                   </a>
                 </li>
                 <li>
-                 <Link to={pageRoutes.CONTACT_US}>Contact Us</Link>
+                  <Link to={pageRoutes.CONTACT_US}>Contact Us</Link>
                 </li>
               </ul>
             </div>
@@ -79,8 +79,7 @@ function Footer() {
               </h4>
               <ul className="cs-footer-links">
                 <li>
-                
-                  
+                  <Link to={pageRoutes.BUYER_GUIDE}>Buyer Guide</Link>
                 </li>
                 <li>
                   <a href="seller-guide.php">Seller Guide</a>
@@ -135,13 +134,15 @@ function Footer() {
               </h4>
               <ul className="cs-footer-links">
                 <li>
-                  <Link to={pageRoutes.TERMCONDITIONS}>Terms & Conditions</Link>
+                  <Link to={pageRoutes.TERM_CONDITIONS}>
+                    Terms & Conditions
+                  </Link>
                 </li>
                 <li>
-                  <Link to={pageRoutes.COOKIESPOLICY}>Cookies Policy</Link>
+                  <Link to={pageRoutes.COOKIES_POLICY}>Cookies Policy</Link>
                 </li>
                 <li>
-                  <a href="privacy-policy.php">Privacy Policy</a>
+                  <Link to={pageRoutes.PRIVACY_POLICY}>Privacy Policy</Link>
                 </li>
               </ul>
             </div>

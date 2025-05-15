@@ -1,13 +1,13 @@
 import React from "react";
 import HomeSearch from "./HomeSearch";
-import { home_banner } from "@/assets/images";
+import { banner_home } from "../../../assets/images";
 
 function HomeBanner() {
   return (
     <div className="main_banner">
       <div
         className="banner position-relative"
-        style={{ backgroundImage: `url(${home_banner})` }}
+        style={{ backgroundImage: `url(${banner_home})` }}
       />
       <HomeSearch />
     </div>

@@ -1,41 +1,49 @@
 import React from "react";
 import { Controller } from "react-hook-form";
-import { SelectWithLabel } from "./SelectWithLabel";
 import { ErrorMessage } from "./ErrorMessage";
 
-const SelectWithLabelForm = ({
+export function SelectWithLabelForm({
+  control,
   name,
   label,
-  control,
+  rules,
   options = [],
   placeholder = "Select an option",
-  rules = {},
-  className = "",
-  disabled = false,
   ...rest
-}) => {
+}) {
   return (
-    <Controller
-      control={control}
-      name={name}
-      rules={rules}
-      render={({ field, fieldState: { error } }) => (
-        <div className="">
-          <SelectWithLabel
-            {...field}
-            label={label}
-            placeholder={placeholder}
-            className={className}
-            disabled={disabled}
-            options={options}
-            error={error?.message}
-            {...rest}
-          />
-          {error && <ErrorMessage message={error?.message} className="mt-1"/>}
-        </div>
-      )}
-    />
+    <div className="form_gp">
+      {label && <span>{label}</span>}
+      <Controller
+        name={name}
+        control={control}
+        rules={rules}
+        render={({
+          field: { onChange, onBlur, value, ref },
+          fieldState: { error },
+        }) => (
+          <>
+            <select
+              name={name}
+              onChange={onChange}
+              onBlur={onBlur}
+              ref={ref}
+              value={value ?? ""}
+              {...rest}
+            >
+              <option value="" disabled>
+                {placeholder}
+              </option>
+              {options.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+            {error && <ErrorMessage message={error?.message} />}
+          </>
+        )}
+      />
+    </div>
   );
-};
-
-export default SelectWithLabelForm;
+}

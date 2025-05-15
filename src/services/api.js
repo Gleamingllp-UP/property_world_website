@@ -1,6 +1,7 @@
-import { pageRoutes } from "@/router/pageRoutes";
-import { endpoints } from "@/utils/endpoints/expoints";
+
 import axios from "axios";
+import { endpoints } from "../utils/endpoints/endpoints";
+import { pageRoutes } from "../router/pageRoutes";
 const BASE_URL = import.meta.env.VITE_BASE_API_URL;
 
 const api = axios.create({

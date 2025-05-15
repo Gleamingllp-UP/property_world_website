@@ -1,6 +1,7 @@
 export const pageRoutes = {
   HOME_PAGE: "/",
   LOGIN: "/login",
+  SIGN_UP: "/sign-up",
 
   //Property
   PROPERTY_DETAILS: "/property-details",

@@ -1,8 +1,12 @@
 import { property_world_logo } from "@/assets/images";
 import { Link } from "react-router-dom";
 import { pageRoutes } from "../router/pageRoutes";
+import { useState } from "react";
+import LoginModal from "../pages/auth/login/LoginModal";
 
 function Header() {
+  const [modalShow, setModalShow] = useState(false);
+
   return (
     <header>
       <div className="container">
@@ -144,7 +148,7 @@ function Header() {
                   <Link to={pageRoutes.AGENTS}>Find an Agent</Link>
                 </li>
 
-                <li className="menu-item">
+                <li className="menu-item" onClick={() => setModalShow(true)}>
                   <a
                     data-bs-toggle="modal"
                     data-bs-target="#login_form"
@@ -158,6 +162,8 @@ function Header() {
           </section>
         </div>
       </div>
+
+      <LoginModal show={modalShow} onHide={() => setModalShow(false)} />
     </header>
   );
 }

@@ -2,7 +2,11 @@ import { GoHome } from "react-icons/go";
 import { lazy } from "react";
 import { pageRoutes } from "./pageRoutes";
 
-const Login = lazy(() => import("../pages/auth/Login"));
+// const Login = lazy(() => import("../pages/auth/Login"));
+
+//Auth
+const SignUp = lazy(() => import("@/pages/auth/signUp/SignUp"));
+
 const MainHomePage = lazy(() => import("@/pages/home/MainHomePage"));
 const MainPropertyDetails = lazy(() =>
   import("@/pages/property/MainPropertyDetails")
@@ -25,12 +29,19 @@ const MainAgencies = lazy(() =>
 );
 
 const routes = [
+  // {
+  //   id: 1,
+  //   isPrivate: true,
+  //   name: "Login",
+  //   path: pageRoutes?.LOGIN,
+  //   Component: Login,
+  // },
   {
     id: 1,
     isPrivate: true,
-    name: "Login",
-    path: pageRoutes?.LOGIN,
-    Component: Login,
+    name: "Sign up",
+    path: pageRoutes?.SIGN_UP,
+    Component: SignUp,
   },
   {
     id: 2,

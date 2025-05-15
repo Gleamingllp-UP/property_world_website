@@ -6,6 +6,7 @@ import blog_image from "./Img/blog_image.png";
 // common
 import footer_line from "./common/footer_line.png";
 import home_banner from "./common/bann.jpg";
+import banner_home from "./common/banner_home.png";
 import map from "./common/map.png";
 import chat from "./common/chat.png";
 import city2 from "./common/city2.png";
@@ -19,6 +20,7 @@ import ruler from "./common/ruler.png";
 import pop1 from "./common/pop1.webp";
 import banner from "./common/banner.jpg";
 import about_banner from "./common/about_banner.jpg";
+import sign_up from "./common/sign_up.jpg";
 import about_banner2 from "./common/about_banner2.jpg";
 import agency_banner from "./common/agency_banner.jpg";
 import seller_guide from "./common/seller-guide.jpg";
@@ -82,6 +84,7 @@ export {
   //common
   footer_line,
   home_banner,
+  banner_home,
   map,
   chat,
   city2,
@@ -114,6 +117,7 @@ export {
   mission,
   about_banner,
   about_banner2,
+  sign_up,
   agency_banner,
   seller_guide,
   landlord_guide,

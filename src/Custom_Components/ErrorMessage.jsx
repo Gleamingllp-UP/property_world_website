@@ -1,11 +1,9 @@
-
 export function ErrorMessage({ message, className = "" }) {
-    if (!message) return null;
-  
-    return (
-      <p className={`text-red-500 text-sm mb-2 font-medium ${className}`}>
-        {message}
-      </p>
-    );
-  }
-  
+  if (!message) return null;
+
+  return (
+    <p className={`text-danger small fw-medium mb-2 ${className}`}>
+      {message}
+    </p>
+  );
+}

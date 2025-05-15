@@ -1,19 +1,29 @@
-import React, { useState,useEffect } from "react";
-import { email, facebook, g_email, propert1, propert2, propert3, propert4, propert5, propert6, twitter } from "@/assets/images";
-import GLightbox from 'glightbox';
-import 'glightbox/dist/css/glightbox.css';
+import React, { useState, useEffect } from "react";
+import {
+  email,
+  facebook,
+  g_email,
+  propert1,
+  propert2,
+  propert3,
+  propert4,
+  propert5,
+  propert6,
+  twitter,
+} from "@/assets/images";
+import GLightbox from "glightbox";
+import "glightbox/dist/css/glightbox.css";
 function PropertyDetails() {
+  const [isVisible, setIsVisible] = useState(false);
+  useEffect(() => {
+    const lightbox = GLightbox({
+      selector: ".glightbox",
+    });
 
-    const [isVisible,setIsVisible]=useState(false);
-          useEffect(() => {
-        const lightbox = GLightbox({
-          selector: '.glightbox',
-        });
-    
-        return () => {
-          lightbox.destroy(); 
-        };
-      }, []);
+    return () => {
+      lightbox.destroy();
+    };
+  }, []);
   return (
     <div className="container">
       <div id="gallery" className="photos-grid-container gallery">

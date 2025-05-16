@@ -5,6 +5,8 @@ import { useForm } from "react-hook-form";
 import { requiredSignUpFieldsForAgents } from "../../../utils/requiredFormFields/requiredSignUpFields";
 import { getValidationRules } from "../../../helper/function/getValidationRules";
 import { useSelector } from "react-redux";
+import { CheckboxWithLabelForm } from "../../../Custom_Components/CheckboxWithLabelForm";
+import { SelectWithLabelForm } from "../../../Custom_Components/SelectWithLabelForm";
 
 function AgentsSignUpForm() {
   const { selectedUserType } = useSelector((state) => state?.usersType);
@@ -15,6 +17,11 @@ function AgentsSignUpForm() {
   const onSubmit = (data) => {
     console.log(data);
   };
+
+  const countryOfResidanceOption = [
+    { value: "UAE", label: "United Arab Emirates" },
+  ];
+  const countryCodeOption = [{ value: "971", label: "+971(UAE)" }];
   return (
     <div className="agent_agencys">
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -37,7 +44,10 @@ function AgentsSignUpForm() {
             <div
               key={index}
               className={
-                field?.key === "office_address" ? "col-lg-12" : "col-lg-6"
+                field?.key === "office_address" ||
+                field?.inputType === "checkbox"
+                  ? "col-lg-12"
+                  : "col-lg-6"
               }
             >
               {field.inputType === "text" && (
@@ -52,6 +62,38 @@ function AgentsSignUpForm() {
                       label: field?.label,
                       type: field?.type,
                     })}
+                  />
+                </>
+              )}
+              {field.inputType === "checkbox" && (
+                <>
+                  <CheckboxWithLabelForm
+                    key={index}
+                    name={field?.key}
+                    label={field?.label}
+                    control={control}
+                    rules={{ required: `You must accept the ${field.label}` }}
+                  />
+                </>
+              )}
+              {field.inputType === "select" && (
+                <>
+                  <SelectWithLabelForm
+                    control={control}
+                    name={field?.key}
+                    label={field?.label}
+                    type={field?.type}
+                    rules={getValidationRules({
+                      label: field?.label,
+                      type: field?.type,
+                    })}
+                    options={
+                      field?.key === "country_of_residance"
+                        ? countryOfResidanceOption
+                        : field?.key === "country_code"
+                        ? countryCodeOption
+                        : [{ value: "0", label: "Options unavailable" }]
+                    }
                   />
                 </>
               )}

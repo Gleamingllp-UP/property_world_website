@@ -5,25 +5,45 @@ export const requiredSignUpFieldsForAgents = [
     type: "text",
     inputType: "text",
   },
+
+  {
+    key: "first_name",
+    label: " First Name",
+    type: "text",
+    inputType: "text",
+  },
+  {
+    key: "last_name",
+    label: " Last Name",
+    type: "text",
+    inputType: "text",
+  },
   {
     key: "company_name",
     label: "Company Name",
     type: "text",
     inputType: "text",
   },
-  {
-    key: "contact_name",
-    label: " Contact Name",
-    type: "text",
-    inputType: "text",
-  },
   { key: "email", label: "Email", type: "email", inputType: "text" },
   {
-    key: "contact_number",
+    key: "phone_number",
     label: "Contact Number",
     type: "number",
     inputType: "text",
   },
+  {
+    key: "country_code",
+    label: "Country Code",
+    type: "number",
+    inputType: "select",
+  },
+  {
+    key: "country_of_residance",
+    label: "Country of Residence",
+    type: "text",
+    inputType: "select",
+  },
+ 
   {
     key: "office_address",
     label: "Office Address",
@@ -33,7 +53,7 @@ export const requiredSignUpFieldsForAgents = [
   {
     key: "broker_license_number",
     label: "Broker License Number",
-    type: "number",
+    type: "file",
     inputType: "text",
   },
   {
@@ -44,4 +64,17 @@ export const requiredSignUpFieldsForAgents = [
   },
   { key: "agency_logo", label: "Agency Logo", type: "file", inputType: "text" },
   { key: "agent_photo", label: "Agent Photo", type: "file", inputType: "text" },
+  {
+    key: "is_accepted_privacy_and_policy",
+    label: "Privacy Policy",
+    type: "checkbox",
+    inputType: "checkbox",
+  },
+  {
+    key: "is_accepted_terms_and_condition",
+    label: "Terms and Conditions",
+    type: "checkbox",
+    inputType: "checkbox",
+  },
+
 ];

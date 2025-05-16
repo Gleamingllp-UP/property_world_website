@@ -12,7 +12,7 @@ const api = axios.create({
 });
 
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("adminToken");
+  const token = localStorage.getItem("userToken");
   if (token) config.headers.Authorization = `Bearer ${token}`;
   
   if (config.data instanceof FormData) {

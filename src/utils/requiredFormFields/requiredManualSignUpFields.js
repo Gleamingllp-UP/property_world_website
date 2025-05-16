@@ -13,8 +13,9 @@ export const requiredSignUpFieldsForManual = [
     },
    
     { key: "email", label: "Email", type: "email", inputType: "text" },
+    { key: "dob", label: "Date of birth", type: "date", inputType: "date" },
     {
-      key: "contact_number",
+      key: "phone_number",
       label: "Contact Number",
       type: "number",
       inputType: "text",
@@ -25,6 +26,23 @@ export const requiredSignUpFieldsForManual = [
       type: "number",
       inputType: "select",
     },
-   
+    {
+      key: "country_of_residance",
+      label: "Country of Residence",
+      type: "text",
+      inputType: "select",
+    },
+    {
+      key: "is_accepted_privacy_and_policy",
+      label: "Privacy Policy",
+      type: "checkbox",
+      inputType: "checkbox",
+    },
+    {
+      key: "is_accepted_terms_and_condition",
+      label: "Terms and Conditions",
+      type: "checkbox",
+      inputType: "checkbox",
+    },
   ];
   

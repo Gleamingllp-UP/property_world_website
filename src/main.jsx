@@ -9,6 +9,7 @@ import "./assets/css/reset.min.css";
 import "./assets/css/slick.css";
 import "./assets/css/style.css";
 import "./assets/css/custom.css";
+import "./assets/css/update.css";
 import "./index.css";
 
 import { Provider } from "react-redux";

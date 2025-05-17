@@ -1,12 +1,12 @@
 import { property_world_logo } from "@/assets/images";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { pageRoutes } from "../router/pageRoutes";
 import { useState } from "react";
 import LoginModal from "../pages/auth/login/LoginModal";
 
 function Header() {
   const [modalShow, setModalShow] = useState(false);
-
+  const navigate = useNavigate();
   return (
     <header>
       <div className="container">
@@ -29,7 +29,7 @@ function Header() {
       <div className="header">
         <div className="container">
           <section className="wrapper">
-            <a href="index.php" className="brand">
+            <a className="brand" onClick={() => navigate(pageRoutes.HOME_PAGE)}>
               <img src={property_world_logo} className="img-fluid" />
             </a>
             <button type="button" className="opened-menu">

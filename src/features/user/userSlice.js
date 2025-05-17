@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { initiateSignup, verifyCode, setPassword } from "./userAPI";
+import { initiateSignup, verifyCode, setPassword, userLogin,getUserDetails } from "./userAPI";
 
 export const initiateSignupThunk = createAsyncThunk(
   "users/initiateSignUp",
@@ -19,6 +19,18 @@ export const setPasswordThunk = createAsyncThunk(
     return await setPassword(payload);
   }
 );
+export const userLoginThunk = createAsyncThunk(
+  "users/userLogin",
+  async (payload) => {
+    return await userLogin(payload);
+  }
+);
+export const getUserDetailsThunk = createAsyncThunk(
+  "users/getUserDetails",
+  async () => {
+    return await getUserDetails();
+  }
+);
 
 const usersSlice = createSlice({
   name: "users",
@@ -34,8 +46,17 @@ const usersSlice = createSlice({
       const formData = JSON.parse(localStorage.getItem("formData"));
       state.formData = formData;
     },
+    getUserData: (state) => {
+      const userData = JSON.parse(localStorage.getItem("userData"));
+      state.userData = userData;
+    },
     removeUserFormDataToken: (state) => {
       localStorage.removeItem("formData");
+      localStorage.removeItem("userToken");
+      state.userData = null;
+    },
+    userLogOut: (state) => {
+      localStorage.removeItem("userData");
       localStorage.removeItem("userToken");
       state.formData = null;
     },
@@ -80,6 +101,35 @@ const usersSlice = createSlice({
         localStorage.removeItem("code");
       })
       .addCase(setPasswordThunk.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message;
+      })
+
+      //User Login
+      .addCase(userLoginThunk.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(userLoginThunk.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.userData = action.payload.data;
+        localStorage.setItem("userToken", action.payload.token);
+        localStorage.setItem("userData", JSON.stringify(action.payload.data));
+      })
+      .addCase(userLoginThunk.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message;
+      })
+
+      //Get User Details
+      .addCase(getUserDetailsThunk.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getUserDetailsThunk.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.userData = action.payload.data;
+        localStorage.setItem("userData", JSON.stringify(action.payload.data));
+      })
+      .addCase(getUserDetailsThunk.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
       });

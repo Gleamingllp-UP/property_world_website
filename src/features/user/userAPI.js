@@ -47,3 +47,34 @@ export const setPassword = async (payload) => {
     }
   }
 };
+export const userLogin = async (payload) => {
+  try {
+    const response = await api.post(endpoints.userLogin, payload);
+    return response.data;
+  } catch (error) {
+    if (error?.status !== 401) {
+      throw (
+        error?.response?.data?.message ||
+        "Failed to login, please try again later."
+      );
+    } else {
+      throw error?.message || "Failed to login, please try again later.";
+    }
+  }
+};
+
+export const getUserDetails = async () => {
+  try {
+    const response = await api.get(endpoints.getUserAllDetails);
+    return response.data;
+  } catch (error) {
+    if (error?.status !== 401) {
+      throw (
+        error?.response?.data?.message ||
+        "Failed to login, please try again later."
+      );
+    } else {
+      throw error?.message || "Failed to login, please try again later.";
+    }
+  }
+};

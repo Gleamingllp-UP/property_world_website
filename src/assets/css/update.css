@@ -1,0 +1,18 @@
+.login_areee {
+  display: grid;
+  gap: 15px;
+}
+.login_areee input {
+  margin-bottom: 0%;
+}
+.forgot {
+  margin-bottom: 0%;
+}
+.form_gp select {
+  width: 100%;
+  background: #fff;
+  height: 50px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}

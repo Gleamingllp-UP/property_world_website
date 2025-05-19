@@ -39,4 +39,4 @@ const ExploreMoreProperties = () => {
   )
 }
 
-export default ExploreMoreProperties
+export default React.memo(ExploreMoreProperties)

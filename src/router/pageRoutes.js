@@ -14,6 +14,7 @@ export const pageRoutes = {
 
   //BLOG  Page
   BLOG: "/blog",
+  BLOG_DETAILS: "/blog-details",
 
   //BUYERGUIDE  Page
   BUYER_GUIDE: "/buyer-guide",

@@ -1,31 +1,56 @@
-import  { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 
-import blogimg1 from '../../assets/images/common/blog1.webp';
-import blogimg2 from '../../assets/images/common/blog2.jpg';
-import blogimg3 from '../../assets/images/common/blog3.webp';
-
+import blogimg1 from "../../assets/images/common/blog1.webp";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getAllBlogsThunk,
+  getBlogCategoryWithCountThunk,
+} from "../../features/blog/blogSlice";
+import { Link } from "react-router-dom";
+import { pageRoutes } from "../../router/pageRoutes";
+import ImageWithLoader from "../../Custom_Components/ImageWithLoader";
+import { format } from "date-fns";
+import { RecentPostSkeleton } from "../../Custom_Components/Skeleton/BigBlogSkeleton";
 
 const BlogCatSec = () => {
+  const { blogsCategory, isLoading2, blogs, isLoading } = useSelector(
+    (store) => store?.blog
+  );
+  const dispatch = useDispatch();
+  const page = 1;
+  const limit = 7;
 
- useEffect(() => {
-  const scriptId = 'elfsight-platform-script';
-  if (!document.getElementById(scriptId)) {
-    const script = document.createElement('script');
-    script.src = '/assets/js/platform.js';
-    script.async = true;
-    script.id = scriptId;
-    document.body.appendChild(script);
-  }
-}, []);
+  useEffect(() => {
+    dispatch(getAllBlogsThunk({ page, limit }));
+  }, [dispatch, page]);
 
+  useEffect(() => {
+    dispatch(getBlogCategoryWithCountThunk());
+  }, [dispatch]);
+
+  useEffect(() => {
+    const scriptId = "elfsight-platform-script";
+    if (!document.getElementById(scriptId)) {
+      const script = document.createElement("script");
+      script.src = "/assets/js/platform.js";
+      script.async = true;
+      script.id = scriptId;
+      document.body.appendChild(script);
+    }
+  }, []);
 
   return (
     <div className="col-lg-4">
       <div className="blog_right_b">
         {/* Search Form */}
         <form role="search" method="get" className="search_form" action="#">
-          <input type="text" className="search_field" placeholder="Search …"
-            name="s" title="Search for:" />
+          <input
+            type="text"
+            className="search_field"
+            placeholder="Search …"
+            name="s"
+            title="Search for:"
+          />
           <button type="submit" className="search_button">
             <i className="ri-search-line" />
           </button>
@@ -34,54 +59,97 @@ const BlogCatSec = () => {
         <hr />
 
         <div className="my_catt">
-          <p><strong>Categories</strong></p>
-          <ul>
-            <li><a href="#">Architecture (05)</a></li>
-            <li><a href="#">DreamHome (15)</a></li>
-            <li><a href="#">Furniture (07)</a></li>
-            <li><a href="#">HomeBuying (05)</a></li>
-            <li><a href="#">Interior (0)</a></li>
-            <li><a href="#">Property (08)</a></li>
-            <li><a href="#">Realtor (0)</a></li>
-          </ul>
+          <p>
+            <strong>Categories</strong>
+          </p>
+          {isLoading2 ? (
+            <>
+              <ul className="">
+                {[...Array(7)].map((_, index) => (
+                  <li key={index} className="mb-2">
+                    <a className="placeholder-glow ">
+                      <span
+                        className="placeholder bg-secondary-subtle rounded "
+                        style={{
+                          width: `${80 + Math.random() * 40}px`,
+                        }}
+                      ></span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </>
+          ) : (
+            blogsCategory &&
+            blogsCategory?.map((item, index) => {
+              return (
+                <ul key={index}>
+                  <li>
+                    <Link
+                      to={pageRoutes.BLOG_DETAILS + `/?blog_id=${item?._id}`}
+                      className="Link"
+                      style={{
+                        borderBottom:
+                          index !== blogsCategory?.length - 1
+                            ? "1px solid #0b4ca3"
+                            : "none",
+                      }}
+                    >
+                      {item?.name || "N/A"} {`(${item?.blog_count || 0})`}
+                    </Link>
+                  </li>
+                </ul>
+              );
+            })
+          )}
         </div>
 
         <hr />
 
- 
         <div className="top_story">
-          <p><strong>Recent posts</strong></p>
+          <p>
+            <strong>Recent posts</strong>
+          </p>
 
-          {[blogimg1, blogimg2, blogimg3,].map((img, index) => (
-            <div className="rec_pots" key={index}>
-              <div>
-                <a href="blog-details.php">
-                  <img src={img} className="img-fluid" alt={`Recent Post ${index + 1}`} />
-                </a>
+          {isLoading ? (
+            <>
+              <RecentPostSkeleton />
+            </>
+          ) : (
+            blogs?.map((item, index) => (
+              <div className="rec_pots" key={index}>
+                <div>
+                  <Link to={pageRoutes?.BLOG_DETAILS + `/?blog_id=${item?._id}`}>
+                    <ImageWithLoader src={item?.coverImg} />
+                  </Link>
+                </div>
+                <div>
+                  <span> {format(item?.createdAt, "MMMM dd, yyyy")}</span>
+                  <h4>
+                    <Link to={pageRoutes?.BLOG_DETAILS + `/?blog_id=${item?._id}`}>
+                      {item?.title || "N/A"}
+                    </Link>
+                  </h4>
+                </div>
               </div>
-              <div>
-                <span>April 08, 2025</span>
-                <h4>
-                  <a href="blog-details.php">Finding Dream Home: Step by Step with us</a>
-                </h4>
-              </div>
-            </div>
-          ))}
+            ))
+          )}
         </div>
       </div>
 
-   
       <div className="insta_feds">
         <h5>Instagram Feeds</h5>
-        <div className="elfsight-app-57e9270c-e9ad-4b8c-a211-c494dcbf3f9e" data-elfsight-app-lazy ></div>
+        <div
+          className="elfsight-app-57e9270c-e9ad-4b8c-a211-c494dcbf3f9e"
+          data-elfsight-app-lazy
+        ></div>
       </div>
 
-    
       <div className="text-center mt-3 m-auto">
-        <img src={blogimg1} className="img-fluid m-auto" alt="News Display" />
+        <ImageWithLoader src={blogimg1} className="img-fluid m-auto" />
       </div>
     </div>
   );
 };
 
-export default BlogCatSec;
+export default React.memo(BlogCatSec);

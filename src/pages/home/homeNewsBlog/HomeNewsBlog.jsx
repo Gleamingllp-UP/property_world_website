@@ -1,7 +1,21 @@
-import { blog1, blog2, blog3, blog4 } from "@/assets/images";
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllBlogsThunk } from "../../../features/blog/blogSlice";
+import { format } from "date-fns";
+import ImageWithLoader from "../../../Custom_Components/ImageWithLoader";
+import { Link } from "react-router-dom";
+import { pageRoutes } from "../../../router/pageRoutes";
 
 function HomeNewsBlog() {
+  const { blogs, isLoading } = useSelector((store) => store?.blog);
+  const dispatch = useDispatch();
+  const page = 1;
+  const limit = 4;
+
+  useEffect(() => {
+    dispatch(getAllBlogsThunk({ page, limit }));
+  }, [dispatch]);
+
   return (
     <section className="blogs">
       <div className="container">
@@ -9,96 +23,84 @@ function HomeNewsBlog() {
           <h2>News &amp; Blogs</h2>
         </div>
         <div className="row">
-          <div className="col-lg-3">
-            <div className="blogs_area">
-              <div className="blogs_post">
-                <a href="blog-details.php">
-                  <img src={blog1} className="img-fluid" />
-                  <span className="blog-plus" />
-                </a>
-                <div className="blog_content">
-                  <span>April 08, 2025</span>
-                  <h3>
-                    <a href="blog-details.php">
-                      Expert Tips for Profitable Real Estate Investments.
-                    </a>
-                  </h3>
-                  <p>
-                    John Smith | <a href="#">Furniture</a>
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="col-lg-3">
-            <div className="blogs_area">
-              <div className="blogs_post">
-                <a href="blog-details.php">
-                  <img src={blog2} className="img-fluid" />
-                  <span className="blog-plus" />
-                </a>
-                <div className="blog_content">
-                  <span>April 08, 2025</span>
-                  <h3>
-                    <a href="blog-details.php">
-                      Finding Dream Home: Step by Step with us
-                    </a>
-                  </h3>
-                  <p>
-                    John Smith | <a href="#">Furniture</a>
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="col-lg-3">
-            <div className="blogs_area">
-              <div className="blogs_post">
-                <a href="blog-details.php">
-                  <img src={blog3} className="img-fluid" />
-                  <span className="blog-plus" />
-                </a>
-                <div className="blog_content">
-                  <span>April 08, 2025</span>
-                  <h3>
-                    <a href="blog-details.php">
-                      Which Area Rug Material is Right for Your Apartment?
-                    </a>
-                  </h3>
-                  <p>
-                    John Smith | <a href="#">Furniture</a>
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="col-lg-3">
-            <div className="blogs_area">
-              <div className="blogs_post">
-                <a href="blog-details.php">
-                  <img src={blog4} className="img-fluid" />
-                  <span className="blog-plus" />
-                </a>
-                <div className="blog_content">
-                  <span>April 08, 2025</span>
-                  <h3>
-                    <a href="blog-details.php">
-                      Freeform pool design using grass with cabana &amp;
-                      waterfall
-                    </a>
-                  </h3>
-                  <p>
-                    John Smith | <a href="#">Furniture</a>
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
+          {isLoading
+            ? [...Array(4)].map((_, i) => {
+                return (
+                  <div className="col-lg-3" key={i}>
+                    <div className="position-relative overflow-hidden rounded-4 mb-4 bg-white border shadow-sm">
+                      {/* Image skeleton */}
+                      <div
+                        className="bg-light-subtle placeholder-glow w-100"
+                        style={{ height: 410 }}
+                      />
+                      {/* Content overlay */}
+                      <div className="position-absolute bottom-0 start-50 translate-middle-x w-100 px-3 pb-3">
+                        {/* Date placeholder */}
+                        <span
+                          className="placeholder placeholder-glow d-inline-block bg-secondary-subtle rounded px-2 py-1 mb-2"
+                          style={{ width: 120, height: 20 }}
+                        />
+
+                        {/* Title placeholder */}
+                        <div className="placeholder-glow mb-2">
+                          <span
+                            className="placeholder bg-secondary-subtle rounded col-10 d-block mb-1"
+                            style={{ height: 20 }}
+                          />
+                          <span
+                            className="placeholder bg-secondary-subtle rounded col-7 d-block"
+                            style={{ height: 20 }}
+                          />
+                        </div>
+                        {/* Meta line placeholder */}
+                        <div className="placeholder-glow">
+                          <span
+                            className="placeholder bg-secondary-subtle rounded col-8 d-block"
+                            style={{ height: 14 }}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })
+            : blogs &&
+              blogs?.map((item, index) => {
+                return (
+                  <div className="col-lg-3" key={index}>
+                    <div className="blogs_area">
+                      <div className="blogs_post">
+                        <Link to={pageRoutes?.BLOG_DETAILS + `/?blog_id=${item?._id}`}>
+                          <ImageWithLoader
+                            src={item?.coverImg}
+                            alt="Blog_img"
+                          />
+                          <span className="blog-plus" />
+                        </Link>
+                        <div className="blog_content">
+                          <span>
+                            {format(item?.createdAt, "MMMM dd, yyyy")}
+                          </span>
+                          <h3>
+                            <Link to={pageRoutes?.BLOG_DETAILS + `/?blog_id=${item?._id}`}>
+                              {item?.title}
+                            </Link>
+                          </h3>
+                          <p>
+                            {item?.author || "N/A"} |{" "}
+                            <a>{item?.blogCategory?.name || "N/A"}</a>
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
         </div>
         <div className="col-12 text-center">
-          <a href="blogs.php" className="action_btn mt20">
+          <Link to={pageRoutes?.BLOG} className="action_btn mt20">
             View All Blogs <i className="ri-arrow-right-up-long-line" />
-          </a>
+          </Link>
         </div>
       </div>
     </section>

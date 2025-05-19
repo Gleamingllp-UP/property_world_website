@@ -6,6 +6,7 @@ import {
   getAllActivesubSubCategoryThunk,
 } from "../../../features/activeData/activeDataSlice";
 import { formatRange } from "../../../helper/function/formatRange";
+import { guestUserLoginThunk } from "../../../features/user/userSlice";
 
 function HomeSearch() {
   const [selectedCategoryId, setSelectedCategoryId] = useState(null);
@@ -29,6 +30,10 @@ function HomeSearch() {
     (store) => store?.activeData
   );
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(guestUserLoginThunk());
+  }, [dispatch]);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -222,6 +227,7 @@ function HomeSearch() {
               </ul>
             </div>
           </div>
+          
           <div className="col-lg-3">
             <div className="enter_loca">
               <div className="form-group">
@@ -231,6 +237,8 @@ function HomeSearch() {
                   onClick={() => {
                     if (selectedCategoryId) {
                       setIsDropDownOpen(!isDropDownOpen);
+                      setIsDropDownOpen2(false);
+                      setIsDropDownOpen3(false);
                     }
                   }}
                   id="mainSelectBox2"
@@ -348,6 +356,7 @@ function HomeSearch() {
               </div>
             </div>
           </div>
+
           <div className="col-lg-3">
             <div className="enter_loca">
               <div className="form-group">
@@ -355,7 +364,8 @@ function HomeSearch() {
                 <div
                   className="select-box"
                   onClick={() => {
-                    setIsDropDownOpen3(isDropDownOpen3 ? false : false);
+                    setIsDropDownOpen(false);
+                    setIsDropDownOpen3(false);
                     setIsDropDownOpen2(!isDropDownOpen2);
                   }}
                   id="mainSelectBox"
@@ -419,7 +429,7 @@ function HomeSearch() {
                         const labelText = value === 8 ? "7+" : value;
 
                         return (
-                          <>
+                          <React.Fragment key={i}>
                             <input
                               type="checkbox"
                               id={`bathRoom-${value}`}
@@ -432,7 +442,7 @@ function HomeSearch() {
                             <label htmlFor={`bathRoom-${value}`}>
                               {labelText}
                             </label>
-                          </>
+                          </React.Fragment>
                         );
                       })}
                     </div>
@@ -447,7 +457,8 @@ function HomeSearch() {
               <div
                 className="select-box"
                 onClick={() => {
-                  setIsDropDownOpen2(isDropDownOpen2 ? false : false);
+                  setIsDropDownOpen(false);
+                  setIsDropDownOpen2(false);
                   setIsDropDownOpen3(!isDropDownOpen3);
                 }}
                 id="mainSelectBox3"

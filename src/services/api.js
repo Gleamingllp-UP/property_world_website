@@ -36,7 +36,7 @@ api.interceptors.response.use(
         errorData.status = 401;
         errorData.message = "Session expired. Please log in again.";
         setTimeout(() => {
-          window.location.href = pageRoutes.LOGIN;
+          window.location.href = pageRoutes.HOME_PAGE;
         }, 2000);
       }
 

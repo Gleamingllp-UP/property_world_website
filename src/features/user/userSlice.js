@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { initiateSignup, verifyCode, setPassword, userLogin,getUserDetails } from "./userAPI";
+import { initiateSignup, verifyCode, setPassword, userLogin,getUserDetails, guestUserLogin } from "./userAPI";
 
 export const initiateSignupThunk = createAsyncThunk(
   "users/initiateSignUp",
@@ -29,6 +29,12 @@ export const getUserDetailsThunk = createAsyncThunk(
   "users/getUserDetails",
   async () => {
     return await getUserDetails();
+  }
+);
+export const guestUserLoginThunk = createAsyncThunk(
+  "users/guestUserLogin",
+  async () => {
+    return await guestUserLogin();
   }
 );
 
@@ -116,6 +122,21 @@ const usersSlice = createSlice({
         localStorage.setItem("userData", JSON.stringify(action.payload.data));
       })
       .addCase(userLoginThunk.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message;
+      })
+
+      //Guest User Login
+      .addCase(guestUserLoginThunk.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(guestUserLoginThunk.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.userData = action.payload.data;
+        localStorage.setItem("userToken", action.payload.token);
+        localStorage.setItem("userData", JSON.stringify(action.payload.data));
+      })
+      .addCase(guestUserLoginThunk.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
       })

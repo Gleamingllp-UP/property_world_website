@@ -8,7 +8,7 @@ export const formatRange = (arr, label, isBed = false) => {
 
   const formatValue = (val) => {
     if (val === 0 && isBed) return "Studio";
-    if (val >= 7) return "7+";
+    if (val > 7) return "7+";
     return val;
   };
 

@@ -28,6 +28,8 @@ const MainAgencies = lazy(() =>
   import("@/pages/agentsAndAgencies/agencies/MainAgencies")
 );
 
+const BlogDetails=lazy(()=>import('../pages/blog/BlogDetails'))
+
 const routes = [
   // {
   //   id: 1,
@@ -112,6 +114,13 @@ const routes = [
     name: "Agencies",
     path: pageRoutes?.AGENCIES,
     Component: MainAgencies,
+  },
+  {
+    id: 10,
+    isPrivate: true,
+    name: "Blog Details",
+    path: pageRoutes?.BLOG_DETAILS,
+    Component: BlogDetails,
   },
 ];
 export { routes };

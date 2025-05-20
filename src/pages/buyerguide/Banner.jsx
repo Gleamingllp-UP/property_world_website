@@ -1,26 +1,30 @@
-import React from 'react'
-import about_banner from '../../assets/images/common/Buyer-Guide-Photo.jpg';
+import React from "react";
+import { arrow_gif, video } from "../../assets/images";
 
-const Banner = () => {
+const Banner = ({scrollRef}) => {
+  const scroll=()=>{
+    scrollRef.current.scrollIntoView({behavior: 'smooth'})
+  }
   return (
     <>
-        <div className="inner_banner" style={{ backgroundImage: `url(${about_banner})` }}>
-        <div className="container">
-          <div className="buyer_d">
+      <div className="inner_banner_video">
+        <div className="my_video">
+          <video width="100%" height={300} loop muted autoPlay>
+            <source src={video} type="video/mp4" />
+          </video>
+        </div>
+        <div className="video_data">
+          <div className="container">
             <h1>Buyer Guide</h1>
             <p>BUYER’S GUIDE TO PURCHASING PROPERTY IN DUBAI</p>
-          </div>
-        </div>
-      </div>
-      <div className="arrow_section">
-        <div className="container">
-          <div className="arrow_box">
-            <a href="#down"><i className="ri-arrow-down-long-line" /></a>
+            <a onClick={scroll}>
+              <img src={arrow_gif} />
+            </a>
           </div>
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default Banner
+export default Banner;

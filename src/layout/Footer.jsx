@@ -82,8 +82,9 @@ function Footer() {
                   <Link to={pageRoutes.BUYER_GUIDE}>Buyer Guide</Link>
                 </li>
                 <li>
-                  <a href="seller-guide.php">Seller Guide</a>
+                  <Link to={pageRoutes.SELLER_GUIDE}>Seller Guide</Link>
                 </li>
+
                 <li>
                   <a href="tenant-guide.php">Tenant Guide</a>
                 </li>

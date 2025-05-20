@@ -5,10 +5,10 @@
   border-radius: 4px;
 }
 .input-icon-wrapper {
-    position: relative;
-    width: 100%;
-  }
-  
+  position: relative;
+  width: 100%;
+}
+
 .calendar_icon {
   position: absolute;
   right: 10px;
@@ -21,32 +21,34 @@
   position: static !important;
 }
 
-
 /* checkbox */
 
-  
-  .checkbox_wrapper {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    position: relative;
-  }
-  
-  .checkbox_wrapper input[type="checkbox"] {
-    width: 16px;
-    height: 16px;
-    accent-color: #0d6efd; /* Bootstrap Primary */
-  }
-  
-  .checkbox_wrapper label {
-    margin: 0;
-    font-size: 14px;
-    color: #333;
-  }
-  
-  .form_gp .error-message {
-    color: red;
-    font-size: 12px;
-    margin-top: 4px;
-  }
-  
+.checkbox_wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+}
+
+.checkbox_wrapper input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: #0d6efd; /* Bootstrap Primary */
+}
+
+.checkbox_wrapper label {
+  margin: 0;
+  font-size: 14px;
+  color: #333;
+}
+
+.form_gp .error-message {
+  color: red;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+a,
+button {
+  text-decoration: none;
+}

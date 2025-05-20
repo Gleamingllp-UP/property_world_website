@@ -19,4 +19,6 @@
 .img_boxx span{
   bottom: 15px;
 }
-
+.custom-range::-webkit-slider-thumb {
+  background-color: var(--bs-primary);
+}

@@ -50,6 +50,11 @@ import floor1 from "./common/floor.jpg";
 import floor2 from "./common/floor2.jpg";
 import ads_banner from "./common/ads_banner.jpg";
 import ads_banner2 from "./common/ads_banner2.jpg";
+import new_buyer from "./common/new_buyer.jpg";
+
+import arrow_gif from "./common/arrow.gif";
+import video from "./common/video.mp4";
+import video2 from "./common/video2.mp4";
 
 //propert
 import propert1 from "./property/01.jpg";
@@ -124,6 +129,10 @@ export {
   contact_photo,
   agency1,
   agency2,
+  new_buyer,
+  arrow_gif,
+  video,
+  video2,
 
   //property
   propert1,

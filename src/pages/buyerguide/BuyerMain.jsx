@@ -1,24 +1,21 @@
-import  { useEffect, useState } from "react";
-import Banner from './Banner';
-import BuyerGuide from './BuyerGuide';
-import ExploreMoreProperties from '../../Custom_Components/ExploreMoreProperties' 
-import JoinUsNow from './../../Custom_Components/JoinUsNow';
+import { useEffect, useRef } from "react";
+import Banner from "./Banner";
+import JoinUsNow from "./../../Custom_Components/JoinUsNow";
+import BuyerGuideContent from "./BuyerGuideContent";
+import YourInquiryform from "../../Custom_Components/YourInquiryform";
 const BuyerMain = () => {
-   useEffect(() => {
+  const innerRef = useRef(null);
+  useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
   return (
     <>
-    <Banner />
-<section class="content_area" id="down">
-	<div class="container">
-    <BuyerGuide />
-    </div>
- </section>
- <ExploreMoreProperties />
- <JoinUsNow />
+      <Banner scrollRef={innerRef} />
+      <BuyerGuideContent innerRef={innerRef} />
+      <YourInquiryform />
+      <JoinUsNow />
     </>
-  )
-}
+  );
+};
 
-export default BuyerMain
+export default BuyerMain;

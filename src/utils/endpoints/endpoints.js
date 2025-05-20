@@ -19,6 +19,13 @@ const endpoints = {
   getblogForUser: "/blog/get-blog-user",
   getAllblogForUser: "/blog/getall-blog-user",
   getBlogCategoryWithCount: "/blog-category/getall-blog-count",
+
+  //Policy
+  getPolicyByTypeForUser: "/policy/get-user-policy",
+
+  //About US
+  getAllAboutUsForUser: '/about-us/getall-user-aboutUs',
+
 };
 
 export { endpoints };

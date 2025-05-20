@@ -1,18 +1,15 @@
-import { useEffect } from "react";
-import Banner from "./banner";
-import OurProfile from "./OurProfile";
-import Vision from "./Vision";
-import Mission from "./Mission";
+import { useEffect, useRef } from "react";
+import Banner from "./Banner";
+import AboutUsContent from "./AboutUsContent";
 const AboutMain = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+const innerRef=useRef(null)
   return (
     <>
-      <Banner />
-      <OurProfile />
-      <Vision />
-      <Mission />
+      <Banner scrollRef={innerRef}/>
+      <AboutUsContent innerRef={innerRef}/>
     </>
   );
 };

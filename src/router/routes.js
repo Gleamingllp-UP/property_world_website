@@ -13,6 +13,7 @@ const MainPropertyDetails = lazy(() =>
 );
 const AboutMain = lazy(() => import("@/pages/aboutus/AboutMain"));
 const BuyerMain = lazy(() => import("@/pages/buyerguide/BuyerMain"));
+const MainSellerGuide = lazy(() => import("../pages/sellerGuide/MainSellerGuide"));
 const ContactMain = lazy(() => import("@/pages/contactus/ContactMain"));
 const MainBlog = lazy(() => import("@/pages/blog/MainBlog"));
 const Maintermsconditionimport = lazy(() =>
@@ -20,6 +21,9 @@ const Maintermsconditionimport = lazy(() =>
 );
 const MainPrivacyAndPolicy = lazy(() =>
   import("@/pages/privacyAndPolicy/MainPrivacyAndPolicy")
+);
+const CookiesPolicyMain = lazy(() =>
+  import("../pages/cookiespolicy/CookiesPolicyMain")
 );
 const MainAgents = lazy(() =>
   import("@/pages//agentsAndAgencies/agents/MainAgents")
@@ -102,25 +106,39 @@ const routes = [
     Component: MainPrivacyAndPolicy,
   },
   {
-    id: 10,
+    id: 11,
+    isPrivate: true,
+    name: "Cookies & policy",
+    path: pageRoutes?.COOKIES_POLICY,
+    Component: CookiesPolicyMain,
+  },
+  {
+    id: 12,
     isPrivate: true,
     name: "Agents",
     path: pageRoutes?.AGENTS,
     Component: MainAgents,
   },
   {
-    id: 10,
+    id: 13,
     isPrivate: true,
     name: "Agencies",
     path: pageRoutes?.AGENCIES,
     Component: MainAgencies,
   },
   {
-    id: 10,
+    id: 14,
     isPrivate: true,
     name: "Blog Details",
     path: pageRoutes?.BLOG_DETAILS,
     Component: BlogDetails,
+  },
+  {
+    id: 15,
+    isPrivate: true,
+    name: "Seller Guide",
+    path: pageRoutes?.SELLER_GUIDE,
+    Component: MainSellerGuide,
   },
 ];
 export { routes };

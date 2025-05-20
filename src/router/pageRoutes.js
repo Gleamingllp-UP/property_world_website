@@ -19,6 +19,9 @@ export const pageRoutes = {
   //BUYERGUIDE  Page
   BUYER_GUIDE: "/buyer-guide",
 
+  //Seller Guide  Page
+  SELLER_GUIDE: "/seller-guide",
+
   //Terms & Conditions  Page
   TERM_CONDITIONS: "/terms-and-conditions",
 

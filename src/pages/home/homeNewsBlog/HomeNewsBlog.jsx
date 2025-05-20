@@ -70,7 +70,11 @@ function HomeNewsBlog() {
                   <div className="col-lg-3" key={index}>
                     <div className="blogs_area">
                       <div className="blogs_post">
-                        <Link to={pageRoutes?.BLOG_DETAILS + `/?blog_id=${item?._id}`}>
+                        <Link
+                          to={
+                            pageRoutes?.BLOG_DETAILS + `/?blog_id=${item?._id}`
+                          }
+                        >
                           <ImageWithLoader
                             src={item?.coverImg}
                             alt="Blog_img"
@@ -82,7 +86,12 @@ function HomeNewsBlog() {
                             {format(item?.createdAt, "MMMM dd, yyyy")}
                           </span>
                           <h3>
-                            <Link to={pageRoutes?.BLOG_DETAILS + `/?blog_id=${item?._id}`}>
+                            <Link
+                              to={
+                                pageRoutes?.BLOG_DETAILS +
+                                `/?blog_id=${item?._id}`
+                              }
+                            >
                               {item?.title}
                             </Link>
                           </h3>
@@ -97,11 +106,13 @@ function HomeNewsBlog() {
                 );
               })}
         </div>
-        <div className="col-12 text-center">
-          <Link to={pageRoutes?.BLOG} className="action_btn mt20">
-            View All Blogs <i className="ri-arrow-right-up-long-line" />
-          </Link>
-        </div>
+        {blogs?.length > 4 && (
+          <div className="col-12 text-center">
+            <Link to={pageRoutes?.BLOG} className="action_btn mt20">
+              View All Blogs <i className="ri-arrow-right-up-long-line" />
+            </Link>
+          </div>
+        )}
       </div>
     </section>
   );

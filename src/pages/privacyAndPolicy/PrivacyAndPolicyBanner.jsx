@@ -1,7 +1,10 @@
 import React from "react";
 import { seller_guide } from "../../assets/images";
 
-function PrivacyAndPolicyBanner() {
+function PrivacyAndPolicyBanner({ scrollRef }) {
+  const scroll = () => {
+    scrollRef.current.scrollIntoView({ behavior: "smooth" });
+  };
   return (
     <>
       <div
@@ -19,7 +22,7 @@ function PrivacyAndPolicyBanner() {
       <div className="arrow_section">
         <div className="container">
           <div className="arrow_box">
-            <a href="#down">
+            <a onClick={scroll}>
               <i className="ri-arrow-down-long-line"></i>
             </a>
           </div>
@@ -29,4 +32,4 @@ function PrivacyAndPolicyBanner() {
   );
 }
 
-export default PrivacyAndPolicyBanner;
+export default React.memo(PrivacyAndPolicyBanner);

@@ -6,26 +6,32 @@ export const pageRoutes = {
   //Property
   PROPERTY_DETAILS: "/property-details",
 
-  //About Us Page
+  //About Us
   ABOUT_US: "/about-us",
 
-  //CONTACT_US  Page
+  //CONTACT_US 
   CONTACT_US: "/contact-us",
 
-  //BLOG  Page
+  //BLOG 
   BLOG: "/blog",
   BLOG_DETAILS: "/blog-details",
 
-  //BUYERGUIDE  Page
+  //BUYERGUIDE 
   BUYER_GUIDE: "/buyer-guide",
 
-  //Seller Guide  Page
+  //Seller Guide 
   SELLER_GUIDE: "/seller-guide",
 
-  //Terms & Conditions  Page
+  //Tenant Guide 
+  TENANT_GUIDE: "/tenant-guide",
+
+  //LandLord Guide 
+  LANDLORD_GUIDE: "/landlord-guide",
+
+  //Terms & Conditions 
   TERM_CONDITIONS: "/terms-and-conditions",
 
-  //Cookies  Page
+  //Cookies 
   COOKIES_POLICY: "/cookies-policy",
 
   //Privacy and Policy

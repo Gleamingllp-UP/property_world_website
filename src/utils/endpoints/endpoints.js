@@ -24,8 +24,10 @@ const endpoints = {
   getPolicyByTypeForUser: "/policy/get-user-policy",
 
   //About US
-  getAllAboutUsForUser: '/about-us/getall-user-aboutUs',
+  getAllAboutUsForUser: "/about-us/getall-user-aboutUs",
 
+  //Banner
+  getBannerByTypeForUser: "/banner/getall-user-banner",
 };
 
 export { endpoints };

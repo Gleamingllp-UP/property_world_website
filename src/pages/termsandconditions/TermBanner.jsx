@@ -1,18 +1,28 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { seller_guide } from "../../assets/images";
+import { useDispatch, useSelector } from "react-redux";
+import { getBannerByTypeThunk } from "../../features/banner/bannerSlice";
 const TermBanner = ({ scrollRef }) => {
   const scroll = () => {
     scrollRef.current.scrollIntoView({ behavior: "smooth" });
   };
+
+  const { banners } = useSelector((store) => store?.banner);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getBannerByTypeThunk("terms_conditions"));
+  }, [dispatch]);
+
   return (
     <>
       <div
         className="inner_banner"
-        style={{ backgroundImage: `url(${seller_guide})` }}
+        style={{ backgroundImage: `url(${banners?.imageUrl || seller_guide})` }}
       >
         <div className="container">
           <div className="buyer_d">
-            <h1>Terms &amp; Conditions</h1>
+            <h1>{banners?.title || 'Terms & Conditions'}</h1>
             <p />
           </div>
         </div>

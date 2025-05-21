@@ -13,7 +13,9 @@ const MainPropertyDetails = lazy(() =>
 );
 const AboutMain = lazy(() => import("@/pages/aboutus/AboutMain"));
 const BuyerMain = lazy(() => import("@/pages/buyerguide/BuyerMain"));
-const MainSellerGuide = lazy(() => import("../pages/sellerGuide/MainSellerGuide"));
+const MainSellerGuide = lazy(() =>
+  import("../pages/sellerGuide/MainSellerGuide")
+);
 const ContactMain = lazy(() => import("@/pages/contactus/ContactMain"));
 const MainBlog = lazy(() => import("@/pages/blog/MainBlog"));
 const Maintermsconditionimport = lazy(() =>
@@ -32,7 +34,12 @@ const MainAgencies = lazy(() =>
   import("@/pages/agentsAndAgencies/agencies/MainAgencies")
 );
 
-const BlogDetails=lazy(()=>import('../pages/blog/BlogDetails'))
+const BlogDetails = lazy(() => import("../pages/blog/BlogDetails"));
+
+const TenantMain = lazy(() => import("../pages/tenantGuide/TenantMain"));
+const LandLoardMain = lazy(() =>
+  import("../pages/landLordGuide/LandLoardMain")
+);
 
 const routes = [
   // {
@@ -139,6 +146,20 @@ const routes = [
     name: "Seller Guide",
     path: pageRoutes?.SELLER_GUIDE,
     Component: MainSellerGuide,
+  },
+  {
+    id: 16,
+    isPrivate: true,
+    name: "Tenant Guide",
+    path: pageRoutes?.TENANT_GUIDE,
+    Component: TenantMain,
+  },
+  {
+    id: 17,
+    isPrivate: true,
+    name: "LandLord Guide",
+    path: pageRoutes?.LANDLORD_GUIDE,
+    Component: LandLoardMain,
   },
 ];
 export { routes };

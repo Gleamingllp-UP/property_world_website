@@ -1,18 +1,28 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { seller_guide } from "../../assets/images";
+import { useDispatch, useSelector } from "react-redux";
+import { getBannerByTypeThunk } from "../../features/banner/bannerSlice";
 const CookiespolicyBanner = ({ scrollRef }) => {
   const scroll = () => {
     scrollRef.current.scrollIntoView({ behavior: "smooth" });
   };
+
+  const { banners } = useSelector((store) => store?.banner);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getBannerByTypeThunk("cookies_policy"));
+  }, [dispatch]);
+
   return (
     <>
       <div
         className="inner_banner"
-        style={{ backgroundImage: `url(${seller_guide})` }}
+        style={{ backgroundImage: `url(${banners?.imageUrl || seller_guide})` }}
       >
         <div className="container">
           <div className="buyer_d">
-            <h1>Cookies Policy</h1>
+            <h1>{banners?.title || "Cookies Policy"}</h1>
             <p />
           </div>
         </div>

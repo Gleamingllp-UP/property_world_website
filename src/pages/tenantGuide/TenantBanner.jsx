@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
-import { arrow_gif, video } from "../../assets/images";
 import { useDispatch, useSelector } from "react-redux";
 import { getBannerByTypeThunk } from "../../features/banner/bannerSlice";
+import { arrow_gif, video } from "../../assets/images";
 
-const Banner = ({ scrollRef }) => {
+function TenantBanner({ scrollRef }) {
   const scroll = () => {
     scrollRef.current.scrollIntoView({ behavior: "smooth" });
   };
@@ -11,8 +11,9 @@ const Banner = ({ scrollRef }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getBannerByTypeThunk("buyer_guide"));
+    dispatch(getBannerByTypeThunk("tenant_guide"));
   }, [dispatch]);
+
   return (
     <>
       <div className="inner_banner_video">
@@ -23,10 +24,10 @@ const Banner = ({ scrollRef }) => {
         </div>
         <div className="video_data">
           <div className="container">
-            <h1>{banners?.title || "Buyer Guide"}</h1>
+            <h1>{banners?.title || "Tenant Guide"}</h1>
             <p>
               {banners?.description ||
-                "BUYER’S GUIDE TO PURCHASING PROPERTY IN DUBAI"}
+                "Dubai is home to many expats, and while some have the luxury of purchasing property"}
             </p>
             <a onClick={scroll}>
               <img src={arrow_gif} />
@@ -36,6 +37,6 @@ const Banner = ({ scrollRef }) => {
       </div>
     </>
   );
-};
+}
 
-export default Banner;
+export default React.memo(TenantBanner);

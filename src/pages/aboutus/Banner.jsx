@@ -1,19 +1,28 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { about_banner } from "../../assets/images";
+import { useDispatch, useSelector } from "react-redux";
+import { getBannerByTypeThunk } from "../../features/banner/bannerSlice";
 
-const banner = ({ scrollRef }) => {
+const Banner = ({ scrollRef }) => {
   const scroll = () => {
     scrollRef.current.scrollIntoView({ behavior: "smooth" });
   };
+  const { banners } = useSelector((store) => store?.banner);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getBannerByTypeThunk("about_us"));
+  }, [dispatch]);
+
   return (
     <>
       <div
         className="inner_banner"
-        style={{ backgroundImage: `url(${about_banner})` }}
+        style={{ backgroundImage: `url(${banners?.imageUrl || about_banner})` }}
       >
         <div className="container">
           <div className="buyer_d">
-            <h1>About us</h1>
+            <h1>{banners?.title || "N/A"}</h1>
             <p />
           </div>
         </div>
@@ -31,4 +40,4 @@ const banner = ({ scrollRef }) => {
   );
 };
 
-export default banner;
+export default Banner;

@@ -64,7 +64,7 @@ export function InputWithLabelForm({
 
   return (
     <div className={`form_gp ${className}`}>
-    {label && <span>{label}</span>}
+      {label && <span>{label}</span>}
       <Controller
         name={name}
         control={control}
@@ -91,7 +91,9 @@ export function InputWithLabelForm({
               name={name}
               placeholder={placeholder}
               // className={`form-control ${error ? "is-invalid" : ""}`}
-               onChange={onChange}
+              onChange={(e) =>
+                type === "file" ? onChange(e.target.files) : onChange(e)
+              }
               onBlur={onBlur}
               ref={ref}
               value={type === "file" ? undefined : value ?? ""}
@@ -114,7 +116,7 @@ export function InputWithLabelForm({
               rightIcon && (
                 <div
                   className="position-absolute top-50 end-0 translate-middle-y pe-3 text-muted"
-                  style={{ cursor:'pointer'}}
+                  style={{ cursor: "pointer" }}
                 >
                   {rightIcon}
                 </div>

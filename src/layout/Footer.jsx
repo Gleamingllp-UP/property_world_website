@@ -94,9 +94,11 @@ function Footer() {
                 <li>
                   <Link to={pageRoutes.BLOG}>Blogs</Link>
                 </li>
+
                 <li>
-                  <a href="agents.php">Agents & Agencies</a>
+                  <Link to={pageRoutes.AGENTS}>Agents & Agencies</Link>
                 </li>
+               
               </ul>
             </div>
             <div className="col-md-2 col-sm-12 col-6">

@@ -58,8 +58,8 @@ export const getValidationRules = ({
         // Validate file type
 
         acceptedFormats: (fileList) => {
-          // console.log("fileList", fileList);
-          // console.log("imageURL", imageURL);
+          console.log("fileList", fileList);
+          console.log("imageURL", imageURL);
 
           const allowedTypes = ["image/jpeg", "image/png", "application/pdf"];
 

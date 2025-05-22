@@ -98,16 +98,16 @@ const usersSlice = createSlice({
 
       //Set Password
       .addCase(setPasswordThunk.pending, (state) => {
-        state.isLoading = true;
+        state.loading = true;
       })
       .addCase(setPasswordThunk.fulfilled, (state, action) => {
-        state.isLoading = false;
+        state.loading = false;
         state.userData = action.payload.data;
         localStorage.removeItem("userToken");
         localStorage.removeItem("code");
       })
       .addCase(setPasswordThunk.rejected, (state, action) => {
-        state.isLoading = false;
+        state.loading = false;
         state.error = action.error.message;
       })
 

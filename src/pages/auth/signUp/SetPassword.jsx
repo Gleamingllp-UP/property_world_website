@@ -13,10 +13,11 @@ import {
 } from "../../../features/user/userSlice";
 import { useNavigate } from "react-router-dom";
 import { pageRoutes } from "../../../router/pageRoutes";
+import ButtonWithSpin from "../../../Custom_Components/ButtonWithSpin";
 
 const SetPassword = ({ setStep }) => {
   const { handleSubmit, control, watch } = useForm();
-  const { formData } = useSelector((store) => store?.user);
+  const { formData, loading } = useSelector((store) => store?.user);
 
   const [type, SetType] = useState(true);
   const dispatch = useDispatch();
@@ -51,6 +52,7 @@ const SetPassword = ({ setStep }) => {
         showToast("Password successfully set! You can login.", "success");
         dispatch(removeUserFormDataToken());
         setTimeout(() => {
+          setStep(1)
           navigate(pageRoutes?.HOME_PAGE);
         }, 1000);
       } else {
@@ -60,6 +62,7 @@ const SetPassword = ({ setStep }) => {
       showToast(error?.message || "Failed to Set Password.", "error");
     }
   };
+
   return (
     <div className="container mt-5">
       <div className="row justify-content-center">
@@ -118,10 +121,13 @@ const SetPassword = ({ setStep }) => {
                   value === password || "Passwords do not match",
               }}
             />
-
-            <button type="submit" className="btn btn-primary w-100">
-              Set Password
-            </button>
+            {loading ? (
+              <ButtonWithSpin />
+            ) : (
+              <button type="submit" className="btn btn-primary w-100">
+                Set Password
+              </button>
+            )}
           </form>
 
           {/* Password Strength Indicators */}

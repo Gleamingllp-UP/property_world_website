@@ -1,5 +1,5 @@
 import React from "react";
-import AgentsSignUpForm from "./AgentsSignUpForm";
+import AgentsSignUpForm from "./AgentSignUp/AgentsSignUpForm";
 import SignUpSocial from "./SignUpSocial";
 import { useSelector } from "react-redux";
 

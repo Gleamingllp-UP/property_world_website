@@ -8,11 +8,12 @@ import {
   getUserFormData,
   verifyCodeThunk,
 } from "../../../features/user/userSlice";
+import ButtonWithSpin from "../../../Custom_Components/ButtonWithSpin";
 
 function VerifyEmail({ setStep }) {
   const { handleSubmit, control } = useForm();
   const dispatch = useDispatch();
-  const { formData } = useSelector((store) => store?.user);
+  const { formData, isLoading } = useSelector((store) => store?.user);
 
   useEffect(() => {
     dispatch(getUserFormData());
@@ -57,7 +58,11 @@ function VerifyEmail({ setStep }) {
 
       <div className="col-lg-3">
         <div className="form_gp">
-          <input type="submit" defaultValue="Submit" className="action_btn" />
+          {isLoading ? (
+            <ButtonWithSpin />
+          ) : (
+            <input type="submit" defaultValue="Submit" className="action_btn" />
+          )}
         </div>
       </div>
     </form>

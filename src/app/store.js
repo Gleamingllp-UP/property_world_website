@@ -6,6 +6,8 @@ import blogReducer from "../features/blog/blogSlice";
 import policyReducer from "../features/policy/policySlice";
 import aboutUsReducer from "../features/aboutUs/aboutUsSlice";
 import bannerReducer from "../features/banner/bannerSlice";
+import contactUsReducer from "../features/contactUs/contactUsSlice";
+import socialMediaReducer from "../features/socialMedia/socialMediaSlice";
 
 export const store = configureStore({
   reducer: {
@@ -15,6 +17,8 @@ export const store = configureStore({
     blog: blogReducer,
     policy: policyReducer,
     aboutUs: aboutUsReducer,
+    contactUs: contactUsReducer,
     banner: bannerReducer,
+    socialMedia: socialMediaReducer,
   },
 });

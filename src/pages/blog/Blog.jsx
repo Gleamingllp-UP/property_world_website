@@ -51,7 +51,7 @@ const Blog = ({ innerRef }) => {
                         <div className="big_content">
                           <p>
                             {item?.author || "N/A"} |{" "}
-                            <a>{item?.blogCategory?.name || "N/A"}</a>
+                            <a className="text-danger">{item?.blogCategory?.name || "N/A"}</a>
                           </p>
                           <h2>
                             <Link
@@ -64,7 +64,7 @@ const Blog = ({ innerRef }) => {
                             </Link>
                           </h2>
                           {/* <p>{item?.content || "N/A"}</p> */}
-                          <div
+                          <div className="content-ellipse"
                             dangerouslySetInnerHTML={{
                               __html: DOMPurify.sanitize(
                                 item?.content || "N/A"

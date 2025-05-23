@@ -4,6 +4,7 @@ import {
   getAllActiveCategoryThunk,
   getAllActiveSubCategoryThunk,
   getAllActivesubSubCategoryThunk,
+  resetActiveData,
 } from "../../../features/activeData/activeDataSlice";
 import { formatRange } from "../../../helper/function/formatRange";
 import { guestUserLoginThunk } from "../../../features/user/userSlice";
@@ -182,6 +183,12 @@ function HomeSearch() {
     setSelectedSubCategoryId(null);
 
     setSelectedSubSubCategoryId(null);
+    dispatch(resetActiveData());
+    setIsDropDownOpen(false);
+    setIsDropDownOpen2(false);
+    setIsDropDownOpen3(false);
+    setIsDropDownOpen4(false);
+    setIsDropDownOpen5(false);
   };
   return (
     <div className="main_search">
@@ -253,38 +260,34 @@ function HomeSearch() {
         <div className="row mt-3">
           {selectedCategoryName === "Rent" ? (
             <div className="col-lg-3">
-              <div className="enter_loca">
-                <div className="form-group">
-                  <div className="select-box" style={{ position: "relative" }}>
-                    <select
-                      onFocus={() => {
-                        setIsDropDownOpen(false);
-                        setIsDropDownOpen2(false);
-                        setIsDropDownOpen3(false);
-                        setIsDropDownOpen4(false);
-                      }}
-                      className="select-box"
-                      value={rentDuration || ""}
-                      onChange={(e) => {
-                        setRentDuration(e.target.value);
-                      }}
-                    >
-                      <option value="" disabled>
-                        Select Duration
-                      </option>
-                      {options &&
-                        options?.map((option, index) => {
-                          return (
-                            <>
-                              <option key={index} value={option?.value}>
-                                {option?.label}
-                              </option>
-                            </>
-                          );
-                        })}
-                    </select>
-                  </div>
-                </div>
+              <div className="enter_loca enter_loca2">
+                <select
+                  onFocus={() => {
+                    setIsDropDownOpen(false);
+                    setIsDropDownOpen2(false);
+                    setIsDropDownOpen3(false);
+                    setIsDropDownOpen4(false);
+                  }}
+                  className="select-box"
+                  value={rentDuration || ""}
+                  onChange={(e) => {
+                    setRentDuration(e.target.value);
+                  }}
+                >
+                  <option value="" disabled>
+                    Select Duration
+                  </option>
+                  {options &&
+                    options?.map((option, index) => {
+                      return (
+                        <>
+                          <option key={index} value={option?.value}>
+                            {option?.label}
+                          </option>
+                        </>
+                      );
+                    })}
+                </select>
               </div>
             </div>
           ) : (
@@ -327,6 +330,7 @@ function HomeSearch() {
                       setIsDropDownOpen2(false);
                       setIsDropDownOpen3(false);
                       setIsDropDownOpen4(false);
+                      setIsDropDownOpen5(false);
                     }
                   }}
                   id="mainSelectBox2"
@@ -423,38 +427,35 @@ function HomeSearch() {
           </div>
           {buyType === "offplan" && (
             <div className="col-lg-3">
-              <div className="enter_loca">
-                <div className="form-group">
-                  <div className="select-box" style={{ position: "relative" }}>
-                    <select
-                      onFocus={() => {
-                        setIsDropDownOpen(false);
-                        setIsDropDownOpen2(false);
-                        setIsDropDownOpen3(false);
-                        setIsDropDownOpen4(false);
-                      }}
-                      className=""
-                      value={rentDuration || ""}
-                      onChange={(e) => {
-                        setRentDuration(e.target.value);
-                      }}
-                    >
-                      <option value="" disabled>
-                       Handover By
-                      </option>
-                      {generateHandoverOptions() &&
-                        generateHandoverOptions()?.map((option, index) => {
-                          return (
-                            <>
-                              <option key={index} value={option?.value}>
-                                {option?.label}
-                              </option>
-                            </>
-                          );
-                        })}
-                    </select>
-                  </div>
-                </div>
+              <div className="enter_loca enter_loca2">
+                <select
+                  onFocus={() => {
+                    setIsDropDownOpen(false);
+                    setIsDropDownOpen2(false);
+                    setIsDropDownOpen3(false);
+                    setIsDropDownOpen4(false);
+                    setIsDropDownOpen5(false);
+                  }}
+                  className=""
+                  value={rentDuration || ""}
+                  onChange={(e) => {
+                    setRentDuration(e.target.value);
+                  }}
+                >
+                  <option value="" disabled>
+                    Handover By
+                  </option>
+                  {generateHandoverOptions() &&
+                    generateHandoverOptions()?.map((option, index) => {
+                      return (
+                        <>
+                          <option key={index} value={option?.value}>
+                            {option?.label}
+                          </option>
+                        </>
+                      );
+                    })}
+                </select>
               </div>
             </div>
           )}
@@ -539,6 +540,8 @@ function HomeSearch() {
                       onClick={() => {
                         setIsDropDownOpen(false);
                         setIsDropDownOpen3(false);
+                        setIsDropDownOpen5(false);
+                        setIsDropDownOpen4(false);
                         setIsDropDownOpen2(!isDropDownOpen2);
                       }}
                       id="mainSelectBox"
@@ -679,7 +682,7 @@ function HomeSearch() {
                         onChange={(e) => setPriceRange(e.target.value)}
                         className="custom-range"
                         style={{
-                          paddingLeft:"0px"
+                          paddingLeft: "0px",
                         }}
                       />
                     </div>
@@ -693,7 +696,7 @@ function HomeSearch() {
                       </button>
                       <button
                         className="btn done_b"
-                        onClick={() => setIsDropDownOpen3(false)}
+                        onClick={() => setIsDropDownOpen5(false)}
                       >
                         Done
                       </button>
@@ -713,6 +716,7 @@ function HomeSearch() {
                     setIsDropDownOpen(false);
                     setIsDropDownOpen2(false);
                     setIsDropDownOpen4(false);
+                    setIsDropDownOpen5(false);
                     setIsDropDownOpen3(!isDropDownOpen3);
                   }}
                   id="mainSelectBox3"

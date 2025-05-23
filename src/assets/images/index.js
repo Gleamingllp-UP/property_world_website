@@ -28,6 +28,7 @@ import landlord_guide from "./common/landlord-guide.jpg";
 import contact_photo from "./common/contact_photo.jpg";
 import agency1 from "./common/agency1.jpg";
 import agency2 from "./common/agency2.webp";
+import news_dss from "./common/news_dss.jpg";
 
 import vission from "./common/vission.png";
 import mission from "./common/mission.png";
@@ -131,6 +132,7 @@ export {
   agency2,
   new_buyer,
   arrow_gif,
+  news_dss,
   video,
   video2,
 

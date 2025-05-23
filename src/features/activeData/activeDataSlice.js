@@ -13,13 +13,13 @@ export const getAllActiveCategoryThunk = createAsyncThunk(
 );
 export const getAllActiveSubCategoryThunk = createAsyncThunk(
   "users/getAllActiveSubCategory",
-  async ({categoryId}) => {
+  async ({ categoryId }) => {
     return await getAllActiveSubCategory(categoryId);
   }
 );
 export const getAllActivesubSubCategoryThunk = createAsyncThunk(
   "users/getAllActivesubSubCategory",
-  async ({subCategoryId}) => {
+  async ({ subCategoryId }) => {
     return await getAllActivesubSubCategory(subCategoryId);
   }
 );
@@ -36,7 +36,12 @@ const initialState = {
 const activeDataSlice = createSlice({
   name: "activeData",
   initialState,
-  reducers: {},
+  reducers: {
+    resetActiveData: (state) => {
+      state.subCategories = [];
+      state.subSubCategories = [];
+    },
+  },
   extraReducers: (builder) => {
     builder
       // Category
@@ -82,5 +87,7 @@ const activeDataSlice = createSlice({
       });
   },
 });
+
+export const { resetActiveData } = activeDataSlice.actions;
 
 export default activeDataSlice.reducer;

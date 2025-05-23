@@ -1,5 +1,6 @@
-import { property_world_logo } from "@/assets/images";
 import React from "react";
+import { property_world_logo } from "@/assets/images";
+import SocialIcons from "../Custom_Components/SocialIcons";
 
 function Copyright() {
   return (
@@ -10,31 +11,7 @@ function Copyright() {
             <div className="foot_logo">
               <img src={property_world_logo} className="img-fluid" />
             </div>
-
-            <div className="social_media">
-              <ul>
-                <li>
-                  <a href="#">
-                    <i className="ri-facebook-fill"></i>
-                  </a>
-                </li>
-                <li>
-                  <a href="#">
-                    <i className="ri-twitter-x-fill"></i>
-                  </a>
-                </li>
-                <li>
-                  <a href="#">
-                    <i className="ri-instagram-line"></i>
-                  </a>
-                </li>
-                <li>
-                  <a href="#">
-                    <i className="ri-youtube-line"></i>
-                  </a>
-                </li>
-              </ul>
-            </div>
+            <SocialIcons className="social_media" />
           </div>
 
           <div className="text-center mt-3">

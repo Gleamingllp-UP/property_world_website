@@ -26,8 +26,15 @@ const endpoints = {
   //About US
   getAllAboutUsForUser: "/about-us/getall-user-aboutUs",
 
+  //Contact US
+  getAllContactUsForUser: "/contact-us/getall-user-contactUs",
+
   //Banner
   getBannerByTypeForUser: "/banner/getall-user-banner",
+
+  //Social
+    getAllSocialMediaForUser: '/social-media/getall-user-socialMedia',
+
 };
 
 export { endpoints };

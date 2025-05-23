@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 
-import blogimg1 from "../../assets/images/common/blog1.webp";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getAllBlogsThunk,
@@ -11,6 +10,7 @@ import { pageRoutes } from "../../router/pageRoutes";
 import ImageWithLoader from "../../Custom_Components/ImageWithLoader";
 import { format } from "date-fns";
 import { RecentPostSkeleton } from "../../Custom_Components/Skeleton/BigBlogSkeleton";
+import { news_dss } from "../../assets/images";
 
 const BlogCatSec = () => {
   const { blogsCategory, isLoading2, blogs, isLoading } = useSelector(
@@ -116,17 +116,21 @@ const BlogCatSec = () => {
               <RecentPostSkeleton />
             </>
           ) : (
-            blogs?.map((item, index) => (
+            blogs?.slice(0, 4)?.map((item, index) => (
               <div className="rec_pots" key={index}>
                 <div>
-                  <Link to={pageRoutes?.BLOG_DETAILS + `/?blog_id=${item?._id}`}>
+                  <Link
+                    to={pageRoutes?.BLOG_DETAILS + `/?blog_id=${item?._id}`}
+                  >
                     <ImageWithLoader src={item?.coverImg} />
                   </Link>
                 </div>
                 <div>
                   <span> {format(item?.createdAt, "MMMM dd, yyyy")}</span>
                   <h4>
-                    <Link to={pageRoutes?.BLOG_DETAILS + `/?blog_id=${item?._id}`}>
+                    <Link
+                      to={pageRoutes?.BLOG_DETAILS + `/?blog_id=${item?._id}`}
+                    >
                       {item?.title || "N/A"}
                     </Link>
                   </h4>
@@ -146,7 +150,7 @@ const BlogCatSec = () => {
       </div>
 
       <div className="text-center mt-3 m-auto">
-        <ImageWithLoader src={blogimg1} className="img-fluid m-auto" />
+        <ImageWithLoader src={news_dss} className="img-fluid m-auto" />
       </div>
     </div>
   );

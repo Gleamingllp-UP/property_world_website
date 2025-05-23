@@ -2,8 +2,22 @@ import { footer_line } from "@/assets/images";
 import Copyright from "./Copyright";
 import { Link } from "react-router-dom";
 import { pageRoutes } from "../router/pageRoutes";
+import { useDispatch, useSelector } from "react-redux";
+import { useCallback, useEffect } from "react";
+import { getAllContactUsThunk } from "../features/contactUs/contactUsSlice";
 
 function Footer() {
+  const { contactUs, isLoading } = useSelector((store) => store?.contactUs);
+  const dispatch = useDispatch();
+
+  const getAllContactUsDetails = useCallback(async () => {
+    dispatch(getAllContactUsThunk());
+  }, [dispatch]);
+
+  useEffect(() => {
+    getAllContactUsDetails();
+  }, [getAllContactUsDetails]);
+
   return (
     <>
       <footer>
@@ -13,32 +27,77 @@ function Footer() {
               <h4 className="cs-footer-title">
                 <span>Contacts</span> <img src={footer_line} />
               </h4>
-              <div className="info">
-                <p>
-                  We are DED Licensed RERA certified, recognized as the most
-                  trusted reliable name in the Real Estate sector in Dubai
-                </p>
+              {isLoading ? (
+                <div className="placeholder-glow gap-1">
+                  <div className="mb-3">
+                    <p
+                      className="placeholder mb-1 col-12 bg-secondary-subtle rounded"
+                      style={{ height: "15px" }}
+                    ></p>
+                    <p
+                      className="placeholder mb-1 col-12 bg-secondary-subtle rounded"
+                      style={{ height: "15px" }}
+                    ></p>
+                    <p
+                      className="placeholder mb-1 col-2 bg-secondary-subtle rounded"
+                      style={{ height: "15px" }}
+                    ></p>
+                  </div>
 
-                <ul className="">
-                  <li>
-                    <i className="ri-map-pin-line"></i> Office 502, Al Khaleej
-                    Center, Al Mankhool Rd., Bur Dubai - Dubai
-                  </li>
-                  <li>
-                    {" "}
-                    <a href="tel:+97143533229">
-                      <i className="ri-phone-line"></i> tel:+971 43533229
-                    </a>
-                  </li>
-                  <li>
-                    {" "}
-                    <a href="mailto:info@propertyworld.ae">
-                      <i className="ri-mail-open-line"></i>{" "}
-                      info@propertyworld.ae
-                    </a>
-                  </li>
-                </ul>
-              </div>
+                  {/* Information */}
+                  <div className="">
+                    <p
+                      className="placeholder mb-1 col-9 bg-secondary-subtle rounded "
+                      style={{ height: "16px" }}
+                    ></p>
+                    <p
+                      className="placeholder mb-1 col-9 bg-secondary-subtle rounded"
+                      style={{ height: "16px" }}
+                    ></p>
+                    <p
+                      className="placeholder col-7 bg-secondary-subtle rounded my-2"
+                      style={{ height: "25px" }}
+                    ></p>
+                    <p
+                      className="placeholder mb-1 col-7 bg-secondary-subtle rounded "
+                      style={{ height: "25px" }}
+                    ></p>
+                  </div>
+                </div>
+              ) : (
+                <div className="info">
+                  <p>{contactUs?.[0]?.short_description || "N/A"}</p>
+
+                  <ul className="">
+                    <li>
+                      <i className="ri-map-pin-line"></i>{" "}
+                      {contactUs?.[0]?.address || "N/A"}
+                    </li>
+                    <li>
+                      {" "}
+                      <a
+                        href={`tel:+${
+                          contactUs?.[0]?.tele_phone || "97143533229"
+                        }`}
+                      >
+                        <i className="ri-phone-line" /> tel:+{" "}
+                        {contactUs?.[0]?.tele_phone || "N/A"}
+                      </a>
+                    </li>
+                    <li>
+                      {" "}
+                      <a
+                        href={`mailto:${
+                          contactUs?.[0]?.email || "info@propertyworld.ae"
+                        }`}
+                      >
+                        <i className="ri-mail-open-line" />{" "}
+                        {contactUs?.[0]?.email || "N/A"}
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              )}
             </div>
 
             <div className="col-md-2 col-sm-12 col-6">
@@ -98,7 +157,6 @@ function Footer() {
                 <li>
                   <Link to={pageRoutes.AGENTS}>Agents & Agencies</Link>
                 </li>
-               
               </ul>
             </div>
             <div className="col-md-2 col-sm-12 col-6">

@@ -33,8 +33,10 @@ const endpoints = {
   getBannerByTypeForUser: "/banner/getall-user-banner",
 
   //Social
-    getAllSocialMediaForUser: '/social-media/getall-user-socialMedia',
+  getAllSocialMediaForUser: "/social-media/getall-user-socialMedia",
 
+  //Guide
+  getGuideByTypeForUser: "/guide/getall-user-guide",
 };
 
 export { endpoints };

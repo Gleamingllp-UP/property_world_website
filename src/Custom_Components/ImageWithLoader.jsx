@@ -20,7 +20,7 @@ const ImageWithLoader = ({ src, alt, className }) => {
       {loading && (
         <div className="position-absolute top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center">
           <Loader2
-            className="spinner-border text-secondary"
+            className="spin text-secondary"
             style={{ width: "1rem", height: "1rem" }}
           />
         </div>

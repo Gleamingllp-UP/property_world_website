@@ -9,6 +9,7 @@ import bannerReducer from "../features/banner/bannerSlice";
 import contactUsReducer from "../features/contactUs/contactUsSlice";
 import socialMediaReducer from "../features/socialMedia/socialMediaSlice";
 import guideReducer from "../features/guide/guideSlice";
+import inquiryReducer from "../features/inquiry/inquirySlice";
 
 export const store = configureStore({
   reducer: {
@@ -22,5 +23,6 @@ export const store = configureStore({
     banner: bannerReducer,
     socialMedia: socialMediaReducer,
     guide: guideReducer,
+    enquiry: inquiryReducer,
   },
 });

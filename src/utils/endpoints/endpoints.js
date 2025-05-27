@@ -37,6 +37,11 @@ const endpoints = {
 
   //Guide
   getGuideByTypeForUser: "/guide/getall-user-guide",
+   
+  //Inquiry
+  createEnquiry: "/enquiry/add-enquiry",
+
+
 };
 
 export { endpoints };

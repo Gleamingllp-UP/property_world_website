@@ -40,7 +40,9 @@ const endpoints = {
    
   //Inquiry
   createEnquiry: "/enquiry/add-enquiry",
-
+  getAllLocation: "/location/getall-location",
+ //form product 
+ addproparty : "/property/add-property",
 
 };
 

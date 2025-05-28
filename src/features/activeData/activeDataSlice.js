@@ -3,6 +3,7 @@ import {
   getAllActiveCategory,
   getAllActiveSubCategory,
   getAllActivesubSubCategory,
+  getAllActiveLocation
 } from "./activeDataAPI";
 
 export const getAllActiveCategoryThunk = createAsyncThunk(
@@ -24,11 +25,19 @@ export const getAllActivesubSubCategoryThunk = createAsyncThunk(
   }
 );
 
+
+export const getAllActiveLocationThunk = createAsyncThunk(
+  "users/getAllActiveLocation",
+  async (payload) => {
+    return await getAllActiveLocation(payload);
+  }
+);
 // Initial State
 const initialState = {
   categories: [],
   subCategories: [],
   subSubCategories: [],
+  location: [],
   loading: false,
   error: null,
 };
@@ -82,6 +91,19 @@ const activeDataSlice = createSlice({
         state.subSubCategories = action.payload.data || [];
       })
       .addCase(getAllActivesubSubCategoryThunk.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+
+      .addCase(getAllActiveLocationThunk.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getAllActiveLocationThunk.fulfilled, (state, action) => {
+        state.loading = false;
+        state.location = action.payload.data || [];
+      })
+      .addCase(getAllActiveLocationThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
       });

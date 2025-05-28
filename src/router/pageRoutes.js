@@ -40,4 +40,7 @@ export const pageRoutes = {
   //Agents and Agencies
   AGENTS: "/agents",
   AGENCIES: "/agencies",
+  //Dashboard 
+  USER_DASHBOARD: "/userdashboard",
+  ADD_PROPERTY: "/add-property",
 };

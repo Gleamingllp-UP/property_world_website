@@ -2,6 +2,7 @@ import { GoHome } from "react-icons/go";
 import { lazy } from "react";
 import { pageRoutes } from "./pageRoutes";
 
+
 // const Login = lazy(() => import("../pages/auth/Login"));
 
 //Auth
@@ -37,6 +38,8 @@ const MainAgencies = lazy(() =>
 const BlogDetails = lazy(() => import("../pages/blog/BlogDetails"));
 
 const TenantMain = lazy(() => import("../pages/tenantGuide/TenantMain"));
+const AddProperty = lazy(() => import("../pages/dashboard/list/AddProperty"));
+const UserDashboard = lazy(() => import("../pages/dashboard/list/UserDashboard"));
 const LandLoardMain = lazy(() =>
   import("../pages/landLordGuide/LandLoardMain")
 );
@@ -105,6 +108,7 @@ const routes = [
     path: pageRoutes?.TERM_CONDITIONS,
     Component: Maintermsconditionimport,
   },
+
   {
     id: 9,
     isPrivate: true,
@@ -160,6 +164,23 @@ const routes = [
     name: "LandLord Guide",
     path: pageRoutes?.LANDLORD_GUIDE,
     Component: LandLoardMain,
+  },
+
+   {
+    id: 18,
+    isPrivate: true,
+    isDashboard: true,
+    name: "Dashboard",
+    path: pageRoutes?.USER_DASHBOARD,
+    Component: UserDashboard,
+  },
+   {
+    id: 19,
+    isPrivate: true,
+    isDashboard: true,
+    name: "Add Property",
+    path: pageRoutes?.ADD_PROPERTY,
+    Component: AddProperty,
   },
 ];
 export { routes };

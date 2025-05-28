@@ -52,3 +52,22 @@ export const getAllActivesubSubCategory = async (subCategoryId) => {
     }
   }
 };
+
+export const getAllActiveLocation = async () => {
+  try {
+    const response = await api.get(endpoints.getAllLocation);
+    return response.data;
+  } catch (error) {
+    if (error?.status !== 401) {
+      throw (
+        error?.response?.data?.message ||
+        "Failed to get category, please try again later."
+      );
+    } else {
+      throw error?.message || "Failed to get category, please try again later.";
+    }
+  }
+
+
+  
+};

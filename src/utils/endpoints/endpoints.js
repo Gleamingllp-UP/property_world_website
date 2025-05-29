@@ -37,13 +37,24 @@ const endpoints = {
 
   //Guide
   getGuideByTypeForUser: "/guide/getall-user-guide",
-   
+
   //Inquiry
   createEnquiry: "/enquiry/add-enquiry",
-  getAllLocation: "/location/getall-location",
- //form product 
- addproparty : "/property/add-property",
 
+  //location
+  getAllLocation: "/location/getall-user-location",
+
+  //form product
+  addproparty: "/property/add-property",
+
+  //Property
+  getProperty: "/property/get-property",
+  getAllPropertyForUser: "/property/getall-user-property",
+  createProperty: "/property/add-property",
+  updateProperty: "/property/update-property",
+  updatePropertyForUser: "/property/update-user-property",
+  deleteProperty: "/property/delete-property/:id",
+  updatePropertyStatus: "/property/update-property-status",
 };
 
 export { endpoints };

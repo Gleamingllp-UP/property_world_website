@@ -1,10 +1,11 @@
 export const featuresList = [
   "Furnished",
   "Unfurnished",
-  "Central AC",
+  "Semi-Furnished",
+  "Central Ac",
   "Storage Area",
   "Study Room",
-  "Maids Room",
+  "Maids room",
   "Balcony",
 ];
 
@@ -25,9 +26,4 @@ export const amenitiesList = [
   "Security Staff",
   "Maintenance",
   "Cleaning Services",
-  "Party Hall",
-  "Parking Area",
 ];
-
-
-

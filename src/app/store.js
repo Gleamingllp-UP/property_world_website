@@ -10,6 +10,7 @@ import contactUsReducer from "../features/contactUs/contactUsSlice";
 import socialMediaReducer from "../features/socialMedia/socialMediaSlice";
 import guideReducer from "../features/guide/guideSlice";
 import inquiryReducer from "../features/inquiry/inquirySlice";
+import propertyReducer from "../features/property/propertySlice";
 
 export const store = configureStore({
   reducer: {
@@ -24,5 +25,6 @@ export const store = configureStore({
     socialMedia: socialMediaReducer,
     guide: guideReducer,
     enquiry: inquiryReducer,
+    property: propertyReducer,
   },
 });

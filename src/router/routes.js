@@ -2,7 +2,6 @@ import { GoHome } from "react-icons/go";
 import { lazy } from "react";
 import { pageRoutes } from "./pageRoutes";
 
-
 // const Login = lazy(() => import("../pages/auth/Login"));
 
 //Auth
@@ -38,10 +37,17 @@ const MainAgencies = lazy(() =>
 const BlogDetails = lazy(() => import("../pages/blog/BlogDetails"));
 
 const TenantMain = lazy(() => import("../pages/tenantGuide/TenantMain"));
-const AddProperty = lazy(() => import("../pages/dashboard/list/AddProperty"));
-const UserDashboard = lazy(() => import("../pages/dashboard/list/UserDashboard"));
+const UserDashboard = lazy(() =>
+  import("../pages/dashboard/list/UserDashboard")
+);
 const LandLoardMain = lazy(() =>
   import("../pages/landLordGuide/LandLoardMain")
+);
+
+//Property
+const AddProperty = lazy(() => import("../pages/dashboard/list/AddProperty"));
+const MyPropertyListing = lazy(() =>
+  import("../pages/dashboard/list/MyPropertyListing")
 );
 
 const routes = [
@@ -166,7 +172,7 @@ const routes = [
     Component: LandLoardMain,
   },
 
-   {
+  {
     id: 18,
     isPrivate: true,
     isDashboard: true,
@@ -174,13 +180,21 @@ const routes = [
     path: pageRoutes?.USER_DASHBOARD,
     Component: UserDashboard,
   },
-   {
+  {
     id: 19,
     isPrivate: true,
     isDashboard: true,
     name: "Add Property",
     path: pageRoutes?.ADD_PROPERTY,
     Component: AddProperty,
+  },
+  {
+    id: 19,
+    isPrivate: true,
+    isDashboard: true,
+    name: "My Property Listing",
+    path: pageRoutes?.USER_PROPERTY_LISTING,
+    Component: MyPropertyListing,
   },
 ];
 export { routes };

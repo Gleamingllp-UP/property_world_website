@@ -1,5 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { initiateSignup, verifyCode, setPassword, userLogin,getUserDetails, guestUserLogin } from "./userAPI";
+import {
+  initiateSignup,
+  verifyCode,
+  setPassword,
+  userLogin,
+  getUserDetails,
+  guestUserLogin,
+} from "./userAPI";
 
 export const initiateSignupThunk = createAsyncThunk(
   "users/initiateSignUp",
@@ -157,5 +164,5 @@ const usersSlice = createSlice({
   },
 });
 
-export const { getUserFormData, removeUserFormDataToken } = usersSlice.actions;
+export const { getUserFormData, removeUserFormDataToken ,getUserData,userLogOut} = usersSlice.actions;
 export default usersSlice.reducer;

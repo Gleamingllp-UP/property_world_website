@@ -9,29 +9,29 @@ export const pageRoutes = {
   //About Us
   ABOUT_US: "/about-us",
 
-  //CONTACT_US 
+  //CONTACT_US
   CONTACT_US: "/contact-us",
 
-  //BLOG 
+  //BLOG
   BLOG: "/blog",
   BLOG_DETAILS: "/blog-details",
 
-  //BUYERGUIDE 
+  //BUYERGUIDE
   BUYER_GUIDE: "/buyer-guide",
 
-  //Seller Guide 
+  //Seller Guide
   SELLER_GUIDE: "/seller-guide",
 
-  //Tenant Guide 
+  //Tenant Guide
   TENANT_GUIDE: "/tenant-guide",
 
-  //LandLord Guide 
+  //LandLord Guide
   LANDLORD_GUIDE: "/landlord-guide",
 
-  //Terms & Conditions 
+  //Terms & Conditions
   TERM_CONDITIONS: "/terms-and-conditions",
 
-  //Cookies 
+  //Cookies
   COOKIES_POLICY: "/cookies-policy",
 
   //Privacy and Policy
@@ -40,7 +40,9 @@ export const pageRoutes = {
   //Agents and Agencies
   AGENTS: "/agents",
   AGENCIES: "/agencies",
-  //Dashboard 
+
+  //Dashboard
   USER_DASHBOARD: "/userdashboard",
   ADD_PROPERTY: "/add-property",
+  USER_PROPERTY_LISTING: "/my-property-listing",
 };

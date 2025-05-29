@@ -21,13 +21,13 @@ function LoginModal({ show, onHide }) {
 
   const onSubmit = async (data) => {
     try {
-      console.log('data---',data)
+      console.log("data---", data);
       const resultAction = await dispatch(userLoginThunk(data));
       if (userLoginThunk.fulfilled.match(resultAction)) {
         showToast("Login Successfull!", "success");
         setTimeout(() => {
           onHide();
-          navigate(pageRoutes.HOME_PAGE);
+          navigate(pageRoutes.USER_DASHBOARD);
         }, 500);
       } else {
         throw new Error(resultAction?.error?.message);

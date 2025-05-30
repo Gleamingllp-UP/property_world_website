@@ -6,7 +6,6 @@ import {
   getAllActiveSubCategoryThunk,
   getAllActivesubSubCategoryThunk,
   getAllActiveLocationThunk,
-  resetActiveData,
 } from "../../../features/activeData/activeDataSlice";
 import { amenitiesList, featuresList } from "../../../utils/requiredFormFields/requiredproparty";
 const AddProperty = () => {
@@ -17,7 +16,7 @@ const AddProperty = () => {
   const [selectlocation, setSelectedLocationId] = useState(null);
   const [selectedSubSubCategoryId, setSelectedSubSubCategoryId] =
     useState(null);
-  const { categories, subCategories, subSubCategories, loading, location } = useSelector(
+  const { categories, subCategories, subSubCategories, location } = useSelector(
     (store) => store?.activeData
   );
   const dispatch = useDispatch();
@@ -134,9 +133,7 @@ const AddProperty = () => {
     <div className="container py-4">
       <h2>Property Details Form</h2>
       <form onSubmit={handleSubmit} >
-        {/* Purpose, Category, Property Type in one row */}
         <div className="row">
-          {/* Purpose: Sale / Rent */}
           <div className="col-md-4 mb-3">
             <label className="form-label">Purpose</label>
             <select
@@ -155,8 +152,6 @@ const AddProperty = () => {
               
             </select>
           </div>
-
-          {/* Category: Residential / Commercial */}
           <div className="col-md-4 mb-3">
             <label className="form-label">Category</label>
              <select
@@ -196,7 +191,6 @@ const AddProperty = () => {
         </div>
 
         <div className="row">
-          {/* City Dropdown */}
           <div className="col-md-4 mb-3">
             <label className="form-label">City</label>
             <select
@@ -206,9 +200,9 @@ const AddProperty = () => {
               onChange={(e)=>setSelectedLocationId(e.target.value)}
             >
               <option value="">-- Select --</option>
-              {location && location?.map((cat, index) => {
+              {location && location?.map((lac, index) => {
                 return (
-                 <option value={cat?._id} key={index}>{cat?.name}</option>
+                 <option value={lac?._id} key={index}>{lac?.name}</option>
                 )
               })}
               
@@ -216,7 +210,7 @@ const AddProperty = () => {
             </select>
           </div>
 
-          {/* Thumbnail Upload + Preview */}
+ 
           <div className="col-md-4 mb-3">
             <label className="form-label">Thumbnail Image</label>
             <input
@@ -262,7 +256,6 @@ const AddProperty = () => {
             )}
           </div>
 
-          {/* Gallery Upload + Previews */}
           <div className="col-md-4 mb-3">
             <label className="form-label">Gallery Images</label>
             <input
@@ -343,7 +336,6 @@ const AddProperty = () => {
           </div>
         </div>
 
-        {/* Size / Price / Rent Paid */}
         <div className="row">
           <div className="col-md-4 mb-3">
             <label className="form-label">Size (sqft)</label>

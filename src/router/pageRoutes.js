@@ -2,8 +2,9 @@ export const pageRoutes = {
   HOME_PAGE: "/",
   LOGIN: "/login",
   SIGN_UP: "/sign-up",
-
+ 
   //Property
+  PROPERTY_LISTING: "/property-listing",
   PROPERTY_DETAILS: "/property-details",
 
   //About Us

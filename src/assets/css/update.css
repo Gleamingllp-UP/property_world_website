@@ -52,4 +52,17 @@
 .spin {
   animation: spin 1s linear infinite;
 }
-
+/* 29/5/2025 */
+.amy_amm{
+  display: block !important;
+}
+label.radio-label {
+    margin-right: 7px;
+}
+.loc_area {
+    
+    margin-bottom: 15px;
+}
+.call_action ul li {
+    margin-right: 5px;
+}

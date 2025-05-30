@@ -70,7 +70,6 @@ function MyPropertyListing() {
               ))}
             </tbody>
           </table>
-
           {/* Pagination Controls */}
           <nav>
             <ul className="pagination justify-content-center">

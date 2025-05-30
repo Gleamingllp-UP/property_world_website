@@ -1,12 +1,23 @@
 import { property_world_logo } from "@/assets/images";
 import { Link, useNavigate } from "react-router-dom";
 import { pageRoutes } from "../router/pageRoutes";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import LoginModal from "../pages/auth/login/LoginModal";
-
+import { getAllActiveCategoryThunk } from './../features/activeData/activeDataSlice';
 function Header() {
+
   const [modalShow, setModalShow] = useState(false);
+   const { categories} = useSelector(
+      (store) => store?.activeData
+    );
+     const dispatch = useDispatch();
+    
   const navigate = useNavigate();
+    useEffect( ()=>{
+   dispatch(getAllActiveCategoryThunk());
+    }, [])
+   
   return (
     <header>
       <div className="container">
@@ -48,12 +59,12 @@ function Header() {
                 />
               </button>
               <ul className="menu">
-                <li className="menu-item">
-                  <a href="property-listing.php">Buy</a>
-                </li>
-                <li className="menu-item">
-                  <a href="property-listing.php">Rent</a>
-                </li>
+                   {categories?.map((item) => (
+          <li key={item?._id} className="menu-item">
+          <Link to={pageRoutes.PROPERTY_LISTING}>{item?.name}</Link>
+         </li>
+          ))}
+              
                 <li className="menu-item">
                   <a href="property-listing.php">Commercial</a>
                 </li>

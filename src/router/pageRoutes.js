@@ -6,7 +6,7 @@ export const pageRoutes = {
   //Property
   PROPERTY_LISTING: "/property-listing",
   PROPERTY_DETAILS: "/property-details",
-
+  
   //About Us
   ABOUT_US: "/about-us",
 

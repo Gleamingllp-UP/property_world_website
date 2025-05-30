@@ -441,10 +441,10 @@ const AddProperty = () => {
           {selectedCategoryName === "Buy" &&
             constructionStatus === "Off-plan" && (
               <div className="col-md-4 mb-3">
-                <label className="form-label">Payment Plan</label>
+                <label className="form-label">Payment Plangit</label>
                 <select
                   className="form-select"
-                  name="precentage"
+                  name="payment_plan"
                   {...register("payment_plan", {
                     validate: (value) =>
                       constructionStatus === "Off-plan" && !value

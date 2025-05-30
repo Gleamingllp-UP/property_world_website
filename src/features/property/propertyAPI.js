@@ -35,12 +35,15 @@ export const getAllUserProperty = async (payload) => {
   }
 };
 
-export const getAllProperty = async (page, limit) => {
+export const getAllProperty = async (page, limit, searchFilters = {}) => {
   try {
-    const response = await api.get(
-      endpoints.getAllPropertyForUser
-      +`?page=${page}&limit=${limit}`
-    );
+    const queryParams = new URLSearchParams({
+      page,
+      limit,
+      ...searchFilters,
+    });
+
+    const response = await api.get(`${endpoints.getAllPropertyForUser}?${queryParams.toString()}`);
     return response.data;
   } catch (error) {
     if (error?.status !== 401) {
@@ -53,3 +56,4 @@ export const getAllProperty = async (page, limit) => {
     }
   }
 };
+

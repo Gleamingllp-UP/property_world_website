@@ -4,6 +4,8 @@ import { getAllPropertyThunk } from "../../../features/property/propertySlice";
 import ArchiveLocation from "./ArchiveLocation";
 import ArchiveTop from "./ArchiveTop";
 import { Link } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+
 import {
   bath,
   bed,
@@ -30,6 +32,35 @@ const Archive = () => {
   useEffect(() => {
     dispatch(getAllPropertyThunk({ page, limit }));
   }, [dispatch, page, limit]);
+
+
+const location = useLocation();
+
+const queryParams = new URLSearchParams(location.search);
+
+const searchFilters = {
+  category: queryParams.get("category"),
+  subCategory: queryParams.get("subCategory"),
+  subSubCategory: queryParams.get("subSubCategory"),
+  duration: queryParams.get("duration"),
+  bedrooms: queryParams.get("bedrooms"),
+  bathrooms: queryParams.get("bathrooms"),
+  min_price: queryParams.get("min_price"),
+  max_price: queryParams.get("max_price"),
+  min_area: queryParams.get("min_area"),
+  max_area: queryParams.get("max_area"),
+  payment_plan: queryParams.get("payment_plan"),
+  handover_by: queryParams.get("handover_by"),
+  search: queryParams.get("search"),
+};
+
+useEffect(() => {
+  dispatch(getAllPropertyThunk({ 
+    page, 
+    limit,
+    searchFilters, 
+  }));
+}, [dispatch, page, limit, location.search]); 
 
   return (
     <>

@@ -14,16 +14,16 @@ import { useNavigate } from "react-router-dom";
 import { pageRoutes } from "../../../router/pageRoutes";
 
 function HomeSearch() {
-  const [selectedCategoryId, setSelectedCategoryId] = useState(null);
-  const [selectedCategoryName, setSelectedCategoryName] = useState(null);
+  const [selectedCategoryId, setSelectedCategoryId] = useState('');
+  const [selectedCategoryName, setSelectedCategoryName] = useState('');
 
-  const [selectedSubCategoryId, setSelectedSubCategoryId] = useState(null);
+  const [selectedSubCategoryId, setSelectedSubCategoryId] = useState('');
   const [selectedSubSubCategoryId, setSelectedSubSubCategoryId] =
-    useState(null);
+    useState('');
 
-  const [rentDuration, setRentDuration] = useState(null);
-  const [handOverBy, setHandOverBy] = useState(null);
-  const [buyType, setBuyType] = useState(null);
+  const [rentDuration, setRentDuration] = useState('');
+  const [handOverBy, setHandOverBy] = useState('');
+  const [buyType, setBuyType] = useState('');
   const [location, setLocation] = useState("");
   const [priceRange, setPriceRange] = useState(0);
 
@@ -38,11 +38,11 @@ function HomeSearch() {
   const [bedRoom, setBedRoom] = useState([]);
   const [bathRoom, setBathRoom] = useState([]);
 
-  const [minPrice, setMinPrice] = useState(0);
-  const [maxPrice, setMaxPrice] = useState(0);
+  const [minPrice, setMinPrice] = useState('');
+  const [maxPrice, setMaxPrice] = useState('');
 
-  const [minArea, setMinArea] = useState(0);
-  const [maxArea, setMaxArea] = useState(0);
+  const [minArea, setMinArea] = useState('');
+  const [maxArea, setMaxArea] = useState('');
 
   const { categories, subCategories, subSubCategories, loading } = useSelector(
     (store) => store?.activeData

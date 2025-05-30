@@ -6,7 +6,6 @@ export const creatProperty = async (payload) => {
     const response = await api.post(endpoints.createProperty, payload);
     return response.data;
   } catch (error) {
-    console.log(error)
     if (error?.status !== 401) {
       throw (
         error?.response?.data?.message ||
@@ -15,6 +14,24 @@ export const creatProperty = async (payload) => {
     } else {
       throw (
         error?.message || "Failed to create property, please try again later."
+      );
+    }
+  }
+};
+
+export const getPropertyDetails = async (id) => {
+  try {
+    const response = await api.get(endpoints.getProperty + `/${id}`);
+    return response.data;
+  } catch (error) {
+    if (error?.status !== 401) {
+      throw (
+        error?.response?.data?.message ||
+        "Failed to get property, please try again later."
+      );
+    } else {
+      throw (
+        error?.message || "Failed to get property, please try again later."
       );
     }
   }

@@ -207,6 +207,7 @@ const AddProperty = () => {
     formData.append("ownership_status", data?.ownership_status || "");
     formData.append("construction_status", data?.construction_status || "");
     formData.append("location", data?.location || "");
+    formData.append("address", data?.address || "");
     formData.append("user", userData?._id || "");
     formData.append("product_status", data?.product_status || "");
 

@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { creatProperty } from "./propertyAPI";
+import { creatProperty, getPropertyDetails } from "./propertyAPI";
 
 export const creatPropertyThunk = createAsyncThunk(
   "property/creatProperty",
@@ -7,10 +7,17 @@ export const creatPropertyThunk = createAsyncThunk(
     return await creatProperty(payload);
   }
 );
+export const getPropertyDetailsThunk = createAsyncThunk(
+  "property/getPropertyDetails",
+  async ({ id }) => {
+    return await getPropertyDetails(id);
+  }
+);
 const propertySlice = createSlice({
   name: "property",
   initialState: {
     propertyData: [],
+    propertyDetails: {},
     loading: false,
     isLoading: false,
     error: null,
@@ -18,7 +25,7 @@ const propertySlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      // Initiate Signup
+      //Create property
       .addCase(creatPropertyThunk.pending, (state) => {
         state.loading = true;
       })
@@ -27,6 +34,19 @@ const propertySlice = createSlice({
       })
       .addCase(creatPropertyThunk.rejected, (state, action) => {
         state.loading = false;
+        state.error = action.error.message;
+      })
+
+      //Fetch property details
+      .addCase(getPropertyDetailsThunk.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getPropertyDetailsThunk.fulfilled, (state, action) => {
+        state.propertyDetails = action.payload.data[0];
+        state.isLoading = false;
+      })
+      .addCase(getPropertyDetailsThunk.rejected, (state, action) => {
+        state.isLoading = false;
         state.error = action.error.message;
       });
   },

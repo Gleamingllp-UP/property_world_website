@@ -179,8 +179,12 @@ const AddProperty = () => {
     console.log(data);
 
     const formData = new FormData();
-    const maxBedroom = Math.max(...(data.bedrooms || []));
-    const maxBathRoom = Math.max(...(data.bathrooms || []));
+    const maxBedroom = data?.bedrooms?.length
+      ? Math.max(...data.bedrooms)
+      : null;
+    const maxBathRoom = data?.bathrooms?.length
+      ? Math.max(...data.bathrooms)
+      : null;
 
     formData.append("title", data?.title || "");
     formData.append("short_description", data?.short_description || "");

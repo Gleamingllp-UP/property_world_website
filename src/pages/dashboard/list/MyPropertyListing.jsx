@@ -53,13 +53,13 @@ function MyPropertyListing() {
               {currentItems.map((item, index) => (
                 <tr key={item._id}>
                   <td>{startIndex + index + 1}</td>
-                  <td>{item.categoryData?.name || 'N/A'}</td>
-                  <td>{item.subCategoryData?.name || 'N/A'}</td>
-                  <td>{item.subSubCategoryData?.name || 'N/A'}</td>
-                  <td>{item.title}</td>
-                  <td>{item.bedrooms}</td>
-                  <td>{item.bathrooms}</td>
-                  <td>{`AED ${item.price}`}</td>
+                  <td>{item?.categoryData?.name || 'N/A'}</td>
+                  <td>{item?.subCategoryData?.name || 'N/A'}</td>
+                  <td>{item?.subSubCategoryData?.name || 'N/A'}</td>
+                  <td>{item?.title}</td>
+                  <td>{item?.bedrooms}</td>
+                  <td>{item?.bathrooms}</td>
+                  <td>{`AED ${item?.price}`}</td>
                  <td className="d-flex gap-2">
                      <Edit style={{ width: '20px', height: '20px', color: '#ffc107', cursor: 'pointer' }} />
                  <Eye style={{ width: '20px', height: '20px', color: '#0d6efd', cursor: 'pointer' }} />

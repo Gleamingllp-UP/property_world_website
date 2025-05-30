@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { creatProperty,getAllUserProperty } from "./propertyAPI";
+import { creatProperty,getAllUserProperty, getAllProperty } from "./propertyAPI";
 
 export const creatPropertyThunk = createAsyncThunk(
   "property/creatProperty",
@@ -16,10 +16,18 @@ export const getAllUserPropertyThunk = createAsyncThunk(
 );
 
 
+export const getAllPropertyThunk = createAsyncThunk(
+  "property/getAllProperty",
+  async ({page,limit}) => {
+    return await getAllProperty(page,limit);
+  }
+);
+
 const propertySlice = createSlice({
   name: "property",
   initialState: {
     propertyData: [],
+    pagination:null,
     loading: false,
     isLoading: false,
     error: null,
@@ -47,6 +55,19 @@ const propertySlice = createSlice({
         state.propertyData=action.payload.data
       })
       .addCase(getAllUserPropertyThunk.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message;
+      })
+
+        .addCase(getAllPropertyThunk.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getAllPropertyThunk.fulfilled, (state,action) => {
+        state.isLoading = false;
+        state.propertyData=action.payload.data
+        state.pagination=action.payload.pagination
+      })
+      .addCase(getAllPropertyThunk.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
       })

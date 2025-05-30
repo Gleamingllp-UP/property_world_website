@@ -10,6 +10,8 @@ import { formatRange } from "../../../helper/function/formatRange";
 import { guestUserLoginThunk } from "../../../features/user/userSlice";
 import { generateHandoverOptions } from "../../../helper/function/generateHandoverOptions";
 import Form from "react-bootstrap/Form";
+import { useNavigate } from "react-router-dom";
+import { pageRoutes } from "../../../router/pageRoutes";
 
 function HomeSearch() {
   const [selectedCategoryId, setSelectedCategoryId] = useState(null);
@@ -20,6 +22,7 @@ function HomeSearch() {
     useState(null);
 
   const [rentDuration, setRentDuration] = useState(null);
+  const [handOverBy, setHandOverBy] = useState(null);
   const [buyType, setBuyType] = useState(null);
   const [location, setLocation] = useState("");
   const [priceRange, setPriceRange] = useState(0);
@@ -190,6 +193,29 @@ function HomeSearch() {
     setIsDropDownOpen4(false);
     setIsDropDownOpen5(false);
   };
+ const navigate = useNavigate();
+
+function haldelSearch(event) {
+  const queryParams = new URLSearchParams({
+    category: selectedCategoryId,
+    subCategory: selectedSubCategoryId,
+    subSubCategory: selectedSubSubCategoryId,
+    duration: rentDuration,
+    bedrooms: bedRoom,
+    bathrooms: bathRoom,
+    min_price: minPrice,
+    max_price: maxPrice,
+    min_area: minArea,
+    max_area: maxArea,
+    payment_plan: priceRange,
+    handover_by: handOverBy,
+    search: location,
+  });
+
+  navigate(`${pageRoutes.PROPERTY_LISTING}?${queryParams.toString()}`);
+}
+
+
   return (
     <div className="main_search">
       <div className="padd">
@@ -251,7 +277,12 @@ function HomeSearch() {
                 />
                 <i className="ri-map-pin-line map_iic" />
               </div>
-              <div className="search_btn">
+              <div
+                className="search_btn"
+                onClick={() => {
+                  haldelSearch();
+                }}
+              >
                 <button>Search</button>
               </div>
             </div>
@@ -437,9 +468,9 @@ function HomeSearch() {
                     setIsDropDownOpen5(false);
                   }}
                   className=""
-                  value={rentDuration || ""}
+                  value={handOverBy || ""}
                   onChange={(e) => {
-                    setRentDuration(e.target.value);
+                    setHandOverBy(e.target.value);
                   }}
                 >
                   <option value="" disabled>

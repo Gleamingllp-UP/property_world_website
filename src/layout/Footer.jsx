@@ -23,7 +23,7 @@ function Footer() {
     getAllContactUsDetails();
   
   }, [getAllContactUsDetails]);
-console.log('cx', categories);
+
   return (
     <>
       <footer>

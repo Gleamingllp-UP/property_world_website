@@ -386,6 +386,7 @@ const AddProperty = () => {
                   setValue("bathrooms", "", { shouldValidate: true });
                   setValue("handover_by", "", { shouldValidate: true });
                   setValue("area", "", { shouldValidate: true });
+                  setValue("payment_plan", "", { shouldValidate: true });
                 }}
               >
                 <option value="">-- Select --</option>
@@ -417,6 +418,7 @@ const AddProperty = () => {
                         ? "Handover By is required for Off-plan"
                         : true,
                   })}
+                
                 >
                   <option value="">-- Select --</option>
                   {generateHandoverOptions() &&
@@ -436,6 +438,33 @@ const AddProperty = () => {
               </div>
             )}
 
+          {/*Precentage  By */}
+          {selectedCategoryName === "Buy" &&
+            constructionStatus === "Off-plan" && (
+              <div className="col-md-4 mb-3">
+                <label className="form-label">Payment Plangit</label>
+                <select
+                  className="form-select"
+                  name="payment_plan"
+                  {...register("payment_plan", {
+                    validate: (value) =>
+                      constructionStatus === "Off-plan" && !value
+                        ? "Payment Plan is required for Off-plan"
+                        : true,
+                  })}
+                >
+                  <option value="">-- Select --</option>
+                  {Array.from({ length: 11 }, (_, i) => i * 10).map((value) => (
+                    <option key={value} value={value}>
+                      {value}%
+                    </option>
+                  ))}
+                </select>
+                {errors?.payment_plan && (
+                  <ErrorMessage message={errors?.payment_plan?.message} />
+                )}
+              </div>
+            )}
           {/* Thumbnail Upload + Preview */}
           <div className="col-md-4 mb-3">
             <label className="form-label">Thumbnail Image</label>

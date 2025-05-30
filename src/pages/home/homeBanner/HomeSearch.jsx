@@ -10,17 +10,20 @@ import { formatRange } from "../../../helper/function/formatRange";
 import { guestUserLoginThunk } from "../../../features/user/userSlice";
 import { generateHandoverOptions } from "../../../helper/function/generateHandoverOptions";
 import Form from "react-bootstrap/Form";
+import { useNavigate } from "react-router-dom";
+import { pageRoutes } from "../../../router/pageRoutes";
 
 function HomeSearch() {
-  const [selectedCategoryId, setSelectedCategoryId] = useState(null);
-  const [selectedCategoryName, setSelectedCategoryName] = useState(null);
+  const [selectedCategoryId, setSelectedCategoryId] = useState('');
+  const [selectedCategoryName, setSelectedCategoryName] = useState('');
 
-  const [selectedSubCategoryId, setSelectedSubCategoryId] = useState(null);
+  const [selectedSubCategoryId, setSelectedSubCategoryId] = useState('');
   const [selectedSubSubCategoryId, setSelectedSubSubCategoryId] =
-    useState(null);
+    useState('');
 
-  const [rentDuration, setRentDuration] = useState(null);
-  const [buyType, setBuyType] = useState(null);
+  const [rentDuration, setRentDuration] = useState('');
+  const [handOverBy, setHandOverBy] = useState('');
+  const [buyType, setBuyType] = useState('');
   const [location, setLocation] = useState("");
   const [priceRange, setPriceRange] = useState(0);
 
@@ -35,11 +38,11 @@ function HomeSearch() {
   const [bedRoom, setBedRoom] = useState([]);
   const [bathRoom, setBathRoom] = useState([]);
 
-  const [minPrice, setMinPrice] = useState(0);
-  const [maxPrice, setMaxPrice] = useState(0);
+  const [minPrice, setMinPrice] = useState('');
+  const [maxPrice, setMaxPrice] = useState('');
 
-  const [minArea, setMinArea] = useState(0);
-  const [maxArea, setMaxArea] = useState(0);
+  const [minArea, setMinArea] = useState('');
+  const [maxArea, setMaxArea] = useState('');
 
   const { categories, subCategories, subSubCategories, loading } = useSelector(
     (store) => store?.activeData
@@ -190,6 +193,29 @@ function HomeSearch() {
     setIsDropDownOpen4(false);
     setIsDropDownOpen5(false);
   };
+ const navigate = useNavigate();
+
+function haldelSearch(event) {
+  const queryParams = new URLSearchParams({
+    category: selectedCategoryId,
+    subCategory: selectedSubCategoryId,
+    subSubCategory: selectedSubSubCategoryId,
+    duration: rentDuration,
+    bedrooms: bedRoom,
+    bathrooms: bathRoom,
+    min_price: minPrice,
+    max_price: maxPrice,
+    min_area: minArea,
+    max_area: maxArea,
+    payment_plan: priceRange,
+    handover_by: handOverBy,
+    search: location,
+  });
+
+  navigate(`${pageRoutes.PROPERTY_LISTING}?${queryParams.toString()}`);
+}
+
+
   return (
     <div className="main_search">
       <div className="padd">
@@ -251,7 +277,12 @@ function HomeSearch() {
                 />
                 <i className="ri-map-pin-line map_iic" />
               </div>
-              <div className="search_btn">
+              <div
+                className="search_btn"
+                onClick={() => {
+                  haldelSearch();
+                }}
+              >
                 <button>Search</button>
               </div>
             </div>
@@ -437,9 +468,9 @@ function HomeSearch() {
                     setIsDropDownOpen5(false);
                   }}
                   className=""
-                  value={rentDuration || ""}
+                  value={handOverBy || ""}
                   onChange={(e) => {
-                    setRentDuration(e.target.value);
+                    setHandOverBy(e.target.value);
                   }}
                 >
                   <option value="" disabled>

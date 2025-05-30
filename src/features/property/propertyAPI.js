@@ -19,6 +19,22 @@ export const creatProperty = async (payload) => {
   }
 };
 
+export const getAllUserProperty = async (payload) => {
+  try {
+    const response = await api.get(endpoints.getUsersAllProperty, payload);
+    return response.data;
+  } catch (error) {
+    if (error?.status !== 401) {
+      throw (
+        error?.response?.data?.message ||
+        "Failed to get property, please try again later."
+      );
+    } else {
+      throw error?.message || "Failed to get property, please try again later.";
+    }
+  }
+};
+
 export const getPropertyDetails = async (id) => {
   try {
     const response = await api.get(endpoints.getProperty + `/${id}`);
@@ -30,9 +46,31 @@ export const getPropertyDetails = async (id) => {
         "Failed to get property, please try again later."
       );
     } else {
+      throw error?.message || "Failed to get property, please try again later.";
+    }
+  }
+};
+
+export const getAllProperty = async (page, limit, searchFilters = {}) => {
+  try {
+    const queryParams = new URLSearchParams({
+      page,
+      limit,
+      ...searchFilters,
+    });
+
+    const response = await api.get(
+      `${endpoints.getAllPropertyForUser}?${queryParams.toString()}`
+    );
+    return response.data;
+  } catch (error) {
+    if (error?.status !== 401) {
       throw (
-        error?.message || "Failed to get property, please try again later."
+        error?.response?.data?.message ||
+        "Failed to get property, please try again later."
       );
+    } else {
+      throw error?.message || "Failed to get property, please try again later.";
     }
   }
 };

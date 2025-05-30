@@ -5,17 +5,23 @@ import { pageRoutes } from "../router/pageRoutes";
 import { useDispatch, useSelector } from "react-redux";
 import { useCallback, useEffect } from "react";
 import { getAllContactUsThunk } from "../features/contactUs/contactUsSlice";
+import { getAllActiveCategoryThunk } from './../features/activeData/activeDataSlice';
 
 function Footer() {
-  const { contactUs, isLoading } = useSelector((store) => store?.contactUs);
+  const { contactUs, isLoading} = useSelector((store) => store?.contactUs);
+  const { categories} = useSelector(
+      (store) => store?.activeData
+    );
   const dispatch = useDispatch();
 
   const getAllContactUsDetails = useCallback(async () => {
     dispatch(getAllContactUsThunk());
+    dispatch(getAllActiveCategoryThunk());
   }, [dispatch]);
 
   useEffect(() => {
     getAllContactUsDetails();
+  
   }, [getAllContactUsDetails]);
 
   return (
@@ -112,12 +118,13 @@ function Footer() {
                 <li>
                   <Link to={pageRoutes.ABOUT_US}>About Us</Link>
                 </li>
-                <li>
-                  <a href="property-listing.php">Buy</a>
-                </li>
-                <li>
-                  <a href="property-listing.php">Rent</a>
-                </li>
+                
+                 {categories?.map((item) => (
+          <li key={item?._id}>
+          <Link to={pageRoutes.PROPERTY_LISTING}>{item?.name}</Link>
+         </li>
+          ))}
+                
                 <li>
                   <a href="property-listing.php">Commercial</a>
                 </li>

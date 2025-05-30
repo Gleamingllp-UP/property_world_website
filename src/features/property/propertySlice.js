@@ -1,5 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { creatProperty, getPropertyDetails } from "./propertyAPI";
+import {
+  creatProperty,
+  getAllUserProperty,
+  getAllProperty,
+  getPropertyDetails,
+} from "./propertyAPI";
 
 export const creatPropertyThunk = createAsyncThunk(
   "property/creatProperty",
@@ -13,11 +18,28 @@ export const getPropertyDetailsThunk = createAsyncThunk(
     return await getPropertyDetails(id);
   }
 );
+
+export const getAllUserPropertyThunk = createAsyncThunk(
+  "property/getAllUserProperty",
+  async (payload) => {
+    return await getAllUserProperty(payload);
+  }
+);
+
+export const getAllPropertyThunk = createAsyncThunk(
+  "property/getAllProperty",
+  async ({ page, limit, searchFilters }) => {
+    console.log(searchFilters);
+    return await getAllProperty(page, limit, searchFilters);
+  }
+);
+
 const propertySlice = createSlice({
   name: "property",
   initialState: {
     propertyData: [],
     propertyDetails: {},
+    pagination: null,
     loading: false,
     isLoading: false,
     error: null,
@@ -46,6 +68,31 @@ const propertySlice = createSlice({
         state.isLoading = false;
       })
       .addCase(getPropertyDetailsThunk.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message;
+      })
+
+      .addCase(getAllUserPropertyThunk.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getAllUserPropertyThunk.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.propertyData = action.payload.data;
+      })
+      .addCase(getAllUserPropertyThunk.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message;
+      })
+
+      .addCase(getAllPropertyThunk.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getAllPropertyThunk.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.propertyData = action.payload.data;
+        state.pagination = action.payload.pagination;
+      })
+      .addCase(getAllPropertyThunk.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
       });

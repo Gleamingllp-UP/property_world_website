@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { creatProperty } from "./propertyAPI";
+import { creatProperty,getAllUserProperty } from "./propertyAPI";
 
 export const creatPropertyThunk = createAsyncThunk(
   "property/creatProperty",
@@ -7,6 +7,15 @@ export const creatPropertyThunk = createAsyncThunk(
     return await creatProperty(payload);
   }
 );
+
+export const getAllUserPropertyThunk = createAsyncThunk(
+  "property/getAllUserProperty",
+  async (payload) => {
+    return await getAllUserProperty(payload);
+  }
+);
+
+
 const propertySlice = createSlice({
   name: "property",
   initialState: {
@@ -28,7 +37,19 @@ const propertySlice = createSlice({
       .addCase(creatPropertyThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
-      });
+      })
+
+        .addCase(getAllUserPropertyThunk.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getAllUserPropertyThunk.fulfilled, (state,action) => {
+        state.isLoading = false;
+        state.propertyData=action.payload.data
+      })
+      .addCase(getAllUserPropertyThunk.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message;
+      })
   },
 });
 

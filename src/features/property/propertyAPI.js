@@ -53,10 +53,14 @@ export const getPropertyDetails = async (id) => {
 
 export const getAllProperty = async (page, limit, searchFilters = {}) => {
   try {
+    const cleanedFilters = Object.fromEntries(
+      Object.entries(searchFilters).filter(([_, value]) => Boolean(value))
+    );
+
     const queryParams = new URLSearchParams({
       page,
       limit,
-      ...searchFilters,
+      ...cleanedFilters,
     });
 
     const response = await api.get(

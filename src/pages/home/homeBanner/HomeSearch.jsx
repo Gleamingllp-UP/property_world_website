@@ -14,18 +14,17 @@ import { useNavigate } from "react-router-dom";
 import { pageRoutes } from "../../../router/pageRoutes";
 
 function HomeSearch() {
-  const [selectedCategoryId, setSelectedCategoryId] = useState('');
-  const [selectedCategoryName, setSelectedCategoryName] = useState('');
+  const [selectedCategoryId, setSelectedCategoryId] = useState("");
+  const [selectedCategoryName, setSelectedCategoryName] = useState("");
 
-  const [selectedSubCategoryId, setSelectedSubCategoryId] = useState('');
-  const [selectedSubSubCategoryId, setSelectedSubSubCategoryId] =
-    useState('');
+  const [selectedSubCategoryId, setSelectedSubCategoryId] = useState("");
+  const [selectedSubSubCategoryId, setSelectedSubSubCategoryId] = useState("");
 
-  const [rentDuration, setRentDuration] = useState('');
-  const [handOverBy, setHandOverBy] = useState('');
-  const [buyType, setBuyType] = useState('');
+  const [rentDuration, setRentDuration] = useState("");
+  const [handOverBy, setHandOverBy] = useState("");
+  const [buyType, setBuyType] = useState("");
   const [location, setLocation] = useState("");
-  const [priceRange, setPriceRange] = useState(0);
+  const [priceRange, setPriceRange] = useState("");
 
   const [isDropDownOpen, setIsDropDownOpen] = useState(false);
   const [isDropDownOpen2, setIsDropDownOpen2] = useState(false);
@@ -38,11 +37,11 @@ function HomeSearch() {
   const [bedRoom, setBedRoom] = useState([]);
   const [bathRoom, setBathRoom] = useState([]);
 
-  const [minPrice, setMinPrice] = useState('');
-  const [maxPrice, setMaxPrice] = useState('');
+  const [minPrice, setMinPrice] = useState("");
+  const [maxPrice, setMaxPrice] = useState("");
 
-  const [minArea, setMinArea] = useState('');
-  const [maxArea, setMaxArea] = useState('');
+  const [minArea, setMinArea] = useState("");
+  const [maxArea, setMaxArea] = useState("");
 
   const { categories, subCategories, subSubCategories, loading } = useSelector(
     (store) => store?.activeData
@@ -193,28 +192,27 @@ function HomeSearch() {
     setIsDropDownOpen4(false);
     setIsDropDownOpen5(false);
   };
- const navigate = useNavigate();
+  const navigate = useNavigate();
 
-function haldelSearch(event) {
-  const queryParams = new URLSearchParams({
-    category: selectedCategoryId,
-    subCategory: selectedSubCategoryId,
-    subSubCategory: selectedSubSubCategoryId,
-    duration: rentDuration,
-    bedrooms: bedRoom,
-    bathrooms: bathRoom,
-    min_price: minPrice,
-    max_price: maxPrice,
-    min_area: minArea,
-    max_area: maxArea,
-    payment_plan: priceRange,
-    handover_by: handOverBy,
-    search: location,
-  });
+  function haldelSearch(event) {
+    const queryParams = new URLSearchParams({
+      category: selectedCategoryId,
+      subCategory: selectedSubCategoryId,
+      subSubCategory: selectedSubSubCategoryId,
+      duration: rentDuration,
+      bedrooms: bedRoom,
+      bathrooms: bathRoom,
+      min_price: minPrice,
+      max_price: maxPrice,
+      min_area: minArea,
+      max_area: maxArea,
+      payment_plan: priceRange,
+      handover_by: handOverBy,
+      search: location,
+    });
 
-  navigate(`${pageRoutes.PROPERTY_LISTING}?${queryParams.toString()}`);
-}
-
+    navigate(`${pageRoutes.PROPERTY_LISTING}?${queryParams.toString()}`);
+  }
 
   return (
     <div className="main_search">

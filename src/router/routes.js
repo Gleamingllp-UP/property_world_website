@@ -37,8 +37,12 @@ const MainAgencies = lazy(() =>
 const BlogDetails = lazy(() => import("../pages/blog/BlogDetails"));
 
 const TenantMain = lazy(() => import("../pages/tenantGuide/TenantMain"));
+
 const UserDashboard = lazy(() =>
   import("../pages/dashboard/list/UserDashboard")
+);
+const CategoryWiseList = lazy(() =>
+  import("../pages/property/categoryWiseList/ArchiveMain")
 );
 const LandLoardMain = lazy(() =>
   import("../pages/landLordGuide/LandLoardMain")
@@ -195,6 +199,13 @@ const routes = [
     name: "My Property Listing",
     path: pageRoutes?.USER_PROPERTY_LISTING,
     Component: MyPropertyListing,
+  },
+  {
+    id: 20,
+    isPrivate: true,
+    name: "Property Listing",
+    path: pageRoutes?.PROPERTY_LISTING,
+    Component: CategoryWiseList,
   },
 ];
 export { routes };

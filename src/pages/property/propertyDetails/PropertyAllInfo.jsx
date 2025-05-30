@@ -19,6 +19,7 @@ import {
   user,
   bath,
 } from "@/assets/images";
+import Features from "./Features";
 
 function PropertyAllInfo() {
   return (
@@ -128,62 +129,7 @@ function PropertyAllInfo() {
                   </li>
                 </ul>
               </div>
-              <hr />
-              <div className="key_feature amenities">
-                <p>Features / Amenities</p>
-                <div className="row">
-                  <div className="amy_amm">
-                    <span>
-                      <img src={gym} /> Gym
-                    </span>
-                  </div>
-                  <div className="amy_amm">
-                    <span>
-                      <img src={swimming} /> Swimming Pool
-                    </span>
-                  </div>
-                  <div className="amy_amm">
-                    <span>
-                      <img src={parking} /> Parking
-                    </span>
-                  </div>
-                  <div className="amy_amm">
-                    <span>
-                      <img src={cctv} /> 24/7 Security
-                    </span>
-                  </div>
-                  <div className="amy_amm">
-                    <span>
-                      <img src={sofa} /> Furnished
-                    </span>
-                  </div>
-                  <div className="amy_amm">
-                    <span>
-                      <img src={parking} /> Parking
-                    </span>
-                  </div>
-                  <div className="amy_amm">
-                    <span>
-                      <img src={cctv} /> 24/7 Security
-                    </span>
-                  </div>
-                  <div className="amy_amm">
-                    <span>
-                      <img src={gym} /> Gym
-                    </span>
-                  </div>
-                  <div className="amy_amm">
-                    <span>
-                      <img src={swimming} /> Swimming Pool
-                    </span>
-                  </div>
-                  <a href="#" id="loadMore" className="last_amm">
-                    {" "}
-                    +5 more amenities
-                  </a>
-                </div>
-              </div>
-              <hr />
+             <Features />
               <div className="key_feature">
                 <p>Map </p>
                 <iframe

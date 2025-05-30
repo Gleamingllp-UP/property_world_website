@@ -252,7 +252,6 @@ const AddProperty = () => {
       <form onSubmit={handleSubmit(onSubmit)}>
         {/* Purpose, Category, Property Type in one row */}
         <div className="row">
-          {/* Purpose: Sale / Rent */}
           <div className="col-md-4 mb-3">
             <label className="form-label">Purpose</label>
             <select
@@ -283,8 +282,6 @@ const AddProperty = () => {
               <ErrorMessage message={errors?.category?.message} />
             )}
           </div>
-
-          {/* Category: Residential / Commercial */}
           <div className="col-md-4 mb-3">
             <label className="form-label">Category</label>
             <select
@@ -339,7 +336,6 @@ const AddProperty = () => {
         </div>
 
         <div className="row">
-          {/* City Dropdown */}
           <div className="col-md-4 mb-3">
             <label className="form-label">City</label>
             <select
@@ -484,7 +480,6 @@ const AddProperty = () => {
             )}
           </div>
 
-          {/* Gallery Upload + Previews */}
           <div className="col-md-4 mb-3">
             <label className="form-label">Gallery Images</label>
             <input

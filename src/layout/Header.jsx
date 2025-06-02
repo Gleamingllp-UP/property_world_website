@@ -4,20 +4,17 @@ import { pageRoutes } from "../router/pageRoutes";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import LoginModal from "../pages/auth/login/LoginModal";
-import { getAllActiveCategoryThunk } from './../features/activeData/activeDataSlice';
+import { getAllActiveCategoryThunk } from "./../features/activeData/activeDataSlice";
 function Header() {
-
   const [modalShow, setModalShow] = useState(false);
-   const { categories} = useSelector(
-      (store) => store?.activeData
-    );
-     const dispatch = useDispatch();
-    
+  const { categories } = useSelector((store) => store?.activeData);
+  const dispatch = useDispatch();
+
   const navigate = useNavigate();
-    useEffect( ()=>{
-   dispatch(getAllActiveCategoryThunk());
-    }, [])
-   
+  useEffect(() => {
+    dispatch(getAllActiveCategoryThunk());
+  }, []);
+
   return (
     <header>
       <div className="container">
@@ -59,13 +56,18 @@ function Header() {
                 />
               </button>
               <ul className="menu">
-                   {categories?.map((item) => (
-          <li key={item?._id} className="menu-item">
-          <Link to={pageRoutes.PROPERTY_LISTING}>{item?.name}</Link>
-         </li>
-          ))}
-              
-              
+                {categories?.map((item) => (
+                  <li key={item?._id} className="menu-item">
+                    <Link
+                      to={
+                        pageRoutes.PROPERTY_LISTING + `?category=${item?._id}`
+                      }
+                    >
+                      {item?.name}
+                    </Link>
+                  </li>
+                ))}
+
                 <li className="menu-item">
                   <a data-bs-toggle="modal" data-bs-target="#login_form" onClick={() => setModalShow(true)}>
                     List
@@ -89,10 +91,10 @@ function Header() {
                       </Link>
                     </li>
                     <li className="menu-item">
-                     <Link to={pageRoutes.TENANT_GUIDE}>
+                      <Link to={pageRoutes.TENANT_GUIDE}>
                         <i className="ri-arrow-right-up-long-line"></i> Tenant
                         Guide
-                        </Link>
+                      </Link>
                     </li>
                     <li className="menu-item">
                       <Link to={pageRoutes.LANDLORD_GUIDE}>
@@ -101,7 +103,7 @@ function Header() {
                       </Link>
                     </li>
                     <li className="menu-item">
-                    <Link to={pageRoutes.BLOG}>
+                      <Link to={pageRoutes.BLOG}>
                         <i className="ri-arrow-right-up-long-line"></i> Blogs
                       </Link>
                     </li>

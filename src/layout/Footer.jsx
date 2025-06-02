@@ -3,15 +3,16 @@ import Copyright from "./Copyright";
 import { Link } from "react-router-dom";
 import { pageRoutes } from "../router/pageRoutes";
 import { useDispatch, useSelector } from "react-redux";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { getAllContactUsThunk } from "../features/contactUs/contactUsSlice";
-import { getAllActiveCategoryThunk } from './../features/activeData/activeDataSlice';
+import { getAllActiveCategoryThunk } from "./../features/activeData/activeDataSlice";
+import LoginModal from "../pages/auth/login/LoginModal";
 
 function Footer() {
-  const { contactUs, isLoading} = useSelector((store) => store?.contactUs);
-  const { categories} = useSelector(
-      (store) => store?.activeData
-    );
+  const [modalShow, setModalShow] = useState(false);
+
+  const { contactUs, isLoading } = useSelector((store) => store?.contactUs);
+  const { categories } = useSelector((store) => store?.activeData);
   const dispatch = useDispatch();
 
   const getAllContactUsDetails = useCallback(async () => {
@@ -21,7 +22,6 @@ function Footer() {
 
   useEffect(() => {
     getAllContactUsDetails();
-  
   }, [getAllContactUsDetails]);
 
   return (
@@ -118,16 +118,24 @@ function Footer() {
                 <li>
                   <Link to={pageRoutes.ABOUT_US}>About Us</Link>
                 </li>
-                
-                 {categories?.map((item) => (
-          <li key={item?._id}>
-          <Link to={pageRoutes.PROPERTY_LISTING}>{item?.name}</Link>
-         </li>
-          ))}
-                
-                
+
+                {categories?.map((item) => (
+                  <li key={item?._id}>
+                    <Link
+                      to={
+                        pageRoutes.PROPERTY_LISTING + `?category=${item?._id}`
+                      }
+                    >
+                      {item?.name}
+                    </Link>
+                  </li>
+                ))}
+
                 <li>
-                  <a data-bs-toggle="modal" data-bs-target="#login_form" >
+                  <a href="property-listing.php">Commercial</a>
+                </li>
+                <li>
+                  <a onClick={()=>setModalShow(true)}>
                     List Your Property
                   </a>
                 </li>
@@ -215,6 +223,7 @@ function Footer() {
           </div>
         </div>
       </footer>
+      <LoginModal show={modalShow} onHide={() => setModalShow(false)} />
       <Copyright />
     </>
 

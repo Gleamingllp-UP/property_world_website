@@ -22,43 +22,44 @@ import { CustomPagination } from "../../../Custom_Components/CustomPagination";
 
 const Archive = () => {
   const dispatch = useDispatch();
-  const { isLoading, propertyData = [], pagination = {} } = useSelector(
-    (store) => store?.property
-  );
+  const {
+    isLoading,
+    propertyData = [],
+    pagination = {},
+  } = useSelector((store) => store?.property);
 
   const [page, setPage] = useState(1);
   const limit = 5;
 
+  const location = useLocation();
 
+  const queryParams = new URLSearchParams(location.search);
 
+  const searchFilters = {
+    category: queryParams.get("category"),
+    subCategory: queryParams.get("subCategory"),
+    subSubCategory: queryParams.get("subSubCategory"),
+    duration: queryParams.get("duration"),
+    bedrooms: queryParams.get("bedrooms"),
+    bathrooms: queryParams.get("bathrooms"),
+    min_price: queryParams.get("min_price"),
+    max_price: queryParams.get("max_price"),
+    min_area: queryParams.get("min_area"),
+    max_area: queryParams.get("max_area"),
+    payment_plan: queryParams.get("payment_plan"),
+    handover_by: queryParams.get("handover_by"),
+    search: queryParams.get("search"),
+  };
 
-const location = useLocation();
-
-const queryParams = new URLSearchParams(location.search);
-
-const searchFilters = {
-  category: queryParams.get("category"),
-  subCategory: queryParams.get("subCategory"),
-  subSubCategory: queryParams.get("subSubCategory"),
-  duration: queryParams.get("duration"),
-  bedrooms: queryParams.get("bedrooms"),
-  bathrooms: queryParams.get("bathrooms"),
-  min_price: queryParams.get("min_price"),
-  max_price: queryParams.get("max_price"),
-  min_area: queryParams.get("min_area"),
-  max_area: queryParams.get("max_area"),
-  payment_plan: queryParams.get("payment_plan"),
-  handover_by: queryParams.get("handover_by"),
-  search: queryParams.get("search"),
-};
-
-useEffect(() => {
-  dispatch(getAllPropertyThunk({ 
-    page, 
-    limit,
-    searchFilters, 
-  }));
-}, [dispatch, page, limit, location.search]); 
+  useEffect(() => {
+    dispatch(
+      getAllPropertyThunk({
+        page,
+        limit,
+        searchFilters,
+      })
+    );
+  }, [dispatch, page, location.search]);
 
   return (
     <>
@@ -103,7 +104,10 @@ useEffect(() => {
                         className="radio-input"
                         name="radio-group2"
                       />
-                      <label htmlFor={`rdo2_${index + 1}`} className="radio-label">
+                      <label
+                        htmlFor={`rdo2_${index + 1}`}
+                        className="radio-label"
+                      >
                         <span className="radio-border">{label}</span>
                       </label>
                     </li>
@@ -176,26 +180,37 @@ useEffect(() => {
               <div className="col-lg-7">
                 <div className="property_data_area">
                   <h2>
-                    <Link to="/property-details">The Community Sports Arena</Link>
+                    <Link to="/property-details">
+                      The Community Sports Arena
+                    </Link>
                   </h2>
                   <div className="p_info">
                     <ul>
                       <li>Apartment</li>
                       <li>
-                        <span><img src={bed} /> Studio</span>
-                        <span><img src={bath} />1</span>
+                        <span>
+                          <img src={bed} /> Studio
+                        </span>
+                        <span>
+                          <img src={bath} />1
+                        </span>
                       </li>
-                      <li><img src={ruler} /> 396</li>
+                      <li>
+                        <img src={ruler} /> 396
+                      </li>
                     </ul>
                   </div>
                   <div className="pro_desc">
-                    At vero eos et accusamus et iusto odio dignissimos ducimus...
+                    At vero eos et accusamus et iusto odio dignissimos
+                    ducimus...
                   </div>
                   <div className="loc">
                     <i className="ri-map-pin-line" /> Dubai Sports City
                   </div>
                   <div className="nearst_location">
-                    <p><b>Nearest Location</b></p>
+                    <p>
+                      <b>Nearest Location</b>
+                    </p>
                     <ul>
                       <li>School: 1.2 km</li>
                       <li>Hospital: 1.5 km</li>
@@ -205,11 +220,25 @@ useEffect(() => {
                   </div>
                   <div className="call_action">
                     <ul>
-                      <li><a href="#"><i className="ri-phone-line" /> Call</a></li>
-                      <li><a href="#"><i className="ri-mail-open-line" /> Email</a></li>
-                      <li><a href="#"><i className="ri-whatsapp-line" /> WhatsApp</a></li>
+                      <li>
+                        <a href="#">
+                          <i className="ri-phone-line" /> Call
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#">
+                          <i className="ri-mail-open-line" /> Email
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#">
+                          <i className="ri-whatsapp-line" /> WhatsApp
+                        </a>
+                      </li>
                     </ul>
-                    <span><img src={property_world_logo} /></span>
+                    <span>
+                      <img src={property_world_logo} />
+                    </span>
                   </div>
                 </div>
               </div>
@@ -223,7 +252,11 @@ useEffect(() => {
               <div className="row">
                 <div className="col-lg-5">
                   <div className="normal_slider">
-                    <div className="agent_d" data-bs-toggle="modal" data-bs-target="#agency_info">
+                    <div
+                      className="agent_d"
+                      data-bs-toggle="modal"
+                      data-bs-target="#agency_info"
+                    >
                       <i className="ri-checkbox-circle-fill" /> Checked
                     </div>
                     <div className="save_p">
@@ -232,18 +265,20 @@ useEffect(() => {
                       </button>
                     </div>
                     <div className="my-slider">
-                      {[pro_comm1, pro_comm2, pro_comm3, pro_comm4].map((src, i) => (
-                        <div key={i}>
-                          <Link to="/property-details">
-                            <img src={src} className="img-fluid" />
-                          </Link>
-                        </div>
-                      ))}
+                      {[pro_comm1, pro_comm2, pro_comm3, pro_comm4].map(
+                        (src, i) => (
+                          <div key={i}>
+                            <Link to="/property-details">
+                              <img src={src} className="img-fluid" />
+                            </Link>
+                          </div>
+                        )
+                      )}
                     </div>
                   </div>
                   <div className="price_tt normal">
                     <span>
-                      AED <b>{item?.price}</b> {item?.duration} 
+                      AED <b>{item?.price}</b> {item?.duration}
                     </span>
                     <span className="flex_box">
                       <img src={user} className="agent_b" />
@@ -262,33 +297,58 @@ useEffect(() => {
                         <li>{item?.subSubCategoryData?.name}</li>
                         <li>
                           {item?.bedrooms && (
-                            <span><img src={bed} /> {item?.bedrooms}</span>
+                            <span>
+                              <img src={bed} /> {item?.bedrooms}
+                            </span>
                           )}
                           {item?.bathrooms && (
-                            <span><img src={bath} /> {item?.bathrooms}</span>
+                            <span>
+                              <img src={bath} /> {item?.bathrooms}
+                            </span>
                           )}
                         </li>
                         {item?.area && (
-                          <li><img src={ruler} /> {item?.area}</li>
+                          <li>
+                            <img src={ruler} /> {item?.area}
+                          </li>
                         )}
                       </ul>
                     </div>
                     {item?.building_facilities?.length > 0 && (
                       <div className="key_property">
-                        <a href="#">{item?.building_facilities?.slice(0, 4).join(" | ")}</a>
+                        <a href="#">
+                          {item?.building_facilities?.slice(0, 4).join(" | ")}
+                        </a>
                       </div>
                     )}
-                    <div className="pro_desc sli">{item?.short_description}</div>
+                    <div className="pro_desc sli">
+                      {item?.short_description}
+                    </div>
                     <div className="loc">
-                      <i className="ri-map-pin-line" /> {item?.locationData?.name}
+                      <i className="ri-map-pin-line" />{" "}
+                      {item?.locationData?.name}
                     </div>
                     <div className="call_action">
                       <ul>
-                        <li><a href="#"><i className="ri-phone-line" /> Call</a></li>
-                        <li><a href="#"><i className="ri-mail-open-line" /> Email</a></li>
-                        <li><a href="#"><i className="ri-whatsapp-line" /> WhatsApp</a></li>
+                        <li>
+                          <a href="#">
+                            <i className="ri-phone-line" /> Call
+                          </a>
+                        </li>
+                        <li>
+                          <a href="#">
+                            <i className="ri-mail-open-line" /> Email
+                          </a>
+                        </li>
+                        <li>
+                          <a href="#">
+                            <i className="ri-whatsapp-line" /> WhatsApp
+                          </a>
+                        </li>
                       </ul>
-                      <span><img src={property_world_logo} /></span>
+                      <span>
+                        <img src={property_world_logo} />
+                      </span>
                     </div>
                   </div>
                 </div>

@@ -35,15 +35,9 @@ export const getAllUserProperty = async (payload) => {
   }
 };
 
-export const getAllProperty = async (page, limit, searchFilters = {}) => {
+export const getPropertyDetails = async (id) => {
   try {
-    const queryParams = new URLSearchParams({
-      page,
-      limit,
-      ...searchFilters,
-    });
-
-    const response = await api.get(`${endpoints.getAllPropertyForUser}?${queryParams.toString()}`);
+    const response = await api.get(endpoints.getProperty + `/${id}`);
     return response.data;
   } catch (error) {
     if (error?.status !== 401) {
@@ -57,3 +51,30 @@ export const getAllProperty = async (page, limit, searchFilters = {}) => {
   }
 };
 
+export const getAllProperty = async (page, limit, searchFilters = {}) => {
+  try {
+    const cleanedFilters = Object.fromEntries(
+      Object.entries(searchFilters).filter(([_, value]) => Boolean(value))
+    );
+
+    const queryParams = new URLSearchParams({
+      page,
+      limit,
+      ...cleanedFilters,
+    });
+
+    const response = await api.get(
+      `${endpoints.getAllPropertyForUser}?${queryParams.toString()}`
+    );
+    return response.data;
+  } catch (error) {
+    if (error?.status !== 401) {
+      throw (
+        error?.response?.data?.message ||
+        "Failed to get property, please try again later."
+      );
+    } else {
+      throw error?.message || "Failed to get property, please try again later.";
+    }
+  }
+};

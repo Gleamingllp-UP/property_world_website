@@ -20,17 +20,22 @@ import {
   bath,
 } from "@/assets/images";
 import Features from "./Features";
-
+import { useSelector } from "react-redux";
+import { formatDate } from "../../../helper/formateDate/formatedDate";
 function PropertyAllInfo() {
+  const { propertyDetails } = useSelector((store) => store?.property);
+
   return (
     <section className="property_all_info">
       <div className="container">
         <div className="row">
           <div className="col-lg-9">
             <div className="left_area">
-              <div className="tag">For Rent</div>
-              <h2 className="the_comm">The Community Sports Arena</h2>
-              <div className="price_d">AED 850,000</div>
+              <div className="tag">
+                For {propertyDetails?.categoryData?.name || "N/A"}
+              </div>
+              <h2 className="the_comm">{propertyDetails?.title || "N/A"}</h2>
+              <div className="price_d">AED {propertyDetails?.price || "0"}</div>
               <div className="call_action my_acttn">
                 <ul>
                   <li>
@@ -54,20 +59,25 @@ function PropertyAllInfo() {
                 </ul>
               </div>
               <p>
-                <i className="ri-map-pin-line" /> Location : Dubai Marina, Dubai
+                <i className="ri-map-pin-line" /> Location :
+                {propertyDetails?.address ||
+                  propertyDetails?.locationData?.name}
               </p>
               <hr />
               <div className="key_feature">
                 <p>Key Property Features</p>
                 <ul>
                   <li>
-                    <i className="ri-hotel-bed-line" /> Bedrooms: 2
+                    <i className="ri-hotel-bed-line" /> Bedrooms:{" "}
+                    {propertyDetails?.bedrooms || 0}
                   </li>
                   <li>
-                    <i className="fa fa-bath" aria-hidden="true" /> Bathrooms: 3
+                    <i className="fa fa-bath" aria-hidden="true" /> Bathrooms:
+                    {propertyDetails?.bathrooms || 0}
                   </li>
                   <li>
-                    <i className="ri-ruler-line" /> Size: 817 sqft
+                    <i className="ri-ruler-line" /> Size:{" "}
+                    {propertyDetails?.area || 0} sqft
                   </li>
                 </ul>
               </div>
@@ -79,11 +89,15 @@ function PropertyAllInfo() {
                     <tbody>
                       <tr>
                         <td>Type</td>
-                        <td>Apartment</td>
+                        <td>
+                          {propertyDetails?.subSubCategoryData?.name || "N/A"}
+                        </td>
                       </tr>
                       <tr>
                         <td>Purpose</td>
-                        <td>For rent</td>
+                        <td>
+                          For {propertyDetails?.categoryData?.name || "N/A"}
+                        </td>
                       </tr>
                       <tr>
                         <td>Reference</td>
@@ -92,25 +106,27 @@ function PropertyAllInfo() {
                       <tr>
                         <td>Added on</td>
                         <td>
-                          <i className="ri-calendar-2-line" /> 6 February 2025
+                          <i className="ri-calendar-2-line" />{" "}
+                          {formatDate(propertyDetails?.createdAt, "date")}
                         </td>
                       </tr>
                       <tr>
                         <td>Ownership</td>
                         <td>
                           <i className="ri-verified-badge-fill verified" />{" "}
-                          Freehold
+                          {propertyDetails?.ownership_status || "N/A"}
                         </td>
                       </tr>
                       <tr>
                         <td>Built-up Area </td>
                         <td>
-                          <i className="ri-ruler-line" /> 817 sqft
+                          <i className="ri-ruler-line" />{" "}
+                          {propertyDetails?.area || 0} sqft
                         </td>
                       </tr>
                       <tr>
                         <td>Usage</td>
-                        <td>Residential</td>
+                        <td>{propertyDetails?.subCategoryData?.name || "N/A"}</td>
                       </tr>
                     </tbody>
                   </table>
@@ -129,7 +145,7 @@ function PropertyAllInfo() {
                   </li>
                 </ul>
               </div>
-             <Features />
+              <Features />
               <div className="key_feature">
                 <p>Map </p>
                 <iframe

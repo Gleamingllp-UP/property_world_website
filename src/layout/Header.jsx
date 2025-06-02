@@ -79,33 +79,33 @@ function Header() {
                   </a>
                   <ul className="sub-menu">
                     <li className="menu-item">
-                      <a href="buyer-guide.php">
+                      <Link to={pageRoutes.BUYER_GUIDE}>
                         <i className="ri-arrow-right-up-long-line"></i> Buyer
                         Guide
-                      </a>
+                      </Link>
                     </li>
                     <li className="menu-item">
-                      <a href="seller-guide.php">
+                      <Link to={pageRoutes.SELLER_GUIDE}>
                         <i className="ri-arrow-right-up-long-line"></i> Seller
                         Guide
-                      </a>
+                      </Link>
                     </li>
                     <li className="menu-item">
-                      <a href="tenant-guide.php">
+                     <Link to={pageRoutes.TENANT_GUIDE}>
                         <i className="ri-arrow-right-up-long-line"></i> Tenant
                         Guide
-                      </a>
+                        </Link>
                     </li>
                     <li className="menu-item">
-                      <a href="landlord-guide.php">
+                      <Link to={pageRoutes.LANDLORD_GUIDE}>
                         <i className="ri-arrow-right-up-long-line"></i> Landlord
                         Guide
-                      </a>
+                      </Link>
                     </li>
                     <li className="menu-item">
-                      <a href="blogs.php">
+                    <Link to={pageRoutes.BLOG}>
                         <i className="ri-arrow-right-up-long-line"></i> Blogs
-                      </a>
+                      </Link>
                     </li>
                   </ul>
                 </li>
@@ -158,7 +158,6 @@ function Header() {
                 <li className="menu-item">
                   <Link to={pageRoutes.AGENTS}>Find an Agent</Link>
                 </li>
-
                 <li className="menu-item" onClick={() => setModalShow(true)}>
                   <a
                     data-bs-toggle="modal"

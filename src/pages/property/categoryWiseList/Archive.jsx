@@ -29,9 +29,7 @@ const Archive = () => {
   const [page, setPage] = useState(1);
   const limit = 5;
 
-  useEffect(() => {
-    dispatch(getAllPropertyThunk({ page, limit }));
-  }, [dispatch, page, limit]);
+
 
 
 const location = useLocation();
@@ -220,6 +218,7 @@ useEffect(() => {
 
           {/* Dynamic Properties List */}
           {propertyData?.map((item) => (
+           
             <div className="list_box normal_listing" key={item?._id}>
               <div className="row">
                 <div className="col-lg-5">

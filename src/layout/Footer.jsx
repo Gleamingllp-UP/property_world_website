@@ -3,11 +3,14 @@ import Copyright from "./Copyright";
 import { Link } from "react-router-dom";
 import { pageRoutes } from "../router/pageRoutes";
 import { useDispatch, useSelector } from "react-redux";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { getAllContactUsThunk } from "../features/contactUs/contactUsSlice";
 import { getAllActiveCategoryThunk } from "./../features/activeData/activeDataSlice";
+import LoginModal from "../pages/auth/login/LoginModal";
 
 function Footer() {
+  const [modalShow, setModalShow] = useState(false);
+
   const { contactUs, isLoading } = useSelector((store) => store?.contactUs);
   const { categories } = useSelector((store) => store?.activeData);
   const dispatch = useDispatch();
@@ -132,7 +135,7 @@ function Footer() {
                   <a href="property-listing.php">Commercial</a>
                 </li>
                 <li>
-                  <a data-bs-toggle="modal" data-bs-target="#login_form">
+                  <a onClick={()=>setModalShow(true)}>
                     List Your Property
                   </a>
                 </li>
@@ -220,6 +223,7 @@ function Footer() {
           </div>
         </div>
       </footer>
+      <LoginModal show={modalShow} onHide={() => setModalShow(false)} />
       <Copyright />
     </>
 

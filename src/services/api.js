@@ -32,7 +32,7 @@ api.interceptors.response.use(
     const originalUrl = error.config?.url;
     if (error.response && error.response.status === 401) {
       localStorage.removeItem("adminToken");
-      if (!originalUrl.includes(endpoints.login)) {
+      if (!originalUrl.includes(endpoints.userLogin)) {
         errorData.status = 401;
         errorData.message = "Session expired. Please log in again.";
         setTimeout(() => {

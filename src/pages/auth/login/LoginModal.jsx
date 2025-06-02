@@ -21,7 +21,6 @@ function LoginModal({ show, onHide }) {
 
   const onSubmit = async (data) => {
     try {
-      console.log("data---", data);
       const resultAction = await dispatch(userLoginThunk(data));
       if (userLoginThunk.fulfilled.match(resultAction)) {
         showToast("Login Successfull!", "success");

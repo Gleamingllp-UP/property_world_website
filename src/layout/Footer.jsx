@@ -7,8 +7,10 @@ import { useCallback, useEffect, useState } from "react";
 import { getAllContactUsThunk } from "../features/contactUs/contactUsSlice";
 import { getAllActiveCategoryThunk } from "./../features/activeData/activeDataSlice";
 import LoginModal from "../pages/auth/login/LoginModal";
-
+import { getAllActiveLocationThunk } from "./../features/activeData/activeDataSlice";
 function Footer() {
+  const { location } = useSelector((store) => store?.activeData);
+
   const [modalShow, setModalShow] = useState(false);
 
   const { contactUs, isLoading } = useSelector((store) => store?.contactUs);
@@ -23,6 +25,10 @@ function Footer() {
   useEffect(() => {
     getAllContactUsDetails();
   }, [getAllContactUsDetails]);
+
+  useEffect(() => {
+    dispatch(getAllActiveLocationThunk());
+  }, [dispatch]);
 
   return (
     <>
@@ -135,9 +141,7 @@ function Footer() {
                   <a href="property-listing.php">Commercial</a>
                 </li>
                 <li>
-                  <a onClick={()=>setModalShow(true)}>
-                    List Your Property
-                  </a>
+                  <a onClick={() => setModalShow(true)}>List Your Property</a>
                 </li>
                 <li>
                   <Link to={pageRoutes.CONTACT_US}>Contact Us</Link>
@@ -178,27 +182,15 @@ function Footer() {
                 <img src={footer_line} />
               </h4>
               <ul className="cs-footer-links">
-                <li>
-                  <a href="property-listing.php">Abu Dhabi</a>
-                </li>
-                <li>
-                  <a href="property-listing.php">Dubai</a>
-                </li>
-                <li>
-                  <a href="property-listing.php">Sharjah</a>
-                </li>
-                <li>
-                  <a href="property-listing.php">Ajman</a>
-                </li>
-                <li>
-                  <a href="property-listing.php">Umm Al Quwain</a>
-                </li>
-                <li>
-                  <a href="property-listing.php">Ras Al Khaimah</a>
-                </li>
-                <li>
-                  <a href="property-listing.php">Fujairah</a>
-                </li>
+                {location?.map((loca, index) => (
+                  <li key={index}>
+                    <Link
+                      to={pageRoutes.PROPERTY_LISTING + `/?search=${loca?.name}`}
+                    >
+                      {loca?.name}
+                    </Link>
+                  </li>
+                ))}
               </ul>
             </div>
             <div className="col-md-2 col-sm-12 col-6">

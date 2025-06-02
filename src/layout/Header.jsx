@@ -5,7 +5,9 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import LoginModal from "../pages/auth/login/LoginModal";
 import { getAllActiveCategoryThunk } from "./../features/activeData/activeDataSlice";
+import { getAllActiveLocationThunk } from "./../features/activeData/activeDataSlice";
 function Header() {
+  const { location } = useSelector((store) => store?.activeData);
   const [modalShow, setModalShow] = useState(false);
   const { categories } = useSelector((store) => store?.activeData);
   const dispatch = useDispatch();
@@ -69,10 +71,7 @@ function Header() {
                 ))}
 
                 <li className="menu-item">
-                  <a href="property-listing.php">Commercial</a>
-                </li>
-                <li className="menu-item">
-                  <a data-bs-toggle="modal" data-bs-target="#login_form">
+                  <a data-bs-toggle="modal" data-bs-target="#login_form" onClick={() => setModalShow(true)}>
                     List
                   </a>
                 </li>
@@ -117,51 +116,21 @@ function Header() {
                     Location <i className="expand"></i>
                   </a>
                   <ul className="sub-menu">
+                     {location?.map((loca, index) => (
                     <li className="menu-item">
-                      <a href="property-listing.php">
-                        <i className="ri-arrow-right-up-long-line"></i> Abu
-                        Dhabi
-                      </a>
+                       <Link
+                      to={pageRoutes.PROPERTY_LISTING + `/?search=${loca?.name}`}
+                    >
+                        <i className="ri-arrow-right-up-long-line"></i> {loca?.name}
+                       </Link>
                     </li>
-                    <li className="menu-item">
-                      <a href="property-listing.php">
-                        <i className="ri-arrow-right-up-long-line"></i> Dubai
-                      </a>
-                    </li>
-                    <li className="menu-item">
-                      <a href="property-listing.php">
-                        <i className="ri-arrow-right-up-long-line"></i> Sharjah
-                      </a>
-                    </li>
-                    <li className="menu-item">
-                      <a href="property-listing.php">
-                        <i className="ri-arrow-right-up-long-line"></i> Ajman
-                      </a>
-                    </li>
-                    <li className="menu-item">
-                      <a href="property-listing.php">
-                        <i className="ri-arrow-right-up-long-line"></i> Umm Al
-                        Quwain
-                      </a>
-                    </li>
-                    <li className="menu-item">
-                      <a href="property-listing.php">
-                        <i className="ri-arrow-right-up-long-line"></i> Ras Al
-                        Khaimah
-                      </a>
-                    </li>
-                    <li className="menu-item">
-                      <a href="property-listing.php">
-                        <i className="ri-arrow-right-up-long-line"></i> Fujairah
-                      </a>
-                    </li>
+                  ))}
                   </ul>
                 </li>
 
                 <li className="menu-item">
                   <Link to={pageRoutes.AGENTS}>Find an Agent</Link>
                 </li>
-
                 <li className="menu-item" onClick={() => setModalShow(true)}>
                   <a
                     data-bs-toggle="modal"

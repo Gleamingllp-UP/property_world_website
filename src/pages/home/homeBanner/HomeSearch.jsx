@@ -59,12 +59,13 @@ function HomeSearch() {
   }, [dispatch]);
 
   useEffect(() => {
-    if (
-      userData?.role === "guest" &&
-      !guestLoginTriggered
-    ) {
+   if (userData && Object.keys(userData).length > 0) {
+      if (userData?.role === "guest" && !guestLoginTriggered) {
+        dispatch(guestUserLoginThunk());
+        setGuestLoginTriggered(true);
+      }
+    } else {
       dispatch(guestUserLoginThunk());
-      setGuestLoginTriggered(true);
     }
   }, [dispatch, userData?.role, guestLoginTriggered]);
 

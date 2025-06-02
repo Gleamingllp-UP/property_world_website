@@ -71,7 +71,11 @@ function Header() {
                 ))}
 
                 <li className="menu-item">
-                  <a data-bs-toggle="modal" data-bs-target="#login_form" onClick={() => setModalShow(true)}>
+                  <a
+                    data-bs-toggle="modal"
+                    data-bs-target="#login_form"
+                    onClick={() => setModalShow(true)}
+                  >
                     List
                   </a>
                 </li>
@@ -116,15 +120,19 @@ function Header() {
                     Location <i className="expand"></i>
                   </a>
                   <ul className="sub-menu">
-                     {location?.map((loca, index) => (
-                    <li className="menu-item">
-                       <Link
-                      to={pageRoutes.PROPERTY_LISTING + `/?search=${loca?.name}`}
-                    >
-                        <i className="ri-arrow-right-up-long-line"></i> {loca?.name}
-                       </Link>
-                    </li>
-                  ))}
+                    {location?.map((loca, index) => (
+                      <li className="menu-item">
+                        <Link
+                          to={
+                            pageRoutes.PROPERTY_LISTING +
+                            `/?search=${loca?.name}`
+                          }
+                        >
+                          <i className="ri-arrow-right-up-long-line"></i>{" "}
+                          {loca?.name}
+                        </Link>
+                      </li>
+                    ))}
                   </ul>
                 </li>
 

@@ -910,42 +910,97 @@ const AddProperty = () => {
         </div>
 
         {/* Amenities */}
-        <div className="mb-3">
-          <label className="form-label">Building Amenities / Facilities</label>
-          <div className="row">
-            <div className="col-md-6">
-              <Controller
-                name="building_facilities"
-                control={control}
-                rules={{
-                  validate: (value) =>
-                    value && value.length > 0
-                      ? true
-                      : "Please select at least one amenity",
-                }}
-                render={({ field }) => (
-                  <Select
-                    isMulti
-                    options={amenitiesList?.map((item) => ({
-                      label: item,
-                      value: item,
-                    }))}
-                    onChange={(selectedOptions) =>
-                      field.onChange(
-                        selectedOptions.map((option) => option.value)
-                      )
-                    }
-                    placeholder="-- Select Amenities --"
-                  />
-                )}
-              />
+ <div className="mb-3">
+  <div className="row align-items-center">
+    {/* First input with label */}
+    <div className="col-md-6">
+      <label className="form-label">Building Amenities / Facilities</label>
+      <Controller
+        name="building_facilities"
+        control={control}
+        rules={{
+          validate: (value) =>
+            value && value.length > 0
+              ? true
+              : "Please select at least one amenity",
+        }}
+        render={({ field }) => (
+          <Select
+            isMulti
+            options={amenitiesList?.map((item) => ({
+              label: item,
+              value: item,
+            }))}
+            onChange={(selectedOptions) =>
+              field.onChange(selectedOptions.map((option) => option.value))
+            }
+            placeholder="-- Select Amenities --"
+          />
+        )}
+      />
+      {errors?.building_facilities && (
+        <ErrorMessage message={errors.building_facilities.message} />
+      )}
+    </div>
 
-              {errors?.building_facilities && (
-                <ErrorMessage message={errors.building_facilities.message} />
-              )}
-            </div>
-          </div>
-        </div>
+    {/* Second input with label */}
+    <div className="col-md-6">
+      <label className="form-label">Building Name</label>
+      <input
+        type="text"
+        className="form-control"
+        placeholder="Building Name"
+        value="Building Name"
+        readOnly
+      />
+    </div>
+  </div>
+</div>
+
+
+
+  <div className="mb-3">
+  <div className="row align-items-center">
+    {/* First input with label */}
+    <div className="col-md-6">
+      <label className="form-label">Total Floors</label>
+      <input
+        type="text"
+        className="form-control"
+        placeholder="Building Name"
+        value="Building Name"
+        readOnly
+      />
+    </div>
+
+ 
+    <div className="col-md-6">
+      <label className="form-label">Virtual Tour</label>
+     <input
+    type="file"
+    className="form-control"
+    accept="video/*"
+  />
+    </div>
+  </div>
+</div>
+
+
+
+<div className="mb-3">
+  <div className="row align-items-center">
+    <div className="col-md-6">
+      <label className="form-label">Floor Plan</label>
+      <input
+        type="file"
+        className="form-control"
+        accept="application/pdf"
+        multiple 
+      />
+    </div>
+  </div>
+</div>
+
         {loading ? (
           <ButtonWithSpin />
         ) : (

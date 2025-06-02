@@ -125,11 +125,9 @@ function Footer() {
          </li>
           ))}
                 
+                
                 <li>
-                  <a href="property-listing.php">Commercial</a>
-                </li>
-                <li>
-                  <a data-bs-toggle="modal" data-bs-target="#login_form">
+                  <a data-bs-toggle="modal" data-bs-target="#login_form" >
                     List Your Property
                   </a>
                 </li>

@@ -65,11 +65,9 @@ function Header() {
          </li>
           ))}
               
+              
                 <li className="menu-item">
-                  <a href="property-listing.php">Commercial</a>
-                </li>
-                <li className="menu-item">
-                  <a data-bs-toggle="modal" data-bs-target="#login_form">
+                  <a data-bs-toggle="modal" data-bs-target="#login_form" onClick={() => setModalShow(true)}>
                     List
                   </a>
                 </li>

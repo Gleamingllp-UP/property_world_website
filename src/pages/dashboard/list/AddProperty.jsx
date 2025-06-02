@@ -6,9 +6,9 @@ import {
   getAllActiveSubCategoryThunk,
   getAllActivesubSubCategoryThunk,
   getAllActiveLocationThunk,
+  getAllAmenitiesAndFacilitiesThunk,
 } from "../../../features/activeData/activeDataSlice";
 import {
-  amenitiesList,
   featuresList,
 } from "../../../utils/requiredFormFields/requiredproparty";
 import { useForm, Controller } from "react-hook-form";
@@ -35,9 +35,13 @@ const AddProperty = () => {
     formState: { errors },
   } = useForm();
 
-  const { categories, subCategories, subSubCategories, location } = useSelector(
-    (store) => store?.activeData
-  );
+  const {
+    categories,
+    subCategories,
+    subSubCategories,
+    location,
+    amenitiesAndFacilities,
+  } = useSelector((store) => store?.activeData);
   const { loading } = useSelector((store) => store?.property);
   const { userData } = useSelector((store) => store?.user);
 
@@ -76,6 +80,7 @@ const AddProperty = () => {
       }
     };
     dispatch(getAllActiveLocationThunk());
+    dispatch(getAllAmenitiesAndFacilitiesThunk());
     dispatch(getUserData());
 
     fetchCategories();
@@ -210,6 +215,8 @@ const AddProperty = () => {
     formData.append("address", data?.address || "");
     formData.append("user", userData?._id || "");
     formData.append("product_status", data?.product_status || "");
+    formData.append("building_name", data?.building_name || "");
+    formData.append("total_floors", data?.total_floors || 0);
 
     if (data?.features?.length) {
       formData.append("features", JSON.stringify(data?.features));
@@ -222,17 +229,22 @@ const AddProperty = () => {
       );
     }
 
-    if (data?.tour_types?.length) {
-      formData.append("tour_types", JSON.stringify(data?.tour_types));
-    }
-
     if (data?.thumbnail_img?.[0] instanceof File) {
       formData.append("thumbnail_img", data?.thumbnail_img?.[0]);
+    }
+    if (data?.virtual_tour?.[0] instanceof File) {
+      formData.append("virtual_tour", data?.virtual_tour?.[0]);
     }
 
     if (data?.gallery?.length) {
       Array.from(data?.gallery)?.forEach((file) => {
         formData.append("gallery", file);
+      });
+    }
+
+    if (data?.floor_plan?.length) {
+      Array.from(data?.floor_plan)?.forEach((file) => {
+        formData.append("floor_plan", file);
       });
     }
 
@@ -270,10 +282,10 @@ const AddProperty = () => {
                 const event = { target: { name: "category", value } };
                 register("category").onChange(event);
 
-                setValue("construction_status", "", { shouldValidate: true });
-                setValue("subCategory", "", { shouldValidate: true });
-                setValue("subSubCategory", "", { shouldValidate: true });
-                setValue("handover_by", "", { shouldValidate: true });
+                setValue("construction_status", "");
+                setValue("subCategory", "");
+                setValue("subSubCategory", "");
+                setValue("handover_by", "");
               }}
             >
               <option value="">-- Select --</option>
@@ -300,9 +312,9 @@ const AddProperty = () => {
                 const event = { target: { name: "subCategory", value } };
                 register("subCategory").onChange(event);
 
-                setValue("bedrooms", "", { shouldValidate: true });
-                setValue("bathrooms", "", { shouldValidate: true });
-                setValue("area", "", { shouldValidate: true });
+                setValue("bedrooms", "");
+                setValue("bathrooms", "");
+                setValue("area", "");
               }}
             >
               <option value="">-- Select --</option>
@@ -382,11 +394,11 @@ const AddProperty = () => {
                   };
                   register("construction_status").onChange(event);
 
-                  setValue("bedrooms", "", { shouldValidate: true });
-                  setValue("bathrooms", "", { shouldValidate: true });
-                  setValue("handover_by", "", { shouldValidate: true });
-                  setValue("area", "", { shouldValidate: true });
-                  setValue("payment_plan", "", { shouldValidate: true });
+                  setValue("bedrooms", "");
+                  setValue("bathrooms", "");
+                  setValue("handover_by", "");
+                  setValue("area", "");
+                  setValue("payment_plan", "");
                 }}
               >
                 <option value="">-- Select --</option>
@@ -911,43 +923,6 @@ const AddProperty = () => {
 
         {/* Amenities */}
         <div className="mb-3">
-          <label className="form-label">Building Amenities / Facilities</label>
-          <div className="row">
-            <div className="col-md-6">
-              <Controller
-                name="building_facilities"
-                control={control}
-                rules={{
-                  validate: (value) =>
-                    value && value.length > 0
-                      ? true
-                      : "Please select at least one amenity",
-                }}
-                render={({ field }) => (
-                  <Select
-                    isMulti
-                    options={amenitiesList?.map((item) => ({
-                      label: item,
-                      value: item,
-                    }))}
-                    onChange={(selectedOptions) =>
-                      field.onChange(
-                        selectedOptions.map((option) => option.value)
-                      )
-                    }
-                    placeholder="-- Select Amenities --"
-                  />
-                )}
-              />
-
-              {errors?.building_facilities && (
-                <ErrorMessage message={errors.building_facilities.message} />
-              )}
-            </div>
-          </div>
-        </div>
-
-        <div className="mb-3">
           <div className="row align-items-center">
             {/* First input with label */}
             <div className="col-md-6">
@@ -966,9 +941,9 @@ const AddProperty = () => {
                 render={({ field }) => (
                   <Select
                     isMulti
-                    options={amenitiesList?.map((item) => ({
-                      label: item,
-                      value: item,
+                    options={amenitiesAndFacilities?.map((item) => ({
+                      label: item?.name,
+                      value: item?._id,
                     }))}
                     onChange={(selectedOptions) =>
                       field.onChange(
@@ -991,9 +966,14 @@ const AddProperty = () => {
                 type="text"
                 className="form-control"
                 placeholder="Building Name"
-                value="Building Name"
-                readOnly
+                {...register(
+                  "building_name",
+                  getValidationRules({ label: "Building Name", type: "title" })
+                )}
               />
+              {errors?.building_name && (
+                <ErrorMessage message={errors?.building_name?.message} />
+              )}
             </div>
           </div>
         </div>
@@ -1004,17 +984,33 @@ const AddProperty = () => {
             <div className="col-md-6">
               <label className="form-label">Total Floors</label>
               <input
-                type="text"
+                type="number"
                 className="form-control"
-                placeholder="Building Name"
-                value="Building Name"
-                readOnly
+                placeholder="Total Floors"
+                {...register(
+                  "total_floors",
+                  getValidationRules({ label: "Total Floors", type: "number" })
+                )}
               />
+              {errors?.total_floors && (
+                <ErrorMessage message={errors?.total_floors?.message} />
+              )}
             </div>
 
             <div className="col-md-6">
               <label className="form-label">Virtual Tour</label>
-              <input type="file" className="form-control" accept="video/*" />
+              <input
+                type="file"
+                className="form-control"
+                accept="video/*"
+                {...register(
+                  "virtual_tour",
+                  getValidationRules({ label: "Vitual Tours", type: "file" })
+                )}
+              />
+              {errors?.virtual_tour && (
+                <ErrorMessage message={errors?.virtual_tour?.message} />
+              )}
             </div>
           </div>
         </div>
@@ -1028,7 +1024,14 @@ const AddProperty = () => {
                 className="form-control"
                 accept="application/pdf"
                 multiple
+                {...register(
+                  "floor_plan",
+                  getValidationRules({ label: "Floor Plans", type: "file" })
+                )}
               />
+              {errors?.floor_plan && (
+                <ErrorMessage message={errors?.floor_plan?.message} />
+              )}
             </div>
           </div>
         </div>

@@ -30,7 +30,9 @@ export const getAllActiveSubCategory = async (categoryId) => {
         "Failed to get sub-category, please try again later."
       );
     } else {
-      throw error?.message || "Failed to get sub-category, please try again later.";
+      throw (
+        error?.message || "Failed to get sub-category, please try again later."
+      );
     }
   }
 };
@@ -48,7 +50,10 @@ export const getAllActivesubSubCategory = async (subCategoryId) => {
         "Failed to get sub-sub-category, please try again later."
       );
     } else {
-      throw error?.message || "Failed to get sub-sub-category, please try again later.";
+      throw (
+        error?.message ||
+        "Failed to get sub-sub-category, please try again later."
+      );
     }
   }
 };
@@ -67,7 +72,21 @@ export const getAllActiveLocation = async () => {
       throw error?.message || "Failed to get category, please try again later.";
     }
   }
-
-
-  
+};
+export const getAllAmenitiesAndFacilities = async () => {
+  try {
+    const response = await api.get(
+      endpoints.getAllAmenitiesAndFacilitiesForUser
+    );
+    return response.data;
+  } catch (error) {
+    if (error?.status !== 401) {
+      throw (
+        error?.response?.data?.message ||
+        "Failed to get AmenitiesAndFacilities, please try again later."
+      );
+    } else {
+      throw error?.message || "Failed to get AmenitiesAndFacilities, please try again later.";
+    }
+  }
 };

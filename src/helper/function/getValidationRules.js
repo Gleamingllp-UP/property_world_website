@@ -61,7 +61,27 @@ export const getValidationRules = ({
           console.log("fileList", fileList);
           console.log("imageURL", imageURL);
 
-          const allowedTypes = ["image/jpeg", "image/png", "application/pdf"];
+          const allowedTypes = [
+            // Images
+            "image/jpeg",
+            "image/png",
+            "image/webp",
+            "image/gif",
+            "image/svg+xml",
+            "image/bmp",
+            "image/tiff",
+
+            // PDF
+            "application/pdf",
+
+            // Videos
+            "video/mp4",
+            "video/webm",
+            "video/ogg",
+            "video/quicktime", // .mov
+            "video/x-msvideo", // .avi
+            "video/x-matroska", // .mkv
+          ];
 
           if (fileList?.[0]?.type) {
             return allowedTypes.includes(fileList[0].type)
@@ -78,7 +98,7 @@ export const getValidationRules = ({
         },
 
         maxSize: (fileList) => {
-          const maxSizeInMB = 5;
+          const maxSizeInMB = 50;
 
           if (fileList?.[0]?.size) {
             return fileList[0].size <= maxSizeInMB * 1024 * 1024

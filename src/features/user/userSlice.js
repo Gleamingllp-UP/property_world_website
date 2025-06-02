@@ -164,5 +164,10 @@ const usersSlice = createSlice({
   },
 });
 
-export const { getUserFormData, removeUserFormDataToken ,getUserData,userLogOut} = usersSlice.actions;
+export const {
+  getUserFormData,
+  removeUserFormDataToken,
+  getUserData,
+  userLogOut,
+} = usersSlice.actions;
 export default usersSlice.reducer;

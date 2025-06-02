@@ -13,7 +13,7 @@ function Header() {
   const navigate = useNavigate();
   useEffect(() => {
     dispatch(getAllActiveCategoryThunk());
-  }, []);
+  }, [dispatch]);
 
   return (
     <header>

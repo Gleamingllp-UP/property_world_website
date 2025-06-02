@@ -9,8 +9,6 @@ import { useLocation } from "react-router-dom";
 import {
   bath,
   bed,
-  pro_comm1,
-  pro_comm2,
   pro_comm3,
   pro_comm4,
   propert2,
@@ -19,6 +17,8 @@ import {
   user,
 } from "../../../assets/images";
 import { CustomPagination } from "../../../Custom_Components/CustomPagination";
+import { pageRoutes } from "../../../router/pageRoutes";
+import ImageWithLoader from "../../../Custom_Components/ImageWithLoader";
 
 const Archive = () => {
   const dispatch = useDispatch();
@@ -246,114 +246,147 @@ const Archive = () => {
           </div>
 
           {/* Dynamic Properties List */}
-          {propertyData?.map((item) => (
-            <div className="list_box normal_listing" key={item?._id}>
-              <div className="row">
-                <div className="col-lg-5">
-                  <div className="normal_slider">
-                    <div
-                      className="agent_d"
-                      data-bs-toggle="modal"
-                      data-bs-target="#agency_info"
-                    >
-                      <i className="ri-checkbox-circle-fill" /> Checked
-                    </div>
-                    <div className="save_p">
-                      <button>
-                        <i className="ri-heart-line" />
-                      </button>
-                    </div>
-                    <div className="my-slider">
-                      {[pro_comm1, pro_comm2, pro_comm3, pro_comm4].map(
-                        (src, i) => (
-                          <div key={i}>
-                            <Link to="/property-details">
-                              <img src={src} className="img-fluid" />
-                            </Link>
-                          </div>
-                        )
-                      )}
-                    </div>
-                  </div>
-                  <div className="price_tt normal">
-                    <span>
-                      AED <b>{item?.price}</b> {item?.duration}
-                    </span>
-                    <span className="flex_box">
-                      <img src={user} className="agent_b" />
-                      <i className="ri-verified-badge-fill" />
-                    </span>
-                  </div>
-                </div>
+          {propertyData &&
+            propertyData?.map((item) => {
+              return (
+                <div className="list_box normal_listing" key={item?._id}>
+                  <div className="row">
+                    <div className="col-lg-5">
+                      <div className="normal_slider">
+                        <div
+                          className="agent_d"
+                          data-bs-toggle="modal"
+                          data-bs-target="#agency_info"
+                        >
+                          <i className="ri-checkbox-circle-fill" /> Checked
+                        </div>
+                        <div className="save_p">
+                          <button>
+                            <i className="ri-heart-line" />
+                          </button>
+                        </div>
+                        <div className="my-slider">
+                          {item?.images &&
+                            item?.images?.map((img, i) => (
+                              <>
+                              <div key={i}>
+                                <Link
+                                  to={
+                                    pageRoutes.PROPERTY_DETAILS +
+                                    `/?id=${item?._id}`
+                                  }
+                                >
+                                  <ImageWithLoader src={img?.url} />
+                                </Link>
+                              </div>
+                              <div key={i}>
+                                <Link
+                                  to={
+                                    pageRoutes.PROPERTY_DETAILS +
+                                    `/?id=${item?._id}`
+                                  }
+                                >
+                                  <ImageWithLoader src={img?.url} />
+                                </Link>
+                              </div>
+                              </>
 
-                <div className="col-lg-7">
-                  <div className="property_data_area">
-                    <h2>
-                      <Link to="/property-details">{item?.title}</Link>
-                    </h2>
-                    <div className="p_info">
-                      <ul>
-                        <li>{item?.subSubCategoryData?.name}</li>
-                        <li>
-                          {item?.bedrooms && (
-                            <span>
-                              <img src={bed} /> {item?.bedrooms}
-                            </span>
-                          )}
-                          {item?.bathrooms && (
-                            <span>
-                              <img src={bath} /> {item?.bathrooms}
-                            </span>
-                          )}
-                        </li>
-                        {item?.area && (
-                          <li>
-                            <img src={ruler} /> {item?.area}
-                          </li>
-                        )}
-                      </ul>
-                    </div>
-                    {item?.building_facilities?.length > 0 && (
-                      <div className="key_property">
-                        <a href="#">
-                          {item?.building_facilities?.slice(0, 4).join(" | ")}
-                        </a>
+                            ))}
+                        </div>
                       </div>
-                    )}
-                    <div className="pro_desc sli">
-                      {item?.short_description}
+                      <div className="price_tt normal">
+                        <span>
+                          AED <b>{item?.price}</b> {item?.duration}
+                        </span>
+                        <span className="flex_box">
+                          <img src={user} className="agent_b" />
+                          <i className="ri-verified-badge-fill" />
+                        </span>
+                      </div>
                     </div>
-                    <div className="loc">
-                      <i className="ri-map-pin-line" />{" "}
-                      {item?.locationData?.name}
-                    </div>
-                    <div className="call_action">
-                      <ul>
-                        <li>
-                          <a href="#">
-                            <i className="ri-phone-line" /> Call
-                          </a>
-                        </li>
-                        <li>
-                          <a href="#">
-                            <i className="ri-mail-open-line" /> Email
-                          </a>
-                        </li>
-                        <li>
-                          <a href="#">
-                            <i className="ri-whatsapp-line" /> WhatsApp
-                          </a>
-                        </li>
-                      </ul>
-                      <span>
-                        <img src={property_world_logo} />
-                      </span>
+
+                    <div className="col-lg-7">
+                      <div className="property_data_area">
+                        <h2>
+                          <Link to="/property-details">{item?.title}</Link>
+                        </h2>
+                        <div className="p_info">
+                          <ul>
+                            <li>{item?.subSubCategoryData?.name}</li>
+                            <li>
+                              {item?.bedrooms && (
+                                <span>
+                                  <img src={bed} /> {item?.bedrooms}
+                                </span>
+                              )}
+                              {item?.bathrooms && (
+                                <span>
+                                  <img src={bath} /> {item?.bathrooms}
+                                </span>
+                              )}
+                            </li>
+                            {item?.area && (
+                              <li>
+                                <img src={ruler} /> {item?.area}
+                              </li>
+                            )}
+                          </ul>
+                        </div>
+                        {item?.amenitiesAndFacilitiesData?.length > 0 ? (
+                          <div className="key_property">
+                            <a href="#">
+                              {item?.amenitiesAndFacilitiesData
+                                ?.slice(0, 4)
+                                ?.map((item) => item?.name)
+                                .join(" | ")}
+                            </a>
+                          </div>
+                        ) : (
+                          item?.building_facilities?.length > 0 && (
+                            <div className="key_property">
+                              <a href="#">
+                                {item?.building_facilities
+                                  ?.slice(0, 4)
+                                  .join(" | ")}
+                              </a>
+                            </div>
+                          )
+                        )}
+                        <div className="pro_desc sli">
+                          {item?.short_description}
+                        </div>
+                        <div className="loc">
+                          <i className="ri-map-pin-line" />{" "}
+                          {item?.locationData?.name}
+                        </div>
+                        <div className="call_action">
+                          <ul>
+                            <li>
+                              <a href="#">
+                                <i className="ri-phone-line" /> Call
+                              </a>
+                            </li>
+                            <li>
+                              <a href="#">
+                                <i className="ri-mail-open-line" /> Email
+                              </a>
+                            </li>
+                            <li>
+                              <a href="#">
+                                <i className="ri-whatsapp-line" /> WhatsApp
+                              </a>
+                            </li>
+                          </ul>
+                          <span>
+                            <img src={property_world_logo} />
+                          </span>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
-          ))}
+              );
+            })}
         </div>
 
         {/* Pagination */}

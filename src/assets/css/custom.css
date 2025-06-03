@@ -3001,3 +3001,9 @@ a.chat_ptb {
     margin-left: 50px;
   }
 }
+.featured_list {
+    padding-top:  0px !important;
+}
+.share_post button {
+    margin-left: 5px;
+}

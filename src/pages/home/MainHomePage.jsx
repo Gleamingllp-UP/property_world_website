@@ -13,11 +13,12 @@ function MainHomePage() {
     <div>
       <HomeBanner />
       <HomeAssistant />
-      <HomeNewsBlog/>
+      
       <HomeFeaturedList/>
       <HomeListing/>
       <HomeCategoryWiseList/>
       <HomePopularSearches/>
+      <HomeNewsBlog/>
       <HomeAgency/>
     </div>
   );

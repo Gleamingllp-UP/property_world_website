@@ -5,7 +5,7 @@ import ArchiveLocation from "./ArchiveLocation";
 import ArchiveTop from "./ArchiveTop";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
-
+import Slider from "react-slick";
 import {
   bath,
   bed,
@@ -18,8 +18,8 @@ import {
 } from "../../../assets/images";
 import { CustomPagination } from "../../../Custom_Components/CustomPagination";
 import { pageRoutes } from "../../../router/pageRoutes";
-import ImageWithLoader from "../../../Custom_Components/ImageWithLoader";
-
+import ImageWithLoader from "./../../../Custom_Components/ImageWithLoader";
+import "../../../assets/css/arrow.css";
 const Archive = () => {
   const dispatch = useDispatch();
   const {
@@ -62,7 +62,18 @@ const Archive = () => {
       })
     );
   }, [dispatch, page, location.search, sortBy]);
+  // Custom arrow components
+  const NextArrow = ({ onClick }) => (
+    <div className="custom-arrow next" onClick={onClick}>
+      <i className="ri-arrow-right-s-line"></i>
+    </div>
+  );
 
+  const PrevArrow = ({ onClick }) => (
+    <div className="custom-arrow prev" onClick={onClick}>
+      <i className="ri-arrow-left-s-line"></i>
+    </div>
+  );
   return (
     <>
       {/* Top Search Bar */}
@@ -278,10 +289,43 @@ const Archive = () => {
 
           {/* Dynamic Properties List */}
           {propertyData &&
-            propertyData?.map((item) => {
+            propertyData.map((item) => {
+              const sliderSettings = {
+                dots: false,
+                infinite: true,
+                speed: 1000,
+                slidesToShow: 2,
+                slidesToScroll: 1,
+                arrows: true,
+                variableWidth: false,
+                nextArrow: <NextArrow />,
+                prevArrow: <PrevArrow />,
+                responsive: [
+                  {
+                    breakpoint: 1024,
+                    settings: {
+                      slidesToShow: 2,
+                    },
+                  },
+                  {
+                    breakpoint: 768,
+                    settings: {
+                      slidesToShow: 1,
+                    },
+                  },
+                  {
+                    breakpoint: 480,
+                    settings: {
+                      slidesToShow: 1,
+                    },
+                  },
+                ],
+              };
+
               return (
                 <div className="list_box normal_listing" key={item?._id}>
                   <div className="row">
+                    {/* Left Side */}
                     <div className="col-lg-5">
                       <div className="normal_slider">
                         <div
@@ -296,78 +340,70 @@ const Archive = () => {
                             <i className="ri-heart-line" />
                           </button>
                         </div>
+
                         <div className="my-slider">
-                          {item?.images &&
-                            item?.images?.map((img, i) => (
-                              <>
-                                <div key={i}>
-                                  <Link
-                                    to={
-                                      pageRoutes.PROPERTY_DETAILS +
-                                      `/?id=${item?._id}`
-                                    }
-                                  >
-                                    <ImageWithLoader src={img?.url} />
-                                  </Link>
-                                </div>
-                                <div key={i}>
-                                  <Link
-                                    to={
-                                      pageRoutes.PROPERTY_DETAILS +
-                                      `/?id=${item?._id}`
-                                    }
-                                  >
-                                    <ImageWithLoader src={img?.url} />
-                                  </Link>
-                                </div>
-                              </>
+                          <Slider {...sliderSettings}>
+                            {item?.images?.map((img, i) => (
+                              <div key={i}>
+                                <Link
+                                  to={`${pageRoutes.PROPERTY_DETAILS}?id=${item?._id}`}
+                                >
+                                  <ImageWithLoader src={img?.url} />
+                                </Link>
+                              </div>
                             ))}
+                          </Slider>
                         </div>
                       </div>
+
                       <div className="price_tt normal">
                         <span>
                           AED <b>{item?.price}</b> {item?.duration}
                         </span>
                         <span className="flex_box">
-                          <img src={user} className="agent_b" />
+                          <img src={user} className="agent_b" alt="agent" />
                           <i className="ri-verified-badge-fill" />
                         </span>
                       </div>
                     </div>
 
+                    {/* Right Side */}
                     <div className="col-lg-7">
                       <div className="property_data_area">
                         <h2>
                           <Link to="/property-details">{item?.title}</Link>
                         </h2>
+
                         <div className="p_info">
                           <ul>
                             <li>{item?.subSubCategoryData?.name}</li>
                             <li>
                               {item?.bedrooms && (
                                 <span>
-                                  <img src={bed} /> {item?.bedrooms}
+                                  <img src={bed} alt="bed" /> {item?.bedrooms}
                                 </span>
                               )}
                               {item?.bathrooms && (
                                 <span>
-                                  <img src={bath} /> {item?.bathrooms}
+                                  <img src={bath} alt="bath" />{" "}
+                                  {item?.bathrooms}
                                 </span>
                               )}
                             </li>
                             {item?.area && (
                               <li>
-                                <img src={ruler} /> {item?.area}
+                                <img src={ruler} alt="area" /> {item?.area}
                               </li>
                             )}
                           </ul>
                         </div>
+
                         {item?.amenitiesAndFacilitiesData?.length > 0 ? (
                           <div className="key_property">
                             <a href="#">
                               {item?.amenitiesAndFacilitiesData
                                 ?.slice(0, 4)
-                                ?.map((item) => item?.name)
+                                .map((af) => af?.name)
                                 .join(" | ")}
                             </a>
                           </div>
@@ -382,6 +418,7 @@ const Archive = () => {
                             </div>
                           )
                         )}
+
                         <div className="pro_desc sli">
                           {item?.short_description}
                         </div>
@@ -389,26 +426,38 @@ const Archive = () => {
                           <i className="ri-map-pin-line" />{" "}
                           {item?.locationData?.name}
                         </div>
+
                         <div className="call_action">
                           <ul>
                             <li>
-                              <a href="#">
+                              <a href={`tel:${item?.phone || "97143533229"}`}>
                                 <i className="ri-phone-line" /> Call
                               </a>
                             </li>
                             <li>
-                              <a href="#">
+                              <a
+                                href={`mailto:${
+                                  item?.email || "info@propertyworld.ae"
+                                }`}
+                              >
                                 <i className="ri-mail-open-line" /> Email
                               </a>
                             </li>
                             <li>
-                              <a href="#">
+                              <a
+                                href={`https://wa.me/${
+                                  item?.whatsapp || "97143533229"
+                                }`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
                                 <i className="ri-whatsapp-line" /> WhatsApp
                               </a>
                             </li>
                           </ul>
+
                           <span>
-                            <img src={property_world_logo} />
+                            <img src={property_world_logo} alt="logo" />
                           </span>
                         </div>
                       </div>

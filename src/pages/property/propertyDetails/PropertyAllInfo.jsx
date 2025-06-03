@@ -1,27 +1,12 @@
 import React from "react";
-import {
-  ads_banner,
-  ruler,
-  bed,
-  swimming,
-  sofa,
-  parking,
-  floor1,
-  floor2,
-  gym,
-  cctv,
-  ads_banner2,
-  pop1,
-  propert2,
-  propert3,
-  propert4,
-  property_world_logo,
-  user,
-  bath,
-} from "@/assets/images";
+import { floor1, floor2 } from "@/assets/images";
 import Features from "./Features";
 import { useSelector } from "react-redux";
 import { formatDate } from "../../../helper/formateDate/formatedDate";
+import PropertySide from "./PropertySide";
+import SimlarProperty from "./SimlarProperty";
+
+import PropertySocial from "./PropertySocial";
 function PropertyAllInfo() {
   const { propertyDetails } = useSelector((store) => store?.property);
 
@@ -31,11 +16,20 @@ function PropertyAllInfo() {
         <div className="row">
           <div className="col-lg-9">
             <div className="left_area">
-              <div className="tag">
-                For {propertyDetails?.categoryData?.name || "N/A"}
+              <div className="row">
+                <div className="col-lg-9">
+                  <div className="tag">
+                    For {propertyDetails?.categoryData?.name || "N/A"}
+                  </div>
+                  <h2 className="the_comm">
+                    {propertyDetails?.title || "N/A"}
+                  </h2>
+                  <div className="price_d">
+                    AED {propertyDetails?.price || "0"}
+                  </div>
+                </div>
+                <PropertySocial />
               </div>
-              <h2 className="the_comm">{propertyDetails?.title || "N/A"}</h2>
-              <div className="price_d">AED {propertyDetails?.price || "0"}</div>
               <div className="call_action my_acttn">
                 <ul>
                   <li>
@@ -68,16 +62,13 @@ function PropertyAllInfo() {
                 <p>Key Property Features</p>
                 <ul>
                   <li>
-                    <i className="ri-hotel-bed-line" /> Bedrooms:{" "}
-                    {propertyDetails?.bedrooms || 0}
+                    <i className="ri-hotel-bed-line" /> Bedrooms: 2
                   </li>
                   <li>
-                    <i className="fa fa-bath" aria-hidden="true" /> Bathrooms:
-                    {propertyDetails?.bathrooms || 0}
+                    <i className="fa fa-bath" aria-hidden="true" /> Bathrooms: 3
                   </li>
                   <li>
-                    <i className="ri-ruler-line" /> Size:{" "}
-                    {propertyDetails?.area || 0} sqft
+                    <i className="ri-ruler-line" /> Size: 817 sqft
                   </li>
                 </ul>
               </div>
@@ -89,15 +80,11 @@ function PropertyAllInfo() {
                     <tbody>
                       <tr>
                         <td>Type</td>
-                        <td>
-                          {propertyDetails?.subSubCategoryData?.name || "N/A"}
-                        </td>
+                        <td>Apartment</td>
                       </tr>
                       <tr>
                         <td>Purpose</td>
-                        <td>
-                          For {propertyDetails?.categoryData?.name || "N/A"}
-                        </td>
+                        <td>For rent</td>
                       </tr>
                       <tr>
                         <td>Reference</td>
@@ -106,27 +93,25 @@ function PropertyAllInfo() {
                       <tr>
                         <td>Added on</td>
                         <td>
-                          <i className="ri-calendar-2-line" />{" "}
-                          {formatDate(propertyDetails?.createdAt, "date")}
+                          <i className="ri-calendar-2-line" /> 6 February 2025
                         </td>
                       </tr>
                       <tr>
                         <td>Ownership</td>
                         <td>
                           <i className="ri-verified-badge-fill verified" />{" "}
-                          {propertyDetails?.ownership_status || "N/A"}
+                          Freehold
                         </td>
                       </tr>
                       <tr>
                         <td>Built-up Area </td>
                         <td>
-                          <i className="ri-ruler-line" />{" "}
-                          {propertyDetails?.area || 0} sqft
+                          <i className="ri-ruler-line" /> 817 sqft
                         </td>
                       </tr>
                       <tr>
                         <td>Usage</td>
-                        <td>{propertyDetails?.subCategoryData?.name || "N/A"}</td>
+                        <td>Residential</td>
                       </tr>
                     </tbody>
                   </table>
@@ -145,7 +130,9 @@ function PropertyAllInfo() {
                   </li>
                 </ul>
               </div>
+              <hr />
               <Features />
+              <hr />
               <div className="key_feature">
                 <p>Map </p>
                 <iframe
@@ -153,7 +140,7 @@ function PropertyAllInfo() {
                   width="100%"
                   height={350}
                   style={{ border: 0 }}
-                  allowFullScreen=""
+                  allowFullScreen
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
                 />
@@ -187,7 +174,7 @@ function PropertyAllInfo() {
                   frameBorder={0}
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                   referrerPolicy="strict-origin-when-cross-origin"
-                  allowFullScreen=""
+                  allowFullScreen
                 />
               </div>
               <hr />
@@ -217,143 +204,7 @@ function PropertyAllInfo() {
                 </div>
               </div>
               <hr />
-              <div className="key_feature">
-                <p>Similar Properties</p>
-                <div className="row">
-                  <div className="col-lg-6">
-                    <div className="pop_search light_b">
-                      <div className="pop_photo">
-                        <a href="property-details.php">
-                          <img src={pop1} className="img-fluid" />
-                        </a>
-                      </div>
-                      <div className="pop_data">
-                        <h3>2BHK in Dubai Marina</h3>
-                        <p>AED 830,000</p>
-                        <div className="p_info2">
-                          <ul>
-                            <li>
-                              <img src={bed} /> 1{" "}
-                            </li>
-                            <li>
-                              <img src={bath} />1
-                            </li>
-                            <li>
-                              <img src={ruler} /> 396
-                            </li>
-                          </ul>
-                        </div>
-                        <div className="loc">
-                          <i className="ri-map-pin-line" /> Dubai Sports City
-                        </div>
-                        <a href="property-details.php">
-                          Explore Now{" "}
-                          <i className="ri-arrow-right-up-long-line" />
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-lg-6">
-                    <div className="pop_search light_b">
-                      <div className="pop_photo">
-                        <a href="property-details.php">
-                          <img src={propert2} className="img-fluid" />
-                        </a>
-                      </div>
-                      <div className="pop_data">
-                        <h3>1BHK in Al Barsha</h3>
-                        <p>AED 830,000</p>
-                        <div className="p_info2">
-                          <ul>
-                            <li>
-                              <img src={bed} /> 1{" "}
-                            </li>
-                            <li>
-                              <img src={bath} />1
-                            </li>
-                            <li>
-                              <img src={ruler} /> 396
-                            </li>
-                          </ul>
-                        </div>
-                        <div className="loc">
-                          <i className="ri-map-pin-line" /> Dubai Sports City
-                        </div>
-                        <a href="property-details.php">
-                          Explore Now{" "}
-                          <i className="ri-arrow-right-up-long-line" />
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-lg-6">
-                    <div className="pop_search light_b">
-                      <div className="pop_photo">
-                        <a href="property-details.php">
-                          <img src={propert3} className="img-fluid" />
-                        </a>
-                      </div>
-                      <div className="pop_data">
-                        <h3>Apartment in Downtown</h3>
-                        <p>AED 950,000</p>
-                        <div className="p_info2">
-                          <ul>
-                            <li>
-                              <img src={bed} /> 1{" "}
-                            </li>
-                            <li>
-                              <img src={bath} />1
-                            </li>
-                            <li>
-                              <img src={ruler} /> 396
-                            </li>
-                          </ul>
-                        </div>
-                        <div className="loc">
-                          <i className="ri-map-pin-line" /> Dubai Sports City
-                        </div>
-                        <a href="property-details.php">
-                          Explore Now{" "}
-                          <i className="ri-arrow-right-up-long-line" />
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-lg-6">
-                    <div className="pop_search light_b">
-                      <div className="pop_photo">
-                        <a href="property-details.php">
-                          <img src={propert4} className="img-fluid" />
-                        </a>
-                      </div>
-                      <div className="pop_data">
-                        <h3>1BHK in Al Barsha</h3>
-                        <p>AED 830,000</p>
-                        <div className="p_info2">
-                          <ul>
-                            <li>
-                              <img src={bed} /> 1{" "}
-                            </li>
-                            <li>
-                              <img src={bath} />1
-                            </li>
-                            <li>
-                              <img src={ruler} /> 396
-                            </li>
-                          </ul>
-                        </div>
-                        <div className="loc">
-                          <i className="ri-map-pin-line" /> Dubai Sports City
-                        </div>
-                        <a href="property-details.php">
-                          Explore Now{" "}
-                          <i className="ri-arrow-right-up-long-line" />
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <SimlarProperty />
               <hr />
               <div className="key_feature regulatory">
                 <p>Regulatory Information</p>
@@ -370,93 +221,7 @@ function PropertyAllInfo() {
               </div>
             </div>
           </div>
-          <div className="col-lg-3">
-            <div className="agent">
-              <img src={property_world_logo} className="img-fluid agent_logo" />
-              <h5>Property Finders Real Estate</h5>
-              <hr />
-              <div className="agent_info">
-                <a href="agent-info.php">
-                  <img src={user} className="img-fluid john" />
-                </a>
-                <p>
-                  <b>
-                    <a href="agent-info.php">John Smith</a>
-                  </b>
-                </p>
-                <p className="mt-2 mb-3">Agent: Property Finders</p>
-                <small>
-                  With a passion for helping people find the perfect place to
-                  call home...
-                </small>
-              </div>
-            </div>
-            <div className="get_in_touch">
-              <h5>
-                Get in touch <br />
-                for more information
-              </h5>
-              <a href="#" className="call_us2">
-                <i className="ri-phone-line" /> Call{" "}
-              </a>
-              <a href="#" className="email_area">
-                <i className="ri-mail-open-line" /> Email{" "}
-              </a>
-              <a href="#" className="whats_aap">
-                <i className="ri-whatsapp-line" /> WhatsApp{" "}
-              </a>
-            </div>
-            <div className="recommended_s">
-              <h5>
-                <b>Recommended Searches</b>
-              </h5>
-              <hr />
-              <ul>
-                <li>
-                  <a href="#">The Community Sports Arena</a>
-                </li>
-                <li>
-                  <a href="#">Highly Accessible Spacious</a>
-                </li>
-                <li>
-                  <a href="#">Office for Rent in Al Qiyadah</a>
-                </li>
-                <li>
-                  <a href="#">Office for Rent in Al Qiyadah</a>
-                </li>
-              </ul>
-            </div>
-            <div className="recommended_s trending_s">
-              <h5>
-                <b>Trending Searches</b>
-              </h5>
-              <hr />
-              <ul>
-                <li>
-                  <a href="#">The Community Sports Arena</a>
-                </li>
-                <li>
-                  <a href="#">Highly Accessible | Spacious</a>
-                </li>
-                <li>
-                  <a href="#">Office for Rent in Al Qiyadah</a>
-                </li>
-                <li>
-                  <a href="#">Office for Rent in Al Qiyadah</a>
-                </li>
-              </ul>
-            </div>
-            <div className="new_adss">
-              <a href="#">
-                <img src={ads_banner} className="img-fluid" />
-              </a>
-            </div>
-            <div className="new_adss">
-              <a href="#">
-                <img src={ads_banner2} className="img-fluid" />
-              </a>
-            </div>
-          </div>
+          <PropertySide />
         </div>
       </div>
     </section>

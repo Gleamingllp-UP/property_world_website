@@ -14,7 +14,8 @@ import {
   pro_comm5,
   pro_comm6,
 } from "@/assets/images";
-import React from "react";
+import { Link } from "react-router-dom";
+import { pageRoutes } from "../../../router/pageRoutes";
 
 function HomeCategoryWiseList() {
   return (
@@ -356,10 +357,13 @@ function HomeCategoryWiseList() {
                 </div>
               </div>
               <div className="col-12 text-center">
-                <a href="property-listing.php" className="action_btn mt20">
+                <Link
+                  to={pageRoutes.PROPERTY_LISTING}
+                  className="action_btn mt20"
+                >
                   View All Properties{" "}
                   <i className="ri-arrow-right-up-long-line" />
-                </a>
+                </Link>
               </div>
             </div>
             <div
@@ -653,10 +657,13 @@ function HomeCategoryWiseList() {
                 </div>
               </div>
               <div className="col-12 text-center">
-                <a href="property-listing.php" className="action_btn mt20">
+                <Link
+                  to={pageRoutes.PROPERTY_LISTING}
+                  className="action_btn mt20"
+                >
                   View All Properties{" "}
                   <i className="ri-arrow-right-up-long-line" />
-                </a>
+                </Link>
               </div>
             </div>
             <div
@@ -950,10 +957,13 @@ function HomeCategoryWiseList() {
                 </div>
               </div>
               <div className="col-12 text-center">
-                <a href="property-listing.php" className="action_btn mt20">
+                <Link
+                  to={pageRoutes.PROPERTY_LISTING}
+                  className="action_btn mt20"
+                >
                   View All Properties{" "}
                   <i className="ri-arrow-right-up-long-line" />
-                </a>
+                </Link>
               </div>
             </div>
           </div>

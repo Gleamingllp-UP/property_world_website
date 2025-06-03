@@ -7,7 +7,10 @@ import {
   resetActiveData,
 } from "../../../features/activeData/activeDataSlice";
 import { formatRange } from "../../../helper/function/formatRange";
-import { guestUserLoginThunk } from "../../../features/user/userSlice";
+import {
+  getUserData,
+  guestUserLoginThunk,
+} from "../../../features/user/userSlice";
 import { generateHandoverOptions } from "../../../helper/function/generateHandoverOptions";
 import Form from "react-bootstrap/Form";
 import { useNavigate } from "react-router-dom";
@@ -46,11 +49,25 @@ function HomeSearch() {
   const { categories, subCategories, subSubCategories, loading } = useSelector(
     (store) => store?.activeData
   );
+  const { userData } = useSelector((store) => store?.user);
   const dispatch = useDispatch();
 
+  const [guestLoginTriggered, setGuestLoginTriggered] = useState(false);
+
   useEffect(() => {
-    dispatch(guestUserLoginThunk());
+    dispatch(getUserData());
   }, [dispatch]);
+
+  useEffect(() => {
+   if (userData && Object.keys(userData).length > 0) {
+      if (userData?.role === "guest" && !guestLoginTriggered) {
+        dispatch(guestUserLoginThunk());
+        setGuestLoginTriggered(true);
+      }
+    } else {
+      dispatch(guestUserLoginThunk());
+    }
+  }, [dispatch, userData?.role, guestLoginTriggered]);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -194,7 +211,7 @@ function HomeSearch() {
   };
   const navigate = useNavigate();
 
-  function haldelSearch(event) {
+  function haldelSearch() {
     const queryParams = new URLSearchParams({
       category: selectedCategoryId,
       subCategory: selectedSubCategoryId,

@@ -61,6 +61,7 @@ const propertySlice = createSlice({
       //Fetch property details
       .addCase(getPropertyDetailsThunk.pending, (state) => {
         state.isLoading = true;
+        state.propertyDetails = null;
       })
       .addCase(getPropertyDetailsThunk.fulfilled, (state, action) => {
         state.propertyDetails = action.payload.data[0];
@@ -69,6 +70,8 @@ const propertySlice = createSlice({
       .addCase(getPropertyDetailsThunk.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
+        state.propertyDetails = null;
+
       })
 
       .addCase(getAllUserPropertyThunk.pending, (state) => {

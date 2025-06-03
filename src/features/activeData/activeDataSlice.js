@@ -3,7 +3,8 @@ import {
   getAllActiveCategory,
   getAllActiveSubCategory,
   getAllActivesubSubCategory,
-  getAllActiveLocation
+  getAllActiveLocation,
+  getAllAmenitiesAndFacilities
 } from "./activeDataAPI";
 
 export const getAllActiveCategoryThunk = createAsyncThunk(
@@ -32,11 +33,19 @@ export const getAllActiveLocationThunk = createAsyncThunk(
     return await getAllActiveLocation(payload);
   }
 );
+
+export const getAllAmenitiesAndFacilitiesThunk = createAsyncThunk(
+  "users/getAllAmenitiesAndFacilities",
+  async (payload) => {
+    return await getAllAmenitiesAndFacilities(payload);
+  }
+);
 // Initial State
 const initialState = {
   categories: [],
   subCategories: [],
   subSubCategories: [],
+  amenitiesAndFacilities: [],
   location: [],
   loading: false,
   error: null,
@@ -95,6 +104,7 @@ const activeDataSlice = createSlice({
         state.error = action.error.message;
       })
 
+      //Location
       .addCase(getAllActiveLocationThunk.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -104,6 +114,20 @@ const activeDataSlice = createSlice({
         state.location = action.payload.data || [];
       })
       .addCase(getAllActiveLocationThunk.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+
+      //Location
+      .addCase(getAllAmenitiesAndFacilitiesThunk.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getAllAmenitiesAndFacilitiesThunk.fulfilled, (state, action) => {
+        state.loading = false;
+        state.amenitiesAndFacilities = action.payload.data || [];
+      })
+      .addCase(getAllAmenitiesAndFacilitiesThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
       });

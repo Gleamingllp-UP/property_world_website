@@ -3,8 +3,6 @@ import {
   email,
   facebook,
   g_email,
-  propert2,
-  propert5,
   propert6,
   twitter,
 } from "@/assets/images";
@@ -21,9 +19,6 @@ function PropertyDetails() {
 
   const { propertyDetails } = useSelector((store) => store?.property);
 
-  const productThumbnailImage = propertyDetails?.images?.filter(
-    (item) => item?.name === "Thumbnail Image"
-  );
   const productImages = propertyDetails?.images?.filter(
     (item) => item?.name !== "Thumbnail Image"
   );
@@ -43,15 +38,27 @@ function PropertyDetails() {
     return () => {
       lightbox.destroy();
     };
-  }, []);
+  }, [propertyDetails?.images]);
 
   return (
     <div className="container">
       <div id="gallery" className="photos-grid-container gallery">
         <div className="main-photo img-box">
-          <a href={productThumbnailImage?.[0]?.url} className="glightbox" data-glightbox="type: image">
-            <ImageWithLoader src={productThumbnailImage?.[0]?.url} />
-          </a>
+          {propertyDetails?.images
+            ?.filter((item) => item?.name === "Thumbnail Image")
+            ?.map((img, index) => {
+              return (
+                <a
+                  key={index}
+                  href={img?.url}
+                  className="glightbox"
+                  data-glightbox="type: image"
+                >
+                  <ImageWithLoader src={img?.url} />
+                </a>
+              );
+            })}
+
           <div className="share_post ">
             <button>
               <i className="ri-heart-line" />
@@ -112,7 +119,8 @@ function PropertyDetails() {
                       className="glightbox"
                       data-glightbox="type: image"
                     >
-                      <img src={image?.url} alt="image" />
+                      <ImageWithLoader src={image?.url} />
+
                       {isMulti && (
                         <div className="transparent-box">
                           <div className="caption">+{remaining}</div>

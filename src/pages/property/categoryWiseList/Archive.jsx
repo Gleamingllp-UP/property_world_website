@@ -29,6 +29,7 @@ const Archive = () => {
   } = useSelector((store) => store?.property);
 
   const [page, setPage] = useState(1);
+  const [sortBy, setSortBy] = useState("");
   const limit = 5;
 
   const location = useLocation();
@@ -57,9 +58,10 @@ const Archive = () => {
         page,
         limit,
         searchFilters,
+        sort_by:sortBy
       })
     );
-  }, [dispatch, page, location.search]);
+  }, [dispatch, page, location.search, sortBy]);
 
   return (
     <>
@@ -118,11 +120,40 @@ const Archive = () => {
 
             <div className="col-lg-6">
               <div className="pop_area">
-                <select className="pop_c">
-                  <option>Popularity</option>
-                  <option>Newest Listings</option>
-                  <option>Lowest Price</option>
-                  <option>Highest Price</option>
+                <select
+                  className="pop_c"
+                  onChange={(e) => {
+                    setSortBy(e.target.value);
+                  }}
+                >
+                  {[
+                    {
+                      id: 1,
+                      name: "Popularity",
+                      value: "popular",
+                    },
+                    {
+                      id: 2,
+                      name: "Newest Listings",
+                      value: "new_listing",
+                    },
+                    {
+                      id: 3,
+                      name: "Lowest Price",
+                      value: "lowest_price",
+                    },
+                    {
+                      id: 4,
+                      name: "Highest Price",
+                      value: "highest_price",
+                    },
+                  ]?.map((option, index) => {
+                    return (
+                      <option key={index} value={option?.value}>
+                        {option?.name}
+                      </option>
+                    );
+                  })}
                 </select>
                 <div className="list_map">
                   <button className="act_list">
@@ -269,28 +300,27 @@ const Archive = () => {
                           {item?.images &&
                             item?.images?.map((img, i) => (
                               <>
-                              <div key={i}>
-                                <Link
-                                  to={
-                                    pageRoutes.PROPERTY_DETAILS +
-                                    `/?id=${item?._id}`
-                                  }
-                                >
-                                  <ImageWithLoader src={img?.url} />
-                                </Link>
-                              </div>
-                              <div key={i}>
-                                <Link
-                                  to={
-                                    pageRoutes.PROPERTY_DETAILS +
-                                    `/?id=${item?._id}`
-                                  }
-                                >
-                                  <ImageWithLoader src={img?.url} />
-                                </Link>
-                              </div>
+                                <div key={i}>
+                                  <Link
+                                    to={
+                                      pageRoutes.PROPERTY_DETAILS +
+                                      `/?id=${item?._id}`
+                                    }
+                                  >
+                                    <ImageWithLoader src={img?.url} />
+                                  </Link>
+                                </div>
+                                <div key={i}>
+                                  <Link
+                                    to={
+                                      pageRoutes.PROPERTY_DETAILS +
+                                      `/?id=${item?._id}`
+                                    }
+                                  >
+                                    <ImageWithLoader src={img?.url} />
+                                  </Link>
+                                </div>
                               </>
-
                             ))}
                         </div>
                       </div>

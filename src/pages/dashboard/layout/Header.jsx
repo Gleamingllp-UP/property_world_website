@@ -1,14 +1,14 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { FaCog, FaSignOutAlt, FaUserCircle } from "react-icons/fa";
-import { getUserData, userLogOut } from "../../../features/user/userSlice";
+import { getUserData } from "../../../features/user/userSlice";
+
+import LogoutModal from "../../auth/logout/LogoutModal";
 const Header = () => {
+  const [modalShow, setModalShow] = useState(false);
+
   const { userData } = useSelector((store) => store?.user);
   const dispatch = useDispatch();
-
-  const handleLogout = () => {
-    dispatch(userLogOut());
-  };
 
   useEffect(() => {
     dispatch(getUserData());
@@ -21,22 +21,24 @@ const Header = () => {
         style={{ marginLeft: "250px" }}
       >
         <h2>Dashboard</h2>
-
-        <div className="d-flex align-items-center gap-3">
-          <FaUserCircle size={24} />
-          <span>{`${userData?.first_name || ""} ${
-            userData?.last_name || ""
-          }`}</span>
-          <FaCog size={20} style={{ cursor: "pointer" }} title="Settings" />
-          <button
-            className="btn btn-sm btn-outline-danger"
-            onClick={handleLogout}
-          >
-            <FaSignOutAlt className="me-1" />
-            Logout
-          </button>
-        </div>
+        {userData?.first_name && (
+          <div className="d-flex align-items-center gap-3">
+            <FaUserCircle size={24} />
+            <span>{`${userData?.first_name || ""} ${
+              userData?.last_name || ""
+            }`}</span>
+            <FaCog size={20} style={{ cursor: "pointer" }} title="Settings" />
+            <button
+              className="btn btn-sm btn-outline-danger"
+              onClick={() => setModalShow(true)}
+            >
+              <FaSignOutAlt className="me-1" />
+              Logout
+            </button>
+          </div>
+        )}
       </header>
+      <LogoutModal show={modalShow} onHide={() => setModalShow(false)} />
     </>
   );
 };

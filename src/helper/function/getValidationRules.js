@@ -5,16 +5,40 @@ export const getValidationRules = ({
   imageURL,
 }) => {
   const rules = {};
+  const cleanLabel = label?.replace(/\*/g, "").trim();
 
   if (required) {
-    rules.required = `${label} is required`;
+    rules.required = `${cleanLabel} is required`;
   }
 
   switch (type) {
     case "text":
       rules.pattern = {
         value: /^[A-Za-z\s'-]+$/,
-        message: `${label} must contain only letters`,
+        message: `${cleanLabel} must contain only letters`,
+      };
+      break;
+
+    case "text2":
+      rules.pattern = {
+        value: /^[A-Za-z0-9\s\-.,/&]+$/,
+        message: `${cleanLabel} contains invalid characters`,
+      };
+      break;
+
+    case "title":
+      rules.pattern = {
+        value:
+          /^(?! )[A-Za-z0-9.,:;!?'"()[\]_\-&]+(?: [A-Za-z0-9.,:;!?'"()[\]_\-&]+)*$/,
+        message: `${cleanLabel} contains invalid characters or spacing.`,
+      };
+      rules.minLength = {
+        value: 5,
+        message: `${cleanLabel} must be at least 5 characters long.`,
+      };
+      rules.maxLength = {
+        value: 300,
+        message: `${cleanLabel} must be at most 100 characters long.`,
       };
       break;
 
@@ -28,21 +52,21 @@ export const getValidationRules = ({
     case "number":
       rules.pattern = {
         value: /^\d+$/,
-        message: `${label} must be a valid number`,
+        message: `${cleanLabel} must be a valid number`,
       };
       break;
 
     case "password":
       rules.pattern = {
         value: /^(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z0-9!@#$%^&*]{6,}$/,
-        message: `${label} must be a valid number`,
+        message: `${cleanLabel} must be a valid number`,
       };
       break;
 
     case "date":
       rules.pattern = {
         value: /^\d{4}-\d{2}-\d{2}$/,
-        message: `${label} must be in YYYY-MM-DD format`,
+        message: `${cleanLabel} must be in YYYY-MM-DD format`,
       };
       break;
 
@@ -86,7 +110,7 @@ export const getValidationRules = ({
           if (fileList?.[0]?.type) {
             return allowedTypes.includes(fileList[0].type)
               ? true
-              : `${label} must be a JPG, PNG, or PDF`;
+              : `${cleanLabel} must be a JPG, PNG, or PDF`;
           }
 
           if (imageURL) {
@@ -94,7 +118,7 @@ export const getValidationRules = ({
             return result === true ? true : result;
           }
 
-          return `${label} is required`;
+          return `${cleanLabel} is required`;
         },
 
         maxSize: (fileList) => {
@@ -103,7 +127,7 @@ export const getValidationRules = ({
           if (fileList?.[0]?.size) {
             return fileList[0].size <= maxSizeInMB * 1024 * 1024
               ? true
-              : `${label} must be smaller than ${maxSizeInMB}MB`;
+              : `${cleanLabel} must be smaller than ${maxSizeInMB}MB`;
           }
 
           if (imageURL) {
@@ -111,7 +135,7 @@ export const getValidationRules = ({
             return result === true ? true : result;
           }
 
-          return `${label} is required`;
+          return `${cleanLabel} is required`;
         },
       };
       break;
@@ -121,7 +145,7 @@ export const getValidationRules = ({
         notEmpty: (value) => {
           // Remove all HTML tags and check if content is empty
           const text = value?.replace(/<[^>]+>/g, "").trim();
-          return text.length > 0 || `${label} is required`;
+          return text.length > 0 || `${cleanLabel} is required`;
         },
       };
       break;

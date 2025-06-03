@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import LoginModal from "../pages/auth/login/LoginModal";
 import { getAllActiveCategoryThunk } from "./../features/activeData/activeDataSlice";
-import { getAllActiveLocationThunk } from "./../features/activeData/activeDataSlice";
+
 function Header() {
   const { location } = useSelector((store) => store?.activeData);
   const [modalShow, setModalShow] = useState(false);
@@ -121,7 +121,7 @@ function Header() {
                   </a>
                   <ul className="sub-menu">
                     {location?.map((loca, index) => (
-                      <li className="menu-item">
+                      <li className="menu-item" key={index}>
                         <Link
                           to={
                             pageRoutes.PROPERTY_LISTING +

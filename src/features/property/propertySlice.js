@@ -28,8 +28,8 @@ export const getAllUserPropertyThunk = createAsyncThunk(
 
 export const getAllPropertyThunk = createAsyncThunk(
   "property/getAllProperty",
-  async ({ page, limit, searchFilters }) => {
-    return await getAllProperty(page, limit, searchFilters);
+  async ({ page, limit, searchFilters,sort_by }) => {
+    return await getAllProperty(page, limit, searchFilters,sort_by);
   }
 );
 

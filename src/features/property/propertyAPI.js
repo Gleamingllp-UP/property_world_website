@@ -51,7 +51,12 @@ export const getPropertyDetails = async (id) => {
   }
 };
 
-export const getAllProperty = async (page, limit, searchFilters = {}) => {
+export const getAllProperty = async (
+  page,
+  limit,
+  searchFilters = {},
+  sort_by = ""
+) => {
   try {
     const cleanedFilters = Object.fromEntries(
       Object.entries(searchFilters).filter(([_, value]) => Boolean(value))
@@ -64,7 +69,9 @@ export const getAllProperty = async (page, limit, searchFilters = {}) => {
     });
 
     const response = await api.get(
-      `${endpoints.getAllPropertyForUser}?${queryParams.toString()}`
+      `${
+        endpoints.getAllPropertyForUser
+      }?${queryParams.toString()}&sort_by=${sort_by}`
     );
     return response.data;
   } catch (error) {

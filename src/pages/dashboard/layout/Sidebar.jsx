@@ -1,9 +1,11 @@
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { property_world_logo } from "@/assets/images";
 import { routes } from "../../../router/routes";
+import { pageRoutes } from "../../../router/pageRoutes";
 const Sidebar = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const isPathActive = (basePath, currentPath) => {
     return currentPath === basePath || currentPath.startsWith(`${basePath}/`);
   };
@@ -13,7 +15,17 @@ const Sidebar = () => {
         className="bg-dark text-white p-3 vh-100"
         style={{ width: "250px", position: "fixed" }}
       >
-        <img src={property_world_logo} alt="Logo" width="100" height="100" />
+        <img
+          src={property_world_logo}
+          alt="Logo"
+          width="100"
+          height="100"
+          style={{
+            cursor:'pointer'
+          }}
+          onClick={() => navigate(pageRoutes.HOME_PAGE)}
+        />
+
         <hr />
         <ul className="nav flex-column">
           {routes

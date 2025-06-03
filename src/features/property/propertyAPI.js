@@ -55,7 +55,8 @@ export const getAllProperty = async (
   page,
   limit,
   searchFilters = {},
-  sort_by = ""
+  sort_by = "",
+  features
 ) => {
   try {
     const cleanedFilters = Object.fromEntries(
@@ -71,7 +72,7 @@ export const getAllProperty = async (
     const response = await api.get(
       `${
         endpoints.getAllPropertyForUser
-      }?${queryParams.toString()}&sort_by=${sort_by}`
+      }?${queryParams.toString()}&sort_by=${sort_by}&features=${features}`
     );
     return response.data;
   } catch (error) {

@@ -30,6 +30,7 @@ const Archive = () => {
 
   const [page, setPage] = useState(1);
   const [sortBy, setSortBy] = useState("");
+  const [features, setFeatures] = useState("");
   const limit = 5;
 
   const location = useLocation();
@@ -58,10 +59,11 @@ const Archive = () => {
         page,
         limit,
         searchFilters,
-        sort_by:sortBy
+        sort_by: sortBy,
+        features,
       })
     );
-  }, [dispatch, page, location.search, sortBy]);
+  }, [dispatch, page, location.search, sortBy, features]);
   // Custom arrow components
   const NextArrow = ({ onClick }) => (
     <div className="custom-arrow next" onClick={onClick}>
@@ -116,6 +118,15 @@ const Archive = () => {
                         id={`rdo2_${index + 1}`}
                         className="radio-input"
                         name="radio-group2"
+                        value={label}
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          setFeatures(value === "All" ? "" : value);
+                        }}
+                        checked={
+                          features === label ||
+                          (label === "All" && features === "")
+                        }
                       />
                       <label
                         htmlFor={`rdo2_${index + 1}`}

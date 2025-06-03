@@ -28,8 +28,8 @@ export const getAllUserPropertyThunk = createAsyncThunk(
 
 export const getAllPropertyThunk = createAsyncThunk(
   "property/getAllProperty",
-  async ({ page, limit, searchFilters,sort_by }) => {
-    return await getAllProperty(page, limit, searchFilters,sort_by);
+  async ({ page, limit, searchFilters, sort_by, features }) => {
+    return await getAllProperty(page, limit, searchFilters, sort_by, features);
   }
 );
 
@@ -71,7 +71,6 @@ const propertySlice = createSlice({
         state.isLoading = false;
         state.error = action.error.message;
         state.propertyDetails = null;
-
       })
 
       .addCase(getAllUserPropertyThunk.pending, (state) => {

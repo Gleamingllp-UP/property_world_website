@@ -3004,3 +3004,6 @@ a.chat_ptb {
 .featured_list {
     padding-top:  0px !important;
 }
+.share_post button {
+    margin-left: 5px;
+}

@@ -19,9 +19,29 @@ export const creatProperty = async (payload) => {
   }
 };
 
-export const getAllUserProperty = async (payload) => {
+export const getAllUserProperty = async (
+  page,
+  limit,
+  searchFilters = {},
+  sort_by = "",
+  features
+) => {
   try {
-    const response = await api.get(endpoints.getUsersAllProperty, payload);
+    const cleanedFilters = Object.fromEntries(
+      Object.entries(searchFilters).filter(([_, value]) => Boolean(value))
+    );
+
+    const queryParams = new URLSearchParams({
+      page,
+      limit,
+      ...cleanedFilters,
+    });
+
+    const response = await api.get(
+      `${
+        endpoints.getUsersAllProperty
+      }?${queryParams.toString()}&sort_by=${sort_by}&features=${features}`
+    );
     return response.data;
   } catch (error) {
     if (error?.status !== 401) {

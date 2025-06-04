@@ -4,10 +4,10 @@ const Footer = () => {
   return (
     <>
       <footer
-        className="bg-light text-center p-3"
-        style={{ marginLeft: "2px" }}
+        className="bg-dark text-center p-3"
+        style={{ marginLeft: "250px", padding: "18px" }}
       >
-        <small style={{ color: "black" }}>
+        <small style={{ color: "white" }}>
           © 2025 PropertyWorld. All rights reserved.
         </small>
       </footer>

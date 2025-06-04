@@ -12,21 +12,22 @@ const Sidebar = () => {
   return (
     <>
       <div
-        className="bg-dark text-white p-3 vh-100"
+        className="custom-sidebar text-white p-2 vh-100"
         style={{ width: "250px", position: "fixed" }}
       >
         <img
           src={property_world_logo}
           alt="Logo"
-          width="100"
-          height="100"
+          className=""
           style={{
-            cursor:'pointer'
+            cursor: "pointer",
+            width: "130px",
+            objectFit: "contain",
           }}
           onClick={() => navigate(pageRoutes.HOME_PAGE)}
         />
 
-        <hr />
+        <hr className="my-2"/>
         <ul className="nav flex-column">
           {routes
             ?.filter((routes) => routes?.isPrivate && routes?.isDashboard)
@@ -37,10 +38,10 @@ const Sidebar = () => {
                 <Link
                   key={id}
                   to={path}
-                  className={`d-flex align-items-center gap-2 px-3 py-2 rounded transition ${
+                  className={`d-flex align-items-center gap-2 px-3 py-2  transition ${
                     isActive
-                      ? "bg-primary text-white fw-semibold shadow-sm"
-                      : "text-white bg-transparent hover-bg-white bg-opacity-10"
+                      ? "bg-white text-primary fw-semibold shadow-sm  rounded-3"
+                      : "text-black bg-transparent hover-bg-white bg-opacity-10"
                   }`}
                   style={{
                     transition: "background-color 0.2s, color 0.2s",

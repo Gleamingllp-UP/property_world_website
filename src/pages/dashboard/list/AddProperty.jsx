@@ -8,9 +8,7 @@ import {
   getAllActiveLocationThunk,
   getAllAmenitiesAndFacilitiesThunk,
 } from "../../../features/activeData/activeDataSlice";
-import {
-  featuresList,
-} from "../../../utils/requiredFormFields/requiredproparty";
+import { featuresList } from "../../../utils/requiredFormFields/requiredproparty";
 import { useForm, Controller } from "react-hook-form";
 import { ErrorMessage } from "../../../Custom_Components/ErrorMessage";
 import { getValidationRules } from "../../../helper/function/getValidationRules";
@@ -265,12 +263,12 @@ const AddProperty = () => {
 
   return (
     <div className="container py-4">
-      <h2>Property Details Form</h2>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <h4 className="mb-3">Property Details Form</h4>
+      <form onSubmit={handleSubmit(onSubmit)} className="my_listing">
         {/* Purpose, Category, Property Type in one row */}
         <div className="row">
           <div className="col-md-4 mb-3">
-            <label className="form-label">Purpose</label>
+            <label className="form-label">Purpose *</label>
             <select
               className="form-select"
               {...register("category", {
@@ -300,7 +298,7 @@ const AddProperty = () => {
             )}
           </div>
           <div className="col-md-4 mb-3">
-            <label className="form-label">Category</label>
+            <label className="form-label">Category *</label>
             <select
               className="form-select"
               disabled={!selectedPurpose}
@@ -331,7 +329,7 @@ const AddProperty = () => {
 
           {/* Property Type */}
           <div className="col-md-4 mb-3">
-            <label className="form-label">Property Type</label>
+            <label className="form-label">Property Type *</label>
             <select
               className="form-select"
               disabled={!selectedSubCategory}
@@ -354,7 +352,7 @@ const AddProperty = () => {
 
         <div className="row">
           <div className="col-md-4 mb-3">
-            <label className="form-label">City</label>
+            <label className="form-label">City *</label>
             <select
               className="form-select"
               name="city"
@@ -380,7 +378,7 @@ const AddProperty = () => {
           {/*Construction Status */}
           {selectedCategoryName === "Buy" && (
             <div className="col-md-4 mb-3">
-              <label className="form-label">Construction Status</label>
+              <label className="form-label">Construction Status *</label>
               <select
                 className="form-select"
                 name="construction_status"
@@ -420,7 +418,7 @@ const AddProperty = () => {
           {selectedCategoryName === "Buy" &&
             constructionStatus === "Off-plan" && (
               <div className="col-md-4 mb-3">
-                <label className="form-label">Handover By</label>
+                <label className="form-label">Handover By *</label>
                 <select
                   className="form-select"
                   name="handover_by"
@@ -453,7 +451,7 @@ const AddProperty = () => {
           {selectedCategoryName === "Buy" &&
             constructionStatus === "Off-plan" && (
               <div className="col-md-4 mb-3">
-                <label className="form-label">Payment Plangit</label>
+                <label className="form-label">Payment Plangit *</label>
                 <select
                   className="form-select"
                   name="payment_plan"
@@ -478,14 +476,15 @@ const AddProperty = () => {
             )}
           {/* Thumbnail Upload + Preview */}
           <div className="col-md-4 mb-3">
-            <label className="form-label">Thumbnail Image</label>
+            <label className="form-label">Thumbnail Image *</label>
             <input
               type="file"
               className="form-control"
               accept="image/*"
-              {...register("thumbnail_img", {
-                required: "Thumbnail image is required",
-              })}
+              {...register(
+                "thumbnail_img",
+                getValidationRules({ label: "Thumbnail Image", type: "file" })
+              )}
             />
             {errors?.thumbnail_img && (
               <ErrorMessage message={errors?.thumbnail_img?.message} />
@@ -526,7 +525,7 @@ const AddProperty = () => {
           </div>
 
           <div className="col-md-4 mb-3">
-            <label className="form-label">Gallery Images</label>
+            <label className="form-label">Gallery Images *</label>
             <input
               type="file"
               className="form-control"
@@ -539,8 +538,8 @@ const AddProperty = () => {
                   if (!files || files.length === 0) {
                     return "Please select at least one image.";
                   }
-                  if (files.length > 5) {
-                    return "You can select a maximum of 5 images.";
+                  if (files.length > 10) {
+                    return "You can select a maximum of 10 images.";
                   }
                   return true;
                 },
@@ -581,7 +580,7 @@ const AddProperty = () => {
 
         <div className="row">
           <div className="col-md-4 mb-3">
-            <label className="form-label">Location</label>
+            <label className="form-label">Location *</label>
             <input
               type="text"
               className="form-control"
@@ -596,7 +595,7 @@ const AddProperty = () => {
             )}
           </div>
           <div className="col-md-4 mb-3">
-            <label className="form-label">Unit Number</label>
+            <label className="form-label">Unit Number *</label>
             <input
               type="text"
               className="form-control"
@@ -611,7 +610,7 @@ const AddProperty = () => {
             )}
           </div>
           <div className="col-md-4 mb-3">
-            <label className="form-label">Permit Number</label>
+            <label className="form-label">Permit Number *</label>
             <input
               type="text"
               className="form-control"
@@ -632,7 +631,7 @@ const AddProperty = () => {
           {constructionStatus !== "Off-plan" &&
             (selectedSubCategoryName === "Commercial" ? (
               <div className="col-md-4 mb-3">
-                <label className="form-label">Ares Size (sqft)</label>
+                <label className="form-label">Ares Size (sqft) *</label>
                 <input
                   type="number"
                   className="form-control"
@@ -648,7 +647,7 @@ const AddProperty = () => {
               </div>
             ) : (
               <div className="col-md-4">
-                <label className="form-label">Bedrooms & Bathroom</label>
+                <label className="form-label">Bedrooms & Bathroom *</label>
 
                 {/* Main select-like box */}
                 <input
@@ -690,7 +689,7 @@ const AddProperty = () => {
                         checked={bedRoom?.includes(0)}
                         onChange={(e) => handleCheckboxChangeBedroom(e, 0)}
                       />
-                      <label htmlFor="studio">Studio</label>
+                      <label htmlFor="studio">Studio *</label>
 
                       {[...Array(8)].map((_, i) => {
                         const value = i + 1;
@@ -762,7 +761,7 @@ const AddProperty = () => {
             ))}
 
           <div className="col-md-4 mb-3">
-            <label className="form-label">Price</label>
+            <label className="form-label">Price *</label>
             <input
               type="number"
               className="form-control"
@@ -777,7 +776,7 @@ const AddProperty = () => {
 
           {selectedCategoryName === "Rent" && (
             <div className="col-md-4 mb-3">
-              <label className="form-label">Rent is Paid</label>
+              <label className="form-label">Rent is Paid *</label>
               <select
                 className="form-select"
                 name="rentPaid"
@@ -803,7 +802,7 @@ const AddProperty = () => {
 
         {/* Features */}
         <div className="mb-3">
-          <label className="form-label">Features</label>
+          <label className="form-label">Features *</label>
           <br />
           {featuresList?.map((feature) => (
             <div key={feature} className="form-check form-check-inline">
@@ -828,7 +827,7 @@ const AddProperty = () => {
         {/* Parking / Title / Ownership */}
         <div className="row">
           <div className="col-md-4 mb-3">
-            <label className="form-label">Parking Spaces</label>
+            <label className="form-label">Parking Spaces *</label>
             <select
               className="form-select"
               name="parking_spaces"
@@ -847,7 +846,7 @@ const AddProperty = () => {
           </div>
 
           <div className="col-md-4 mb-3">
-            <label className="form-label">Title</label>
+            <label className="form-label">Title *</label>
             <input
               type="text"
               className="form-control"
@@ -860,7 +859,7 @@ const AddProperty = () => {
             {errors?.title && <ErrorMessage message={errors?.title?.message} />}
           </div>
           <div className="col-md-4 mb-3">
-            <label className="form-label">Ownership Status</label>
+            <label className="form-label">Ownership Status *</label>
             <select
               className="form-select"
               name="ownershipStatus"
@@ -882,7 +881,7 @@ const AddProperty = () => {
         <div className="row">
           {/* Short Description */}
           <div className="col-md-6 mb-3">
-            <label className="form-label">Short Description</label>
+            <label className="form-label">Short Description *</label>
             <textarea
               className="form-control"
               rows="4"
@@ -891,7 +890,7 @@ const AddProperty = () => {
                 "short_description",
                 getValidationRules({
                   label: "Short Description",
-                  type: "title",
+                  type: "shortDescription",
                 })
               )}
             ></textarea>
@@ -902,7 +901,7 @@ const AddProperty = () => {
 
           {/* Full Description */}
           <div className="col-md-6 mb-3">
-            <label className="form-label">Description</label>
+            <label className="form-label">Description *</label>
             <textarea
               className="form-control"
               rows="4"
@@ -911,7 +910,7 @@ const AddProperty = () => {
                 "full_description",
                 getValidationRules({
                   label: "Full Description",
-                  type: "title",
+                  type: "longDescription",
                 })
               )}
             ></textarea>
@@ -927,7 +926,7 @@ const AddProperty = () => {
             {/* First input with label */}
             <div className="col-md-6">
               <label className="form-label">
-                Building Amenities / Facilities
+                Building Amenities / Facilities *
               </label>
               <Controller
                 name="building_facilities"
@@ -961,7 +960,7 @@ const AddProperty = () => {
 
             {/* Second input with label */}
             <div className="col-md-6">
-              <label className="form-label">Building Name</label>
+              <label className="form-label">Building Name *</label>
               <input
                 type="text"
                 className="form-control"
@@ -982,7 +981,7 @@ const AddProperty = () => {
           <div className="row align-items-center">
             {/* First input with label */}
             <div className="col-md-6">
-              <label className="form-label">Total Floors</label>
+              <label className="form-label">Total Floors *</label>
               <input
                 type="number"
                 className="form-control"
@@ -998,14 +997,18 @@ const AddProperty = () => {
             </div>
 
             <div className="col-md-6">
-              <label className="form-label">Virtual Tour</label>
+              <label className="form-label">Virtual Tour *</label>
               <input
                 type="file"
                 className="form-control"
                 accept="video/*"
                 {...register(
                   "virtual_tour",
-                  getValidationRules({ label: "Vitual Tours", type: "file" })
+                  getValidationRules({
+                    label: "Vitual Tours",
+                    type: "file",
+                    filetype: "video",
+                  })
                 )}
               />
               {errors?.virtual_tour && (
@@ -1018,11 +1021,11 @@ const AddProperty = () => {
         <div className="mb-3">
           <div className="row align-items-center">
             <div className="col-md-6">
-              <label className="form-label">Floor Plan</label>
+              <label className="form-label">Floor Plan *</label>
               <input
                 type="file"
                 className="form-control"
-                accept="application/pdf"
+                accept="image/*"
                 multiple
                 {...register(
                   "floor_plan",
@@ -1039,9 +1042,11 @@ const AddProperty = () => {
         {loading ? (
           <ButtonWithSpin />
         ) : (
-          <button type="submit" className="btn btn-primary">
-            Submit
-          </button>
+          <div className="col-lg-12 text-end mt-5">
+            <button type="submit" className="btn custom-button">
+              Submit Property
+            </button>
+          </div>
         )}
       </form>
     </div>

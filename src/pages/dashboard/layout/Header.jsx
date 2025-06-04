@@ -17,10 +17,10 @@ const Header = () => {
   return (
     <>
       <header
-        className="bg-light d-flex justify-content-between align-items-center p-2"
-        style={{ marginLeft: "250px" }}
+        className="bg-dark text-white d-flex justify-content-between align-items-center "
+        style={{ marginLeft: "250px",padding:"18px" }}
       >
-        <h2>Dashboard</h2>
+        <h4 className="mb-0">Dashboard</h4>
         {userData?.first_name && (
           <div className="d-flex align-items-center gap-3">
             <FaUserCircle size={24} />

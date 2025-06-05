@@ -67,7 +67,7 @@ export const getValidationRules = ({
         message: `${cleanLabel} must be at most 1000 characters long.`,
       };
       rules.pattern = {
-        value: /^[\s\S]*$/, 
+        value: /^[\s\S]*$/,
         message: `${cleanLabel} contains invalid characters.`,
       };
       break;
@@ -136,6 +136,10 @@ export const getValidationRules = ({
           const expectedType = filetype;
 
           const allowedTypes = allowedMimeTypes[expectedType] || [];
+          if (imageURL) {
+            const result = validateUrl(imageURL);
+            return result === true ? true : result;
+          }
 
           if (fileList && fileList?.length > 0) {
             const invalidFiles = Array.from(fileList).filter(
@@ -145,11 +149,6 @@ export const getValidationRules = ({
             return invalidFiles.length === 0
               ? true
               : `${cleanLabel} contains invalid ${expectedType.toUpperCase()} file(s)`;
-          }
-
-          if (imageURL) {
-            const result = validateUrl(imageURL);
-            return result === true ? true : result;
           }
 
           return `${cleanLabel} is required`;
@@ -179,7 +178,9 @@ export const getValidationRules = ({
         fileCount: (fileList) => {
           const minFiles = 1;
           const maxFiles = 5;
-
+          if (imageURL) {
+            return true;
+          }
           // Make sure it's an actual FileList or array-like object
           const length = fileList?.length ?? 0;
 

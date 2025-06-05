@@ -21,15 +21,21 @@ export const getPropertyDetailsThunk = createAsyncThunk(
 
 export const getAllUserPropertyThunk = createAsyncThunk(
   "property/getAllUserProperty",
-  async (payload) => {
-    return await getAllUserProperty(payload);
+  async ({ page, limit, searchFilters = {}, sort_by = "", features = "" }) => {
+    return await getAllUserProperty(
+      page,
+      limit,
+      searchFilters,
+      sort_by,
+      features
+    );
   }
 );
 
 export const getAllPropertyThunk = createAsyncThunk(
   "property/getAllProperty",
-  async ({ page, limit, searchFilters }) => {
-    return await getAllProperty(page, limit, searchFilters);
+  async ({ page, limit, searchFilters, sort_by, features }) => {
+    return await getAllProperty(page, limit, searchFilters, sort_by, features);
   }
 );
 
@@ -61,25 +67,26 @@ const propertySlice = createSlice({
       //Fetch property details
       .addCase(getPropertyDetailsThunk.pending, (state) => {
         state.isLoading = true;
-        state.propertyDetails = null;
+        state.propertyDetails = [];
       })
       .addCase(getPropertyDetailsThunk.fulfilled, (state, action) => {
         state.propertyDetails = action.payload.data[0];
+        state.pagination = action.payload.pagination;
         state.isLoading = false;
       })
       .addCase(getPropertyDetailsThunk.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
         state.propertyDetails = null;
-
       })
 
       .addCase(getAllUserPropertyThunk.pending, (state) => {
         state.isLoading = true;
       })
       .addCase(getAllUserPropertyThunk.fulfilled, (state, action) => {
-        state.isLoading = false;
+        state.pagination = action.payload.pagination;
         state.propertyData = action.payload.data;
+        state.isLoading = false;
       })
       .addCase(getAllUserPropertyThunk.rejected, (state, action) => {
         state.isLoading = false;
@@ -88,6 +95,7 @@ const propertySlice = createSlice({
 
       .addCase(getAllPropertyThunk.pending, (state) => {
         state.isLoading = true;
+        state.propertyData = [];
       })
       .addCase(getAllPropertyThunk.fulfilled, (state, action) => {
         state.isLoading = false;

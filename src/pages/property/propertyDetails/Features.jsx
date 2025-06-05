@@ -1,24 +1,10 @@
-import React, { useState } from 'react';
-import {
-  swimming,
-  sofa,
-  parking,
-  gym,
-  cctv,
-} from '@/assets/images';
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
 
 const Features = () => {
-  const allAmenities = [
-    { icon: gym, label: 'Gym' },
-    { icon: swimming, label: 'Swimming Pool' },
-    { icon: parking, label: 'Parking' },
-    { icon: cctv, label: '24/7 Security' },
-    { icon: sofa, label: 'Furnished' },
-    { icon: parking, label: 'Parking' },
-    { icon: cctv, label: '24/7 Security' },
-    { icon: gym, label: 'Gym' },
-    { icon: swimming, label: 'Swimming Pool' },
-  ];
+  const { propertyDetails } = useSelector((store) => store?.property);
+
+  const allAmenities = propertyDetails?.amenitiesAndFacilitiesData || [];
 
   const [showAll, setShowAll] = useState(false);
 
@@ -31,13 +17,15 @@ const Features = () => {
       <div className="key_feature amenities">
         <p>Features / Amenities</p>
         <div className="row">
-          {visibleAmenities.map((item, index) => (
-            <div className="amy_amm" key={index}>
-              <span>
-                <img src={item.icon} alt={item.label} /> {item.label}
-              </span>
-            </div>
-          ))}
+          {visibleAmenities &&
+            visibleAmenities?.map((item, index) => (
+              <div className="amy_amm" key={index}>
+                <span>
+                  <img src={item?.image} alt={item?.nam?.toLowerCase()} />{" "}
+                  {item?.name}
+                </span>
+              </div>
+            ))}
 
           {allAmenities.length > 5 && (
             <a
@@ -49,7 +37,7 @@ const Features = () => {
                 setShowAll(!showAll);
               }}
             >
-              {showAll ? 'Less amenities' : `+${remainingCount} more amenities`}
+              {showAll ? "Less amenities" : `+${remainingCount} more amenities`}
             </a>
           )}
         </div>

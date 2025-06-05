@@ -45,6 +45,12 @@ export const guestUserLoginThunk = createAsyncThunk(
   }
 );
 
+export const logoutUser = createAsyncThunk("users/logout", async () => {
+  localStorage.removeItem("userData");
+  localStorage.removeItem("userToken");
+  return true;
+});
+
 const usersSlice = createSlice({
   name: "users",
   initialState: {
@@ -129,6 +135,19 @@ const usersSlice = createSlice({
         localStorage.setItem("userData", JSON.stringify(action.payload.data));
       })
       .addCase(userLoginThunk.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message;
+      })
+
+      //User Logout
+      .addCase(logoutUser.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(logoutUser.fulfilled, (state) => {
+        state.isLoading = false;
+        state.userData = [];
+      })
+      .addCase(logoutUser.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
       })

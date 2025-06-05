@@ -9,8 +9,6 @@ import Slider from "react-slick";
 import {
   bath,
   bed,
-  pro_comm1,
-  pro_comm2,
   pro_comm3,
   pro_comm4,
   propert2,
@@ -31,6 +29,8 @@ const Archive = () => {
   } = useSelector((store) => store?.property);
 
   const [page, setPage] = useState(1);
+  const [sortBy, setSortBy] = useState("");
+  const [features, setFeatures] = useState("");
   const limit = 5;
 
   const location = useLocation();
@@ -59,9 +59,11 @@ const Archive = () => {
         page,
         limit,
         searchFilters,
+        sort_by: sortBy,
+        features,
       })
     );
-  }, [dispatch, page, limit, location.search]);
+  }, [dispatch, page, location.search, sortBy, features]);
   // Custom arrow components
   const NextArrow = ({ onClick }) => (
     <div className="custom-arrow next" onClick={onClick}>
@@ -117,6 +119,15 @@ const Archive = () => {
                         id={`rdo2_${index + 1}`}
                         className="radio-input"
                         name="radio-group2"
+                        value={label}
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          setFeatures(value === "All" ? "" : value);
+                        }}
+                        checked={
+                          features === label ||
+                          (label === "All" && features === "")
+                        }
                       />
                       <label
                         htmlFor={`rdo2_${index + 1}`}
@@ -131,11 +142,40 @@ const Archive = () => {
 
             <div className="col-lg-6">
               <div className="pop_area">
-                <select className="pop_c">
-                  <option>Popularity</option>
-                  <option>Newest Listings</option>
-                  <option>Lowest Price</option>
-                  <option>Highest Price</option>
+                <select
+                  className="pop_c"
+                  onChange={(e) => {
+                    setSortBy(e.target.value);
+                  }}
+                >
+                  {[
+                    {
+                      id: 1,
+                      name: "Popularity",
+                      value: "popular",
+                    },
+                    {
+                      id: 2,
+                      name: "Newest Listings",
+                      value: "new_listing",
+                    },
+                    {
+                      id: 3,
+                      name: "Lowest Price",
+                      value: "lowest_price",
+                    },
+                    {
+                      id: 4,
+                      name: "Highest Price",
+                      value: "highest_price",
+                    },
+                  ]?.map((option, index) => {
+                    return (
+                      <option key={index} value={option?.value}>
+                        {option?.name}
+                      </option>
+                    );
+                  })}
                 </select>
                 <div className="list_map">
                   <button className="act_list">

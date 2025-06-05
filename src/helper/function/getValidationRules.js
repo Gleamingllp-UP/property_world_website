@@ -3,18 +3,72 @@ export const getValidationRules = ({
   type = "text",
   required = true,
   imageURL,
+  filetype = "image",
 }) => {
   const rules = {};
+  const cleanLabel = label?.replace(/\*/g, "").trim();
 
   if (required) {
-    rules.required = `${label} is required`;
+    rules.required = `${cleanLabel} is required`;
   }
 
   switch (type) {
     case "text":
       rules.pattern = {
         value: /^[A-Za-z\s'-]+$/,
-        message: `${label} must contain only letters`,
+        message: `${cleanLabel} must contain only letters`,
+      };
+      break;
+
+    case "text2":
+      rules.pattern = {
+        value: /^[A-Za-z0-9\s\-.,/&]+$/,
+        message: `${cleanLabel} contains invalid characters`,
+      };
+      break;
+
+    case "title":
+      rules.pattern = {
+        value:
+          /^(?! )[A-Za-z0-9.,:;!+?'"()[\]_\-&]+(?: [A-Za-z0-9.,:;!+?'"()[\]_\-&]+)*$/,
+        message: `${cleanLabel} contains invalid characters or spacing.`,
+      };
+      rules.minLength = {
+        value: 5,
+        message: `${cleanLabel} must be at least 5 characters long.`,
+      };
+      rules.maxLength = {
+        value: 300,
+        message: `${cleanLabel} must be at most 300 characters long.`,
+      };
+      break;
+    case "shortDescription":
+      rules.minLength = {
+        value: 20,
+        message: `${cleanLabel} must be at least 20 characters long.`,
+      };
+      rules.maxLength = {
+        value: 200,
+        message: `${cleanLabel} must be at most 200 characters long.`,
+      };
+      rules.pattern = {
+        value: /^[A-Za-z0-9.,:;!+?'"()[\]_\-& ]+$/,
+        message: `${cleanLabel} contains invalid characters.`,
+      };
+      break;
+
+    case "longDescription":
+      rules.minLength = {
+        value: 50,
+        message: `${cleanLabel} must be at least 50 characters long.`,
+      };
+      rules.maxLength = {
+        value: 1000,
+        message: `${cleanLabel} must be at most 1000 characters long.`,
+      };
+      rules.pattern = {
+        value: /^[\s\S]*$/, 
+        message: `${cleanLabel} contains invalid characters.`,
       };
       break;
 
@@ -28,21 +82,21 @@ export const getValidationRules = ({
     case "number":
       rules.pattern = {
         value: /^\d+$/,
-        message: `${label} must be a valid number`,
+        message: `${cleanLabel} must be a valid number`,
       };
       break;
 
     case "password":
       rules.pattern = {
         value: /^(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z0-9!@#$%^&*]{6,}$/,
-        message: `${label} must be a valid number`,
+        message: `${cleanLabel} must be a valid number`,
       };
       break;
 
     case "date":
       rules.pattern = {
         value: /^\d{4}-\d{2}-\d{2}$/,
-        message: `${label} must be in YYYY-MM-DD format`,
+        message: `${cleanLabel} must be in YYYY-MM-DD format`,
       };
       break;
 
@@ -55,38 +109,42 @@ export const getValidationRules = ({
 
     case "file":
       rules.validate = {
-        // Validate file type
-
         acceptedFormats: (fileList) => {
           console.log("fileList", fileList);
-          console.log("imageURL", imageURL);
 
-          const allowedTypes = [
-            // Images
-            "image/jpeg",
-            "image/png",
-            "image/webp",
-            "image/gif",
-            "image/svg+xml",
-            "image/bmp",
-            "image/tiff",
+          const allowedMimeTypes = {
+            image: [
+              "image/jpeg",
+              "image/png",
+              "image/webp",
+              "image/gif",
+              "image/svg+xml",
+              "image/bmp",
+              "image/tiff",
+            ],
+            pdf: ["application/pdf"],
+            video: [
+              "video/mp4",
+              "video/webm",
+              "video/ogg",
+              "video/quicktime", // .mov
+              "video/x-msvideo", // .avi
+              "video/x-matroska", // .mkv
+            ],
+          };
 
-            // PDF
-            "application/pdf",
+          const expectedType = filetype;
 
-            // Videos
-            "video/mp4",
-            "video/webm",
-            "video/ogg",
-            "video/quicktime", // .mov
-            "video/x-msvideo", // .avi
-            "video/x-matroska", // .mkv
-          ];
+          const allowedTypes = allowedMimeTypes[expectedType] || [];
 
-          if (fileList?.[0]?.type) {
-            return allowedTypes.includes(fileList[0].type)
+          if (fileList && fileList?.length > 0) {
+            const invalidFiles = Array.from(fileList).filter(
+              (file) => !allowedTypes.includes(file.type)
+            );
+
+            return invalidFiles.length === 0
               ? true
-              : `${label} must be a JPG, PNG, or PDF`;
+              : `${cleanLabel} contains invalid ${expectedType.toUpperCase()} file(s)`;
           }
 
           if (imageURL) {
@@ -94,16 +152,20 @@ export const getValidationRules = ({
             return result === true ? true : result;
           }
 
-          return `${label} is required`;
+          return `${cleanLabel} is required`;
         },
 
         maxSize: (fileList) => {
-          const maxSizeInMB = 50;
+          const maxSizeInMB = 20;
 
-          if (fileList?.[0]?.size) {
-            return fileList[0].size <= maxSizeInMB * 1024 * 1024
+          if (fileList && fileList?.length > 0) {
+            const oversizedFiles = Array.from(fileList).filter(
+              (file) => file.size > maxSizeInMB * 1024 * 1024
+            );
+
+            return oversizedFiles.length === 0
               ? true
-              : `${label} must be smaller than ${maxSizeInMB}MB`;
+              : `${cleanLabel} must be smaller than ${maxSizeInMB}MB per file`;
           }
 
           if (imageURL) {
@@ -111,7 +173,24 @@ export const getValidationRules = ({
             return result === true ? true : result;
           }
 
-          return `${label} is required`;
+          return `${cleanLabel} is required`;
+        },
+
+        fileCount: (fileList) => {
+          const minFiles = 1;
+          const maxFiles = 5;
+
+          // Make sure it's an actual FileList or array-like object
+          const length = fileList?.length ?? 0;
+
+          if (length === 0)
+            return `${cleanLabel} requires at least ${minFiles} file(s)`;
+          if (length < minFiles)
+            return `${cleanLabel} requires at least ${minFiles} file(s)`;
+          if (length > maxFiles)
+            return `${cleanLabel} cannot have more than ${maxFiles} file(s)`;
+
+          return true;
         },
       };
       break;
@@ -121,7 +200,7 @@ export const getValidationRules = ({
         notEmpty: (value) => {
           // Remove all HTML tags and check if content is empty
           const text = value?.replace(/<[^>]+>/g, "").trim();
-          return text.length > 0 || `${label} is required`;
+          return text.length > 0 || `${cleanLabel} is required`;
         },
       };
       break;

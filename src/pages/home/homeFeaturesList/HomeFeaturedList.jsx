@@ -297,9 +297,9 @@ function HomeFeaturedList() {
           </div>
         </div>
         <div className="col-12 text-center">
-          <a href="property-listing.php" className="action_btn mt20">
+          <Link to={pageRoutes.PROPERTY_LISTING} className="action_btn mt20">
             View All Properties <i className="ri-arrow-right-up-long-line" />
-          </a>
+          </Link>
         </div>
       </div>
     </section>

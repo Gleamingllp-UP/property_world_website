@@ -52,7 +52,7 @@ const SetPassword = ({ setStep }) => {
         showToast("Password successfully set! You can login.", "success");
         dispatch(removeUserFormDataToken());
         setTimeout(() => {
-          setStep(1)
+          setStep(1);
           navigate(pageRoutes?.HOME_PAGE);
         }, 1000);
       } else {
@@ -67,13 +67,15 @@ const SetPassword = ({ setStep }) => {
     <div className="container mt-5">
       <div className="row justify-content-center">
         <div className="col-md-5 col-lg-6">
-          <h4 className="card-title text-center mb-4">Set Your Password</h4>
+          <h4 className="card-title text-center mb-4">
+            Set your password to complete the registration.
+          </h4>
 
           <form onSubmit={handleSubmit(onSubmit)} noValidate>
             <InputWithLabelForm
               control={control}
               name="password"
-              label="New Password"
+              label="New Password *"
               type={type ? "password" : "text"}
               rightIcon={
                 type ? (
@@ -100,7 +102,7 @@ const SetPassword = ({ setStep }) => {
             <InputWithLabelForm
               control={control}
               name="confirmPassword"
-              label="Confirm Password"
+              label="Confirm Password *"
               type={type ? "password" : "text"}
               rightIcon={
                 type ? (

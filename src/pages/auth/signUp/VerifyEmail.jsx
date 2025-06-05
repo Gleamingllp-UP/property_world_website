@@ -50,7 +50,7 @@ function VerifyEmail({ setStep }) {
             label="Enter Code"
             rules={getValidationRules({
               type: "number",
-              label: "Code",
+              label: "Code *",
             })}
           />
         </div>

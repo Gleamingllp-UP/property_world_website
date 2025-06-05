@@ -21,7 +21,7 @@ const MediaWithLoader = ({
   const handleError = () => {
     setLoading(false);
     setIsImgLoaded(false);
-    setErrorSrc(isVideo(src) ? video2 : video2);
+    setErrorSrc(isVideo(src) ? src : video2);
   };
 
   useEffect(() => {
@@ -29,13 +29,13 @@ const MediaWithLoader = ({
       const fallback = isVideo(src) ? video2 : video2;
       setErrorSrc(fallback);
       setLoading(false);
-      setIsImgLoaded?.(false);
+      setIsImgLoaded(false);
     }
   }, [src, setIsImgLoaded]);
   const finalSrc = errorSrc || src;
 
   return (
-    <>
+    <div className="position-relative">
       {loading && (
         <div className="position-absolute top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center bg-dark bg-opacity-50">
           <Loader2
@@ -52,10 +52,11 @@ const MediaWithLoader = ({
           loop
           muted
           autoPlay
+          controls
           className={`transition-opacity ${
             loading ? "opacity-0" : "opacity-100"
           } ${className}`}
-          onCanPlayThrough={handleLoad}
+          onCanPlay={handleLoad}
           onError={handleError}
           style={{ transition: "opacity 0.3s ease-in-out" }}
           {...props}
@@ -76,7 +77,7 @@ const MediaWithLoader = ({
           {...props}
         />
       )}
-    </>
+    </div>
   );
 };
 

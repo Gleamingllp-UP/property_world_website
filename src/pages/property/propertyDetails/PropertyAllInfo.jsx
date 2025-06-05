@@ -1,5 +1,4 @@
-import React from "react";
-import { floor1, floor2 } from "@/assets/images";
+import { useEffect } from "react";
 import Features from "./Features";
 import { useSelector } from "react-redux";
 import { formatDate } from "../../../helper/formateDate/formatedDate";
@@ -7,8 +6,24 @@ import PropertySide from "./PropertySide";
 import SimlarProperty from "./SimlarProperty";
 
 import PropertySocial from "./PropertySocial";
+import MediaWithLoader from "../../../Custom_Components/MediaWithLoader";
+import ImageWithLoader from "../../../Custom_Components/ImageWithLoader";
+
+import GLightbox from "glightbox";
+import "glightbox/dist/css/glightbox.css";
+import { formatPrice } from "../../../helper/function/formatPrice";
 function PropertyAllInfo() {
   const { propertyDetails } = useSelector((store) => store?.property);
+
+  useEffect(() => {
+    const lightbox2 = GLightbox({
+      selector: ".lightbox",
+    });
+
+    return () => {
+      lightbox2.destroy();
+    };
+  }, [propertyDetails?.floor_plan]);
 
   return (
     <section className="property_all_info">
@@ -25,7 +40,7 @@ function PropertyAllInfo() {
                     {propertyDetails?.title || "N/A"}
                   </h2>
                   <div className="price_d">
-                    AED {propertyDetails?.price || "0"}
+                    {formatPrice(propertyDetails?.price)}
                   </div>
                 </div>
                 <PropertySocial />
@@ -58,32 +73,37 @@ function PropertyAllInfo() {
                   propertyDetails?.locationData?.name}
               </p>
               <hr />
-              <div className="key_feature">
-                <p>Key Property Features</p>
-                <ul>
-                  {propertyDetails?.bedrooms && (
-                    <li>
-                      <i className="ri-hotel-bed-line" /> Bedrooms:{" "}
-                      {propertyDetails.bedrooms}
-                    </li>
-                  )}
+              {propertyDetails?.bedrooms ||
+                propertyDetails?.bathrooms ||
+                (propertyDetails?.area && (
+                  <>
+                    <div className="key_feature">
+                      <p>Key Property Features</p>
+                      <ul>
+                        {propertyDetails?.bedrooms && (
+                          <li>
+                            <i className="ri-hotel-bed-line" /> Bedrooms:{" "}
+                            {propertyDetails?.bedrooms}
+                          </li>
+                        )}
+                        {propertyDetails?.bathrooms && (
+                          <li>
+                            <i className="fa fa-bath" aria-hidden="true" />{" "}
+                            Bathrooms: {propertyDetails?.bathrooms}
+                          </li>
+                        )}
+                        {propertyDetails?.area && (
+                          <li>
+                            <i className="ri-ruler-line" /> Size:{" "}
+                            {propertyDetails?.area} sqft
+                          </li>
+                        )}
+                      </ul>
+                    </div>
+                    <hr />
+                  </>
+                ))}
 
-                  {propertyDetails?.bathrooms && (
-                    <li>
-                      <i className="fa fa-bath" aria-hidden="true" /> Bathrooms:{" "}
-                      {propertyDetails.bathrooms}
-                    </li>
-                  )}
-
-                  {propertyDetails?.area && (
-                    <li>
-                      <i className="ri-ruler-line" /> Size:{" "}
-                      {propertyDetails.area} sqft
-                    </li>
-                  )}
-                </ul>
-              </div>
-              <hr />
               <div className="key_feature">
                 <p>Property Information </p>
                 <div className="pro_info">
@@ -91,11 +111,13 @@ function PropertyAllInfo() {
                     <tbody>
                       <tr>
                         <td>Type</td>
-                        <td>Apartment</td>
+                        <td>
+                          {propertyDetails?.subSubCategoryData?.name || ""}
+                        </td>
                       </tr>
                       <tr>
                         <td>Purpose</td>
-                        <td>For rent</td>
+                        <td>For {propertyDetails?.categoryData?.name || ""}</td>
                       </tr>
                       <tr>
                         <td>Reference</td>
@@ -104,25 +126,27 @@ function PropertyAllInfo() {
                       <tr>
                         <td>Added on</td>
                         <td>
-                          <i className="ri-calendar-2-line" />{' '}{formatDate(propertyDetails?.createdAt, "date")} 
+                          <i className="ri-calendar-2-line" />{" "}
+                          {formatDate(propertyDetails?.createdAt, "date")}
                         </td>
                       </tr>
                       <tr>
                         <td>Ownership</td>
                         <td>
                           <i className="ri-verified-badge-fill verified" />{" "}
-                          Freehold
+                          {propertyDetails?.ownership_status || ""}
                         </td>
                       </tr>
                       <tr>
                         <td>Built-up Area </td>
                         <td>
-                          <i className="ri-ruler-line" /> 817 sqft
+                          <i className="ri-ruler-line" />{" "}
+                          {propertyDetails?.area || 0} sqft
                         </td>
                       </tr>
                       <tr>
                         <td>Usage</td>
-                        <td>Residential</td>
+                        <td>{propertyDetails?.subCategoryData?.name || ""}</td>
                       </tr>
                     </tbody>
                   </table>
@@ -133,21 +157,23 @@ function PropertyAllInfo() {
                 <p>Building Information</p>
                 <ul>
                   <li>
-                    <i className="ri-building-line" /> Building Name: Al Matter
+                    <i className="ri-building-line" /> Building Name:{" "}
+                    {propertyDetails?.building_name || "Al Matter"}
                     Building
                   </li>
                   <li>
-                    <i className="ri-building-4-line" /> Total Floors: 30
+                    <i className="ri-building-4-line" /> Total Floors:{" "}
+                    {propertyDetails?.total_floors || 0}
                   </li>
                 </ul>
               </div>
-              <hr />
               <Features />
-              <hr />
               <div className="key_feature">
                 <p>Map </p>
                 <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d28908.384151605973!2d55.11929978065527!3d25.083304028174492!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f6b5402c126e3%3A0xb9511e6655c46d7c!2sDubai%20Marina%20-%20Dubai%20-%20United%20Arab%20Emirates!5e0!3m2!1sen!2sin!4v1744286420425!5m2!1sen!2sin"
+                  src={
+                    "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d28908.384151605973!2d55.11929978065527!3d25.083304028174492!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f6b5402c126e3%3A0xb9511e6655c46d7c!2sDubai%20Marina%20-%20Dubai%20-%20United%20Arab%20Emirates!5e0!3m2!1sen!2sin!4v1744286420425!5m2!1sen!2sin"
+                  }
                   width="100%"
                   height={350}
                   style={{ border: 0 }}
@@ -177,32 +203,54 @@ function PropertyAllInfo() {
               <hr />
               <div className="key_feature">
                 <p>Virtual Tour </p>
-                <iframe
-                  width="100%"
+                <MediaWithLoader
+                  src={
+                    propertyDetails?.virtual_tour ||
+                    "https://www.youtube.com/embed/B4o8PvcqHC4?si=oneK1BnR6P_P9GxA"
+                  }
                   height={415}
-                  src="https://www.youtube.com/embed/B4o8PvcqHC4?si=oneK1BnR6P_P9GxA"
-                  title="YouTube video player"
-                  frameBorder={0}
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  referrerPolicy="strict-origin-when-cross-origin"
-                  allowFullScreen
+                  className="rounded"
                 />
+                {/* {propertyDetails?.virtual_tour ? (
+                  <iframe
+                    key={propertyDetails.virtual_tour}
+                    width="100%"
+                    height={415}
+                    src={propertyDetails.virtual_tour}
+                    title="YouTube video player"
+                    frameBorder={0}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerPolicy="strict-origin-when-cross-origin"
+                    allowFullScreen
+                  />
+                ) : (
+                  <p>Loading virtual tour...</p>
+                )} */}
               </div>
               <hr />
               <div className="key_feature">
                 <p>Floor Plan</p>
                 <div className="floor_pll">
                   <ul>
-                    <li>
-                      <a
-                        href={floor1}
-                        data-toggle="lightbox"
-                        data-gallery="example-gallery"
-                      >
-                        <img src={floor1} className="img-fluid" />
-                      </a>
-                    </li>
-                    <li>
+                    {propertyDetails?.floor_plan &&
+                      propertyDetails?.floor_plan?.map((floor, index) => {
+                        return (
+                          <li key={index}>
+                            <a
+                              href={floor}
+                              className="lightbox"
+                              data-glightbox="type: image"
+                            >
+                              <ImageWithLoader
+                                src={floor}
+                                className="img-fluid"
+                              />
+                            </a>
+                          </li>
+                        );
+                      })}
+
+                    {/* <li>
                       <a
                         href={floor2}
                         data-toggle="lightbox"
@@ -210,11 +258,10 @@ function PropertyAllInfo() {
                       >
                         <img src={floor2} className="img-fluid" />
                       </a>
-                    </li>
+                    </li> */}
                   </ul>
                 </div>
               </div>
-              <hr />
               <SimlarProperty />
               <hr />
               <div className="key_feature regulatory">
@@ -223,10 +270,16 @@ function PropertyAllInfo() {
                   <li>
                     <i className="ri-file-list-3-line" />{" "}
                     <span>RERA Permit No.</span>{" "}
-                    {propertyDetails?.unit_number || "N/A"}
+                    {propertyDetails?.permit_number || "N/A"}
                   </li>
                   <li>
                     <i className="ri-user-line" /> <span>Listed by:</span>{" "}
+                    {/* {propertyDetails?.userData?.first_name ||
+                    propertyDetails?.userData?.last_name
+                      ? `${propertyDetails?.userData?.first_name || ""} ${
+                          propertyDetails?.userData?.last_name || ""
+                        }`.trim()
+                      : "Property Finders Real Estate"} */}
                     Property Finders Real Estate
                   </li>
                 </ul>

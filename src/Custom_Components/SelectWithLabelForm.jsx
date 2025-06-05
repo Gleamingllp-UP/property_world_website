@@ -32,7 +32,7 @@ export function SelectWithLabelForm({
               {...rest}
             >
               <option value="" disabled>
-                {placeholder}
+                {placeholder || 'Select an option'}
               </option>
               {options.map((option) => (
                 <option key={option.value} value={option.value}>

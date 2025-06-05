@@ -32,10 +32,10 @@ function ManualSignUp() {
   useEffect(() => {
     if (formData) {
       const { user_type, ...newFormData } = formData;
-      console.log(newFormData)
+      console.log(newFormData);
       reset({
         ...newFormData,
-        dob:formatDate(newFormData?.dob,'dateHiphonYearStart')
+        dob: formatDate(newFormData?.dob, "dateHiphonYearStart"),
       });
     }
   }, [formData, reset]);
@@ -48,7 +48,10 @@ function ManualSignUp() {
       const resultAction = await dispatch(initiateSignupThunk(payload));
       if (initiateSignupThunk.fulfilled.match(resultAction)) {
         localStorage.setItem("formData", JSON.stringify(payload));
-        showToast("Please Verify Email", "success");
+        showToast(
+          "Please verify your e-mail ID by entering the code you received on your mail ID. ",
+          "success"
+        );
         setTimeout(() => {
           setStep(2);
         }, 1000);
@@ -68,16 +71,23 @@ function ManualSignUp() {
   return (
     <div className="">
       {step === 1 && (
-        <form onSubmit={handleSubmit(onSubmit, (errors) => {
-          console.error("Errors:", errors);
-        })
-        }>
+        <form
+          onSubmit={handleSubmit(onSubmit, (errors) => {
+            console.error("Errors:", errors);
+          })}
+        >
           <div className="row">
             {requiredSignUpFieldsForManual?.map((field, index) => (
               <div
                 key={index}
                 className={
-                  field?.inputType === "checkbox" ? "col-lg-12" : "col-lg-6"
+                  field?.inputType === "checkbox"
+                    ? "col-lg-12"
+                    : field?.key === "country_code"
+                    ? "col-lg-2"
+                    : field?.key === "phone_number"
+                    ? "col-lg-4"
+                    : "col-lg-6"
                 }
               >
                 {field.inputType === "text" && (
@@ -87,6 +97,13 @@ function ManualSignUp() {
                       name={field?.key}
                       label={field?.label}
                       type={field?.type}
+                      className={`rounded-none h-10 w-full ${
+                        field?.key === "country_code"
+                          ? "col-span-2"
+                          : field?.key === "phone_number"
+                          ? "col-span-4"
+                          : ""
+                      }`}
                       rules={getValidationRules({
                         label: field?.label,
                         type: field?.type,
@@ -115,7 +132,11 @@ function ManualSignUp() {
                       name={field?.key}
                       label={field?.label}
                       control={control}
-                      rules={{ required: `You must accept the ${field.label}` }}
+                      rules={{
+                        required: `You must accept the ${field?.label
+                          ?.replace(/\*/g, "")
+                          .trim()}`,
+                      }}
                     />
                   </>
                 )}
@@ -130,6 +151,9 @@ function ManualSignUp() {
                         label: field?.label,
                         type: field?.type,
                       })}
+                      placeholder={
+                        field?.key === "country_code" ? "Select" : ""
+                      }
                       options={
                         field?.key === "country_of_residance"
                           ? countryOfResidanceOption

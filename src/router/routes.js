@@ -193,7 +193,7 @@ const routes = [
     Component: AddProperty,
   },
   {
-    id: 19,
+    id: 20,
     isPrivate: true,
     isDashboard: true,
     name: "My Property Listing",
@@ -201,7 +201,7 @@ const routes = [
     Component: MyPropertyListing,
   },
   {
-    id: 20,
+    id: 21,
     isPrivate: true,
     name: "Property Listing",
     path: pageRoutes?.PROPERTY_LISTING,

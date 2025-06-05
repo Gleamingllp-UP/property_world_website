@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import GLightbox from "glightbox";
 import "glightbox/dist/css/glightbox.css";
 import { useDispatch, useSelector } from "react-redux";
@@ -33,63 +33,71 @@ function PropertyDetails() {
 
   return (
     <>
-  <div className="container">
+      <div className="container">
         <div id="gallery" className="photos-grid-container gallery">
           <div className="main-photo img-box">
-             {propertyDetails?.images
-            ?.filter((item) => item?.name === "Thumbnail Image")
-            ?.map((img, index) => {
-              return (
-                <a
-                  key={index}
-                  href={img?.url}
-                  className="glightbox"
-                  data-glightbox="type: image"
-                >
-                  <ImageWithLoader src={img?.url} />
-                </a>
-              );
-            })}
-          
-          </div>
-          <div>
-             <div className="sub">
-            {productImages &&
-              productImages?.map((image, index) => {
-                const remaining = productImages.length - 4;
-                const isMulti = productImages.length > 4 && index === 4;
+            {propertyDetails?.images
+              ?.filter((item) => item?.name === "Thumbnail Image")
+              ?.map((img, index) => {
                 return (
-                  <div
-                    className="img-box"
+                  <a
                     key={index}
-                    id={isMulti ? "multi-link" : ""}
+                    href={img?.url}
+                    className="glightbox" 
+                    data-glightbox="type: image"
                   >
-                    <a
-                      href={image?.url}
-                      className="glightbox"
-                      data-glightbox="type: image"
-                    >
-                      <ImageWithLoader src={image?.url} />
-
-                      {isMulti && (
-                        <div className="transparent-box">
-                          <div className="caption">+{remaining}</div>
-                        </div>
-                      )}
-                    </a>
-                  </div>
+                    <ImageWithLoader src={img?.url} />
+                  </a>
                 );
               })}
+          </div>
+          <div>
+            <div className="sub">
+              {productImages &&
+                productImages?.slice(0, 4).map((image, index) => {
+                  const remaining = productImages?.length - 4;
+                  const isMulti = productImages?.length > 4 && index === 3;
 
-            
+                  return (
+                    <div
+                      className="img-box"
+                      key={index}
+                      id={isMulti ? "multi-link" : ""}
+                    >
+                      <a
+                        href={image?.url}
+                        className="glightbox"
+                        data-glightbox="gallery: product-gallery"
+                      >
+                        <ImageWithLoader src={image?.url} />
+
+                        {isMulti && (
+                          <div className="transparent-box">
+                            <div className="caption">+{remaining}</div>
+                          </div>
+                        )}
+                      </a>
+                    </div>
+                  );
+                })}
+            </div>
+
+            {/* Hidden links for remaining images */}
+            {productImages &&
+              productImages
+                .slice(4)
+                .map((image, index) => (
+                  <a
+                    key={"hidden-" + index}
+                    href={image.url}
+                    className="glightbox"
+                    data-glightbox="gallery: product-gallery"
+                    style={{ display: "none" }}
+                  />
+                ))}
           </div>
-          </div>
-        
         </div>
       </div>
-
-
-  
     </>
   );
 }

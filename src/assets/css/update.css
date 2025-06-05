@@ -45,42 +45,121 @@
   border: none;
 }
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .spin {
   animation: spin 1s linear infinite;
 }
 /* 29/5/2025 */
-.amy_amm{
+.amy_amm {
   display: block !important;
 }
 label.radio-label {
-    margin-right: 7px;
+  margin-right: 7px;
 }
 .loc_area {
-    
-    margin-bottom: 15px;
+  margin-bottom: 15px;
 }
 .call_action ul li {
-    margin-right: 5px;
+  margin-right: 5px;
 }
 
 .pro_desc.sli {
   overflow: hidden;
-text-overflow: ellipsis;
-display: -webkit-box;
--webkit-line-clamp: 1;
--webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
 }
 
 .popular_searches {
-    padding: 60px 0px;
-    background: #ffff; 
+  padding: 60px 0px;
+  background: #ffff;
 }
 .popular_searches {
-    padding-top: 0px;
-    padding-bottom: 60px;
-    background: #ffff;
+  padding-top: 0px;
+  padding-bottom: 60px;
+  background: #ffff;
+}
+.custom-sidebar {
+  background: #b4dbe9;
+}
+.custom-sidebar ul.nav.flex-column a {
+  border-bottom: 1px solid #7db0c3;
+  border-radius: 0px;
+  font-size: 14px;
+}
+.custom-sidebar .bg-white {
+  border-radius: 10px;
+}
+.my_listing_table thead tr th {
+  text-transform: capitalize;
+  background: #f8b2bf !important;
+  font-weight: 500;
+}
+.my_listing_table table.table {
+  font-size: 14px;
+  font-weight: 300;
+}
+
+.my_listing_table .table-striped > tbody > tr:nth-of-type(even) > * {
+  --bs-table-color-type: var(--bs-table-striped-color);
+  --bs-table-bg-type: rgb(252 234 234);
+}
+
+.my_listing_table .table-striped > tbody > tr:nth-of-type(odd) > * {
+  --bs-table-color-type: var(--bs-table-striped-color);
+  --bs-table-bg-type: rgba(252, 234, 234, 0);
+}
+
+.my_listing input,
+.my_listing select {
+  border: 1px solid #333;
+  height: 45px;
+}
+.my_listing input[type="checkbox"] {
+  height: 17px;
+}
+.my_listing textarea {
+  border: 1px solid #333;
+}
+
+.css-13cymwt-control {
+  border: 1px solid #333 !important;
+  height: 50px;
+  padding: 0px !important;
+}
+.css-19bb58m {
+  height: 35px;
+}
+form.my_listing label {
+  font-size: 15px;
+  margin-bottom: 0px;
+  color: #666;
+}
+form.my_listing .form-control {
+  padding: 10px 10px;
+}
+form.my_listing .css-1p3m7a8-multiValue {
+  align-items: center !important;
+}
+.custom-button {
+  color: #fff;
+  background: #e9012b;
+  border-radius: 100px;
+}
+.custom-button:hover {
+  color: #fff;
+  background: #19aeee;
+}
+.active > .page-link,
+.page-link.active {
+  background-color: #e9012b;
+  border-color: #e9012b;
 }

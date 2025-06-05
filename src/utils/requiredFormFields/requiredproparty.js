@@ -27,3 +27,8 @@ export const amenitiesList = [
   "Maintenance",
   "Cleaning Services",
 ];
+
+export const countryOfResidanceOption = [
+  { value: "UAE", label: "United Arab Emirates" },
+];
+export const countryCodeOption = [{ value: "971", label: "+971(UAE)" }];

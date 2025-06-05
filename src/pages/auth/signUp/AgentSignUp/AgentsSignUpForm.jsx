@@ -31,7 +31,6 @@ function AgentsSignUpForm() {
   useEffect(() => {
     if (formData) {
       const { user_type, ...newFormData } = formData;
-      console.log(newFormData);
       reset({
         ...newFormData,
         dob: formatDate(newFormData?.dob, "dateHiphonYearStart"),
@@ -49,10 +48,12 @@ function AgentsSignUpForm() {
       const formDataSignUp = new FormData();
 
       for (const key in payload) {
-        if (payload[key] instanceof File) {
-          formDataSignUp.append(key, payload[key]?.[0]);
+        const value = payload[key];
+
+        if (value instanceof FileList && value.length > 0) {
+          formDataSignUp.append(key, value[0]);
         } else {
-          formDataSignUp.append(key, payload[key]);
+          formDataSignUp.append(key, value);
         }
       }
 

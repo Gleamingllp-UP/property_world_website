@@ -1,20 +1,22 @@
-import { property_world_logo } from "@/assets/images";
+import { property_world_logo, contact_photo } from "@/assets/images";
 import { Link, useNavigate } from "react-router-dom";
 import { pageRoutes } from "../router/pageRoutes";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import LoginModal from "../pages/auth/login/LoginModal";
 import { getAllActiveCategoryThunk } from "./../features/activeData/activeDataSlice";
-
+import { getUserDetailsThunk } from "../features/user/userSlice";
 function Header() {
-  const { location } = useSelector((store) => store?.activeData);
   const [modalShow, setModalShow] = useState(false);
-  const { categories } = useSelector((store) => store?.activeData);
-  const dispatch = useDispatch();
+  const { categories, location } = useSelector((store) => store?.activeData);
+  const { userData } = useSelector((store) => store?.user);
 
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+
   useEffect(() => {
     dispatch(getAllActiveCategoryThunk());
+    dispatch(getUserDetailsThunk());
   }, [dispatch]);
 
   return (
@@ -58,17 +60,18 @@ function Header() {
                 />
               </button>
               <ul className="menu">
-                {categories?.map((item) => (
-                  <li key={item?._id} className="menu-item">
-                    <Link
-                      to={
-                        pageRoutes.PROPERTY_LISTING + `?category=${item?._id}`
-                      }
-                    >
-                      {item?.name}
-                    </Link>
-                  </li>
-                ))}
+                {categories &&
+                  categories?.map((item) => (
+                    <li key={item?._id} className="menu-item">
+                      <Link
+                        to={
+                          pageRoutes.PROPERTY_LISTING + `?category=${item?._id}`
+                        }
+                      >
+                        {item?.name}
+                      </Link>
+                    </li>
+                  ))}
 
                 <li className="menu-item">
                   <a
@@ -139,15 +142,41 @@ function Header() {
                 <li className="menu-item">
                   <Link to={pageRoutes.AGENTS}>Find an Agent</Link>
                 </li>
-                <li className="menu-item" onClick={() => setModalShow(true)}>
-                  <a
-                    data-bs-toggle="modal"
-                    data-bs-target="#login_form"
-                    className="login_u"
-                  >
-                    <i className="ri-user-line"></i> Login
-                  </a>
-                </li>
+                {userData?.role === "guest" && (
+                  <li className="menu-item" onClick={() => setModalShow(true)}>
+                    <a
+                      data-bs-toggle="modal"
+                      data-bs-target="#login_form"
+                      className="login_u"
+                    >
+                      <i className="ri-user-line"></i> Login
+                    </a>
+                  </li>
+                )}
+
+                {userData?.role !== "guest" && (
+                  <li className="menu-item">
+                    <Link
+                      to={pageRoutes.MY_PROFILE}
+                      className="d-flex align-items-center text-decoration-none"
+                    >
+                      <img
+                        src={
+                          userData?.profile_picture ||
+                          userData?.agent_photo ||
+                          userData?.agency_logo ||
+                          contact_photo
+                        }
+                        alt="Profile"
+                        className="rounded-circle border"
+                        style={{
+                          height: "40px",
+                          width: "40px",
+                        }}
+                      />
+                    </Link>
+                  </li>
+                )}
               </ul>
             </nav>
           </section>

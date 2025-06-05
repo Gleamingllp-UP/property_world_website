@@ -2,11 +2,11 @@ export const pageRoutes = {
   HOME_PAGE: "/",
   LOGIN: "/login",
   SIGN_UP: "/sign-up",
- 
+
   //Property
   PROPERTY_LISTING: "/property-listing",
   PROPERTY_DETAILS: "/property-details",
-  
+
   //About Us
   ABOUT_US: "/about-us",
 
@@ -46,4 +46,5 @@ export const pageRoutes = {
   USER_DASHBOARD: "/userdashboard",
   ADD_PROPERTY: "/add-property",
   USER_PROPERTY_LISTING: "/my-property-listing",
+  MY_PROFILE: "/my-profile",
 };

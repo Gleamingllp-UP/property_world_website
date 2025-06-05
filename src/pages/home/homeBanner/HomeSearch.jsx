@@ -1,20 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  getAllActiveCategoryThunk,
-  getAllActiveSubCategoryThunk,
-  getAllActivesubSubCategoryThunk,
-  resetActiveData,
-} from "../../../features/activeData/activeDataSlice";
+import { resetActiveData } from "../../../features/activeData/activeDataSlice";
 import { formatRange } from "../../../helper/function/formatRange";
-import {
-  getUserData,
-  guestUserLoginThunk,
-} from "../../../features/user/userSlice";
+
 import { generateHandoverOptions } from "../../../helper/function/generateHandoverOptions";
 import Form from "react-bootstrap/Form";
 import { useNavigate } from "react-router-dom";
 import { pageRoutes } from "../../../router/pageRoutes";
+import CategoryFetcher from "./CategoryFetcher";
 
 function HomeSearch() {
   const [selectedCategoryId, setSelectedCategoryId] = useState("");
@@ -49,68 +42,51 @@ function HomeSearch() {
   const { categories, subCategories, subSubCategories, loading } = useSelector(
     (store) => store?.activeData
   );
-  const { userData } = useSelector((store) => store?.user);
+
   const dispatch = useDispatch();
 
-  const [guestLoginTriggered, setGuestLoginTriggered] = useState(false);
+  // useEffect(() => {
+  //   const fetchCategories = async () => {
+  //     try {
+  //       const res = await dispatch(getAllActiveCategoryThunk()).unwrap();
+  //       // const firstId = res?.data?.[0]?._id;
+  //       // setSelectedCategoryId(firstId);
+  //     } catch (err) {
+  //       console.error("Error fetching categories", err);
+  //     }
+  //   };
+  //   fetchCategories();
+  // }, [dispatch]);
 
-  useEffect(() => {
-    dispatch(getUserData());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   if (!selectedCategoryId) return;
 
-  useEffect(() => {
-   if (userData && Object.keys(userData).length > 0) {
-      if (userData?.role === "guest" && !guestLoginTriggered) {
-        dispatch(guestUserLoginThunk());
-        setGuestLoginTriggered(true);
-      }
-    } else {
-      dispatch(guestUserLoginThunk());
-    }
-  }, [dispatch, userData?.role, guestLoginTriggered]);
+  //   const fetchSubCategories = async () => {
+  //     try {
+  //       const res = await dispatch(
+  //         getAllActiveSubCategoryThunk({ categoryId: selectedCategoryId })
+  //       ).unwrap();
+  //       // const firstSubId = res?.data?.[0]?._id;
+  //       // const firstSubName = res?.data?.[0]?.name;
+  //       // setSelectedSubCategoryName(firstSubName);
+  //       // setSelectedSubCategoryId(firstSubId);
+  //     } catch (err) {
+  //       console.error("Error fetching subcategories", err);
+  //     }
+  //   };
 
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const res = await dispatch(getAllActiveCategoryThunk()).unwrap();
-        // const firstId = res?.data?.[0]?._id;
-        // setSelectedCategoryId(firstId);
-      } catch (err) {
-        console.error("Error fetching categories", err);
-      }
-    };
-    fetchCategories();
-  }, [dispatch]);
+  //   fetchSubCategories();
+  // }, [selectedCategoryId, dispatch]);
 
-  useEffect(() => {
-    if (!selectedCategoryId) return;
+  // useEffect(() => {
+  //   if (!selectedSubCategoryId) return;
 
-    const fetchSubCategories = async () => {
-      try {
-        const res = await dispatch(
-          getAllActiveSubCategoryThunk({ categoryId: selectedCategoryId })
-        ).unwrap();
-        // const firstSubId = res?.data?.[0]?._id;
-        // const firstSubName = res?.data?.[0]?.name;
-        // setSelectedSubCategoryName(firstSubName);
-        // setSelectedSubCategoryId(firstSubId);
-      } catch (err) {
-        console.error("Error fetching subcategories", err);
-      }
-    };
-
-    fetchSubCategories();
-  }, [selectedCategoryId, dispatch]);
-
-  useEffect(() => {
-    if (!selectedSubCategoryId) return;
-
-    dispatch(
-      getAllActivesubSubCategoryThunk({
-        subCategoryId: selectedSubCategoryId,
-      })
-    );
-  }, [selectedSubCategoryId, dispatch]);
+  //   dispatch(
+  //     getAllActivesubSubCategoryThunk({
+  //       subCategoryId: selectedSubCategoryId,
+  //     })
+  //   );
+  // }, [selectedSubCategoryId, dispatch]);
 
   const handleReset = () => {
     setSelectedCategoryId("");
@@ -233,6 +209,10 @@ function HomeSearch() {
 
   return (
     <div className="main_search">
+      <CategoryFetcher
+        selectedCategoryId={selectedCategoryId}
+        selectedSubCategoryId={selectedSubCategoryId}
+      />
       <div className="padd">
         <div className="row">
           <div className="col-lg-3">

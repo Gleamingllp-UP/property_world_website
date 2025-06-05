@@ -54,6 +54,10 @@ const MyPropertyListing = lazy(() =>
   import("../pages/dashboard/list/MyPropertyListing")
 );
 
+//DashBoard
+const Profile = lazy(() => import("../pages/dashboard/profile/Profile"));
+
+
 const routes = [
   // {
   //   id: 1,
@@ -206,6 +210,14 @@ const routes = [
     name: "Property Listing",
     path: pageRoutes?.PROPERTY_LISTING,
     Component: CategoryWiseList,
+  },
+  {
+    id: 22,
+    isPrivate: true,
+    isDashboard: true,
+    name: "My Profile",
+    path: pageRoutes?.MY_PROFILE,
+    Component: Profile,
   },
 ];
 export { routes };

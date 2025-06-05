@@ -1,4 +1,3 @@
-
 import axios from "axios";
 import { endpoints } from "../utils/endpoints/endpoints";
 import { pageRoutes } from "../router/pageRoutes";
@@ -14,9 +13,9 @@ const api = axios.create({
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem("userToken");
   if (token) config.headers.Authorization = `Bearer ${token}`;
-  
+
   if (config.data instanceof FormData) {
-    delete config.headers["Content-Type"]; 
+    delete config.headers["Content-Type"];
   }
   return config;
 });
@@ -31,7 +30,8 @@ api.interceptors.response.use(
     };
     const originalUrl = error.config?.url;
     if (error.response && error.response.status === 401) {
-      localStorage.removeItem("adminToken");
+      localStorage.removeItem("userToken");
+      localStorage.removeItem("userData");
       if (!originalUrl.includes(endpoints.userLogin)) {
         errorData.status = 401;
         errorData.message = "Session expired. Please log in again.";

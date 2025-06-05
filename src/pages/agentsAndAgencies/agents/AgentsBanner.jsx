@@ -15,16 +15,15 @@ function AgentsBanner() {
     dispatch(getBannerByTypeThunk("agent"));
   }, [dispatch]);
 
- 
-
   const handleChange = (e) => {
     setSelectedLanguage(e.target.value);
   };
-const [nationality, setNationality] = useState("");
+  const [nationality, setNationality] = useState("");
 
   const handleCountry = (e) => {
     setNationality(e.target.value);
   };
+  
   return (
     <>
       <div className="inner_banner" style={{ backgroundImage: `url(${banners?.imageUrl || landlord_guide})` }}>
@@ -64,15 +63,15 @@ const [nationality, setNationality] = useState("");
                       </div>
                     </div>
                     <div className="col-lg-4">
-                      <div className="sk_box">
-          <select id="nationality" name="nationality" value={nationality} onChange={handleCountry}>
-      <option value="">Nationality</option>
-      {countries && countries?.map((country) => (
-        <option key={country} value={country}>
-          {country}
-        </option>
-      ))}
-    </select>
+                        <div className="sk_box">
+               <select id="nationality" name="nationality" value={nationality} onChange={handleCountry}>
+                     <option value="">Nationality</option>
+                    {countries && countries?.map((country) => (
+                  <option key={country} value={country}>
+                {country}
+                 </option>
+                 ))}
+               </select>
                       </div>
                     </div>
                   </div>

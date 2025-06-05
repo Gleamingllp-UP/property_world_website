@@ -109,6 +109,7 @@ const Archive = () => {
             <div className="col-lg-6">
               <div className="qust_part">
                 <ul>
+                  {console.log("Views:", propertyData?.features)}
                   {["All", "Furnished", "Unfurnished"].map((label, index) => (
                     <li key={index}>
                       <input
@@ -119,8 +120,7 @@ const Archive = () => {
                       />
                       <label
                         htmlFor={`rdo2_${index + 1}`}
-                        className="radio-label"
-                      >
+                        className="radio-label">
                         <span className="radio-border">{label}</span>
                       </label>
                     </li>

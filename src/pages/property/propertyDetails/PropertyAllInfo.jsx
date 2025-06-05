@@ -61,15 +61,26 @@ function PropertyAllInfo() {
               <div className="key_feature">
                 <p>Key Property Features</p>
                 <ul>
-                  <li>
-                    <i className="ri-hotel-bed-line" /> Bedrooms: 2
-                  </li>
-                  <li>
-                    <i className="fa fa-bath" aria-hidden="true" /> Bathrooms: 3
-                  </li>
-                  <li>
-                    <i className="ri-ruler-line" /> Size: 817 sqft
-                  </li>
+                  {propertyDetails?.bedrooms && (
+                    <li>
+                      <i className="ri-hotel-bed-line" /> Bedrooms:{" "}
+                      {propertyDetails.bedrooms}
+                    </li>
+                  )}
+
+                  {propertyDetails?.bathrooms && (
+                    <li>
+                      <i className="fa fa-bath" aria-hidden="true" /> Bathrooms:{" "}
+                      {propertyDetails.bathrooms}
+                    </li>
+                  )}
+
+                  {propertyDetails?.area && (
+                    <li>
+                      <i className="ri-ruler-line" /> Size:{" "}
+                      {propertyDetails.area} sqft
+                    </li>
+                  )}
                 </ul>
               </div>
               <hr />
@@ -93,7 +104,7 @@ function PropertyAllInfo() {
                       <tr>
                         <td>Added on</td>
                         <td>
-                          <i className="ri-calendar-2-line" /> 6 February 2025
+                          <i className="ri-calendar-2-line" />{' '}{formatDate(propertyDetails?.createdAt, "date")} 
                         </td>
                       </tr>
                       <tr>
@@ -211,7 +222,8 @@ function PropertyAllInfo() {
                 <ul>
                   <li>
                     <i className="ri-file-list-3-line" />{" "}
-                    <span>RERA Permit No.</span> 123456
+                    <span>RERA Permit No.</span>{" "}
+                    {propertyDetails?.unit_number || "N/A"}
                   </li>
                   <li>
                     <i className="ri-user-line" /> <span>Listed by:</span>{" "}

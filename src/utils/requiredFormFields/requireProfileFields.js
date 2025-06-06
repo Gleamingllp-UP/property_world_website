@@ -51,6 +51,47 @@ export const requiredProfileFieldsForAgents = [
     inputType: "text",
   },
   {
+    key: "expertise",
+    label: "Expertise *",
+    type: "text",
+    inputType: "text",
+  },
+
+  {
+    key: "languages",
+    label: "Languages *",
+    type: "text",
+    inputType: "select",
+    isMulti: true,
+  },
+
+  {
+    key: "service_areas",
+    label: "Service Areas *",
+    type: "text",
+    inputType: "select",
+    isMulti: true,
+  },
+  {
+    key: "bio",
+    label: "Bio *",
+    type: "text",
+    inputType: "textarea",
+  },
+  {
+    key: "brn",
+    label: "BRN *",
+    type: "number",
+    inputType: "text",
+  },
+  {
+    key: "experience",
+    label: "Experience *",
+    type: "number",
+    inputType: "text",
+  },
+
+  {
     key: "broker_license_number",
     label: "Broker License Number *",
     type: "file",
@@ -71,6 +112,106 @@ export const requiredProfileFieldsForAgents = [
   {
     key: "agent_photo",
     label: "Agent Photo *",
+    type: "file",
+    inputType: "text",
+  },
+];
+export const requiredProfileFieldsForIndividual = [
+  {
+    key: "first_name",
+    label: " First Name *",
+    type: "text",
+    inputType: "text",
+  },
+  {
+    key: "last_name",
+    label: " Last Name *",
+    type: "text",
+    inputType: "text",
+  },
+
+  { key: "email", label: "Email *", type: "email", inputType: "text" },
+  {
+    key: "country_code",
+    label: "Country Code *",
+    type: "number",
+    inputType: "select",
+  },
+  {
+    key: "phone_number",
+    label: "Contact Number *",
+    type: "number",
+    inputType: "text",
+  },
+  {
+    key: "country_of_residance",
+    label: "Country of Residence *",
+    type: "text",
+    inputType: "select",
+  },
+
+  {
+    key: "expertise",
+    label: "Expertise *",
+    type: "text",
+    inputType: "text",
+  },
+
+  {
+    key: "languages",
+    label: "Languages *",
+    type: "text",
+    inputType: "select",
+    isMulti: true,
+  },
+  
+  {
+    key: "service_areas",
+    label: "Service Areas *",
+    type: "text",
+    inputType: "select",
+    isMulti: true,
+  },
+
+  {
+    key: "bio",
+    label: "Bio *",
+    type: "text",
+    inputType: "textarea",
+  },
+  {
+    key: "brn",
+    label: "BRN *",
+    type: "number",
+    inputType: "text",
+  },
+  {
+    key: "experience",
+    label: "Experience *",
+    type: "number",
+    inputType: "text",
+  },
+  {
+    key: "kyc_form",
+    label: "KYC form *",
+    type: "file",
+    inputType: "text",
+  },
+  {
+    key: "title_deed",
+    label: "Title Deed *",
+    type: "file",
+    inputType: "text",
+  },
+  {
+    key: "eid_or_passport",
+    label: "EID / Passport *",
+    type: "file",
+    inputType: "text",
+  },
+  {
+    key: "agreement_noc",
+    label: "Agreement / NOC *",
     type: "file",
     inputType: "text",
   },

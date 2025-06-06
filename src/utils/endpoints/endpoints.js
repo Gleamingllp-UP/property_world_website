@@ -2,13 +2,14 @@ const endpoints = {
   //User types
   getAllActiveUserType: "/user-type/getall-active-user-type",
 
-  //user register
+  //user
   initiateSignup: "/user/initiate-signup/",
   verifyCode: "/user/verify-code/",
   userLogin: "/user/login-user/",
   setPassword: "/user/set-password/",
   getUserAllDetails: "/user/get-user-all-details",
   guestUserLogin: "/user/guest-user-login",
+  updateUser: "/user/users",
 
   //Filter
   getAllActiveCategory: "/category/getall-active-category",

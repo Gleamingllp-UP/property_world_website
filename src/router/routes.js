@@ -1,6 +1,12 @@
 import { GoHome } from "react-icons/go";
 import { lazy } from "react";
 import { pageRoutes } from "./pageRoutes";
+import {
+  LandPlot,
+  LayoutDashboardIcon,
+  TableProperties,
+  User,
+} from "lucide-react";
 
 // const Login = lazy(() => import("../pages/auth/Login"));
 
@@ -38,8 +44,8 @@ const BlogDetails = lazy(() => import("../pages/blog/BlogDetails"));
 
 const TenantMain = lazy(() => import("../pages/tenantGuide/TenantMain"));
 
-const UserDashboard = lazy(() =>
-  import("../pages/dashboard/list/UserDashboard")
+const DashboardHome = lazy(() =>
+  import("../pages/dashboard/dashboardHome/DashboardHome")
 );
 const CategoryWiseList = lazy(() =>
   import("../pages/property/categoryWiseList/ArchiveMain")
@@ -56,7 +62,6 @@ const MyPropertyListing = lazy(() =>
 
 //DashBoard
 const Profile = lazy(() => import("../pages/dashboard/profile/Profile"));
-
 
 const routes = [
   // {
@@ -184,14 +189,16 @@ const routes = [
     id: 18,
     isPrivate: true,
     isDashboard: true,
+    icon: LayoutDashboardIcon,
     name: "Dashboard",
     path: pageRoutes?.USER_DASHBOARD,
-    Component: UserDashboard,
+    Component: DashboardHome,
   },
   {
     id: 19,
     isPrivate: true,
     isDashboard: true,
+    icon: LandPlot,
     name: "Add Property",
     path: pageRoutes?.ADD_PROPERTY,
     Component: AddProperty,
@@ -200,6 +207,7 @@ const routes = [
     id: 20,
     isPrivate: true,
     isDashboard: true,
+    icon: TableProperties,
     name: "My Property Listing",
     path: pageRoutes?.USER_PROPERTY_LISTING,
     Component: MyPropertyListing,
@@ -215,6 +223,7 @@ const routes = [
     id: 22,
     isPrivate: true,
     isDashboard: true,
+    icon: User,
     name: "My Profile",
     path: pageRoutes?.MY_PROFILE,
     Component: Profile,

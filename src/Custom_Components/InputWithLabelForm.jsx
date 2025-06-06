@@ -55,6 +55,7 @@ export function InputWithLabelForm({
   placeholder = "",
   leftIcon,
   rightIcon,
+  accept="image/*",
   previewUrl,
   className = "",
   ...rest
@@ -96,6 +97,7 @@ export function InputWithLabelForm({
               }
               onBlur={onBlur}
               ref={ref}
+              accept={accept}
               value={type === "file" ? undefined : value ?? ""}
               style={{ paddingLeft, paddingRight }}
               {...rest}

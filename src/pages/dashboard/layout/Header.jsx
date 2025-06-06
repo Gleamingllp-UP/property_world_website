@@ -18,7 +18,7 @@ const Header = () => {
     <>
       <header
         className="bg-dark text-white d-flex justify-content-between align-items-center "
-        style={{ marginLeft: "250px",padding:"18px" }}
+        style={{ marginLeft: "300px",padding:"18px" }}
       >
         <h4 className="mb-0">Dashboard</h4>
         {userData?.first_name && (

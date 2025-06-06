@@ -5,7 +5,7 @@ const Footer = () => {
     <>
       <footer
         className="bg-dark text-center p-3"
-        style={{ marginLeft: "250px", padding: "18px" }}
+        style={{ marginLeft: "300px", padding: "18px" }}
       >
         <small style={{ color: "white" }}>
           © 2025 PropertyWorld. All rights reserved.

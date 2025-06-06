@@ -1,5 +1,7 @@
 import React from "react";
 import { contact_photo, property_world_logo } from "../../../assets/images";
+import { Link } from "react-router-dom";
+import { pageRoutes } from "../../../router/pageRoutes";
 
 function AgentsListing() {
   return (
@@ -23,7 +25,7 @@ function AgentsListing() {
                     <div>For Sale: 5</div>
                     <div>For Rent: 10</div>
                   </div>
-                  <a href="agent-info.php" className="action_btn popp"><i className="ri-arrow-right-up-long-line" /></a>
+                  <Link to={pageRoutes} className="action_btn popp"><i className="ri-arrow-right-up-long-line" /></Link>
                 </div>
                 <img src={property_world_logo} className="a_logo" />
               </div>

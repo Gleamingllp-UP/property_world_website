@@ -1,8 +1,11 @@
 // components/CategoryFetcher.jsx
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { getAllActiveCategoryThunk ,getAllActiveSubCategoryThunk,getAllActivesubSubCategoryThunk} from "../../../features/activeData/activeDataSlice";
-
+import {
+  getAllActiveCategoryThunk,
+  getAllActiveSubCategoryThunk,
+  getAllActivesubSubCategoryThunk,
+} from "../../../features/activeData/activeDataSlice";
 
 const CategoryFetcher = ({ selectedCategoryId, selectedSubCategoryId }) => {
   const dispatch = useDispatch();
@@ -19,7 +22,9 @@ const CategoryFetcher = ({ selectedCategoryId, selectedSubCategoryId }) => {
 
   useEffect(() => {
     if (!selectedSubCategoryId) return;
-    dispatch(getAllActivesubSubCategoryThunk({ subCategoryId: selectedSubCategoryId }));
+    dispatch(
+      getAllActivesubSubCategoryThunk({ subCategoryId: selectedSubCategoryId })
+    );
   }, [selectedSubCategoryId, dispatch]);
 
   return null;

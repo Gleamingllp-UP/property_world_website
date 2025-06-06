@@ -133,9 +133,13 @@ export const getValidationRules = ({
             ],
           };
 
-          const expectedType = filetype;
+          const expectedTypes = Array.isArray(filetype) ? filetype : [filetype];
 
-          const allowedTypes = allowedMimeTypes[expectedType] || [];
+          // Combine allowed MIME types from all expected types
+          const allowedTypes = expectedTypes.flatMap(
+            (type) => allowedMimeTypes[type] || []
+          );
+
           if (imageURL) {
             const result = validateUrl(imageURL);
             return result === true ? true : result;
@@ -145,10 +149,13 @@ export const getValidationRules = ({
             const invalidFiles = Array.from(fileList).filter(
               (file) => !allowedTypes.includes(file.type)
             );
-
-            return invalidFiles.length === 0
-              ? true
-              : `${cleanLabel} contains invalid ${expectedType.toUpperCase()} file(s)`;
+            if (invalidFiles?.length > 0) {
+              const typesStr = expectedTypes
+                .map((t) => t.toUpperCase())
+                .join(", ");
+              return `${cleanLabel} contains invalid ${typesStr} file(s)`;
+            }
+            return true;
           }
 
           return `${cleanLabel} is required`;

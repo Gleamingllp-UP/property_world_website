@@ -57,6 +57,8 @@ import arrow_gif from "./common/arrow.gif";
 import video from "./common/video.mp4";
 import video2 from "./common/video2.mp4";
 
+import default_user from "./Img/default_user.jpeg";
+
 //propert
 import propert1 from "./property/01.jpg";
 import propert2 from "./property/02.jpg";
@@ -133,6 +135,7 @@ export {
   new_buyer,
   arrow_gif,
   news_dss,
+  default_user,
   video,
   video2,
 

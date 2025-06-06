@@ -940,6 +940,7 @@ const AddProperty = () => {
                 render={({ field }) => (
                   <Select
                     isMulti
+                    className="multi-select"
                     options={amenitiesAndFacilities?.map((item) => ({
                       label: item?.name,
                       value: item?._id,

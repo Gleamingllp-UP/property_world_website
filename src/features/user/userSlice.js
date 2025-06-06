@@ -6,6 +6,7 @@ import {
   userLogin,
   getUserDetails,
   guestUserLogin,
+  updateUserDetails,
 } from "./userAPI";
 
 export const initiateSignupThunk = createAsyncThunk(
@@ -42,6 +43,12 @@ export const guestUserLoginThunk = createAsyncThunk(
   "users/guestUserLogin",
   async () => {
     return await guestUserLogin();
+  }
+);
+export const updateUserDetailsThunk = createAsyncThunk(
+  "users/updateUserDetails",
+  async ({ id, formData }) => {
+    return await updateUserDetails(id, formData);
   }
 );
 
@@ -178,6 +185,20 @@ const usersSlice = createSlice({
       })
       .addCase(getUserDetailsThunk.rejected, (state, action) => {
         state.isLoading = false;
+        state.error = action.error.message;
+      })
+
+      //Update User Details
+      .addCase(updateUserDetailsThunk.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updateUserDetailsThunk.fulfilled, (state, action) => {
+        state.loading = false;
+        state.userData = action.payload.data;
+        localStorage.setItem("userData", JSON.stringify(action.payload.data));
+      })
+      .addCase(updateUserDetailsThunk.rejected, (state, action) => {
+        state.loading = false;
         state.error = action.error.message;
       });
   },

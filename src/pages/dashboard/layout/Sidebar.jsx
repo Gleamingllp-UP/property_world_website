@@ -1,19 +1,27 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { property_world_logo } from "@/assets/images";
 import { routes } from "../../../router/routes";
 import { pageRoutes } from "../../../router/pageRoutes";
+import { useSelector } from "react-redux";
+import { LogOut } from "lucide-react";
+import LogoutModal from "../../auth/logout/LogoutModal";
+import { default_user } from "../../../assets/images";
 const Sidebar = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { userData } = useSelector((store) => store?.user);
+  const [modalShow, setModalShow] = useState(false);
+
   const isPathActive = (basePath, currentPath) => {
     return currentPath === basePath || currentPath.startsWith(`${basePath}/`);
   };
+
   return (
     <>
       <div
-        className="custom-sidebar text-white p-2 vh-100"
-        style={{ width: "250px", position: "fixed" }}
+        className="custom-sidebar text-white p-2 vh-100 "
+        style={{ width: "300px", position: "fixed" }}
       >
         <img
           src={property_world_logo}
@@ -27,7 +35,37 @@ const Sidebar = () => {
           onClick={() => navigate(pageRoutes.HOME_PAGE)}
         />
 
-        <hr className="my-2"/>
+        <hr className="my-2" />
+        {userData && Object.entries(userData)?.length > 0 && (
+          <div className="d-flex flex-column align-items-center text-white p-3">
+            <img
+              src={
+                userData?.user_type?.name === "Agent" && userData?.agent_photo
+                  ? userData?.agent_photo
+                  : userData?.user_type?.name === "Individual" &&
+                    userData?.profile_picture
+                  ? userData?.profile_picture
+                  : default_user
+              }
+              alt="Profile"
+              className="profile-img mb-3"
+            />
+            <h5 className="text-center">
+              {`${userData?.first_name} ${userData?.last_name}`}
+            </h5>
+            <p className="text-center small">{userData?.email || ""}</p>
+            <hr className="my-2 text-black" />
+
+            <button
+              className="btn btn-visit mb-3"
+              onClick={() => navigate(pageRoutes.HOME_PAGE)}
+            >
+              GO TO WEBSITE
+            </button>
+          </div>
+        )}
+
+        <hr className="my-2" />
         <ul className="nav flex-column">
           {routes
             ?.filter((routes) => routes?.isPrivate && routes?.isDashboard)
@@ -57,7 +95,21 @@ const Sidebar = () => {
                 </Link>
               );
             })}
+          <Link
+            onClick={() => {
+              setModalShow(true);
+            }}
+            className={`d-flex align-items-center gap-2 px-3 py-2 
+              transition text-black bg-transparent hover-bg-white bg-opacity-10`}
+          >
+            <LogOut
+              className="me-2"
+              style={{ width: "1.25rem", height: "1.25rem" }}
+            />
+            <span>Logout</span>
+          </Link>
         </ul>
+        <LogoutModal show={modalShow} onHide={() => setModalShow(false)} />
       </div>
     </>
   );

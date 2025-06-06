@@ -15,11 +15,11 @@ const Index = () => {
           flexDirection: "column",
         }}
       >
-        <Header />
-        <main className="flex-grow-1 p-4" style={{ marginLeft: "250px" }}>
+        {/* <Header /> */}
+        <main className="flex-grow-1 p-4" style={{ marginLeft: "300px" }}>
           <Outlet />
         </main>
-        <Footer />
+        {/* <Footer /> */}
       </div>
     </>
   );

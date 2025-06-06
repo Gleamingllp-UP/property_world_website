@@ -10,7 +10,7 @@ function HomeNewsBlog() {
   const { blogs, isLoading } = useSelector((store) => store?.blog);
   const dispatch = useDispatch();
   const page = 1;
-  const limit = 4;
+  const limit = 5;
 
   useEffect(() => {
     dispatch(getAllBlogsThunk({ page, limit }));
@@ -28,20 +28,20 @@ function HomeNewsBlog() {
                 return (
                   <div className="col-lg-3" key={i}>
                     <div className="position-relative overflow-hidden rounded-4 mb-4 bg-white border shadow-sm">
-                      {/* Image skeleton */}
+                    
                       <div
                         className="bg-light-subtle placeholder-glow w-100"
                         style={{ height: 410 }}
                       />
-                      {/* Content overlay */}
+                      
                       <div className="position-absolute bottom-0 start-50 translate-middle-x w-100 px-3 pb-3">
-                        {/* Date placeholder */}
+                        
                         <span
                           className="placeholder placeholder-glow d-inline-block bg-secondary-subtle rounded px-2 py-1 mb-2"
                           style={{ width: 120, height: 20 }}
                         />
 
-                        {/* Title placeholder */}
+                     
                         <div className="placeholder-glow mb-2">
                           <span
                             className="placeholder bg-secondary-subtle rounded col-10 d-block mb-1"
@@ -52,7 +52,7 @@ function HomeNewsBlog() {
                             style={{ height: 20 }}
                           />
                         </div>
-                        {/* Meta line placeholder */}
+                        
                         <div className="placeholder-glow">
                           <span
                             className="placeholder bg-secondary-subtle rounded col-8 d-block"
@@ -65,7 +65,7 @@ function HomeNewsBlog() {
                 );
               })
             : blogs &&
-              blogs?.map((item, index) => {
+              blogs?.slice(0,4)?.map((item, index) => {
                 return (
                   <div className="col-lg-3" key={index}>
                     <div className="blogs_area">
@@ -113,6 +113,7 @@ function HomeNewsBlog() {
             </Link>
           </div>
         )}
+    
       </div>
     </section>
   );

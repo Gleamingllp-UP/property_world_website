@@ -63,6 +63,9 @@ const MyPropertyListing = lazy(() =>
 //DashBoard
 const Profile = lazy(() => import("../pages/dashboard/profile/Profile"));
 
+const AgentInfoMain = lazy(() =>
+  import("../pages/agentsAndAgencies/agentinfo/AgentInfoMain")
+);
 const routes = [
   // {
   //   id: 1,
@@ -227,6 +230,13 @@ const routes = [
     name: "My Profile",
     path: pageRoutes?.MY_PROFILE,
     Component: Profile,
+  },
+  {
+    id: 23,
+    isPrivate: true,
+    name: "Agent-Info",
+    path: pageRoutes?.AGENT_INFO,
+    Component: AgentInfoMain,
   },
 ];
 export { routes };

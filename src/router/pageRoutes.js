@@ -41,6 +41,7 @@ export const pageRoutes = {
   //Agents and Agencies
   AGENTS: "/agents",
   AGENCIES: "/agencies",
+  AGENT_INFO: "/agent-info",
 
   //Dashboard
   USER_DASHBOARD: "/userdashboard",

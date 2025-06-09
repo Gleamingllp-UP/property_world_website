@@ -1,5 +1,7 @@
 import React from "react";
 import { contact_photo, property_world_logo } from "../../../assets/images";
+import { Link } from 'react-router-dom';
+import { pageRoutes } from "../../../router/pageRoutes";
 
 function AgentsListing() {
   return (
@@ -11,7 +13,7 @@ function AgentsListing() {
             <div className="col-lg-5 agency_list">
               <div className="agent_info_image agent_info_image2 agent_pennel_2">
                 <div>
-                  <a href="agent-info.php"><img src={contact_photo}className="img-fluid" /></a>
+                  <Link to={pageRoutes.AGENT_INFO}><img src={contact_photo}className="img-fluid" /></Link>
                 </div>
                 <div>
                   <h3>John Smith</h3>

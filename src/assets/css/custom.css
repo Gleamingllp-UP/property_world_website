@@ -3008,3 +3008,10 @@ a.chat_ptb {
     margin-left: 5px;
 }
 
+.info_agent{
+overflow: hidden;
+text-overflow: ellipsis;
+display: -webkit-box;
+-webkit-line-clamp: 3;
+-webkit-box-orient: vertical;
+}

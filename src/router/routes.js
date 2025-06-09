@@ -53,7 +53,7 @@ const AddProperty = lazy(() => import("../pages/dashboard/list/AddProperty"));
 const MyPropertyListing = lazy(() =>
   import("../pages/dashboard/list/MyPropertyListing")
 );
-
+const AgentInfoMain = lazy(() => import("../pages/agentsAndAgencies/agentinfo/AgentInfoMain"));
 const routes = [
   // {
   //   id: 1,
@@ -206,6 +206,13 @@ const routes = [
     name: "Property Listing",
     path: pageRoutes?.PROPERTY_LISTING,
     Component: CategoryWiseList,
+  },
+   {
+    id: 22,
+    isPrivate: true,
+    name: "Agent-Info",
+    path: pageRoutes?.AGENT_INFO,
+    Component: AgentInfoMain,
   },
 ];
 export { routes };

@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import { LogOut } from "lucide-react";
 import LogoutModal from "../../auth/logout/LogoutModal";
 import { default_user } from "../../../assets/images";
+import ImageWithLoader from "../../../Custom_Components/ImageWithLoader";
 const Sidebar = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -38,7 +39,7 @@ const Sidebar = () => {
         <hr className="my-2" />
         {userData && Object.entries(userData)?.length > 0 && (
           <div className="d-flex flex-column align-items-center text-white p-3">
-            <img
+            <ImageWithLoader
               src={
                 userData?.user_type?.name === "Agent" && userData?.agent_photo
                   ? userData?.agent_photo

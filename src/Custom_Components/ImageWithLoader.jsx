@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Loader2 } from "lucide-react";
 import { blog_image } from "../assets/images";
 
-const ImageWithLoader = ({ src, alt, className }) => {
+const ImageWithLoader = ({ src, alt, className, style }) => {
   const [loading, setLoading] = useState(true);
 
   const handleLoad = () => setLoading(false);
@@ -33,7 +33,7 @@ const ImageWithLoader = ({ src, alt, className }) => {
         } ${className}`}
         onLoad={handleLoad}
         onError={handleError}
-        style={{ transition: "opacity 0.3s ease-in-out" }}
+        style={{ transition: "opacity 0.3s ease-in-out", ...style }}
       />
     </div>
   );

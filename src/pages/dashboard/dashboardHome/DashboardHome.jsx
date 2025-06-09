@@ -1,13 +1,20 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { pageRoutes } from "../../../router/pageRoutes";
 import { default_user } from "../../../assets/images";
+import { getUserDetailsThunk } from "../../../features/user/userSlice";
+import ImageWithLoader from "../../../Custom_Components/ImageWithLoader";
 
 const DashboardHome = () => {
   const navigate = useNavigate();
   const { userData } = useSelector((store) => store?.user);
+  const dispatch = useDispatch();
 
+  useEffect(() => {
+    dispatch(getUserDetailsThunk());
+  }, [dispatch]);
+  
   return (
     <div className="p-4">
       <h2 className="fw-bold text-m">
@@ -22,7 +29,7 @@ const DashboardHome = () => {
         className=" p-2 mt-4 d-flex flex-row align-items-center"
         style={{ maxWidth: "600px" }}
       >
-        <img
+        <ImageWithLoader
           src={
             userData?.user_type?.name === "Agent" && userData?.agent_photo
               ? userData?.agent_photo
@@ -40,6 +47,7 @@ const DashboardHome = () => {
             marginRight: "20px",
           }}
         />
+
         <div>
           <h5 className="mb-1 fw-semibold ">
             {`${userData?.first_name} ${userData?.last_name}`}

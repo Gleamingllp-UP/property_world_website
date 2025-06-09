@@ -179,7 +179,7 @@ const AddProperty = () => {
   };
 
   const onSubmit = async (data) => {
-    console.log(data);
+    // console.log(data);
 
     const formData = new FormData();
     const maxBedroom = data?.bedrooms?.length

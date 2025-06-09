@@ -104,7 +104,7 @@ function Profile() {
   }, [userData, reset]);
 
   const onSubmit = async (data) => {
-    console.log(data);
+    // console.log(data);
     const id = userData?._id;
     let formData;
     if (userData?.user_type?.name === "Agent") {

@@ -536,7 +536,7 @@ const AddProperty = () => {
               {...register("gallery", {
                 validate: (files) => {
                   if (!files || files.length === 0) {
-                    return "Please select at least one image.";
+                    return "Please select at least nChane image.";
                   }
                   if (files.length > 10) {
                     return "You can select a maximum of 10 images.";

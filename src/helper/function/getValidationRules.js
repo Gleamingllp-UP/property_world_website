@@ -229,8 +229,9 @@ export const getFieldType = (key) => {
 };
 
 const validateUrl = (url) => {
-  const regex = /\.(jpe?g|png|pdf)$/i;
+  const regex =
+    /\.(jpe?g|png|webp|gif|svg|bmp|tiff|mp4|webm|mov|avi|mkv|pdf)$/i;
   return regex.test(url)
     ? true
-    : "Uploaded link must end with .png, .jpg, or .pdf";
+    : "Uploaded link must be a valid file URL ending in an accepted format (.jpg, .png, .webp, .mp4, .pdf, etc.)";
 };

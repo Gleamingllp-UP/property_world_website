@@ -73,36 +73,36 @@ function PropertyAllInfo() {
                   propertyDetails?.locationData?.name}
               </p>
               <hr />
-              {propertyDetails?.bedrooms ||
-                propertyDetails?.bathrooms ||
-                (propertyDetails?.area && (
-                  <>
-                    <div className="key_feature">
-                      <p>Key Property Features</p>
-                      <ul>
-                        {propertyDetails?.bedrooms && (
-                          <li>
-                            <i className="ri-hotel-bed-line" /> Bedrooms:{" "}
-                            {propertyDetails?.bedrooms}
-                          </li>
-                        )}
-                        {propertyDetails?.bathrooms && (
-                          <li>
-                            <i className="fa fa-bath" aria-hidden="true" />{" "}
-                            Bathrooms: {propertyDetails?.bathrooms}
-                          </li>
-                        )}
-                        {propertyDetails?.area && (
-                          <li>
-                            <i className="ri-ruler-line" /> Size:{" "}
-                            {propertyDetails?.area} sqft
-                          </li>
-                        )}
-                      </ul>
-                    </div>
-                    <hr />
-                  </>
-                ))}
+              {(propertyDetails?.bedrooms != null ||
+                propertyDetails?.bathrooms != null ||
+                propertyDetails?.area > 0) && (
+                <>
+                  <div className="key_feature">
+                    <p>Key Property Features</p>
+                    <ul>
+                      {propertyDetails?.bedrooms != null && (
+                        <li>
+                          <i className="ri-hotel-bed-line" /> Bedrooms:{" "}
+                          {propertyDetails?.bedrooms}
+                        </li>
+                      )}
+                      {propertyDetails?.bathrooms != null && (
+                        <li>
+                          <i className="fa fa-bath" aria-hidden="true" />{" "}
+                          Bathrooms: {propertyDetails?.bathrooms}
+                        </li>
+                      )}
+                      {propertyDetails?.area > 0 && (
+                        <li>
+                          <i className="ri-ruler-line" /> Size:{" "}
+                          {propertyDetails?.area} sqft
+                        </li>
+                      )}
+                    </ul>
+                  </div>
+                  <hr />
+                </>
+              )}
 
               <div className="key_feature">
                 <p>Property Information </p>
@@ -158,8 +158,7 @@ function PropertyAllInfo() {
                 <ul>
                   <li>
                     <i className="ri-building-line" /> Building Name:{" "}
-                    {propertyDetails?.building_name || "Al Matter"}
-                    Building
+                    {propertyDetails?.building_name || "Al Matter"} Building
                   </li>
                   <li>
                     <i className="ri-building-4-line" /> Total Floors:{" "}

@@ -189,6 +189,7 @@ const AddProperty = () => {
       ? Math.max(...data.bathrooms)
       : null;
 
+    // console.log(maxBathRoom, maxBedroom);
     formData.append("title", data?.title || "");
     formData.append("short_description", data?.short_description || "");
     formData.append("full_description", data?.full_description || "");
@@ -196,8 +197,8 @@ const AddProperty = () => {
     formData.append("subCategory", data?.subCategory || "");
     formData.append("subSubCategory", data?.subSubCategory || "");
     formData.append("duration", data?.duration || "");
-    formData.append("bedrooms", maxBedroom || "");
-    formData.append("bathrooms", maxBathRoom || "");
+    formData.append("bedrooms", maxBedroom ?? "");
+    formData.append("bathrooms", maxBathRoom ?? "");
     formData.append("price", data?.price || "");
     formData.append("area", data?.area || "");
     formData.append("handover_by", data?.handover_by || "");

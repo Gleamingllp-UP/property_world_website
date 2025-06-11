@@ -163,3 +163,7 @@ form.my_listing .css-1p3m7a8-multiValue {
   background-color: #e9012b;
   border-color: #e9012b;
 }
+.call_action {
+    position: absolute !important;
+}
+

@@ -58,11 +58,6 @@ video {
 }
 
 
-
-
-
-
-
 .brand {
   font-family: inherit;
   font-size: 1.75rem;
@@ -73,11 +68,6 @@ video {
   color: #e91e63;
   text-transform: uppercase;
   text-rendering: optimizeLegibility;
-}
-
-.header {
-  
-  
 }
 
 .header .wrapper {

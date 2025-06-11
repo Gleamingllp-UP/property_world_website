@@ -126,4 +126,4 @@ const Propertymap = ({ lat = 25.3463, lng = 55.4209 }) => {
   );
 };
 
-export default Propertymap;
+export default React.memo(Propertymap);

@@ -41,7 +41,7 @@ const endpoints = {
 
   //Inquiry
   createEnquiry: "/enquiry/add-enquiry",
-
+  createGetInTouch: "/getInTouch/add-getInTouch",
   //location
   getAllLocation: "/location/getall-user-location",
 

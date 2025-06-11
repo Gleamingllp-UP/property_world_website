@@ -1,10 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { initiateInquiry } from "./inquiryAPI";
+import { addGetIntouch } from "./getintouchAPI";
 
-export const initiateInquiryThunk = createAsyncThunk(
-  "Inquiry/initiateSignUp",
+export const initiateGetInTouchThunk = createAsyncThunk(
+  "getInTouch/addGetIntouch",
   async (payload) => {
-    return await initiateInquiry(payload);
+    return await addGetIntouch(payload);
   }
 );
 
@@ -18,13 +18,13 @@ const usersSlice = createSlice({
   extraReducers: (builder) => {
     builder
       // Initiate Signup
-      .addCase(initiateInquiryThunk.pending, (state) => {
+      .addCase(initiateGetInTouchThunk.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(initiateInquiryThunk.fulfilled, (state) => {
+      .addCase(initiateGetInTouchThunk.fulfilled, (state) => {
         state.isLoading = false;
       })
-      .addCase(initiateInquiryThunk.rejected, (state, action) => {
+      .addCase(initiateGetInTouchThunk.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
       });

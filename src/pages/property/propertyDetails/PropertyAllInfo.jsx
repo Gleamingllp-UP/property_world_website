@@ -12,6 +12,7 @@ import ImageWithLoader from "../../../Custom_Components/ImageWithLoader";
 import GLightbox from "glightbox";
 import "glightbox/dist/css/glightbox.css";
 import { formatPrice } from "../../../helper/function/formatPrice";
+import Propertymap from "./Propertymap";
 function PropertyAllInfo() {
   const { propertyDetails } = useSelector((store) => store?.property);
 
@@ -167,38 +168,7 @@ function PropertyAllInfo() {
                 </ul>
               </div>
               <Features />
-              <div className="key_feature">
-                <p>Map </p>
-                <iframe
-                  src={
-                    "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d28908.384151605973!2d55.11929978065527!3d25.083304028174492!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f6b5402c126e3%3A0xb9511e6655c46d7c!2sDubai%20Marina%20-%20Dubai%20-%20United%20Arab%20Emirates!5e0!3m2!1sen!2sin!4v1744286420425!5m2!1sen!2sin"
-                  }
-                  width="100%"
-                  height={350}
-                  style={{ border: 0 }}
-                  allowFullScreen
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                />
-                <p className="mt-3">Nearby Places</p>
-                <div className="near_p">
-                  <ul>
-                    <li>
-                      <i className="ri-community-line" /> School: 1.2 km
-                    </li>
-                    <li>
-                      <i className="ri-hospital-line" /> Hospital: 1.5 km
-                    </li>
-                    <li>
-                      <i className="ri-train-line" /> Metro Station: 800 m
-                    </li>
-                    <li>
-                      <i className="ri-shopping-cart-2-line" /> Supermarket: 600
-                      m
-                    </li>
-                  </ul>
-                </div>
-              </div>
+             <Propertymap lat={propertyDetails?.locationData?.latitude} lng={propertyDetails?.locationData?.longitude}/>
               <hr />
               <div className="key_feature">
                 <p>Virtual Tour </p>

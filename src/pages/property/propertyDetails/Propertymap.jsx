@@ -97,7 +97,7 @@ const Propertymap = ({ lat = 25.3463, lng = 55.4209 }) => {
       case "supermarket":
         return "ri-shopping-cart-2-line";
       default:
-        return "ri-map-pin-line"; // fallback icon
+        return "ri-map-pin-line"; 
     }
   };
 

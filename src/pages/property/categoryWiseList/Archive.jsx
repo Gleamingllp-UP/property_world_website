@@ -111,7 +111,7 @@ const Archive = () => {
             <div className="col-lg-6">
               <div className="qust_part">
                 <ul>
-                  {console.log("Views:", propertyData?.features)}
+                  
                   {["All", "Furnished", "Unfurnished"].map((label, index) => (
                     <li key={index}>
                       <input
@@ -382,7 +382,7 @@ const Archive = () => {
                     <div className="col-lg-7">
                       <div className="property_data_area">
                         <h2>
-                          <Link to="/property-details">{item?.title}</Link>
+                          <Link to={`${pageRoutes.PROPERTY_DETAILS}?id=${item?._id}`}>{item?.title}</Link>
                         </h2>
 
                         <div className="p_info">

@@ -11,6 +11,7 @@ function Header() {
   const { categories, location } = useSelector((store) => store?.activeData);
   const { userData } = useSelector((store) => store?.user);
 
+  
   const dispatch = useDispatch();
   const navigate = useNavigate();
 

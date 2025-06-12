@@ -119,12 +119,12 @@ function HomeCategoryWiseList() {
                               >
                                 {item?.categoryData?.name}
                               </span>
-                              <a href="property-details.php">
+                              <Link to={`${pageRoutes.PROPERTY_DETAILS}?id=${item?._id}`}>
                                 <img
                                   src={item?.images?.[0]?.url}
                                   className="img-fluid"
                                 />
-                              </a>
+                              </Link>
                               <div className="new_listng">
                                 <div>
                                   <img src={bed} /> Studio{" "}
@@ -157,10 +157,10 @@ function HomeCategoryWiseList() {
                                   AED {item?.price}{" "}
                                 </div>
                                 <div>
-                                  <a href="property-details.php">
+                                  <Link to={`${pageRoutes.PROPERTY_DETAILS}?id=${item?._id}`}>
                                     Read More{" "}
                                     <i className="ri-arrow-right-up-long-line" />
-                                  </a>
+                                  </Link>
                                 </div>
                               </div>
                             </div>

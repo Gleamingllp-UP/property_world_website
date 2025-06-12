@@ -140,6 +140,10 @@ export const getValidationRules = ({
             (type) => allowedMimeTypes[type] || []
           );
 
+          const noFilesProvided =
+            (!fileList || fileList.length === 0) && !imageURL;
+          if (!required && noFilesProvided) return true;
+
           if (imageURL) {
             const result = validateUrl(imageURL);
             return result === true ? true : result;
@@ -158,11 +162,15 @@ export const getValidationRules = ({
             return true;
           }
 
-          return `${cleanLabel} is required`;
+          // return `${cleanLabel} is required`;
         },
 
         maxSize: (fileList) => {
           const maxSizeInMB = 20;
+
+          const noFilesProvided =
+            (!fileList || fileList.length === 0) && !imageURL;
+          if (!required && noFilesProvided) return true;
 
           if (fileList && fileList?.length > 0) {
             const oversizedFiles = Array.from(fileList).filter(
@@ -179,12 +187,17 @@ export const getValidationRules = ({
             return result === true ? true : result;
           }
 
-          return `${cleanLabel} is required`;
+          // return `${cleanLabel} is required`;
         },
 
         fileCount: (fileList) => {
           const minFiles = 1;
           const maxFiles = 5;
+          
+          const noFilesProvided =
+            (!fileList || fileList.length === 0) && !imageURL;
+          if (!required && noFilesProvided) return true;
+
           if (imageURL) {
             return true;
           }

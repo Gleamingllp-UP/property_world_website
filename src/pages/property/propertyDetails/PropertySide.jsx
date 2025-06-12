@@ -1,7 +1,43 @@
-import React from "react";
-import { ads_banner, ads_banner2, property_world_logo, user } from "../../../assets/images";
+import React, { useEffect, useState } from "react";
+import {
+  ads_banner,
+  ads_banner2,
+  property_world_logo,
+  user,
+} from "../../../assets/images";
+import { useSelector } from "react-redux";
+import ImageWithLoader from "../../../Custom_Components/ImageWithLoader";
+
+import GLightbox from "glightbox";
+import "glightbox/dist/css/glightbox.css";
 
 const PropertySide = () => {
+  const { propertyDetails } = useSelector((store) => store?.property);
+  const [loadingType, setLoadingType] = useState(null);
+
+  const handleClick = (type) => {
+    setLoadingType(type);
+    setTimeout(() => {
+      setLoadingType(null);
+    }, 3000);
+  };
+  const cleanedPhone =
+    String(propertyDetails?.userData?.phone_number)?.replace(/\D/g, "") ||
+    "971501234567";
+
+  useEffect(() => {
+    const lightbox2 = GLightbox({
+      selector: ".lightbox2",
+    });
+
+    return () => {
+      lightbox2.destroy();
+    };
+  }, [
+    propertyDetails?.userData?.profile_picture,
+    propertyDetails?.userData?.agent_photo,
+  ]);
+
   return (
     <>
       <div className="col-lg-3">
@@ -10,18 +46,45 @@ const PropertySide = () => {
           <h5>Property Finders Real Estate</h5>
           <hr />
           <div className="agent_info">
-            <a href="agent-info.php">
-              <img src={user} className="img-fluid john" />
+            <a
+              href={
+                propertyDetails?.userData?.profile_picture ||
+                propertyDetails?.userData?.agent_photo ||
+                user
+              }
+              className="lightbox2"
+              data-glightbox="type: image"
+            >
+              <ImageWithLoader
+                src={
+                  propertyDetails?.userData?.profile_picture ||
+                  propertyDetails?.userData?.agent_photo ||
+                  user
+                }
+                className="img-fluid john"
+              />
             </a>
+
             <p>
               <b>
-                <a href="agent-info.php">John Smith</a>
+                <a href="#">
+                  {" "}
+                  {propertyDetails?.userData?.first_name ||
+                  propertyDetails?.userData?.last_name
+                    ? `${propertyDetails?.userData?.first_name || ""} ${
+                        propertyDetails?.userData?.last_name || ""
+                      }`
+                    : "Property Finders"}
+                </a>
               </b>
             </p>
-            <p className="mt-2 mb-3">Agent: Property Finders</p>
+            <p className="mt-2 mb-3">
+              {propertyDetails?.userData?.userTypeData?.name || "N/A"}:{" "}
+              {propertyDetails?.userData?.company_name || "Property Finders"}
+            </p>
             <small>
-              With a passion for helping people find the perfect place to call
-              home...
+              {propertyDetails?.userData?.bio ||
+                "With a passion for helping people find the perfect place to call home..."}
             </small>
           </div>
         </div>
@@ -30,16 +93,38 @@ const PropertySide = () => {
             Get in touch <br />
             for more information
           </h5>
-          <a href="#" className="call_us2">
-            <i className="ri-phone-line" /> Call{" "}
+
+          <a
+            href={`tel:${propertyDetails?.userData?.phone || "+971501234567"}`}
+            className="call_us2"
+            onClick={() => handleClick("call")}
+          >
+            <i className="ri-phone-line" />{" "}
+            {loadingType === "call" ? "Dialing..." : "Call"}
           </a>
-          <a href="#" className="email_area">
-            <i className="ri-mail-open-line" /> Email{" "}
+
+          <a
+            href={`mailto:${
+              propertyDetails?.userData?.email || "example@email.com"
+            }`}
+            className="email_area"
+            onClick={() => handleClick("email")}
+          >
+            <i className="ri-mail-open-line" />{" "}
+            {loadingType === "email" ? "Opening Mail..." : "Email"}
           </a>
-          <a href="#" className="whats_aap">
-            <i className="ri-whatsapp-line" /> WhatsApp{" "}
+          <a
+            href={`https://wa.me/${cleanedPhone}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="whats_aap"
+            onClick={() => handleClick("email")}
+          >
+            <i className="ri-whatsapp-line" />{" "}
+            {loadingType === "whatsapp" ? "Opening WhatsApp..." : "WhatsApp"}
           </a>
         </div>
+
         <div className="recommended_s">
           <h5>
             <b>Recommended Searches</b>
@@ -80,6 +165,7 @@ const PropertySide = () => {
             </li>
           </ul>
         </div>
+
         <div className="new_adss">
           <a href="#">
             <img src={ads_banner} className="img-fluid" />

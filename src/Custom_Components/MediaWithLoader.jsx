@@ -1,79 +1,98 @@
 import React, { useEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
-import { video2 } from "../assets/images";
 
 const isVideo = (url) => {
-  return url?.match(/\.(mp4|webm|ogg)$/i);
+  return url?.match(/\.(mp4|webm|ogg|mov|avi|mkv)$/i);
 };
 
 const MediaWithLoader = ({
-  setIsImgLoaded,
+  setIsImgLoaded = () => {},
   src,
   alt = "",
   className = "",
   height = 300,
+  fallbackText = "Media not available",
   ...props
 }) => {
   const [loading, setLoading] = useState(true);
-  const [errorSrc, setErrorSrc] = useState(null);
-
-  const handleLoad = () => setLoading(false);
-  const handleError = () => {
-    setLoading(false);
-    setIsImgLoaded(false);
-    setErrorSrc(isVideo(src) ? src : video2);
-  };
+  const [hasError, setHasError] = useState(false);
 
   useEffect(() => {
     if (!src) {
-      const fallback = isVideo(src) ? video2 : video2;
-      setErrorSrc(fallback);
+      setHasError(true);
       setLoading(false);
       setIsImgLoaded(false);
+    } else {
+      setHasError(false);
+      setLoading(true);
     }
-  }, [src, setIsImgLoaded]);
-  const finalSrc = errorSrc || src;
+  }, [src]);
+
+  const handleLoad = () => {
+    setLoading(false);
+    setIsImgLoaded(true);
+  };
+
+  const handleError = () => {
+    setLoading(false);
+    setHasError(true);
+    setIsImgLoaded(false);
+  };
+
+  if (hasError) {
+    return (
+      <div
+        className={`w-100 d-flex justify-content-center align-items-center bg-light border rounded text-center ${className}`}
+        style={{ height }}
+      >
+        <p
+          className="text-muted fw-medium small mb-0"
+          style={{
+            textTransform: "none",
+          }}
+        >
+          {fallbackText}
+        </p>
+      </div>
+    );
+  }
 
   return (
-    <div className="position-relative">
+    <div className={`position-relative ${className}`} style={{ height }}>
       {loading && (
-        <div className="position-absolute top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center bg-dark bg-opacity-50">
+        <div className="position-absolute top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center bg-dark bg-opacity-50 rounded">
           <Loader2
-            className="spin text-light"
-            style={{ width: "2rem", height: "2rem" }}
+            className="spinner-border text-white"
+            style={{ width: "1.5rem", height: "1.5rem" }}
           />
         </div>
       )}
 
-      {isVideo(finalSrc) ? (
+      {isVideo(src) ? (
         <video
-          width="100%"
+          src={src}
           height={height}
+          width="100%"
           loop
           muted
           autoPlay
           controls
-          className={`transition-opacity ${
-            loading ? "opacity-0" : "opacity-100"
-          } ${className}`}
           onCanPlay={handleLoad}
           onError={handleError}
-          style={{ transition: "opacity 0.3s ease-in-out" }}
+          className={`w-100 h-100 object-fit-cover rounded transition-opacity ${
+            loading ? "opacity-0" : "opacity-100"
+          }`}
           {...props}
-        >
-          <source src={finalSrc} type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
+        />
       ) : (
         <img
-          src={finalSrc}
+          src={src}
           alt={alt}
-          className={`img-fluid object-fit-cover transition-opacity w-100 h-100 ${
-            loading ? "opacity-0" : "opacity-100"
-          } ${className}`}
           onLoad={handleLoad}
           onError={handleError}
-          style={{ transition: "opacity 0.3s ease-in-out" }}
+          className={`w-100 h-100 object-fit-cover rounded transition-opacity ${
+            loading ? "opacity-0" : "opacity-100"
+          }`}
           {...props}
         />
       )}

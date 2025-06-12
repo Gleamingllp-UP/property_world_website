@@ -168,7 +168,10 @@ function PropertyAllInfo() {
                 </ul>
               </div>
               <Features />
-             <Propertymap lat={propertyDetails?.locationData?.latitude} lng={propertyDetails?.locationData?.longitude}/>
+              <Propertymap
+                lat={propertyDetails?.locationData?.latitude}
+                lng={propertyDetails?.locationData?.longitude}
+              />
               <hr />
               <div className="key_feature">
                 <p>Virtual Tour </p>
@@ -179,6 +182,7 @@ function PropertyAllInfo() {
                   }
                   height={415}
                   className="rounded"
+                  fallbackText="Virtual tour not uploaded"
                 />
                 {/* {propertyDetails?.virtual_tour ? (
                   <iframe
@@ -200,34 +204,32 @@ function PropertyAllInfo() {
               <div className="key_feature">
                 <p>Floor Plan</p>
                 <div className="floor_pll">
-                  <ul>
-                    {propertyDetails?.floor_plan &&
-                      propertyDetails?.floor_plan?.map((floor, index) => {
-                        return (
-                          <li key={index}>
+                  <ul className="row gx-3 gy-4">
+                    {propertyDetails?.floor_plan?.length > 0 ? (
+                      propertyDetails.floor_plan.map((floor, index) => (
+                        <li key={index} className="col-12 col-sm-6 col-lg-4">
+                          <div className="border rounded shadow-sm overflow-hidden h-100">
                             <a
                               href={floor}
-                              className="lightbox"
+                              className="d-block lightbox"
                               data-glightbox="type: image"
                             >
                               <ImageWithLoader
                                 src={floor}
-                                className="img-fluid"
+                                className="img-fluid w-100"
+                                alt={`Floor Plan ${index + 1}`}
                               />
                             </a>
-                          </li>
-                        );
-                      })}
-
-                    {/* <li>
-                      <a
-                        href={floor2}
-                        data-toggle="lightbox"
-                        data-gallery="example-gallery"
-                      >
-                        <img src={floor2} className="img-fluid" />
-                      </a>
-                    </li> */}
+                          </div>
+                        </li>
+                      ))
+                    ) : (
+                      <div className="col-12">
+                        <div className="text-center border border-light-subtle rounded py-5 bg-light text-muted fw-medium">
+                          No floor plans available
+                        </div>
+                      </div>
+                    )}
                   </ul>
                 </div>
               </div>

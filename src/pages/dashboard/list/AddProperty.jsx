@@ -537,7 +537,7 @@ const AddProperty = () => {
               {...register("gallery", {
                 validate: (files) => {
                   if (!files || files.length === 0) {
-                    return "Please select at least nChane image.";
+                    return "Please select at least one gallery image.";
                   }
                   if (files.length > 10) {
                     return "You can select a maximum of 10 images.";
@@ -1010,6 +1010,7 @@ const AddProperty = () => {
                     label: "Vitual Tours",
                     type: "file",
                     filetype: "video",
+                    required: false,
                   })
                 )}
               />
@@ -1031,7 +1032,11 @@ const AddProperty = () => {
                 multiple
                 {...register(
                   "floor_plan",
-                  getValidationRules({ label: "Floor Plans", type: "file" })
+                  getValidationRules({
+                    label: "Floor Plans",
+                    type: "file",
+                    required: false,
+                  })
                 )}
               />
               {errors?.floor_plan && (

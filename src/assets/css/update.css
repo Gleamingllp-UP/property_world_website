@@ -278,6 +278,53 @@ body {
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
 }
 .call_action {
-    position: absolute !important;
+  position: static !important;
+}
+.call_action span {
+  position: static !important;
+  margin-right: 10px;
+}
+.call_action {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
+.ad_search_btn {
+  width: "27%";
+}
+
+.more_filter_input {
+  border: 1px solid #ccc !important;
+  border-radius: 6px !important;
+  font-size: 14px !important;
+}
+.header .menu > .menu-item > .sub-menu {
+  z-index: 11;
+}
+
+.main_search .select-box2:after {
+  content: "";
+}
+.rotate-transition {
+  transition: transform 0.3s ease-in-out;
+}
+.rotate-45 {
+  transform: rotate(45deg);
+}
+
+.rotate-90 {
+  transform: rotate(90deg);
+}
+
+.rotate-180 {
+  transform: rotate(180deg);
+}
+
+.rotate-270 {
+  transform: rotate(270deg);
+}
+
+.rotate--45 {
+  transform: rotate(-45deg);
+}

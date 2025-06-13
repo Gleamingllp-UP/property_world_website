@@ -10,9 +10,12 @@ import ImageWithLoader from "../../../Custom_Components/ImageWithLoader";
 
 import GLightbox from "glightbox";
 import "glightbox/dist/css/glightbox.css";
+import { ContactSidebarSkeleton } from "../../../Custom_Components/Skeleton/PropertySkeleton";
 
 const PropertySide = () => {
-  const { propertyDetails } = useSelector((store) => store?.property);
+  const { propertyDetails, isLoading } = useSelector(
+    (store) => store?.property
+  );
   const [loadingType, setLoadingType] = useState(null);
 
   const handleClick = (type) => {
@@ -40,143 +43,149 @@ const PropertySide = () => {
 
   return (
     <>
-      <div className="col-lg-3">
-        <div className="agent">
-          <img src={property_world_logo} className="img-fluid agent_logo" />
-          <h5>Property Finders Real Estate</h5>
-          <hr />
-          <div className="agent_info">
-            <a
-              href={
-                propertyDetails?.userData?.profile_picture ||
-                propertyDetails?.userData?.agent_photo ||
-                user
-              }
-              className="lightbox2"
-              data-glightbox="type: image"
-            >
-              <ImageWithLoader
-                src={
+      {isLoading ? (
+        <ContactSidebarSkeleton />
+      ) : (
+        <div className="col-lg-3">
+          <div className="agent">
+            <img src={property_world_logo} className="img-fluid agent_logo" />
+            <h5>Property Finders Real Estate</h5>
+            <hr />
+            <div className="agent_info">
+              <a
+                href={
                   propertyDetails?.userData?.profile_picture ||
                   propertyDetails?.userData?.agent_photo ||
                   user
                 }
-                className="img-fluid john"
-              />
+                className="lightbox2"
+                data-glightbox="type: image"
+              >
+                <ImageWithLoader
+                  src={
+                    propertyDetails?.userData?.profile_picture ||
+                    propertyDetails?.userData?.agent_photo ||
+                    user
+                  }
+                  className="img-fluid john"
+                />
+              </a>
+
+              <p>
+                <b>
+                  <a href="#">
+                    {" "}
+                    {propertyDetails?.userData?.first_name ||
+                    propertyDetails?.userData?.last_name
+                      ? `${propertyDetails?.userData?.first_name || ""} ${
+                          propertyDetails?.userData?.last_name || ""
+                        }`
+                      : "Property Finders"}
+                  </a>
+                </b>
+              </p>
+              <p className="mt-2 mb-3">
+                {propertyDetails?.userData?.userTypeData?.name || "N/A"}:{" "}
+                {propertyDetails?.userData?.company_name || "Property Finders"}
+              </p>
+              <small>
+                {propertyDetails?.userData?.bio ||
+                  "With a passion for helping people find the perfect place to call home..."}
+              </small>
+            </div>
+          </div>
+          <div className="get_in_touch">
+            <h5>
+              Get in touch <br />
+              for more information
+            </h5>
+
+            <a
+              href={`tel:${
+                propertyDetails?.userData?.phone || "+971501234567"
+              }`}
+              className="call_us2"
+              onClick={() => handleClick("call")}
+            >
+              <i className="ri-phone-line" />{" "}
+              {loadingType === "call" ? "Dialing..." : "Call"}
             </a>
 
-            <p>
-              <b>
-                <a href="#">
-                  {" "}
-                  {propertyDetails?.userData?.first_name ||
-                  propertyDetails?.userData?.last_name
-                    ? `${propertyDetails?.userData?.first_name || ""} ${
-                        propertyDetails?.userData?.last_name || ""
-                      }`
-                    : "Property Finders"}
-                </a>
-              </b>
-            </p>
-            <p className="mt-2 mb-3">
-              {propertyDetails?.userData?.userTypeData?.name || "N/A"}:{" "}
-              {propertyDetails?.userData?.company_name || "Property Finders"}
-            </p>
-            <small>
-              {propertyDetails?.userData?.bio ||
-                "With a passion for helping people find the perfect place to call home..."}
-            </small>
+            <a
+              href={`mailto:${
+                propertyDetails?.userData?.email || "example@email.com"
+              }`}
+              className="email_area"
+              onClick={() => handleClick("email")}
+            >
+              <i className="ri-mail-open-line" />{" "}
+              {loadingType === "email" ? "Opening Mail..." : "Email"}
+            </a>
+            <a
+              href={`https://wa.me/${cleanedPhone}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="whats_aap"
+              onClick={() => handleClick("email")}
+            >
+              <i className="ri-whatsapp-line" />{" "}
+              {loadingType === "whatsapp" ? "Opening WhatsApp..." : "WhatsApp"}
+            </a>
+          </div>
+
+          <div className="recommended_s">
+            <h5>
+              <b>Recommended Searches</b>
+            </h5>
+            <hr />
+            <ul>
+              <li>
+                <a href="#">The Community Sports Arena</a>
+              </li>
+              <li>
+                <a href="#">Highly Accessible Spacious</a>
+              </li>
+              <li>
+                <a href="#">Office for Rent in Al Qiyadah</a>
+              </li>
+              <li>
+                <a href="#">Office for Rent in Al Qiyadah</a>
+              </li>
+            </ul>
+          </div>
+          <div className="recommended_s trending_s">
+            <h5>
+              <b>Trending Searches</b>
+            </h5>
+            <hr />
+            <ul>
+              <li>
+                <a href="#">The Community Sports Arena</a>
+              </li>
+              <li>
+                <a href="#">Highly Accessible | Spacious</a>
+              </li>
+              <li>
+                <a href="#">Office for Rent in Al Qiyadah</a>
+              </li>
+              <li>
+                <a href="#">Office for Rent in Al Qiyadah</a>
+              </li>
+            </ul>
+          </div>
+
+          <div className="new_adss">
+            <a href="#">
+              <img src={ads_banner} className="img-fluid" />
+            </a>
+          </div>
+          <div className="new_adss">
+            <a href="#">
+              <img src={ads_banner2} className="img-fluid" />
+            </a>
           </div>
         </div>
-        <div className="get_in_touch">
-          <h5>
-            Get in touch <br />
-            for more information
-          </h5>
-
-          <a
-            href={`tel:${propertyDetails?.userData?.phone || "+971501234567"}`}
-            className="call_us2"
-            onClick={() => handleClick("call")}
-          >
-            <i className="ri-phone-line" />{" "}
-            {loadingType === "call" ? "Dialing..." : "Call"}
-          </a>
-
-          <a
-            href={`mailto:${
-              propertyDetails?.userData?.email || "example@email.com"
-            }`}
-            className="email_area"
-            onClick={() => handleClick("email")}
-          >
-            <i className="ri-mail-open-line" />{" "}
-            {loadingType === "email" ? "Opening Mail..." : "Email"}
-          </a>
-          <a
-            href={`https://wa.me/${cleanedPhone}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="whats_aap"
-            onClick={() => handleClick("email")}
-          >
-            <i className="ri-whatsapp-line" />{" "}
-            {loadingType === "whatsapp" ? "Opening WhatsApp..." : "WhatsApp"}
-          </a>
-        </div>
-
-        <div className="recommended_s">
-          <h5>
-            <b>Recommended Searches</b>
-          </h5>
-          <hr />
-          <ul>
-            <li>
-              <a href="#">The Community Sports Arena</a>
-            </li>
-            <li>
-              <a href="#">Highly Accessible Spacious</a>
-            </li>
-            <li>
-              <a href="#">Office for Rent in Al Qiyadah</a>
-            </li>
-            <li>
-              <a href="#">Office for Rent in Al Qiyadah</a>
-            </li>
-          </ul>
-        </div>
-        <div className="recommended_s trending_s">
-          <h5>
-            <b>Trending Searches</b>
-          </h5>
-          <hr />
-          <ul>
-            <li>
-              <a href="#">The Community Sports Arena</a>
-            </li>
-            <li>
-              <a href="#">Highly Accessible | Spacious</a>
-            </li>
-            <li>
-              <a href="#">Office for Rent in Al Qiyadah</a>
-            </li>
-            <li>
-              <a href="#">Office for Rent in Al Qiyadah</a>
-            </li>
-          </ul>
-        </div>
-
-        <div className="new_adss">
-          <a href="#">
-            <img src={ads_banner} className="img-fluid" />
-          </a>
-        </div>
-        <div className="new_adss">
-          <a href="#">
-            <img src={ads_banner2} className="img-fluid" />
-          </a>
-        </div>
-      </div>
+      )}
     </>
   );
 };

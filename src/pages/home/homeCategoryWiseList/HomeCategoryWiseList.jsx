@@ -1,46 +1,34 @@
-import {
-  bed,
-  propert1,
-  ruler,
-  propert2,
-  propert3,
-  propert4,
-  propert5,
-  propert6,
-  pro_comm1,
-  pro_comm2,
-  pro_comm3,
-  pro_comm4,
-  pro_comm5,
-  pro_comm6,
-} from "@/assets/images";
+import { bed, ruler } from "@/assets/images";
 import { Link } from "react-router-dom";
 import { pageRoutes } from "../../../router/pageRoutes";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ImageWithLoader from "./../../../Custom_Components/ImageWithLoader";
 import { getAllPropertyThunk } from "../../../features/property/propertySlice";
+import { HomeCategoryPropertySkeleton } from "../../../Custom_Components/Skeleton/PropertySkeleton";
 
 function HomeCategoryWiseList() {
-  const { categories, location } = useSelector((store) => store?.activeData);
+  const { categories } = useSelector((store) => store?.activeData);
   const [selectedId, setSelectedId] = useState(null);
 
   const handleClick = (id) => {
     setSelectedId(id);
   };
+
   const dispatch = useDispatch();
   const { isLoading, propertyData = [] } = useSelector(
     (store) => store?.property
   );
 
-  const [page, setPage] = useState(1);
-  const [sortBy, setSortBy] = useState("");
-  const [features, setFeatures] = useState("");
+  const page = 1;
   const limit = 6;
 
-  const searchFilters = {
-    category: selectedId,
-  };
+  useEffect(() => {
+    if (!selectedId && categories?.length > 0) {
+      const firstId = categories[0]?._id;
+      setSelectedId(firstId);
+    }
+  }, [categories, selectedId]);
 
   useEffect(() => {
     if (selectedId) {
@@ -48,20 +36,11 @@ function HomeCategoryWiseList() {
         getAllPropertyThunk({
           page,
           limit,
-          searchFilters,
-          sort_by: sortBy,
-          features,
+          searchFilters: { category: selectedId },
         })
       );
     }
-  }, [dispatch, page, location.search, sortBy, features, selectedId]);
-
-  useEffect(() => {
-    if (categories && categories.length > 0) {
-      const ids = categories.map((item) => item?._id);
-      setSelectedId(ids?.[0]);
-    }
-  }, [categories]);
+  }, [dispatch, selectedId]);
 
   return (
     <section className="buy_rent">
@@ -101,11 +80,14 @@ function HomeCategoryWiseList() {
               aria-labelledby="nav-buy-tab"
             >
               <div className="row">
-                {propertyData &&
-                  propertyData?.map((item) => {
+                {isLoading ? (
+                  <HomeCategoryPropertySkeleton />
+                ) : (
+                  propertyData &&
+                  propertyData?.map((item, index) => {
                     return (
                       <>
-                        <div className="col-sm-4">
+                        <div className="col-sm-4" key={index + 1}>
                           <div className="my_property">
                             <div className="photo_my_photo">
                               <span
@@ -119,8 +101,10 @@ function HomeCategoryWiseList() {
                               >
                                 {item?.categoryData?.name}
                               </span>
-                              <Link to={`${pageRoutes.PROPERTY_DETAILS}?id=${item?._id}`}>
-                                <img
+                              <Link
+                                to={`${pageRoutes.PROPERTY_DETAILS}?id=${item?._id}`}
+                              >
+                                <ImageWithLoader
                                   src={item?.images?.[0]?.url}
                                   className="img-fluid"
                                 />
@@ -157,7 +141,9 @@ function HomeCategoryWiseList() {
                                   AED {item?.price}{" "}
                                 </div>
                                 <div>
-                                  <Link to={`${pageRoutes.PROPERTY_DETAILS}?id=${item?._id}`}>
+                                  <Link
+                                    to={`${pageRoutes.PROPERTY_DETAILS}?id=${item?._id}`}
+                                  >
                                     Read More{" "}
                                     <i className="ri-arrow-right-up-long-line" />
                                   </Link>
@@ -168,7 +154,8 @@ function HomeCategoryWiseList() {
                         </div>
                       </>
                     );
-                  })}
+                  })
+                )}
               </div>
               <div className="col-12 text-center">
                 <Link

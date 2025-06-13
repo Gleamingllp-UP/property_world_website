@@ -13,7 +13,7 @@ export const generateHandoverOptions = () => {
       quarters.forEach((q) => {
         options.push({
           label: `${q} ${year}`,
-          value: `${year}-${quarterToMonth[q]}`,// "2023-01"
+          value: `${year}-${quarterToMonth[q]}`, // "2023-01"
         });
       });
     } else {
@@ -24,5 +24,21 @@ export const generateHandoverOptions = () => {
     }
   }
 
+  return options;
+};
+
+export const generateRangeOptions = (step = 25, max = 100) => {
+  const options = [
+    {
+      label: `Any`,
+      value: `any`,
+    },
+  ];
+  for (let i = 0; i < max; i += step) {
+    options.push({
+      label: `${i}-${i + step}%`,
+      value: `${i}-${i + step}`,
+    });
+  }
   return options;
 };

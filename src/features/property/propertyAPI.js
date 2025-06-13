@@ -76,7 +76,7 @@ export const getAllProperty = async (
   limit,
   searchFilters = {},
   sort_by = "",
-  features
+  features = ""
 ) => {
   try {
     const cleanedFilters = Object.fromEntries(

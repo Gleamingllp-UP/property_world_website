@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Loader } from "@googlemaps/js-api-loader";
+import { useSelector } from "react-redux";
+import { PropertyMapSkeleton } from "../../../Custom_Components/Skeleton/PropertySkeleton";
 
 const loader = new Loader({
   apiKey: "AIzaSyDjNkeXpHwfGwnJXuzeb630oyNHpP9MjSo",
@@ -97,30 +99,37 @@ const Propertymap = ({ lat = 25.3463, lng = 55.4209 }) => {
       case "supermarket":
         return "ri-shopping-cart-2-line";
       default:
-        return "ri-map-pin-line"; 
+        return "ri-map-pin-line";
     }
   };
-
+  const { isLoading } = useSelector((store) => store?.property);
   return (
     <>
       <div className="key_feature">
         <p>Map </p>
-        <div
-          id="map"
-          style={{ height: "350px", width: "100%", borderRadius: "10px" }}
-        ></div>
-    
-        <p className="mt-3">Nearby Places</p>
-        {places?.map((place) => (
-          <div className="near_p" key={place?.type}>
-            <ul>
-              <li>
-                <i className={getIconClass(place?.type)} /> {place?.name}:{" "}
-                {place?.distance ? `${place?.distance} km` : "N/A"}
-              </li>
-            </ul>
-          </div>
-        ))}
+        {isLoading ? (
+          <PropertyMapSkeleton />
+        ) : (
+          <>
+            <div
+              id="map"
+              style={{ height: "350px", width: "100%", borderRadius: "10px" }}
+            ></div>
+
+            <p className="mt-3">Nearby Places</p>
+            {places &&
+              places?.map((place) => (
+                <div className="near_p" key={place?.type}>
+                  <ul>
+                    <li>
+                      <i className={getIconClass(place?.type)} /> {place?.name}:{" "}
+                      {place?.distance ? `${place?.distance} km` : "N/A"}
+                    </li>
+                  </ul>
+                </div>
+              ))}
+          </>
+        )}
       </div>
     </>
   );

@@ -10,7 +10,8 @@ const endpoints = {
   getUserAllDetails: "/user/get-user-all-details",
   guestUserLogin: "/user/guest-user-login",
   updateUser: "/user/users",
-
+  getAllUserForWeb: "/user/all-users",
+  getUserAllDetailsForWeb: "/user/get-all-user-details",
   //Filter
   getAllActiveCategory: "/category/getall-active-category",
   getAllActiveSubCategory: "/sub-category/getall-active-subCategory",

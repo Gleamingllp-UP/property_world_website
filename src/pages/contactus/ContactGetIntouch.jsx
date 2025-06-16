@@ -82,7 +82,7 @@ const ContactGetIntouch = () => {
               {...register("phone", {
                 required: "Phone is required",
                 pattern: {
-                  value: /^[0-9]{15}$/,
+                  value: /^[0-9]{10,15}$/,
                   message: "Invalid phone number",
                 },
               })}

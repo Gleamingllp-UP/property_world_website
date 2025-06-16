@@ -48,6 +48,7 @@ const initialState = {
   amenitiesAndFacilities: [],
   location: [],
   loading: false,
+  isLoadingLocation: false,
   error: null,
 };
 
@@ -120,15 +121,15 @@ const activeDataSlice = createSlice({
 
       //Location
       .addCase(getAllAmenitiesAndFacilitiesThunk.pending, (state) => {
-        state.loading = true;
+        state.isLoadingLocation = true;
         state.error = null;
       })
       .addCase(getAllAmenitiesAndFacilitiesThunk.fulfilled, (state, action) => {
-        state.loading = false;
+        state.isLoadingLocation = false;
         state.amenitiesAndFacilities = action.payload.data || [];
       })
       .addCase(getAllAmenitiesAndFacilitiesThunk.rejected, (state, action) => {
-        state.loading = false;
+        state.isLoadingLocation = false;
         state.error = action.error.message;
       });
   },

@@ -20,6 +20,8 @@ import { CustomPagination } from "../../../Custom_Components/CustomPagination";
 import { pageRoutes } from "../../../router/pageRoutes";
 import ImageWithLoader from "./../../../Custom_Components/ImageWithLoader";
 import "../../../assets/css/arrow.css";
+import { PropertyListingCardSkeleton } from "../../../Custom_Components/Skeleton/PropertySkeleton";
+import AdvanceSearch from "./AdvanceSearch";
 const Archive = () => {
   const dispatch = useDispatch();
   const {
@@ -64,6 +66,7 @@ const Archive = () => {
       })
     );
   }, [dispatch, page, location.search, sortBy, features]);
+
   // Custom arrow components
   const NextArrow = ({ onClick }) => (
     <div className="custom-arrow next" onClick={onClick}>
@@ -82,18 +85,7 @@ const Archive = () => {
       <div className="top_search">
         <div className="container">
           <div className="row">
-            <div className="col-lg-1"></div>
-            <div className="col-lg-3">
-              <div className="loc_area">
-                <input
-                  type="text"
-                  name="location"
-                  className="box_search"
-                  placeholder="Enter location"
-                />
-                <i className="ri-map-pin-line" />
-              </div>
-            </div>
+            <AdvanceSearch />
           </div>
         </div>
       </div>
@@ -111,7 +103,6 @@ const Archive = () => {
             <div className="col-lg-6">
               <div className="qust_part">
                 <ul>
-                  
                   {["All", "Furnished", "Unfurnished"].map((label, index) => (
                     <li key={index}>
                       <input
@@ -131,7 +122,8 @@ const Archive = () => {
                       />
                       <label
                         htmlFor={`rdo2_${index + 1}`}
-                        className="radio-label">
+                        className="radio-label"
+                      >
                         <span className="radio-border">{label}</span>
                       </label>
                     </li>
@@ -299,7 +291,9 @@ const Archive = () => {
           </div>
 
           {/* Dynamic Properties List */}
-          {propertyData &&
+          {isLoading ? (
+            <PropertyListingCardSkeleton />
+          ) : propertyData?.length > 0 ? (
             propertyData.map((item) => {
               const sliderSettings = {
                 dots: false,
@@ -382,7 +376,11 @@ const Archive = () => {
                     <div className="col-lg-7">
                       <div className="property_data_area">
                         <h2>
-                          <Link to={`${pageRoutes.PROPERTY_DETAILS}?id=${item?._id}`}>{item?.title}</Link>
+                          <Link
+                            to={`${pageRoutes.PROPERTY_DETAILS}?id=${item?._id}`}
+                          >
+                            {item?.title}
+                          </Link>
                         </h2>
 
                         <div className="p_info">
@@ -476,17 +474,25 @@ const Archive = () => {
                   </div>
                 </div>
               );
-            })}
+            })
+          ) : (
+            <div className="col-12">
+              <div className="text-center border border-light-subtle rounded py-3 bg-light text-muted fw-medium">
+                No Property Available
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Pagination */}
-        <CustomPagination
-          total={pagination?.total}
-          page={page}
-          limit={limit}
-          onPageChange={(newPage) => setPage(newPage)}
-        />
-
+        {propertyData?.length > 0 && (
+          <CustomPagination
+            total={pagination?.total}
+            page={page}
+            limit={limit}
+            onPageChange={(newPage) => setPage(newPage)}
+          />
+        )}
         <ArchiveTop />
       </div>
     </>

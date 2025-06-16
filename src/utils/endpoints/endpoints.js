@@ -7,7 +7,7 @@ const endpoints = {
   verifyCode: "/user/verify-code/",
   userLogin: "/user/login-user/",
   setPassword: "/user/set-password/",
-  getUserAllDetails: "/user/get-user-all-details",
+  getUserAllDetails: "/user/get-all-user-details",
   guestUserLogin: "/user/guest-user-login",
   updateUser: "/user/users",
 

@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { getAllPropertyThunk } from "../../../features/property/propertySlice";
+import React, { useRef, useState } from "react";
+import { useSelector } from "react-redux";
 import ArchiveLocation from "./ArchiveLocation";
 import ArchiveTop from "./ArchiveTop";
 import { Link } from "react-router-dom";
-import { useLocation } from "react-router-dom";
 import Slider from "react-slick";
 import {
   bath,
@@ -24,13 +22,15 @@ import { PropertyListingCardSkeleton } from "../../../Custom_Components/Skeleton
 import AdvanceSearch from "./AdvanceSearch";
 import { formatPrice } from "../../../helper/function/formatPrice";
 import CheckedModal from "./CheckedModal";
+
 const Archive = () => {
-  const dispatch = useDispatch();
   const {
     isLoading,
     propertyData = [],
     pagination = {},
   } = useSelector((store) => store?.property);
+
+  const innerRef = useRef(null);
 
   const [modalShow, setModalShow] = useState(false);
 
@@ -38,38 +38,6 @@ const Archive = () => {
   const [sortBy, setSortBy] = useState("");
   const [features, setFeatures] = useState("");
   const limit = 5;
-
-  const location = useLocation();
-
-  const queryParams = new URLSearchParams(location.search);
-
-  const searchFilters = {
-    category: queryParams.get("category"),
-    subCategory: queryParams.get("subCategory"),
-    subSubCategory: queryParams.get("subSubCategory"),
-    duration: queryParams.get("duration"),
-    bedrooms: queryParams.get("bedrooms"),
-    bathrooms: queryParams.get("bathrooms"),
-    min_price: queryParams.get("min_price"),
-    max_price: queryParams.get("max_price"),
-    min_area: queryParams.get("min_area"),
-    max_area: queryParams.get("max_area"),
-    payment_plan: queryParams.get("payment_plan"),
-    handover_by: queryParams.get("handover_by"),
-    search: queryParams.get("search"),
-  };
-
-  useEffect(() => {
-    dispatch(
-      getAllPropertyThunk({
-        page,
-        limit,
-        searchFilters,
-        sort_by: sortBy,
-        features,
-      })
-    );
-  }, [dispatch, page, location.search, sortBy, features]);
 
   // Custom arrow components
   const NextArrow = ({ onClick }) => (
@@ -83,7 +51,7 @@ const Archive = () => {
       <i className="ri-arrow-left-s-line"></i>
     </div>
   );
-  
+
   return (
     <>
       {/* Top Search Bar */}
@@ -95,6 +63,7 @@ const Archive = () => {
               limit={limit}
               features={features}
               sortBy={sortBy}
+              scrollRef={innerRef}
             />
           </div>
         </div>
@@ -196,7 +165,7 @@ const Archive = () => {
         <ArchiveLocation />
 
         {/* Featured Property Example */}
-        <div className="listing_area">
+        <div className="listing_area position-relative" ref={innerRef}>
           <div className="list_box">
             <div className="feat_tag">
               <p>Featured Property</p>
@@ -301,198 +270,219 @@ const Archive = () => {
           </div>
 
           {/* Dynamic Properties List */}
-          {isLoading ? (
-            <PropertyListingCardSkeleton />
-          ) : propertyData?.length > 0 ? (
-            propertyData.map((item) => {
-              const sliderSettings = {
-                dots: false,
-                infinite: true,
-                speed: 1000,
-                slidesToShow: 2,
-                slidesToScroll: 1,
-                arrows: true,
-                variableWidth: false,
-                nextArrow: <NextArrow />,
-                prevArrow: <PrevArrow />,
-                responsive: [
-                  {
-                    breakpoint: 1024,
-                    settings: {
-                      slidesToShow: 2,
+          <div>
+            {isLoading ? (
+              <PropertyListingCardSkeleton />
+            ) : propertyData?.length > 0 ? (
+              propertyData.map((item) => {
+                const sliderSettings = {
+                  dots: false,
+                  infinite: true,
+                  speed: 1000,
+                  slidesToShow: 2,
+                  slidesToScroll: 1,
+                  arrows: true,
+                  variableWidth: false,
+                  nextArrow: <NextArrow />,
+                  prevArrow: <PrevArrow />,
+                  responsive: [
+                    {
+                      breakpoint: 1024,
+                      settings: {
+                        slidesToShow: 2,
+                      },
                     },
-                  },
-                  {
-                    breakpoint: 768,
-                    settings: {
-                      slidesToShow: 1,
+                    {
+                      breakpoint: 768,
+                      settings: {
+                        slidesToShow: 1,
+                      },
                     },
-                  },
-                  {
-                    breakpoint: 480,
-                    settings: {
-                      slidesToShow: 1,
+                    {
+                      breakpoint: 480,
+                      settings: {
+                        slidesToShow: 1,
+                      },
                     },
-                  },
-                ],
-              };
+                  ],
+                };
 
-              return (
-                <div className="list_box normal_listing" key={item?._id}>
-                  <div className="row">
-                    {/* Left Side */}
-                    <div className="col-lg-5">
-                      <div className="normal_slider">
-                        <div
-                          className="agent_d"
-                          data-bs-toggle="modal"
-                          data-bs-target="#agency_info"
-                          onClick={() => setModalShow(true)}
-                        >
-                          <i className="ri-checkbox-circle-fill" /> Checked
-                        </div>
-                        <div className="save_p">
-                          <button>
-                            <i className="ri-heart-line" />
-                          </button>
-                        </div>
-
-                        <div className="my-slider">
-                          <Slider {...sliderSettings}>
-                            {item?.images?.map((img, i) => (
-                              <div key={i}>
-                                <Link
-                                  to={`${pageRoutes.PROPERTY_DETAILS}?id=${item?._id}`}
-                                >
-                                  <ImageWithLoader src={img?.url} />
-                                </Link>
-                              </div>
-                            ))}
-                          </Slider>
-                        </div>
-                      </div>
-
-                      <div className="price_tt normal">
-                        <span>
-                          <b>{formatPrice(item?.price)}</b>{" "}
-                          {item?.duration || ""}
-                        </span>
-                        <span className="flex_box">
-                          <img src={user} className="agent_b" alt="agent" />
-                          <i className="ri-verified-badge-fill" />
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Right Side */}
-                    <div className="col-lg-7">
-                      <div className="property_data_area">
-                        <h2>
-                          <Link
-                            to={`${pageRoutes.PROPERTY_DETAILS}?id=${item?._id}`}
+                return (
+                  <div className="list_box normal_listing" key={item?._id}>
+                    <div className="row">
+                      {/* Left Side */}
+                      <div className="col-lg-5">
+                        <div className="normal_slider">
+                          <div
+                            className="agent_d"
+                            data-bs-toggle="modal"
+                            data-bs-target="#agency_info"
+                            onClick={() => setModalShow(true)}
                           >
-                            {item?.title}
-                          </Link>
-                        </h2>
+                            <i className="ri-checkbox-circle-fill" /> Checked
+                          </div>
+                          <div className="save_p">
+                            <button>
+                              <i className="ri-heart-line" />
+                            </button>
+                          </div>
 
-                        <div className="p_info">
-                          <ul>
-                            <li>{item?.subSubCategoryData?.name}</li>
-                            <li>
-                              {item?.bedrooms && (
-                                <span>
-                                  <img src={bed} alt="bed" /> {item?.bedrooms}
-                                </span>
-                              )}
-                              {item?.bathrooms && (
-                                <span>
-                                  <img src={bath} alt="bath" />{" "}
-                                  {item?.bathrooms}
-                                </span>
-                              )}
-                            </li>
-                            {item?.area && (
-                              <li>
-                                <img src={ruler} alt="area" /> {item?.area}
-                              </li>
-                            )}
-                          </ul>
+                          <div className="my-slider">
+                            <Slider {...sliderSettings}>
+                              {item?.images?.map((img, i) => (
+                                <div key={i}>
+                                  <Link
+                                    to={`${pageRoutes.PROPERTY_DETAILS}?id=${item?._id}`}
+                                  >
+                                    <ImageWithLoader src={img?.url} />
+                                  </Link>
+                                </div>
+                              ))}
+                            </Slider>
+                          </div>
                         </div>
 
-                        {item?.amenitiesAndFacilitiesData?.length > 0 ? (
-                          <div className="key_property">
-                            <a href="#">
-                              {item?.amenitiesAndFacilitiesData
-                                ?.slice(0, 4)
-                                .map((af) => af?.name)
-                                .join(" | ")}
-                            </a>
+                        <div className="price_tt normal">
+                          <span>
+                            <b>{formatPrice(item?.price)}</b>{" "}
+                            {item?.duration || ""}
+                          </span>
+                          <span className="flex_box">
+                            <img src={user} className="agent_b" alt="agent" />
+                            <i className="ri-verified-badge-fill" />
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Right Side */}
+                      <div className="col-lg-7">
+                        <div className="property_data_area">
+                          <h2>
+                            <Link
+                              to={`${pageRoutes.PROPERTY_DETAILS}?id=${item?._id}`}
+                            >
+                              {item?.title}
+                            </Link>
+                          </h2>
+
+                          <div className="p_info">
+                            <ul>
+                              <li>{item?.subSubCategoryData?.name}</li>
+                              {(item?.bedrooms != null &&
+                                item?.bedrooms !== "") ||
+                              item?.bathrooms ? (
+                                <li>
+                                  {item?.bedrooms != null &&
+                                    item?.bedrooms !== "" && (
+                                      <span>
+                                        <img src={bed} alt="bed" />{" "}
+                                        {item?.bedrooms === 0
+                                          ? "Studio"
+                                          : item?.bedrooms}{" "}
+                                      </span>
+                                    )}
+                                  {item?.bathrooms ? (
+                                    <span>
+                                      <img src={bath} alt="bath" />{" "}
+                                      {item?.bathrooms}
+                                    </span>
+                                  ) : null}
+                                </li>
+                              ) : null}
+
+                              {item?.area && (
+                                <li>
+                                  <img src={ruler} alt="area" /> {item?.area}
+                                </li>
+                              )}
+                            </ul>
                           </div>
-                        ) : (
-                          item?.building_facilities?.length > 0 && (
+
+                          {item?.amenitiesAndFacilitiesData?.length > 0 ? (
                             <div className="key_property">
                               <a href="#">
-                                {item?.building_facilities
+                                {item?.amenitiesAndFacilitiesData
                                   ?.slice(0, 4)
+                                  .map((af) => af?.name)
                                   .join(" | ")}
                               </a>
                             </div>
-                          )
-                        )}
+                          ) : (
+                            item?.building_facilities?.length > 0 && (
+                              <div className="key_property">
+                                <a href="#">
+                                  {item?.building_facilities
+                                    ?.slice(0, 4)
+                                    .join(" | ")}
+                                </a>
+                              </div>
+                            )
+                          )}
 
-                        <div className="pro_desc sli">
-                          {item?.short_description}
-                        </div>
-                        <div className="loc">
-                          <i className="ri-map-pin-line" />{" "}
-                          {item?.locationData?.name}
-                        </div>
+                          <div className="pro_desc sli">
+                            {item?.short_description}
+                          </div>
+                          <div className="loc">
+                            <i className="ri-map-pin-line" />{" "}
+                            {item?.locationData?.name}
+                          </div>
 
-                        <div className="call_action">
-                          <ul>
-                            <li>
-                              <a href={`tel:${item?.phone || "97143533229"}`}>
-                                <i className="ri-phone-line" /> Call
-                              </a>
-                            </li>
-                            <li>
-                              <a
-                                href={`mailto:${
-                                  item?.email || "info@propertyworld.ae"
-                                }`}
-                              >
-                                <i className="ri-mail-open-line" /> Email
-                              </a>
-                            </li>
-                            <li>
-                              <a
-                                href={`https://wa.me/${
-                                  item?.whatsapp || "97143533229"
-                                }`}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                              >
-                                <i className="ri-whatsapp-line" /> WhatsApp
-                              </a>
-                            </li>
-                          </ul>
+                          <div className="call_action">
+                            <ul>
+                              <li>
+                                <a href={`tel:${item?.phone || "97143533229"}`}>
+                                  <i className="ri-phone-line" /> Call
+                                </a>
+                              </li>
+                              <li>
+                                <a
+                                  href={`mailto:${
+                                    item?.email || "info@propertyworld.ae"
+                                  }`}
+                                >
+                                  <i className="ri-mail-open-line" /> Email
+                                </a>
+                              </li>
+                              <li>
+                                <a
+                                  href={`https://wa.me/${
+                                    item?.whatsapp || "97143533229"
+                                  }`}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                >
+                                  <i className="ri-whatsapp-line" /> WhatsApp
+                                </a>
+                              </li>
+                            </ul>
 
-                          <span>
-                            <img src={property_world_logo} alt="logo" />
-                          </span>
+                            <span>
+                              <img src={property_world_logo} alt="logo" />
+                            </span>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
+                );
+              })
+            ) : (
+              <div className="col-12">
+                <div className="text-center border border-light-subtle rounded py-3 bg-light text-muted fw-medium">
+                  No Property Available
                 </div>
-              );
-            })
-          ) : (
-            <div className="col-12">
-              <div className="text-center border border-light-subtle rounded py-3 bg-light text-muted fw-medium">
-                No Property Available
               </div>
-            </div>
+            )}
+          </div>
+
+          {isLoading && (
+            <div
+              className="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center"
+              style={{
+                backgroundColor: "rgba(238, 238, 238, 0.6)",
+                zIndex: 10,
+              }}
+            ></div>
           )}
         </div>
 

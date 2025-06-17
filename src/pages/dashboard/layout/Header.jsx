@@ -38,6 +38,7 @@ const Header = () => {
           </div>
         )}
       </header>
+      
       <LogoutModal show={modalShow} onHide={() => setModalShow(false)} />
     </>
   );

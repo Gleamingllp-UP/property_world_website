@@ -22,6 +22,8 @@ import ImageWithLoader from "./../../../Custom_Components/ImageWithLoader";
 import "../../../assets/css/arrow.css";
 import { PropertyListingCardSkeleton } from "../../../Custom_Components/Skeleton/PropertySkeleton";
 import AdvanceSearch from "./AdvanceSearch";
+import { formatPrice } from "../../../helper/function/formatPrice";
+import CheckedModal from "./CheckedModal";
 const Archive = () => {
   const dispatch = useDispatch();
   const {
@@ -29,6 +31,8 @@ const Archive = () => {
     propertyData = [],
     pagination = {},
   } = useSelector((store) => store?.property);
+
+  const [modalShow, setModalShow] = useState(false);
 
   const [page, setPage] = useState(1);
   const [sortBy, setSortBy] = useState("");
@@ -79,13 +83,19 @@ const Archive = () => {
       <i className="ri-arrow-left-s-line"></i>
     </div>
   );
+  
   return (
     <>
       {/* Top Search Bar */}
       <div className="top_search">
         <div className="container">
           <div className="row">
-            <AdvanceSearch />
+            <AdvanceSearch
+              page={page}
+              limit={limit}
+              features={features}
+              sortBy={sortBy}
+            />
           </div>
         </div>
       </div>
@@ -337,6 +347,7 @@ const Archive = () => {
                           className="agent_d"
                           data-bs-toggle="modal"
                           data-bs-target="#agency_info"
+                          onClick={() => setModalShow(true)}
                         >
                           <i className="ri-checkbox-circle-fill" /> Checked
                         </div>
@@ -363,7 +374,8 @@ const Archive = () => {
 
                       <div className="price_tt normal">
                         <span>
-                          AED <b>{item?.price}</b> {item?.duration}
+                          <b>{formatPrice(item?.price)}</b>{" "}
+                          {item?.duration || ""}
                         </span>
                         <span className="flex_box">
                           <img src={user} className="agent_b" alt="agent" />
@@ -494,6 +506,7 @@ const Archive = () => {
           />
         )}
         <ArchiveTop />
+        <CheckedModal show={modalShow} onHide={() => setModalShow(false)} />
       </div>
     </>
   );

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { resetActiveData } from "../../../features/activeData/activeDataSlice";
 import { formatRange } from "../../../helper/function/formatRange";
@@ -8,12 +8,11 @@ import {
   generateRangeOptions,
 } from "../../../helper/function/generateHandoverOptions";
 import Form from "react-bootstrap/Form";
-import { useNavigate } from "react-router-dom";
-import { pageRoutes } from "../../../router/pageRoutes";
 import CategoryFetcher from "../../home/homeBanner/CategoryFetcher";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, SlidersHorizontal } from "lucide-react";
+import { getAllPropertyThunk } from "../../../features/property/propertySlice";
 
-function AdvanceSearch() {
+function AdvanceSearch({ page, limit, sortBy, features }) {
   const [selectedCategoryId, setSelectedCategoryId] = useState("");
   const [selectedCategoryName, setSelectedCategoryName] = useState("");
 
@@ -21,7 +20,6 @@ function AdvanceSearch() {
   const [selectedSubSubCategoryId, setSelectedSubSubCategoryId] = useState("");
 
   const [openDropDown, setOpenDropDown] = useState("");
-  const [selectedTour, setSelectedTour] = useState("");
   const [rentDuration, setRentDuration] = useState("");
   const [handOverBy, setHandOverBy] = useState("");
   const [completion, setCompletion] = useState("");
@@ -29,12 +27,6 @@ function AdvanceSearch() {
   const [buyType, setBuyType] = useState("");
   const [location, setLocation] = useState("");
   const [priceRange, setPriceRange] = useState("");
-
-  const [isDropDownOpen, setIsDropDownOpen] = useState(false);
-  const [isDropDownOpen2, setIsDropDownOpen2] = useState(false);
-  const [isDropDownOpen3, setIsDropDownOpen3] = useState(false);
-  const [isDropDownOpen4, setIsDropDownOpen4] = useState(false);
-  const [isDropDownOpen5, setIsDropDownOpen5] = useState(false);
 
   const [selectedSubCategoryName, setSelectedSubCategoryName] = useState("");
 
@@ -47,6 +39,11 @@ function AdvanceSearch() {
   const [minArea, setMinArea] = useState("");
   const [maxArea, setMaxArea] = useState("");
 
+  const [agentOrAgency, setAgentOrAgency] = useState("");
+  const [developer, setDeveloper] = useState("");
+  const [keyword, setKeyword] = useState("");
+  const [selectedTour, setSelectedTour] = useState("");
+
   const { categories, subCategories, subSubCategories, loading } = useSelector(
     (store) => store?.activeData
   );
@@ -58,7 +55,7 @@ function AdvanceSearch() {
     setSelectedSubCategoryId("");
     setSelectedSubCategoryName("");
     setSelectedSubSubCategoryId("");
-    setIsDropDownOpen(false);
+    setOpenDropDown("");
   };
   const handleResetPrice = () => {
     setMinPrice(0);
@@ -68,6 +65,21 @@ function AdvanceSearch() {
     setMaxArea(0);
     setMinArea(0);
   };
+
+  const dropdownRef = useRef(null);
+
+  const handleClickOutside = (event) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      setOpenDropDown("");
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const handleCheckboxChangeBedroom = (e, value) => {
     const checked = e.target.checked;
@@ -144,44 +156,70 @@ function AdvanceSearch() {
 
     setSelectedSubSubCategoryId(null);
     dispatch(resetActiveData());
-    setIsDropDownOpen(false);
-    setIsDropDownOpen2(false);
-    setIsDropDownOpen3(false);
-    setIsDropDownOpen4(false);
-    setIsDropDownOpen5(false);
+    setOpenDropDown("");
   };
-  const navigate = useNavigate();
+
+  const queryParams = new URLSearchParams(location.search);
+
+  const searchFilters = {
+    category: queryParams.get("category") || selectedCategoryId,
+    subCategory: queryParams.get("subCategory") || selectedSubCategoryId,
+    subSubCategory:
+      queryParams.get("subSubCategory") || selectedSubSubCategoryId,
+    duration: queryParams.get("duration") || rentDuration,
+    bedrooms: queryParams.get("bedrooms") || bedRoom,
+    bathrooms: queryParams.get("bathrooms") || bathRoom,
+    min_price: queryParams.get("min_price") || minPrice,
+    max_price: queryParams.get("max_price") || maxPrice,
+    min_area: queryParams.get("min_area") || minArea,
+    max_area: queryParams.get("max_area") || maxArea,
+    payment_plan: queryParams.get("payment_plan") || priceRange,
+    handover_by: queryParams.get("handover_by") || handOverBy,
+    search: queryParams.get("search") || location,
+    tour_types: queryParams.get("tour_types") || selectedTour,
+    agent_agency: queryParams.get("agent_agency") || agentOrAgency,
+    developer: queryParams.get("developer") || developer,
+    keyword: queryParams.get("keyword") || keyword,
+    completion: queryParams.get("completion") || completion,
+  };
+
+  useEffect(() => {
+    dispatch(
+      getAllPropertyThunk({
+        page,
+        limit,
+        searchFilters,
+        sort_by: sortBy,
+        features,
+      })
+    );
+  }, [dispatch, page, sortBy, features]);
 
   function haldelSearch() {
-    const queryParams = new URLSearchParams({
-      category: selectedCategoryId,
-      subCategory: selectedSubCategoryId,
-      subSubCategory: selectedSubSubCategoryId,
-      duration: rentDuration,
-      bedrooms: bedRoom,
-      bathrooms: bathRoom,
-      min_price: minPrice,
-      max_price: maxPrice,
-      min_area: minArea,
-      max_area: maxArea,
-      payment_plan: priceRange,
-      handover_by: handOverBy,
-      search: location,
-    });
-
-    navigate(`${pageRoutes.PROPERTY_LISTING}?${queryParams.toString()}`);
+    dispatch(
+      getAllPropertyThunk({
+        page,
+        limit,
+        searchFilters,
+        sort_by: sortBy,
+        features,
+      })
+    );
   }
 
   return (
-    <div className="main_search m-0 w-100 my-4 p-0 shadow-none border">
+    <div
+      className="main_search m-0 w-100 my-4 p-0 shadow-none"
+      ref={dropdownRef}
+    >
       <CategoryFetcher
         selectedCategoryId={selectedCategoryId}
         selectedSubCategoryId={selectedSubCategoryId}
       />
-      <div className="padd">
+      <div className="padd p-0">
         <div className="row">
           <div className="col-lg-1">
-            <div className="enter_loca ">
+            <div className="enter_loca hide_content">
               {loading && !selectedCategoryId && !selectedSubCategoryId ? (
                 [...Array(1)].map((_, i) => (
                   <li key={i}>
@@ -212,8 +250,23 @@ function AdvanceSearch() {
                     }}
                     id="mainSelectBox3"
                   >
-                    <div className="selected-items" id="selectedItems3">
-                      {selectedCategoryName ? selectedCategoryName : "Category"}
+                    <div
+                      className="selected-items d-flex justify-content-between align-items-center"
+                      id="selectedItems3"
+                    >
+                      <span>
+                        {" "}
+                        {selectedCategoryName
+                          ? selectedCategoryName
+                          : "Category"}
+                      </span>
+                      <ChevronDown
+                        strokeWidth={3}
+                        size={"15px"}
+                        className={`rotate-transition ${
+                          openDropDown === "category" ? "rotate-180" : ""
+                        }`}
+                      />
                     </div>
                   </div>
                   {/* Hidden content with input fields */}
@@ -259,7 +312,7 @@ function AdvanceSearch() {
                         </button>
                         <button
                           className="btn done_b"
-                          onClick={() => setOpenDropDown("")}
+                          onClick={() => haldelSearch()}
                         >
                           Done
                         </button>
@@ -271,8 +324,14 @@ function AdvanceSearch() {
             </div>
           </div>
 
-          <div className="col-lg-3">
-            <div className="mmm_input">
+          <div
+            className={
+              selectedCategoryName === "Buy" || selectedCategoryName === ""
+                ? "col-lg-2"
+                : "col-lg-3"
+            }
+          >
+            <div className="mmm_input d-block ">
               <div className="big_search">
                 <input
                   type="text"
@@ -280,18 +339,18 @@ function AdvanceSearch() {
                   placeholder="Enter Location"
                   value={location}
                   onChange={(e) => setLocation(e.target.value)}
-                  className="search_bxi"
+                  className="search_bxi rounded"
                 />
                 <i className="ri-map-pin-line map_iic" />
               </div>
-              <div
+              {/* <div
                 className="search_btn ad_search_btn"
                 onClick={() => {
                   haldelSearch();
                 }}
               >
                 <button>Search</button>
-              </div>
+              </div> */}
             </div>
           </div>
 
@@ -324,7 +383,7 @@ function AdvanceSearch() {
           )}
 
           <div className="col-lg-2">
-            <div className="enter_loca">
+            <div className="enter_loca hide_content">
               <div className="form-group">
                 {/* Main select-like box */}
                 <div
@@ -338,12 +397,25 @@ function AdvanceSearch() {
                   }}
                   id="mainSelectBox2"
                 >
-                  <div className="selected-items" id="selectedItems2">
-                    {selectedSubCategoryName
-                      ? selectedSubCategoryName
-                      : !selectedCategoryId
-                      ? "Select Category first"
-                      : "Select Property Type"}
+                  <div
+                    className="selected-items d-flex justify-content-between align-items-center"
+                    id="selectedItems2"
+                  >
+                    <span>
+                      {" "}
+                      {selectedSubCategoryName
+                        ? selectedSubCategoryName
+                        : !selectedCategoryId
+                        ? "Select Category first"
+                        : "Select Property Type"}
+                    </span>
+                    <ChevronDown
+                      strokeWidth={3}
+                      size={"15px"}
+                      className={`rotate-transition ${
+                        openDropDown === "sub_category" ? "rotate-180" : ""
+                      }`}
+                    />
                   </div>
                 </div>
                 {/* Hidden content with checkboxes */}
@@ -405,7 +477,9 @@ function AdvanceSearch() {
                           })
                         ) : (
                           <span className="small d-flex text-center">
-                            No Property type found
+                            {selectedSubCategoryId
+                              ? " No Property type found "
+                              : "Select Sub Category"}
                           </span>
                         )}
                       </div>
@@ -416,7 +490,7 @@ function AdvanceSearch() {
                           </button>
                           <button
                             className="btn done_b"
-                            onClick={() => setOpenDropDown("")}
+                            onClick={() => haldelSearch()}
                           >
                             Done
                           </button>
@@ -431,23 +505,35 @@ function AdvanceSearch() {
 
           {selectedSubCategoryName === "Commercial" ? (
             <div className="col-lg-2">
-              <div className="enter_loca ">
+              <div className="enter_loca hide_content">
                 {/* Main select-like box */}
                 <div
                   className="select-box"
                   onClick={() => {
-                    setOpenDropDown((prev) => (prev === "area" ? "" : "area"));
+                    setOpenDropDown((prev) =>
+                      prev === "area2" ? "" : "area2"
+                    );
                   }}
                   id="mainSelectBox3"
                 >
-                  <div className="selected-items" id="selectedItems3">
-                    Area (sqft)
+                  <div
+                    className="selected-items d-flex justify-content-between align-items-center"
+                    id="selectedItems3"
+                  >
+                    <span>Area (sqft)</span>
+                    <ChevronDown
+                      strokeWidth={3}
+                      size={"15px"}
+                      className={`rotate-transition ${
+                        openDropDown === "area2" ? "rotate-180" : ""
+                      }`}
+                    />
                   </div>
                 </div>
                 {/* Hidden content with input fields */}
                 <div
                   className={
-                    openDropDown === "area"
+                    openDropDown === "area2"
                       ? "content-wrapper width_space d-block"
                       : "content-wrapper width_space"
                   }
@@ -488,7 +574,7 @@ function AdvanceSearch() {
                     </button>
                     <button
                       className="btn done_b"
-                      onClick={() => setOpenDropDown("")}
+                      onClick={() => haldelSearch()}
                     >
                       Done
                     </button>
@@ -498,7 +584,7 @@ function AdvanceSearch() {
             </div>
           ) : (
             <div className="col-lg-2">
-              <div className="enter_loca">
+              <div className="enter_loca hide_content">
                 <div className="form-group">
                   {/* Main select-like box */}
                   <div
@@ -510,11 +596,23 @@ function AdvanceSearch() {
                     }}
                     id="mainSelectBox"
                   >
-                    <div className="selected-items" id="selectedItems">
-                      {/* Beds &amp; Baths */}
-                      {bedRoom.length > 0 || bathRoom.length > 0
-                        ? renderSelectedBedsAndBaths()
-                        : "Beds & Baths"}
+                    <div
+                      className="selected-items d-flex justify-content-between align-items-center"
+                      id="selectedItems3"
+                    >
+                      <span>
+                        {" "}
+                        {bedRoom?.length > 0 || bathRoom?.length > 0
+                          ? renderSelectedBedsAndBaths()
+                          : "Beds & Baths"}
+                      </span>
+                      <ChevronDown
+                        strokeWidth={3}
+                        size={"15px"}
+                        className={`rotate-transition ${
+                          openDropDown === "bed_bath" ? "rotate-180" : ""
+                        }`}
+                      />
                     </div>
                   </div>
                   {/* Hidden content with checkboxes */}
@@ -600,7 +698,9 @@ function AdvanceSearch() {
                 <div
                   className="select-box"
                   onClick={() => {
-                    setOpenDropDown((prev) => (prev === "area" ? "" : "area"));
+                    setOpenDropDown((prev) =>
+                      prev === "price" ? "" : "price"
+                    );
                   }}
                   id="mainSelectBox3"
                 >
@@ -611,7 +711,7 @@ function AdvanceSearch() {
                 {/* Hidden content with input fields */}
                 <div
                   className={
-                    openDropDown === "area"
+                    openDropDown === "price"
                       ? "content-wrapper width_space d-block"
                       : "content-wrapper width_space"
                   }
@@ -652,7 +752,7 @@ function AdvanceSearch() {
                     </button>
                     <button
                       className="btn done_b"
-                      onClick={() => setOpenDropDown("")}
+                      onClick={() => haldelSearch()}
                     >
                       Done
                     </button>
@@ -663,12 +763,14 @@ function AdvanceSearch() {
           )}
           <div
             className={`${
-              selectedCategoryName === "Buy" ? "col-lg-1" : "col-lg-2"
+              selectedCategoryName === "Buy" || selectedCategoryName === ""
+                ? "col-lg-2"
+                : "col-lg-2"
             }`}
           >
-            <div className="enter_loca ">
+            <div className="enter_loca hide_content">
               <div
-                className="select-box"
+                className="select-box "
                 onClick={() => {
                   setOpenDropDown((prev) =>
                     prev === "more_filter" ? "" : "more_filter"
@@ -676,8 +778,16 @@ function AdvanceSearch() {
                 }}
                 id="mainSelectBox3"
               >
-                <div className="selected-items" id="selectedItems3">
-                  More Filters
+                <div
+                  className="selected-items d-flex justify-content-between align-items-center"
+                  id="selectedItems3"
+                >
+                  <span> More Filters</span>
+                  <SlidersHorizontal
+                    strokeWidth={3}
+                    size={"15px"}
+                    className="cursor-pointer"
+                  />
                 </div>
               </div>
               {/* Hidden content with input fields */}
@@ -691,39 +801,43 @@ function AdvanceSearch() {
                   width: "300px",
                   maxHeight: "350px",
                   overflowY: "auto",
+                  right: "0px",
                 }}
                 id="areaOptions"
               >
-                <div className="fxx p-2 w-100">
-                  <div className="">
-                    <p className="fw-semibold my-1">Price (AED)</p>
-                    <div className="d-flex gap-1 justify-content-center align-items-center">
-                      <div className="input-group">
-                        <span>Minimum</span>
-                        <input
-                          type="number"
-                          id="minPrice"
-                          min={0}
-                          value={minPrice}
-                          placeholder={0}
-                          onChange={(e) => setMinPrice(e.target.value)}
-                        />
-                      </div>
-                      <div className="input-group">
-                        <span>Maximum</span>
-                        <input
-                          type="number"
-                          id="maxPrice"
-                          value={maxPrice}
-                          disabled={!minPrice}
-                          placeholder="Any"
-                          min={minPrice}
-                          onChange={(e) => setMaxPrice(e.target.value)}
-                        />
+                {selectedCategoryName !== "Rent" && (
+                  <div className="fxx p-2 w-100">
+                    <div className="">
+                      <p className="fw-semibold my-1">Price (AED)</p>
+                      <div className="d-flex gap-1 justify-content-center align-items-center">
+                        <div className="input-group">
+                          <span>Minimum</span>
+                          <input
+                            type="number"
+                            id="minPrice"
+                            min={0}
+                            value={minPrice}
+                            placeholder={0}
+                            onChange={(e) => setMinPrice(e.target.value)}
+                          />
+                        </div>
+                        <div className="input-group">
+                          <span>Maximum</span>
+                          <input
+                            type="number"
+                            id="maxPrice"
+                            value={maxPrice}
+                            disabled={!minPrice}
+                            placeholder="Any"
+                            min={minPrice}
+                            onChange={(e) => setMaxPrice(e.target.value)}
+                          />
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
+                )}
+
                 {selectedSubCategoryName !== "Commercial" && (
                   <div className="fxx p-2 w-100">
                     <div className="">
@@ -763,7 +877,7 @@ function AdvanceSearch() {
                     id="minArea"
                     className="more_filter_input"
                     placeholder="Add relevant keywo"
-                    onChange={(e) => setMinPrice(e.target.value)}
+                    onChange={(e) => setKeyword(e.target.value)}
                   />
                 </div>
                 <div className="input-group p-2">
@@ -773,7 +887,7 @@ function AdvanceSearch() {
                     id="minArea"
                     className="more_filter_input"
                     placeholder="Add relevant keywo"
-                    onChange={(e) => setMinPrice(e.target.value)}
+                    onChange={(e) => setAgentOrAgency(e.target.value)}
                   />
                 </div>
                 <div className="input-group p-2">
@@ -783,11 +897,11 @@ function AdvanceSearch() {
                     id="minArea"
                     className="more_filter_input"
                     placeholder="Add relevant keywo"
-                    onChange={(e) => setMinPrice(e.target.value)}
+                    onChange={(e) => setDeveloper(e.target.value)}
                   />
                 </div>
                 <div className="input-group p-2">
-                  <p className="fw-semibold my-1">Keyword</p>
+                  <p className="fw-semibold my-1">Tour Types</p>
                   <div className=" d-flex flex-wrap gap-2 w-100">
                     {["Floor Plans", "Video Tour", "360 Tours"]?.map(
                       (item, i) => (
@@ -819,10 +933,7 @@ function AdvanceSearch() {
                   >
                     Reset
                   </button>
-                  <button
-                    className="btn done_b"
-                    onClick={() => setOpenDropDown("")}
-                  >
+                  <button className="btn done_b" onClick={() => haldelSearch()}>
                     Done
                   </button>
                 </div>
@@ -950,7 +1061,7 @@ function AdvanceSearch() {
                           </button>
                           <button
                             className="btn done_b"
-                            onClick={() => setOpenDropDown("")}
+                            onClick={() => haldelSearch()}
                           >
                             Done
                           </button>
@@ -980,7 +1091,7 @@ function AdvanceSearch() {
                       }}
                     >
                       <option value="" disabled>
-                        Completion
+                        % Completion
                       </option>
                       {generateRangeOptions() &&
                         generateRangeOptions()?.map((option, index) => {
@@ -1000,7 +1111,7 @@ function AdvanceSearch() {
           )}
 
           {selectedCategoryName === "Rent" && (
-            <div className="col-lg-3">
+            <div className="col-lg-2">
               <div
                 className="enter_loca enter_loca2 d-flex align-items-center"
                 style={{
@@ -1018,7 +1129,7 @@ function AdvanceSearch() {
                   }}
                 >
                   <option value="" disabled>
-                    Select Duration
+                    Yearly Rent
                   </option>
                   {options &&
                     options?.map((option, index) => {

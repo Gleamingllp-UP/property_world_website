@@ -328,3 +328,13 @@ body {
 .rotate--45 {
   transform: rotate(-45deg);
 }
+
+.main_search .hide_content .select-box:after {
+  content: "";
+}
+.cursor-pointer {
+  cursor: pointer;
+}
+.res_done {
+  display: flex;
+}

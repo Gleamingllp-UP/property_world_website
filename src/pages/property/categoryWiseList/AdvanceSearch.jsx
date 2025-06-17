@@ -35,7 +35,9 @@ function AdvanceSearch({ page, limit, sortBy, features, scrollRef }) {
 
   const [buyType, setBuyType] = useState("");
   const [location, setLocation] = useState("");
+
   const [priceRange, setPriceRange] = useState("");
+  const [finalPriceRange, setFinalPriceRange] = useState(0);
 
   const [selectedSubCategoryName, setSelectedSubCategoryName] = useState("");
 
@@ -183,6 +185,12 @@ function AdvanceSearch({ page, limit, sortBy, features, scrollRef }) {
 
   const queryString = queryParams.toString();
 
+  const debouncedUpdate = useMemo(() => {
+    return debounce((val) => {
+      setFinalPriceRange(val);
+    }, 300);
+  }, []);
+
   const searchFilters = useMemo(
     () => ({
       category: queryParams.get("category") || selectedCategoryId,
@@ -197,7 +205,7 @@ function AdvanceSearch({ page, limit, sortBy, features, scrollRef }) {
       max_price: queryParams.get("max_price") || maxPrice,
       min_area: queryParams.get("min_area") || minArea,
       max_area: queryParams.get("max_area") || maxArea,
-      payment_plan: queryParams.get("payment_plan") || priceRange,
+      payment_plan: queryParams.get("payment_plan") || finalPriceRange,
       handover_by: queryParams.get("handover_by") || handOverBy,
       search: queryParams.get("search") || location,
       tour_types: queryParams.get("tour_types") || selectedTour,
@@ -221,7 +229,7 @@ function AdvanceSearch({ page, limit, sortBy, features, scrollRef }) {
       maxPrice,
       minArea,
       maxArea,
-      priceRange,
+      finalPriceRange,
       handOverBy,
       location,
       selectedTour,
@@ -1119,6 +1127,8 @@ function AdvanceSearch({ page, limit, sortBy, features, scrollRef }) {
                             step={1}
                             value={priceRange}
                             onChange={(e) => setPriceRange(e.target.value)}
+                            onMouseUp={() => debouncedUpdate(priceRange)} // desktop
+                            onTouchEnd={() => debouncedUpdate(priceRange)}
                             className="custom-range"
                             style={{
                               paddingLeft: "0px",

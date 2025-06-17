@@ -232,10 +232,7 @@ const AddProperty = () => {
       );
     }
     if (data?.tour_types?.length) {
-      formData.append(
-        "tour_types",
-        JSON.stringify(data?.tour_types)
-      );
+      formData.append("tour_types", JSON.stringify(data?.tour_types));
     }
 
     if (data?.thumbnail_img?.[0] instanceof File) {
@@ -682,119 +679,121 @@ const AddProperty = () => {
             {errors?.area && <ErrorMessage message={errors?.area?.message} />}
           </div>
 
-          {constructionStatus !== "Off-plan" && (
-            <div className="col-md-4">
-              <label className="form-label">Bedrooms & Bathroom *</label>
+          {constructionStatus !== "Off-plan" &&
+            selectedSubCategoryName !== "Commercial" && (
+              <div className="col-md-4">
+                <label className="form-label">Bedrooms & Bathroom *</label>
 
-              {/* Main select-like box */}
-              <input
-                type="text"
-                readOnly
-                className="form-control"
-                name="price"
-                onClick={() => {
-                  setIsDropDownOpen2(!isDropDownOpen2);
-                }}
-                placeholder={
-                  bedRoom.length > 0 || bathRoom.length > 0
-                    ? renderSelectedBedsAndBaths()
-                    : "Beds & Baths"
-                }
-              />
-              {errors?.bedrooms ? (
-                <ErrorMessage message={errors?.bedrooms?.message} />
-              ) : errors?.bathrooms ? (
-                <ErrorMessage message={errors?.bathrooms?.message} />
-              ) : null}
+                {/* Main select-like box */}
+                <input
+                  type="text"
+                  readOnly
+                  className="form-control"
+                  name="price"
+                  onClick={() => {
+                    setIsDropDownOpen2(!isDropDownOpen2);
+                  }}
+                  placeholder={
+                    bedRoom.length > 0 || bathRoom.length > 0
+                      ? renderSelectedBedsAndBaths()
+                      : "Beds & Baths"
+                  }
+                />
+                {errors?.bedrooms ? (
+                  <ErrorMessage message={errors?.bedrooms?.message} />
+                ) : errors?.bathrooms ? (
+                  <ErrorMessage message={errors?.bathrooms?.message} />
+                ) : null}
 
-              {/* Hidden content with checkboxes */}
-              <div
-                className={
-                  isDropDownOpen2
-                    ? "content-wrapper d-block"
-                    : "content-wrapper"
-                }
-                id="roomOptions"
-              >
-                <div className="room-section" id="bedroomSection">
-                  <div className="room-title">Bedroom</div>
-                  <div className="checkbox-group">
+                {/* Hidden content with checkboxes */}
+                <div
+                  className={
+                    isDropDownOpen2
+                      ? "content-wrapper d-block"
+                      : "content-wrapper"
+                  }
+                  id="roomOptions"
+                >
+                  <div className="room-section" id="bedroomSection">
+                    <div className="room-title">Bedroom</div>
+                    <div className="checkbox-group">
+                      <input
+                        type="checkbox"
+                        id="studio"
+                        value={0}
+                        checked={bedRoom?.includes(0)}
+                        onChange={(e) => handleCheckboxChangeBedroom(e, 0)}
+                      />
+                      <label htmlFor="studio">Studio *</label>
+
+                      {[...Array(8)].map((_, i) => {
+                        const value = i + 1;
+                        const labelText = value === 8 ? "7+" : value;
+
+                        return (
+                          <React.Fragment key={i}>
+                            <input
+                              type="checkbox"
+                              id={`bedroom-${value}`}
+                              value={value}
+                              checked={bedRoom?.includes(value)}
+                              onChange={(e) =>
+                                handleCheckboxChangeBedroom(e, value)
+                              }
+                            />
+                            <label htmlFor={`bedroom-${value}`}>
+                              {labelText}
+                            </label>
+                          </React.Fragment>
+                        );
+                      })}
+                    </div>
+
+                    {/* Hidden field for RHF validation */}
                     <input
-                      type="checkbox"
-                      id="studio"
-                      value={0}
-                      checked={bedRoom?.includes(0)}
-                      onChange={(e) => handleCheckboxChangeBedroom(e, 0)}
+                      type="hidden"
+                      {...register("bedrooms", {
+                        required:
+                          "Please select at least one bedroom or studio",
+                      })}
                     />
-                    <label htmlFor="studio">Studio *</label>
-
-                    {[...Array(8)].map((_, i) => {
-                      const value = i + 1;
-                      const labelText = value === 8 ? "7+" : value;
-
-                      return (
-                        <React.Fragment key={i}>
-                          <input
-                            type="checkbox"
-                            id={`bedroom-${value}`}
-                            value={value}
-                            checked={bedRoom?.includes(value)}
-                            onChange={(e) =>
-                              handleCheckboxChangeBedroom(e, value)
-                            }
-                          />
-                          <label htmlFor={`bedroom-${value}`}>
-                            {labelText}
-                          </label>
-                        </React.Fragment>
-                      );
-                    })}
                   </div>
+                  <div className="room-section" id="bathroomSection">
+                    <div className="room-title">Bathroom</div>
+                    <div className="checkbox-group">
+                      {[...Array(8)].map((_, i) => {
+                        const value = i + 1;
+                        const labelText = value === 8 ? "7+" : value;
 
-                  {/* Hidden field for RHF validation */}
-                  <input
-                    type="hidden"
-                    {...register("bedrooms", {
-                      required: "Please select at least one bedroom or studio",
-                    })}
-                  />
-                </div>
-                <div className="room-section" id="bathroomSection">
-                  <div className="room-title">Bathroom</div>
-                  <div className="checkbox-group">
-                    {[...Array(8)].map((_, i) => {
-                      const value = i + 1;
-                      const labelText = value === 8 ? "7+" : value;
-
-                      return (
-                        <React.Fragment key={i}>
-                          <input
-                            type="checkbox"
-                            id={`bathRoom-${value}`}
-                            value={value}
-                            checked={bathRoom?.includes(value)}
-                            onChange={(e) =>
-                              handleCheckboxChangeBathroom(e, value)
-                            }
-                          />
-                          <label htmlFor={`bathRoom-${value}`}>
-                            {labelText}
-                          </label>
-                        </React.Fragment>
-                      );
-                    })}
+                        return (
+                          <React.Fragment key={i}>
+                            <input
+                              type="checkbox"
+                              id={`bathRoom-${value}`}
+                              value={value}
+                              checked={bathRoom?.includes(value)}
+                              onChange={(e) =>
+                                handleCheckboxChangeBathroom(e, value)
+                              }
+                            />
+                            <label htmlFor={`bathRoom-${value}`}>
+                              {labelText}
+                            </label>
+                          </React.Fragment>
+                        );
+                      })}
+                    </div>
+                    {/* Hidden field for RHF validation */}
+                    <input
+                      type="hidden"
+                      {...register("bathrooms", {
+                        required: "Please select at least one bathroom",
+                      })}
+                    />
                   </div>
-                  {/* Hidden field for RHF validation */}
-                  <input
-                    type="hidden"
-                    {...register("bathrooms", {
-                      required: "Please select at least one bathroom",
-                    })}
-                  />
                 </div>
               </div>
-            </div>
-          )}
+            )}
 
           <div className="col-md-4 mb-3">
             <label className="form-label">Price *</label>

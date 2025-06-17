@@ -119,7 +119,8 @@ function Footer() {
               </h4>
               <ul className="cs-footer-links">
                 <li>
-                  <a href="index.php">Home</a>
+                  <Link to={pageRoutes.HOME_PAGE}>Home</Link>
+               
                 </li>
                 <li>
                   <Link to={pageRoutes.ABOUT_US}>About Us</Link>

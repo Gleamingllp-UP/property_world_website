@@ -304,7 +304,7 @@ const Archive = () => {
           {isLoading ? (
             <PropertyListingCardSkeleton />
           ) : propertyData?.length > 0 ? (
-            propertyData.map((item) => {
+            propertyData?.map((item) => {
               const sliderSettings = {
                 dots: false,
                 infinite: true,

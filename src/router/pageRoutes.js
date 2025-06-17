@@ -48,4 +48,5 @@ export const pageRoutes = {
   ADD_PROPERTY: "/add-property",
   USER_PROPERTY_LISTING: "/my-property-listing",
   MY_PROFILE: "/my-profile",
+  PROPERTY_UPDATE: "/property-update",
 };

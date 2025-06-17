@@ -69,7 +69,7 @@ const Sidebar = () => {
         <hr className="my-2" />
         <ul className="nav flex-column">
           {routes
-            ?.filter((routes) => routes?.isPrivate && routes?.isDashboard)
+            ?.filter((routes) => routes?.isPrivate && routes?.isDashboard && routes?.isVisibleInDash)
             .sort((a, b) => a?.id - b?.id)
             .map(({ id, path, name, icon: Icon }) => {
               const isActive = isPathActive(path, location.pathname);

@@ -184,6 +184,7 @@ function PropertyAllInfo() {
               <Features />
 
               <Propertymap
+                address={propertyDetails?.address}
                 lat={propertyDetails?.locationData?.latitude}
                 lng={propertyDetails?.locationData?.longitude}
               />

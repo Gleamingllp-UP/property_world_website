@@ -8,8 +8,36 @@ const loader = new Loader({
   libraries: ["places"],
 });
 
-const Propertymap = ({ lat = 25.3463, lng = 55.4209 }) => {
+const Propertymap = ({ lat = 25.3463, lng = 55.4209, address }) => {
   const [places, setPlaces] = useState([]);
+  const [mapCenter, setMapCenter] = useState({ lat, lng });
+
+  useEffect(() => {
+    const loadMapData = async () => {
+      await loader.load();
+
+      const geocoder = new window.google.maps.Geocoder();
+
+      if (address) {
+        geocoder.geocode({ address }, (results, status) => {
+          if (status === "OK" && results[0]) {
+            const location = results[0].geometry.location;
+            setMapCenter({
+              lat: location.lat(),
+              lng: location.lng(),
+            });
+          } else {
+            console.warn("Geocode failed or no result, falling back to default lat/lng");
+            setMapCenter({ lat, lng }); // fallback
+          }
+        });
+      } else {
+        setMapCenter({ lat, lng }); // if no address
+      }
+    };
+
+    loadMapData();
+  }, [address, lat, lng]);
 
   useEffect(() => {
     const initMapAndPlaces = async () => {
@@ -17,31 +45,25 @@ const Propertymap = ({ lat = 25.3463, lng = 55.4209 }) => {
 
       const mapDiv = document.getElementById("map");
       const map = new window.google.maps.Map(mapDiv, {
-        center: { lat, lng },
+        center: mapCenter,
         zoom: 15,
       });
 
-      // Add marker at center
       new window.google.maps.Marker({
-        position: { lat, lng },
+        position: mapCenter,
         map,
         title: "Center Location",
       });
 
       const service = new window.google.maps.places.PlacesService(map);
-      const placeTypes = [
-        "school",
-        "hospital",
-        "supermarket",
-        "subway_station",
-      ];
+      const placeTypes = ["school", "hospital", "supermarket", "subway_station"];
 
       const nearbySearchPromises = placeTypes.map(
         (type) =>
           new Promise((resolve) => {
             service.nearbySearch(
               {
-                location: { lat, lng },
+                location: mapCenter,
                 radius: 2000,
                 type,
               },
@@ -54,8 +76,8 @@ const Propertymap = ({ lat = 25.3463, lng = 55.4209 }) => {
                     type,
                     name: results[0].name,
                     distance: calculateDistance(
-                      lat,
-                      lng,
+                      mapCenter.lat,
+                      mapCenter.lng,
                       results[0].geometry.location.lat(),
                       results[0].geometry.location.lng()
                     ),
@@ -72,10 +94,11 @@ const Propertymap = ({ lat = 25.3463, lng = 55.4209 }) => {
       setPlaces(resolvedPlaces);
     };
 
-    initMapAndPlaces();
-  }, [lat, lng]);
+    if (mapCenter.lat && mapCenter.lng) {
+      initMapAndPlaces();
+    }
+  }, [mapCenter]);
 
-  // Haversine formula to calculate distance in km
   const calculateDistance = (lat1, lon1, lat2, lon2) => {
     const toRad = (val) => (val * Math.PI) / 180;
     const R = 6371;
@@ -102,36 +125,36 @@ const Propertymap = ({ lat = 25.3463, lng = 55.4209 }) => {
         return "ri-map-pin-line";
     }
   };
-  const { isLoading } = useSelector((store) => store?.property);
-  return (
-    <>
-      <div className="key_feature">
-        <p>Map </p>
-        {isLoading ? (
-          <PropertyMapSkeleton />
-        ) : (
-          <>
-            <div
-              id="map"
-              style={{ height: "350px", width: "100%", borderRadius: "10px" }}
-            ></div>
 
-            <p className="mt-3">Nearby Places</p>
-            {places &&
-              places?.map((place) => (
-                <div className="near_p" key={place?.type}>
-                  <ul>
-                    <li>
-                      <i className={getIconClass(place?.type)} /> {place?.name}:{" "}
-                      {place?.distance ? `${place?.distance} km` : "N/A"}
-                    </li>
-                  </ul>
-                </div>
-              ))}
-          </>
-        )}
-      </div>
-    </>
+  const { isLoading } = useSelector((store) => store?.property);
+
+  return (
+    <div className="key_feature">
+      <p>Map</p>
+      {isLoading ? (
+        <PropertyMapSkeleton />
+      ) : (
+        <>
+          <div
+            id="map"
+            style={{ height: "350px", width: "100%", borderRadius: "10px" }}
+          ></div>
+
+          <p className="mt-3">Nearby Places</p>
+          {places &&
+            places.map((place) => (
+              <div className="near_p" key={place?.type}>
+                <ul>
+                  <li>
+                    <i className={getIconClass(place?.type)} /> {place?.name}:{" "}
+                    {place?.distance ? `${place?.distance} km` : "N/A"}
+                  </li>
+                </ul>
+              </div>
+            ))}
+        </>
+      )}
+    </div>
   );
 };
 

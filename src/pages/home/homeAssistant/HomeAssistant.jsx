@@ -21,8 +21,7 @@ function HomeAssistant() {
                       <b>(Smart Map View)</b>
                     </p>
                     <p>
-                      An interactive map that shows <br />
-                      nearby landmarks
+                      An interactive map that shows <br /> nearby landmarks
                     </p>
                   </div>
                 </a>
@@ -42,8 +41,7 @@ function HomeAssistant() {
                       <b>Smart Property Assistant (AI Chatbot)</b>
                     </p>
                     <p>
-                      An AI-powered chatbot that helps <br />
-                      users find properties
+                      An AI-powered chatbot that helps <br />users find properties
                     </p>
                   </div>
                 </a>
@@ -63,8 +61,7 @@ function HomeAssistant() {
                       <b>(Property valuation feature)</b>
                     </p>
                     <p>
-                      An AI-powered chatbot that helps <br />
-                      users find properties
+                      An AI-powered chatbot that helps <br />users find properties
                     </p>
                   </div>
                 </a>
@@ -93,10 +90,7 @@ function HomeAssistant() {
                     <p>
                       <b>(Smart Map View)</b>
                     </p>
-                    <p>
-                      An interactive map that shows <br />
-                      nearby landmarks
-                    </p>
+                    <p>An interactive map that shows <br />nearby landmarks</p>
                   </div>
                   <div>
                     <i className="ri-arrow-right-s-line" />
@@ -118,8 +112,7 @@ function HomeAssistant() {
                       <b>(Smart Property Assistant (AI Chatbot)</b>
                     </p>
                     <p>
-                      An AI-powered chatbot that helps <br />
-                      users find properties
+                      An AI-powered chatbot that helps <br />users find properties
                     </p>
                   </div>
                 </a>
@@ -139,8 +132,7 @@ function HomeAssistant() {
                       <b>(Property valuation feature)</b>
                     </p>
                     <p>
-                      An AI-powered chatbot that helps <br />
-                      users find properties
+                      An AI-powered chatbot that helps <br /> users find properties
                     </p>
                   </div>
                 </a>

@@ -7,6 +7,7 @@ import {
   TableProperties,
   User,
 } from "lucide-react";
+import UpdateProperty from "../pages/dashboard/list/UpdateProperty";
 
 // const Login = lazy(() => import("../pages/auth/Login"));
 
@@ -192,6 +193,7 @@ const routes = [
     id: 18,
     isPrivate: true,
     isDashboard: true,
+    isVisibleInDash: true,
     icon: LayoutDashboardIcon,
     name: "Dashboard",
     path: pageRoutes?.USER_DASHBOARD,
@@ -200,6 +202,7 @@ const routes = [
   {
     id: 19,
     isPrivate: true,
+    isVisibleInDash: true,
     isDashboard: true,
     icon: LandPlot,
     name: "Add Property",
@@ -209,6 +212,7 @@ const routes = [
   {
     id: 20,
     isPrivate: true,
+    isVisibleInDash: true,
     isDashboard: true,
     icon: TableProperties,
     name: "My Property Listing",
@@ -225,6 +229,7 @@ const routes = [
   {
     id: 22,
     isPrivate: true,
+    isVisibleInDash: true,
     isDashboard: true,
     icon: User,
     name: "My Profile",
@@ -237,6 +242,15 @@ const routes = [
     name: "Agent-Info",
     path: pageRoutes?.AGENT_INFO,
     Component: AgentInfoMain,
+  },
+  {
+    id: 24,
+    isPrivate: true,
+    isDashboard: true,
+    isVisibleInDash: false,
+    name: "Property-Update",
+    path: pageRoutes?.PROPERTY_UPDATE,
+    Component: UpdateProperty,
   },
 ];
 export { routes };

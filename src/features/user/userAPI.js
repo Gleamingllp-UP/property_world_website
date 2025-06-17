@@ -65,7 +65,7 @@ export const userLogin = async (payload) => {
 
 export const getUserDetails = async () => {
   try {
-    const response = await api.get(endpoints.getUserAllDetails);
+    const response = await api.get(endpoints.getUserAllDetailsForWeb);
     return response.data;
   } catch (error) {
     if (error?.status !== 401) {
@@ -107,6 +107,24 @@ export const updateUserDetails = async (id, payload) => {
       );
     } else {
       throw error?.message || "Failed to register, please try again later.";
+    }
+  }
+};
+
+
+
+export const getAllUserForWeb = async () => {
+  try {
+    const response = await api.get(endpoints.getAllUserForWeb);
+    return response.data;
+  } catch (error) {
+    if (error?.status !== 401) {
+      throw (
+        error?.response?.data?.message ||
+        "Failed to login, please try again later."
+      );
+    } else {
+      throw error?.message || "Failed to login, please try again later.";
     }
   }
 };

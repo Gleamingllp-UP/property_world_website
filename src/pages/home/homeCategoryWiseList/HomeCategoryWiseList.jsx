@@ -46,7 +46,7 @@ function HomeCategoryWiseList() {
     <section className="buy_rent">
       <div className="container">
         <div className="text-center title_area">
-          <h2>Buy - Rent - Commercial </h2>
+          <h2>Buy - Rent</h2>
         </div>
         <div className="">
           <nav className="list_ui">

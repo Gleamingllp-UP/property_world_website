@@ -42,3 +42,19 @@ export const generateRangeOptions = (step = 25, max = 100) => {
   }
   return options;
 };
+
+export const normalizeHandover = (handoverBy) => {
+  if (!handoverBy) return "";
+
+  const [year, monthStr] = handoverBy.split("-");
+  const month = parseInt(monthStr, 10);
+
+  let quarterStartMonth;
+
+  if (month >= 1 && month <= 3) quarterStartMonth = "01"; // Q1
+  else if (month >= 4 && month <= 6) quarterStartMonth = "04"; // Q2
+  else if (month >= 7 && month <= 9) quarterStartMonth = "07"; // Q3
+  else quarterStartMonth = "10"; // Q4
+
+  return `${year}-${quarterStartMonth}`;
+};

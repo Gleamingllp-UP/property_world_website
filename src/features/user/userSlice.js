@@ -7,6 +7,7 @@ import {
   getUserDetails,
   guestUserLogin,
   updateUserDetails,
+  getAllUserForWeb,
 } from "./userAPI";
 
 export const initiateSignupThunk = createAsyncThunk(
@@ -39,6 +40,12 @@ export const getUserDetailsThunk = createAsyncThunk(
     return await getUserDetails();
   }
 );
+export const getAllUserForWebThunk = createAsyncThunk(
+  "users/getAllUserForWeb",
+  async () => {
+    return await getAllUserForWeb();
+  }
+);
 export const guestUserLoginThunk = createAsyncThunk(
   "users/guestUserLogin",
   async () => {
@@ -62,6 +69,7 @@ const usersSlice = createSlice({
   name: "users",
   initialState: {
     userData: [],
+    agentOrAgencyData: [],
     formData: null,
     loading: false,
     isLoading: false,
@@ -184,6 +192,19 @@ const usersSlice = createSlice({
         localStorage.setItem("userData", JSON.stringify(action.payload.data));
       })
       .addCase(getUserDetailsThunk.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message;
+      })
+
+//getAllUserForWebThunk
+         .addCase(getAllUserForWebThunk.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getAllUserForWebThunk.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.agentOrAgencyData = action.payload.data;
+      })
+      .addCase(getAllUserForWebThunk.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
       })

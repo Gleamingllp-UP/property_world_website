@@ -207,6 +207,7 @@ const AddProperty = () => {
     formData.append("payment_plan", data?.payment_plan || "");
     formData.append("completion", data?.completion || "");
     formData.append("unit_number", data?.unit_number || "");
+    formData.append("reference_number", data?.reference_number || "");
     formData.append("permit_number", data?.permit_number || "");
     formData.append(
       "parking_spaces",
@@ -662,6 +663,21 @@ const AddProperty = () => {
             />
             {errors?.permit_number && (
               <ErrorMessage message={errors?.permit_number?.message} />
+            )}
+          </div>
+             <div className="col-md-4 mb-3">
+            <label className="form-label">Reference Number *</label>
+            <input
+              type="text"
+              className="form-control"
+              name="reference_number"
+              {...register(
+                "reference_number",
+                getValidationRules({ label: "Reference Number", type: "text2" })
+              )}
+            />
+            {errors?.reference_number && (
+              <ErrorMessage message={errors?.reference_number?.message} />
             )}
           </div>
         </div>

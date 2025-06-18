@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllUserPropertyThunk } from "../../../features/property/propertySlice";
+import {
+  deletePropertyThunk,
+  getAllUserPropertyThunk,
+} from "../../../features/property/propertySlice";
 import { Edit, Eye, Trash } from "lucide-react";
 import { CustomPagination } from "../../../Custom_Components/CustomPagination";
 import { useNavigate } from "react-router-dom";
 import { pageRoutes } from "../../../router/pageRoutes";
 import { getSerialNumber } from "../../../helper/function/getSerialNumber";
 import { Modal, Button } from "react-bootstrap";
+import { showToast } from "../../../utils/toast/toast";
 
 function MyPropertyListing() {
   const dispatch = useDispatch();
@@ -18,6 +22,8 @@ function MyPropertyListing() {
   const limit = 5;
 
   const [showModal, setShowModal] = useState(false);
+  const [showModalDelete, setShowModalDelete] = useState(false);
+  const [deleteId, setDeleteId] = useState(false);
   const [rejectedItem, setRejectedItem] = useState(null);
 
   const navigate = useNavigate();
@@ -28,6 +34,28 @@ function MyPropertyListing() {
 
   const handleEyeClick = (id) => {
     navigate(`${pageRoutes.PROPERTY_DETAILS}?id=${id}`);
+  };
+  //Delete Property
+  const handleDeleteclick = (id) => {
+    setShowModalDelete(true);
+    setDeleteId(id);
+  };
+
+  const handleDelete = async () => {
+    try {
+      const resultAction = await dispatch(deletePropertyThunk(deleteId));
+      if (deletePropertyThunk.fulfilled.match(resultAction)) {
+        showToast("Property Deleted Successfull!", "success");
+        setTimeout(() => {
+    dispatch(getAllUserPropertyThunk({ page, limit }))
+          setShowModalDelete(false);
+        }, 500);
+      } else {
+        throw new Error(resultAction?.error?.message);
+      }
+    } catch (error) {
+      showToast(error?.message || "Failed to delete property.", "error");
+    }
   };
 
   const handleClick = (item) => {
@@ -95,7 +123,9 @@ function MyPropertyListing() {
                     <td>
                       <Edit
                         onClick={() =>
-                          navigate(pageRoutes.PROPERTY_UPDATE + `?id=${item?._id}`)
+                          navigate(
+                            pageRoutes.PROPERTY_UPDATE + `?id=${item?._id}`
+                          )
                         }
                         style={{
                           width: "15px",
@@ -115,6 +145,7 @@ function MyPropertyListing() {
                         }}
                       />
                       <Trash
+                        onClick={() => handleDeleteclick(item?._id)}
                         style={{
                           width: "15px",
                           height: "15px",
@@ -153,6 +184,22 @@ function MyPropertyListing() {
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setShowModal(false)}>
             Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      {/* Delete  Modal */}
+      <Modal show={showModalDelete} onHide={() => setShowModalDelete(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title className="text-danger">Delete Confirmation</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Do You Want To Delete This Property.</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowModalDelete(false)}>
+            No
+          </Button>
+          <Button variant="danger" onClick={() => handleDelete() } >
+            Yes
           </Button>
         </Modal.Footer>
       </Modal>

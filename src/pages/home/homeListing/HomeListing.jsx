@@ -1,5 +1,8 @@
 import { ads } from '@/assets/images'
 import React from 'react'
+import { Link } from 'react-router-dom'
+import { pageRoutes } from '../../../router/pageRoutes'
+
 
 function HomeListing() {
   return (
@@ -18,9 +21,9 @@ function HomeListing() {
           commercial properties, <br />
           designed to meet the diverse needs of buyers, sellers, and renters.
         </p>
-        <a data-bs-toggle="modal" data-bs-target="#login_form">
+        <Link to={pageRoutes?.SIGN_UP} >
           Become An Agent <i className="ri-arrow-right-up-long-line" />
-        </a>
+        </Link>
       </div>
     </div>
   </section>

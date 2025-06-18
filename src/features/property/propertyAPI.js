@@ -106,3 +106,41 @@ export const getAllProperty = async (
     }
   }
 };
+
+
+export const updateProperty = async (id,payload) => {
+  try {
+    const response = await api.put(endpoints.updatePropertyForUser + `/id=${id}`, payload);
+    return response.data;
+  } catch (error) {
+    if (error?.status !== 401) {
+      throw (
+        error?.response?.data?.message ||
+        "Failed to create property, please try again later."
+      );
+    } else {
+      throw (
+        error?.message || "Failed to create property, please try again later."
+      );
+    }
+  }
+}
+
+
+export const deleteProperty = async (id) => {
+  try {
+    const response = await api.delete(endpoints.deletePropertyByUser + `/${id}`);
+    return response.data;
+  } catch (error) {
+    if (error?.status !== 401) {
+      throw (
+        error?.response?.data?.message ||
+        "delete faild property, please try again later."
+      );
+    } else {
+      throw (
+        error?.message || "Failed to delete property, please try again later."
+      );
+    }
+  }
+}

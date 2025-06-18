@@ -348,7 +348,7 @@ const Archive = () => {
                             {item?.duration || ""}
                           </span>
                           <span className="flex_box">
-                            <img src={user} className="agent_b" alt="agent" />
+                            <img src={item?.userData?.agent_photo || user} className="agent_b" alt="agent" />
                             <i className="ri-verified-badge-fill" />
                           </span>
                         </div>
@@ -430,14 +430,14 @@ const Archive = () => {
                           <div className="call_action">
                             <ul>
                               <li>
-                                <a href={`tel:${item?.phone || "97143533229"}`}>
+                                <a href={`tel:${item?.userData?.phone_number || "97143533229"}`}>
                                   <i className="ri-phone-line" /> Call
                                 </a>
                               </li>
                               <li>
                                 <a
                                   href={`mailto:${
-                                    item?.email || "info@propertyworld.ae"
+                                    item?.userData?.email || "info@propertyworld.ae"
                                   }`}
                                 >
                                   <i className="ri-mail-open-line" /> Email
@@ -446,7 +446,7 @@ const Archive = () => {
                               <li>
                                 <a
                                   href={`https://wa.me/${
-                                    item?.whatsapp || "97143533229"
+                                    item?.userData?.whatsapp_number || "97143533229"
                                   }`}
                                   target="_blank"
                                   rel="noopener noreferrer"
@@ -457,7 +457,7 @@ const Archive = () => {
                             </ul>
 
                             <span>
-                              <img src={property_world_logo} alt="logo" />
+                              <img src={item?.userData?.agency_logo || property_world_logo} alt="logo" />
                             </span>
                           </div>
                         </div>

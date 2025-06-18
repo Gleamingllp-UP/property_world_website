@@ -111,10 +111,23 @@ function HomeCategoryWiseList() {
                               </Link>
                               <div className="new_listng">
                                 <div>
-                                  <img src={bed} /> Studio{" "}
+                                  {item?.bedrooms != null &&
+                                    item?.bedrooms !== "" && (
+                                      <>
+                                        <img src={bed} alt="bed" />{" "}
+                                        {item?.bedrooms === 0
+                                          ? "Studio"
+                                          : item?.bedrooms}{" "}
+                                      </>
+                                    )}
                                 </div>
                                 <div>
-                                  <img src={ruler} /> 481Sq Ft{" "}
+                                  {item?.area != null && item?.area !== "" && (
+                                    <>
+                                      <img src={ruler} alt="area" /> {item.area}{" "}
+                                      Sq Ft
+                                    </>
+                                  )}
                                 </div>
                               </div>
                             </div>
@@ -131,8 +144,7 @@ function HomeCategoryWiseList() {
                                   <i className="ri-map-pin-line" /> UAE
                                 </div>
                                 <div>
-                                  <i className="ri-eye-line" /> Dubai Sports
-                                  City
+                                  <i className="ri-eye-line" /> {item?.address}
                                 </div>
                               </div>
                               <div className="action_p">

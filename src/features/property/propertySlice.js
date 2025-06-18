@@ -4,6 +4,8 @@ import {
   getAllUserProperty,
   getAllProperty,
   getPropertyDetails,
+  updateProperty,
+  deleteProperty
 } from "./propertyAPI";
 
 export const creatPropertyThunk = createAsyncThunk(
@@ -12,6 +14,20 @@ export const creatPropertyThunk = createAsyncThunk(
     return await creatProperty(payload);
   }
 );
+
+export const updatePropertyThunk = createAsyncThunk(
+  "property/updateProperty",
+  async (payload) => {
+    return await updateProperty(payload);
+  }
+);
+export const deletePropertyThunk = createAsyncThunk(
+  "property/deleteProperty",
+  async (id) => {
+    return await deleteProperty(id);
+  }
+);
+
 export const getPropertyDetailsThunk = createAsyncThunk(
   "property/getPropertyDetails",
   async ({ id }) => {
@@ -60,6 +76,30 @@ const propertySlice = createSlice({
         state.loading = false;
       })
       .addCase(creatPropertyThunk.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+
+      //update property
+      .addCase(updatePropertyThunk.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updatePropertyThunk.fulfilled, (state) => {
+        state.loading = false;
+      })
+      .addCase(updatePropertyThunk.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      
+      //delete property
+      .addCase(deletePropertyThunk.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(deletePropertyThunk.fulfilled, (state) => {
+        state.loading = false;
+      })
+      .addCase(deletePropertyThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
       })

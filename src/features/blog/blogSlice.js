@@ -7,8 +7,8 @@ import {
 
 export const getAllBlogsThunk = createAsyncThunk(
   "blog/getall",
-  async ({ page, limit }) => {
-    return await getAllblogForUser(page, limit);
+  async ({ page, limit, blog_category_id }) => {
+    return await getAllblogForUser(page, limit,blog_category_id);
   }
 );
 export const getBlogsByIdThunk = createAsyncThunk(

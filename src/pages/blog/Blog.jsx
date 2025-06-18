@@ -13,6 +13,9 @@ import BigBlogSkeleton, {
 import { CustomPagination } from "../../Custom_Components/CustomPagination";
 
 const Blog = ({ innerRef }) => {
+   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const { blogs, isLoading, pagination } = useSelector((store) => store?.blog);
   const dispatch = useDispatch();
   const [page, setPage] = useState(1);

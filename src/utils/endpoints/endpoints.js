@@ -53,12 +53,10 @@ const endpoints = {
   getProperty: "/property/get-property",
   getAllPropertyForUser: "/property/getall-user-property",
   createProperty: "/property/add-property",
-  updateProperty: "/property/update-property",
   updatePropertyForUser: "/property/update-user-property",
-  deleteProperty: "/property/delete-property/:id",
   updatePropertyStatus: "/property/update-property-status",
   getUsersAllProperty: "/property/get-user-property",
-
+  deletePropertyByUser: "/property/delete-user-property",
   //AmenitiesAndFacilities
   getAllAmenitiesAndFacilitiesForUser:
     "/amenities-facilities/getall-user-amenities-facilities",

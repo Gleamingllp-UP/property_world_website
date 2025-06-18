@@ -357,7 +357,6 @@ const UpdateProperty = () => {
                 })}
                 onChange={(e) => {
                   const value = e.target.value;
-                  // Call RHF's internal onChange handler
                   const event = { target: { name: "category", value } };
                   register("category").onChange(event);
 
@@ -368,8 +367,8 @@ const UpdateProperty = () => {
                 }}
               >
                 <option value="">-- Select --</option>
-                {categories.map((cat) => (
-                  <option value={cat?._id} key={cat?._id}>
+                {categories.map((cat, index) => (
+                  <option value={cat?._id} key={index}>
                     {cat?.name}
                   </option>
                 ))}
@@ -397,8 +396,8 @@ const UpdateProperty = () => {
                 }}
               >
                 <option value="">-- Select --</option>
-                {subCategories.map((subcat) => (
-                  <option value={subcat?._id} key={subcat?._id}>
+                {subCategories.map((subcat, index) => (
+                  <option value={subcat?._id} key={index}>
                     {subcat?.name}
                   </option>
                 ))}
@@ -419,8 +418,8 @@ const UpdateProperty = () => {
                 })}
               >
                 <option value="">-- Select --</option>
-                {subSubCategories.map((subsubcat) => (
-                  <option value={subsubcat?._id} key={subsubcat?._id}>
+                {subSubCategories.map((subsubcat, index) => (
+                  <option value={subsubcat?._id} key={index}>
                     {subsubcat?.name}
                   </option>
                 ))}

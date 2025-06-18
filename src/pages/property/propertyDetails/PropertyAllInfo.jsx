@@ -70,7 +70,17 @@ function PropertyAllInfo() {
                   <hr />
                 </>
               )}
+              <div className="key_feature">
+                <p>Property Information</p>
+                {propertyDetails?.short_description}
+              </div>
+              <hr />
 
+              <div className="key_feature">
+                <p>About Property Information</p>
+                {propertyDetails?.full_description}
+              </div>
+              <hr />
               {isLoading ? (
                 <PropertyFeaturesSkeleton />
               ) : (
@@ -184,7 +194,11 @@ function PropertyAllInfo() {
               <Features />
 
               <Propertymap
-                address={propertyDetails?.address}
+                address={
+                  propertyDetails?.building_name +
+                  ", " +
+                  propertyDetails?.address
+                }
                 lat={propertyDetails?.locationData?.latitude}
                 lng={propertyDetails?.locationData?.longitude}
               />

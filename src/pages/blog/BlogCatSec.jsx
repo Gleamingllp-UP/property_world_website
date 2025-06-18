@@ -11,18 +11,23 @@ import ImageWithLoader from "../../Custom_Components/ImageWithLoader";
 import { format } from "date-fns";
 import { RecentPostSkeleton } from "../../Custom_Components/Skeleton/BigBlogSkeleton";
 import { news_dss } from "../../assets/images";
+import { useLocation } from "react-router-dom";
 
 const BlogCatSec = () => {
   const { blogsCategory, isLoading2, blogs, isLoading } = useSelector(
     (store) => store?.blog
   );
+
+  const { search } = useLocation();
+const blog_category_id = new URLSearchParams(search).get("blog_category_id");
+
   const dispatch = useDispatch();
   const page = 1;
   const limit = 7;
-
+  
   useEffect(() => {
-    dispatch(getAllBlogsThunk({ page, limit }));
-  }, [dispatch, page]);
+    dispatch(getAllBlogsThunk({ page, limit, blog_category_id }));
+  }, [dispatch, page,blog_category_id]);
 
   useEffect(() => {
     dispatch(getBlogCategoryWithCountThunk());
@@ -86,7 +91,7 @@ const BlogCatSec = () => {
                 <ul key={index}>
                   <li>
                     <Link
-                      to={pageRoutes.BLOG_DETAILS + `/?blog_id=${item?._id}`}
+                      to={pageRoutes.BLOG + `/?blog_category_id=${item?._id}`}
                       className="Link"
                       style={{
                         borderBottom:

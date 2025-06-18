@@ -1,11 +1,16 @@
 import api from "../../services/api";
 import { endpoints } from "../../utils/endpoints/endpoints";
 
-export const getAllblogForUser = async (page, limit) => {
+export const getAllblogForUser = async (page, limit, blog_category_id) => {
   try {
-    const response = await api.get(
-      endpoints.getAllblogForUser + `?page=${page}&limit=${limit}`
-    );
+    let query = `?page=${page}&limit=${limit}`;
+
+    if (blog_category_id) {
+      query += `&blog_category_id=${blog_category_id}`;
+    }
+
+    const response = await api.get(endpoints.getAllblogForUser + query);
+
     return response.data;
   } catch (error) {
     if (error?.status !== 401) {
@@ -18,6 +23,8 @@ export const getAllblogForUser = async (page, limit) => {
     }
   }
 };
+
+
 export const getBlogByIdForUser = async (id) => {
   try {
     const response = await api.get(endpoints.getblogForUser + `/${id}`);

@@ -338,3 +338,9 @@ body {
 .res_done {
   display: flex;
 }
+.john {
+  
+    height: 100px;
+    object-fit: contain !important;
+   
+}

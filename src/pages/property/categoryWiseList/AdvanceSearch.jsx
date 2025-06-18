@@ -1,4 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { resetActiveData } from "../../../features/activeData/activeDataSlice";
 import { formatRange } from "../../../helper/function/formatRange";
@@ -11,8 +17,11 @@ import Form from "react-bootstrap/Form";
 import CategoryFetcher from "../../home/homeBanner/CategoryFetcher";
 import { ChevronDown, SlidersHorizontal } from "lucide-react";
 import { getAllPropertyThunk } from "../../../features/property/propertySlice";
+import { useSearchParams } from "react-router-dom";
+import { debounce } from "lodash";
+import LocationSearch from "./LocationSearch";
 
-function AdvanceSearch({ page, limit, sortBy, features }) {
+function AdvanceSearch({ page, limit, sortBy, features, scrollRef }) {
   const [selectedCategoryId, setSelectedCategoryId] = useState("");
   const [selectedCategoryName, setSelectedCategoryName] = useState("");
 
@@ -26,7 +35,9 @@ function AdvanceSearch({ page, limit, sortBy, features }) {
 
   const [buyType, setBuyType] = useState("");
   const [location, setLocation] = useState("");
+
   const [priceRange, setPriceRange] = useState("");
+  const [finalPriceRange, setFinalPriceRange] = useState(0);
 
   const [selectedSubCategoryName, setSelectedSubCategoryName] = useState("");
 
@@ -44,19 +55,29 @@ function AdvanceSearch({ page, limit, sortBy, features }) {
   const [keyword, setKeyword] = useState("");
   const [selectedTour, setSelectedTour] = useState("");
 
+  const locationRef = useRef();
+
   const { categories, subCategories, subSubCategories, loading } = useSelector(
     (store) => store?.activeData
   );
 
+  const scroll = useCallback(() => {
+    scrollRef?.current?.scrollIntoView({ behavior: "smooth" });
+  }, [scrollRef]);
+
   const dispatch = useDispatch();
+
+  const debouncedDispatch = useMemo(() => debounce(dispatch, 500), []);
 
   const handleReset = () => {
     setSelectedCategoryId("");
+    setSelectedCategoryName("");
     setSelectedSubCategoryId("");
     setSelectedSubCategoryName("");
     setSelectedSubSubCategoryId("");
     setOpenDropDown("");
   };
+
   const handleResetPrice = () => {
     setMinPrice(0);
     setMaxPrice(0);
@@ -156,35 +177,71 @@ function AdvanceSearch({ page, limit, sortBy, features }) {
 
     setSelectedSubSubCategoryId(null);
     dispatch(resetActiveData());
-    setOpenDropDown("");
+
+    setRentDuration("");
   };
 
-  const queryParams = new URLSearchParams(location.search);
+  const [queryParams] = useSearchParams();
 
-  const searchFilters = {
-    category: queryParams.get("category") || selectedCategoryId,
-    subCategory: queryParams.get("subCategory") || selectedSubCategoryId,
-    subSubCategory:
-      queryParams.get("subSubCategory") || selectedSubSubCategoryId,
-    duration: queryParams.get("duration") || rentDuration,
-    bedrooms: queryParams.get("bedrooms") || bedRoom,
-    bathrooms: queryParams.get("bathrooms") || bathRoom,
-    min_price: queryParams.get("min_price") || minPrice,
-    max_price: queryParams.get("max_price") || maxPrice,
-    min_area: queryParams.get("min_area") || minArea,
-    max_area: queryParams.get("max_area") || maxArea,
-    payment_plan: queryParams.get("payment_plan") || priceRange,
-    handover_by: queryParams.get("handover_by") || handOverBy,
-    search: queryParams.get("search") || location,
-    tour_types: queryParams.get("tour_types") || selectedTour,
-    agent_agency: queryParams.get("agent_agency") || agentOrAgency,
-    developer: queryParams.get("developer") || developer,
-    keyword: queryParams.get("keyword") || keyword,
-    completion: queryParams.get("completion") || completion,
-  };
+  const queryString = queryParams.toString();
+
+  const debouncedUpdate = useMemo(() => {
+    return debounce((val) => {
+      setFinalPriceRange(val);
+    }, 300);
+  }, []);
+
+  const searchFilters = useMemo(
+    () => ({
+      category: queryParams.get("category") || selectedCategoryId,
+      subCategory: queryParams.get("subCategory") || selectedSubCategoryId,
+      subSubCategory:
+        queryParams.get("subSubCategory") || selectedSubSubCategoryId,
+      duration: queryParams.get("duration") || rentDuration,
+      construction_status: queryParams.get("construction_status") || buyType,
+      bedrooms: queryParams.get("bedrooms") || bedRoom,
+      bathrooms: queryParams.get("bathrooms") || bathRoom,
+      min_price: queryParams.get("min_price") || minPrice,
+      max_price: queryParams.get("max_price") || maxPrice,
+      min_area: queryParams.get("min_area") || minArea,
+      max_area: queryParams.get("max_area") || maxArea,
+      payment_plan: queryParams.get("payment_plan") || finalPriceRange,
+      handover_by: queryParams.get("handover_by") || handOverBy,
+      search: queryParams.get("search") || location,
+      tour_types: queryParams.get("tour_types") || selectedTour,
+      agent_agency: queryParams.get("agent_agency") || agentOrAgency,
+      developer: queryParams.get("developer") || developer,
+      keyword: queryParams.get("keyword") || keyword,
+      completion: queryParams.get("completion") || completion,
+    }),
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [
+      queryString,
+      selectedCategoryId,
+      selectedSubCategoryId,
+      selectedSubSubCategoryId,
+      rentDuration,
+      buyType,
+      bedRoom,
+      bathRoom,
+      minPrice,
+      maxPrice,
+      minArea,
+      maxArea,
+      finalPriceRange,
+      handOverBy,
+      location,
+      selectedTour,
+      agentOrAgency,
+      developer,
+      keyword,
+      completion,
+    ]
+  );
 
   useEffect(() => {
-    dispatch(
+    debouncedDispatch(
       getAllPropertyThunk({
         page,
         limit,
@@ -193,7 +250,8 @@ function AdvanceSearch({ page, limit, sortBy, features }) {
         features,
       })
     );
-  }, [dispatch, page, sortBy, features]);
+    scroll();
+  }, [page, sortBy, features, searchFilters, limit, debouncedDispatch, scroll]);
 
   function haldelSearch() {
     dispatch(
@@ -206,6 +264,29 @@ function AdvanceSearch({ page, limit, sortBy, features }) {
       })
     );
   }
+  const handleMoreFilterReset = () => {
+    setMinPrice("");
+    setMaxPrice("");
+    setMinArea("");
+    setMaxArea("");
+    setAgentOrAgency("");
+    setDeveloper("");
+    setKeyword("");
+    setSelectedTour("");
+    setOpenDropDown("");
+  };
+
+  useEffect(() => {
+    if (selectedCategoryName === "Rent") {
+      setBuyType("");
+      setHandOverBy("");
+      setPriceRange("");
+      setCompletion("");
+    } else if (selectedSubCategoryName === "Commercial") {
+      setBedRoom([]);
+      setBathRoom([]);
+    }
+  }, [selectedCategoryName, selectedSubCategoryName, buyType]);
 
   return (
     <div
@@ -247,6 +328,7 @@ function AdvanceSearch({ page, limit, sortBy, features }) {
                       setOpenDropDown((prev) =>
                         prev === "category" ? "" : "category"
                       );
+                      locationRef.current.closeDropdown();
                     }}
                     id="mainSelectBox3"
                   >
@@ -305,14 +387,13 @@ function AdvanceSearch({ page, limit, sortBy, features }) {
                           className="btn"
                           onClick={() => {
                             handleReset();
-                            setSelectedCategoryName("");
                           }}
                         >
                           Reset
                         </button>
                         <button
                           className="btn done_b"
-                          onClick={() => haldelSearch()}
+                          onClick={() => setOpenDropDown("")}
                         >
                           Done
                         </button>
@@ -331,27 +412,28 @@ function AdvanceSearch({ page, limit, sortBy, features }) {
                 : "col-lg-3"
             }
           >
-            <div className="mmm_input d-block ">
+            {/* <div className="mmm_input d-block ">
               <div className="big_search">
                 <input
                   type="text"
                   name="Search"
                   placeholder="Enter Location"
                   value={location}
-                  onChange={(e) => setLocation(e.target.value)}
+                  onChange={(e) => setLocation(e.target.value)
+                    // debouncedSearch(e.target.value)
+                  }
                   className="search_bxi rounded"
                 />
                 <i className="ri-map-pin-line map_iic" />
               </div>
-              {/* <div
-                className="search_btn ad_search_btn"
-                onClick={() => {
-                  haldelSearch();
-                }}
-              >
-                <button>Search</button>
-              </div> */}
-            </div>
+            </div> */}
+            <LocationSearch
+              ref={locationRef}
+              setLocation={setLocation}
+              location={location}
+              setOpenDropdown={setOpenDropDown}
+              openDropDown={openDropDown}
+            />
           </div>
 
           {selectedCategoryName !== "Rent" && (
@@ -761,6 +843,7 @@ function AdvanceSearch({ page, limit, sortBy, features }) {
               </div>
             </div>
           )}
+
           <div
             className={`${
               selectedCategoryName === "Buy" || selectedCategoryName === ""
@@ -782,7 +865,7 @@ function AdvanceSearch({ page, limit, sortBy, features }) {
                   className="selected-items d-flex justify-content-between align-items-center"
                   id="selectedItems3"
                 >
-                  <span> More Filters</span>
+                  <span>More Filters</span>
                   <SlidersHorizontal
                     strokeWidth={3}
                     size={"15px"}
@@ -851,7 +934,7 @@ function AdvanceSearch({ page, limit, sortBy, features }) {
                             min={0}
                             value={minArea}
                             placeholder={0}
-                            onChange={(e) => setMaxArea(e.target.value)}
+                            onChange={(e) => setMinArea(e.target.value)}
                           />
                         </div>
                         <div className="input-group">
@@ -927,8 +1010,7 @@ function AdvanceSearch({ page, limit, sortBy, features }) {
                   <button
                     className="btn"
                     onClick={() => {
-                      handleReset();
-                      setSelectedCategoryName("");
+                      handleMoreFilterReset();
                     }}
                   >
                     Reset
@@ -1045,6 +1127,8 @@ function AdvanceSearch({ page, limit, sortBy, features }) {
                             step={1}
                             value={priceRange}
                             onChange={(e) => setPriceRange(e.target.value)}
+                            onMouseUp={() => debouncedUpdate(priceRange)} // desktop
+                            onTouchEnd={() => debouncedUpdate(priceRange)}
                             className="custom-range"
                             style={{
                               paddingLeft: "0px",
@@ -1151,4 +1235,4 @@ function AdvanceSearch({ page, limit, sortBy, features }) {
   );
 }
 
-export default AdvanceSearch;
+export default React.memo(AdvanceSearch);

@@ -40,12 +40,14 @@ export const getUserDetailsThunk = createAsyncThunk(
     return await getUserDetails();
   }
 );
+// features/user/userSlice.js
 export const getAllUserForWebThunk = createAsyncThunk(
   "users/getAllUserForWeb",
-  async () => {
-    return await getAllUserForWeb();
+  async ({ service_need, search, nationality, language,page,limit }) => {
+    return await getAllUserForWeb(service_need, search, nationality, language,page,limit);
   }
 );
+
 export const guestUserLoginThunk = createAsyncThunk(
   "users/guestUserLogin",
   async () => {
@@ -69,6 +71,7 @@ const usersSlice = createSlice({
   name: "users",
   initialState: {
     userData: [],
+    pagination: {},
     agentOrAgencyData: [],
     formData: null,
     loading: false,
@@ -203,6 +206,7 @@ const usersSlice = createSlice({
       .addCase(getAllUserForWebThunk.fulfilled, (state, action) => {
         state.isLoading = false;
         state.agentOrAgencyData = action.payload.data;
+        state.pagination = action.payload.pagination;
       })
       .addCase(getAllUserForWebThunk.rejected, (state, action) => {
         state.isLoading = false;

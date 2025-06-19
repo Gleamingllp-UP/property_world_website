@@ -113,9 +113,10 @@ export const updateUserDetails = async (id, payload) => {
 
 
 
-export const getAllUserForWeb = async () => {
+export const getAllUserForWeb = async (service_need, search, nationality, language, page,limit) => {
   try {
-    const response = await api.get(endpoints.getAllUserForWeb);
+    const response = await api.get(endpoints.getAllUserForWeb + `/?page=${page}&limit=${limit}&service_need=${service_need}
+      &search=${search}&nationality=${nationality}&language=${language}`);
     return response.data;
   } catch (error) {
     if (error?.status !== 401) {

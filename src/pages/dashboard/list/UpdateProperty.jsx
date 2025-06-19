@@ -254,8 +254,6 @@ const UpdateProperty = () => {
   };
 
   const onSubmit = async (data) => {
-    // console.log(data);
-
     const formData = new FormData();
     const maxBedroom = data?.bedrooms?.length
       ? Math.max(...data.bedrooms)

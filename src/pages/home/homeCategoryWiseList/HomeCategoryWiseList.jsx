@@ -6,6 +6,8 @@ import { useDispatch, useSelector } from "react-redux";
 import ImageWithLoader from "./../../../Custom_Components/ImageWithLoader";
 import { getAllPropertyThunk } from "../../../features/property/propertySlice";
 import { HomeCategoryPropertySkeleton } from "../../../Custom_Components/Skeleton/PropertySkeleton";
+import { formatNumberWithCommas } from "../../../helper/function/formatRange";
+import { formatPrice } from "../../../helper/function/formatPrice";
 
 function HomeCategoryWiseList() {
   const { categories } = useSelector((store) => store?.activeData);
@@ -124,8 +126,8 @@ function HomeCategoryWiseList() {
                                 <div>
                                   {item?.area != null && item?.area !== "" && (
                                     <>
-                                      <img src={ruler} alt="area" /> {item.area}{" "}
-                                      Sq Ft
+                                      <img src={ruler} alt="area" />{" "}
+                                      {formatNumberWithCommas(item?.area)} Sq Ft
                                     </>
                                   )}
                                 </div>
@@ -150,7 +152,7 @@ function HomeCategoryWiseList() {
                               <div className="action_p">
                                 <div className="list_ppc">
                                   {" "}
-                                  AED {item?.price}{" "}
+                                  {formatPrice(item?.price)}
                                 </div>
                                 <div>
                                   <Link

@@ -5,13 +5,21 @@ import {
   getAllProperty,
   getPropertyDetails,
   updateProperty,
-  deleteProperty
+  deleteProperty,
+  addOrRemoveFavouriteProperty,
 } from "./propertyAPI";
 
 export const creatPropertyThunk = createAsyncThunk(
   "property/creatProperty",
   async (payload) => {
     return await creatProperty(payload);
+  }
+);
+
+export const addOrRemoveFavouritePropertyThunk = createAsyncThunk(
+  "property/addOrRemoveFavouriteProperty",
+  async (payload) => {
+    return await addOrRemoveFavouriteProperty(payload);
   }
 );
 
@@ -91,7 +99,27 @@ const propertySlice = createSlice({
         state.loading = false;
         state.error = action.error.message;
       })
-      
+
+      //addOrRemoveFavouriteProperty
+      .addCase(addOrRemoveFavouritePropertyThunk.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(addOrRemoveFavouritePropertyThunk.fulfilled, (state, action) => {
+        state.loading = false;
+
+        const propertyId = action?.meta?.arg;
+
+        state.propertyData = state?.propertyData?.map((property) =>
+          property?._id === propertyId
+            ? { ...property, is_liked: !property?.is_liked }
+            : property
+        );
+      })
+      .addCase(addOrRemoveFavouritePropertyThunk.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+
       //delete property
       .addCase(deletePropertyThunk.pending, (state) => {
         state.loading = true;

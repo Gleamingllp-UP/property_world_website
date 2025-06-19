@@ -1,5 +1,5 @@
-import React, { useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import ArchiveLocation from "./ArchiveLocation";
 import ArchiveTop from "./ArchiveTop";
 import { Link } from "react-router-dom";
@@ -22,6 +22,11 @@ import { PropertyListingCardSkeleton } from "../../../Custom_Components/Skeleton
 import AdvanceSearch from "./AdvanceSearch";
 import { formatPrice } from "../../../helper/function/formatPrice";
 import CheckedModal from "./CheckedModal";
+import { getUserData } from "../../../features/user/userSlice";
+import { addOrRemoveFavouritePropertyThunk } from "../../../features/property/propertySlice";
+import { showToast } from "../../../utils/toast/toast";
+import { throttle } from "lodash";
+import { formatNumberWithCommas } from "../../../helper/function/formatRange";
 
 const Archive = () => {
   const {
@@ -39,6 +44,14 @@ const Archive = () => {
   const [features, setFeatures] = useState("");
   const limit = 5;
 
+  const { userData } = useSelector((store) => store?.user);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getUserData());
+  }, [dispatch]);
+
   // Custom arrow components
   const NextArrow = ({ onClick }) => (
     <div className="custom-arrow next" onClick={onClick}>
@@ -50,6 +63,30 @@ const Archive = () => {
     <div className="custom-arrow prev" onClick={onClick}>
       <i className="ri-arrow-left-s-line"></i>
     </div>
+  );
+
+  const handleLikeToggle = async (id) => {
+    try {
+      showToast("Wait", "loading");
+      const resultAction = await dispatch(
+        addOrRemoveFavouritePropertyThunk(id)
+      );
+      if (addOrRemoveFavouritePropertyThunk.fulfilled.match(resultAction)) {
+        console.log("object", resultAction);
+        showToast(resultAction?.payload?.message, "success");
+      } else {
+        throw new Error(resultAction?.error?.message);
+      }
+    } catch (error) {
+      showToast(error?.message || "Failed to create property.", "error");
+    }
+  };
+
+  const throttledToggleLike = useCallback(
+    throttle((propertyId) => {
+      handleLikeToggle(propertyId);
+    }, 2000),
+    []
   );
 
   return (
@@ -322,9 +359,22 @@ const Archive = () => {
                             <i className="ri-checkbox-circle-fill" /> Checked
                           </div>
                           <div className="save_p">
-                            <button>
-                              <i className="ri-heart-line" />
-                            </button>
+                            {userData?.role !== "guest" && (
+                              <button>
+                                <i
+                                  className={
+                                    item?.is_liked
+                                      ? "ri-heart-fill text-white"
+                                      : "ri-heart-line"
+                                  }
+                                  onClick={() => throttledToggleLike(item?._id)}
+                                  style={{
+                                    cursor: "pointer",
+                                    fontSize: "20px",
+                                  }}
+                                ></i>
+                              </button>
+                            )}
                           </div>
 
                           <div className="my-slider">
@@ -348,7 +398,11 @@ const Archive = () => {
                             {item?.duration || ""}
                           </span>
                           <span className="flex_box">
-                            <img src={item?.userData?.agent_photo || user} className="agent_b" alt="agent" />
+                            <img
+                              src={item?.userData?.agent_photo || user}
+                              className="agent_b"
+                              alt="agent"
+                            />
                             <i className="ri-verified-badge-fill" />
                           </span>
                         </div>
@@ -392,7 +446,8 @@ const Archive = () => {
 
                               {item?.area && (
                                 <li>
-                                  <img src={ruler} alt="area" /> {item?.area}
+                                  <img src={ruler} alt="area" />{" "}
+                                  {formatNumberWithCommas(item?.area)}
                                 </li>
                               )}
                             </ul>
@@ -430,14 +485,20 @@ const Archive = () => {
                           <div className="call_action">
                             <ul>
                               <li>
-                                <a href={`tel:${item?.userData?.phone_number || "97143533229"}`}>
+                                <a
+                                  href={`tel:${
+                                    item?.userData?.phone_number ||
+                                    "97143533229"
+                                  }`}
+                                >
                                   <i className="ri-phone-line" /> Call
                                 </a>
                               </li>
                               <li>
                                 <a
                                   href={`mailto:${
-                                    item?.userData?.email || "info@propertyworld.ae"
+                                    item?.userData?.email ||
+                                    "info@propertyworld.ae"
                                   }`}
                                 >
                                   <i className="ri-mail-open-line" /> Email
@@ -446,7 +507,8 @@ const Archive = () => {
                               <li>
                                 <a
                                   href={`https://wa.me/${
-                                    item?.userData?.whatsapp_number || "97143533229"
+                                    item?.userData?.whatsapp_number ||
+                                    "97143533229"
                                   }`}
                                   target="_blank"
                                   rel="noopener noreferrer"
@@ -457,7 +519,13 @@ const Archive = () => {
                             </ul>
 
                             <span>
-                              <img src={item?.userData?.agency_logo || property_world_logo} alt="logo" />
+                              <img
+                                src={
+                                  item?.userData?.agency_logo ||
+                                  property_world_logo
+                                }
+                                alt="logo"
+                              />
                             </span>
                           </div>
                         </div>

@@ -107,10 +107,12 @@ export const getAllProperty = async (
   }
 };
 
-
-export const updateProperty = async (id,payload) => {
+export const updateProperty = async (id, payload) => {
   try {
-    const response = await api.put(endpoints.updatePropertyForUser + `/id=${id}`, payload);
+    const response = await api.put(
+      endpoints.updatePropertyForUser + `/id=${id}`,
+      payload
+    );
     return response.data;
   } catch (error) {
     if (error?.status !== 401) {
@@ -124,12 +126,13 @@ export const updateProperty = async (id,payload) => {
       );
     }
   }
-}
-
+};
 
 export const deleteProperty = async (id) => {
   try {
-    const response = await api.delete(endpoints.deletePropertyByUser + `/${id}`);
+    const response = await api.delete(
+      endpoints.deletePropertyByUser + `/${id}`
+    );
     return response.data;
   } catch (error) {
     if (error?.status !== 401) {
@@ -143,4 +146,23 @@ export const deleteProperty = async (id) => {
       );
     }
   }
-}
+};
+
+export const addOrRemoveFavouriteProperty = async (id) => {
+  try {
+    const response = await api.post(endpoints.addToFavouriteProperty + `/${id}`);
+    return response.data;
+  } catch (error) {
+    if (error?.status !== 401) {
+      throw (
+        error?.response?.data?.message ||
+        "Failed to add or remove property, please try again later."
+      );
+    } else {
+      throw (
+        error?.message ||
+        "Failed to add or remove property, please try again later."
+      );
+    }
+  }
+};

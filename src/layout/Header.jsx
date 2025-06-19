@@ -6,12 +6,13 @@ import { useDispatch, useSelector } from "react-redux";
 import LoginModal from "../pages/auth/login/LoginModal";
 import { getAllActiveCategoryThunk } from "./../features/activeData/activeDataSlice";
 import { getUserDetailsThunk } from "../features/user/userSlice";
+import { user } from "../assets/images";
+import ImageWithLoader from "../Custom_Components/ImageWithLoader";
 function Header() {
   const [modalShow, setModalShow] = useState(false);
   const { categories, location } = useSelector((store) => store?.activeData);
   const { userData } = useSelector((store) => store?.user);
 
-  
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -19,6 +20,22 @@ function Header() {
     dispatch(getAllActiveCategoryThunk());
     dispatch(getUserDetailsThunk());
   }, [dispatch]);
+
+  const getValidImageSrc = (...sources) => {
+    return sources.find(
+      (src) =>
+        typeof src === "string" &&
+        src.trim() !== "" &&
+        /^(https?:\/\/|\/)/.test(src)
+    );
+  };
+
+  const imageSrc = getValidImageSrc(
+    userData?.profile_picture,
+    userData?.agent_photo,
+    userData?.agency_logo,
+    user
+  );
 
   return (
     <header>
@@ -161,13 +178,8 @@ function Header() {
                       to={pageRoutes.MY_PROFILE}
                       className="d-flex align-items-center text-decoration-none"
                     >
-                      <img
-                        src={
-                          userData?.profile_picture ||
-                          userData?.agent_photo ||
-                          userData?.agency_logo ||
-                          contact_photo
-                        }
+                      <ImageWithLoader
+                        src={imageSrc}
                         alt="Profile"
                         className="rounded-circle border"
                         style={{

@@ -6,7 +6,7 @@ import { pageRoutes } from "../../../router/pageRoutes";
 import { useSelector } from "react-redux";
 import { LogOut } from "lucide-react";
 import LogoutModal from "../../auth/logout/LogoutModal";
-import { default_user } from "../../../assets/images";
+import { user } from "../../../assets/images";
 import ImageWithLoader from "../../../Custom_Components/ImageWithLoader";
 const Sidebar = () => {
   const location = useLocation();
@@ -17,6 +17,22 @@ const Sidebar = () => {
   const isPathActive = (basePath, currentPath) => {
     return currentPath === basePath || currentPath.startsWith(`${basePath}/`);
   };
+
+  const getValidImageSrc = (...sources) => {
+    return sources.find(
+      (src) =>
+        typeof src === "string" &&
+        src.trim() !== "" &&
+        /^(https?:\/\/|\/)/.test(src)
+    );
+  };
+
+  const imageSrc = getValidImageSrc(
+    userData?.profile_picture,
+    userData?.agent_photo,
+    userData?.agency_logo,
+    user
+  );
 
   return (
     <>
@@ -40,14 +56,7 @@ const Sidebar = () => {
         {userData && Object.entries(userData)?.length > 0 && (
           <div className="d-flex flex-column align-items-center text-white p-3">
             <ImageWithLoader
-              src={
-                userData?.user_type?.name === "Agent" && userData?.agent_photo
-                  ? userData?.agent_photo
-                  : userData?.user_type?.name === "Individual" &&
-                    userData?.profile_picture
-                  ? userData?.profile_picture
-                  : default_user
-              }
+              src={imageSrc}
               alt="Profile"
               className="profile-img mb-3"
             />
@@ -69,7 +78,12 @@ const Sidebar = () => {
         <hr className="my-2" />
         <ul className="nav flex-column">
           {routes
-            ?.filter((routes) => routes?.isPrivate && routes?.isDashboard && routes?.isVisibleInDash)
+            ?.filter(
+              (routes) =>
+                routes?.isPrivate &&
+                routes?.isDashboard &&
+                routes?.isVisibleInDash
+            )
             .sort((a, b) => a?.id - b?.id)
             .map(({ id, path, name, icon: Icon }) => {
               const isActive = isPathActive(path, location.pathname);

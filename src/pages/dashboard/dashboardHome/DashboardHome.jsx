@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { pageRoutes } from "../../../router/pageRoutes";
-import { default_user } from "../../../assets/images";
+import { default_user, user } from "../../../assets/images";
 import { getUserDetailsThunk } from "../../../features/user/userSlice";
 import ImageWithLoader from "../../../Custom_Components/ImageWithLoader";
 
@@ -14,7 +14,23 @@ const DashboardHome = () => {
   useEffect(() => {
     dispatch(getUserDetailsThunk());
   }, [dispatch]);
-  
+
+  const getValidImageSrc = (...sources) => {
+    return sources.find(
+      (src) =>
+        typeof src === "string" &&
+        src.trim() !== "" &&
+        /^(https?:\/\/|\/)/.test(src)
+    );
+  };
+
+  const imageSrc = getValidImageSrc(
+    userData?.profile_picture,
+    userData?.agent_photo,
+    userData?.agency_logo,
+    user
+  );
+
   return (
     <div className="p-4">
       <h2 className="fw-bold text-m">
@@ -30,14 +46,7 @@ const DashboardHome = () => {
         style={{ maxWidth: "600px" }}
       >
         <ImageWithLoader
-          src={
-            userData?.user_type?.name === "Agent" && userData?.agent_photo
-              ? userData?.agent_photo
-              : userData?.user_type?.name === "Individual" &&
-                userData?.profile_picture
-              ? userData?.profile_picture
-              : default_user
-          }
+          src={imageSrc}
           alt="Profile"
           className="rounded-4 border"
           style={{

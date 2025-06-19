@@ -37,3 +37,11 @@ export const formatRangeForListing = (arr, label, isBed = false) => {
 
   return from === to ? `${label}: ${from}` : `${label}: ${from} - ${to}`;
 };
+
+export function formatNumberWithCommas(value) {
+  if (typeof value !== "number") {
+    value = Number(value);
+  }
+  if (isNaN(value)) return value;
+  return value.toLocaleString("en-IN");
+}

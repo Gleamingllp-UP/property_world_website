@@ -40,7 +40,7 @@ function AgentsListing({ page, limit, setPage }) {
               <div className="col-lg-5 agency_list" key={index}>
                 <div className="agent_info_image agent_info_image2 agent_pennel_2">
                   <div>
-                    <Link to={pageRoutes.AGENT_INFO}>
+                    <Link to={pageRoutes.AGENT_INFO + `/?user_id=${agent?._id}`}>
                       <ImageWithLoader
                         src={agent?.agent_photo || user}
                         className="img-fluid"

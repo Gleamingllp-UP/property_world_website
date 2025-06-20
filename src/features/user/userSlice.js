@@ -8,6 +8,7 @@ import {
   guestUserLogin,
   updateUserDetails,
   getAllUserForWeb,
+  getUserAllDetailsForWebWithProperties,
 } from "./userAPI";
 
 export const initiateSignupThunk = createAsyncThunk(
@@ -54,12 +55,21 @@ export const guestUserLoginThunk = createAsyncThunk(
     return await guestUserLogin();
   }
 );
+
 export const updateUserDetailsThunk = createAsyncThunk(
   "users/updateUserDetails",
   async ({ id, formData }) => {
     return await updateUserDetails(id, formData);
   }
 );
+
+export const getUserAllDetailsForWebWithPropertiesThunk = createAsyncThunk(
+  "users/getUserAllDetailsForWebWithProperties",
+  async ({id, page, limit, sort_by=""}) => {
+    return await getUserAllDetailsForWebWithProperties(id, page, limit, sort_by);
+  }
+);
+
 
 export const logoutUser = createAsyncThunk("users/logout", async () => {
   localStorage.removeItem("userData");
@@ -73,6 +83,7 @@ const usersSlice = createSlice({
     userData: [],
     pagination: {},
     agentOrAgencyData: [],
+    agentOrAgencyDetails: {},
     formData: null,
     loading: false,
     isLoading: false,
@@ -195,6 +206,20 @@ const usersSlice = createSlice({
         localStorage.setItem("userData", JSON.stringify(action.payload.data));
       })
       .addCase(getUserDetailsThunk.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message;
+      })
+
+      //user Agent and agency  info data  Thunk
+      .addCase(getUserAllDetailsForWebWithPropertiesThunk.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getUserAllDetailsForWebWithPropertiesThunk.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.agentOrAgencyDetails = action.payload.data;
+        state.pagination = action.payload.data.pagination;
+      })
+      .addCase(getUserAllDetailsForWebWithPropertiesThunk.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
       })

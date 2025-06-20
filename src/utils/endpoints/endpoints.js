@@ -12,6 +12,7 @@ const endpoints = {
   updateUser: "/user/users",
   getAllUserForWeb: "/user/all-users",
   getUserAllDetailsForWeb: "/user/get-all-user-details",
+  getUserAllDetailsForWebWithProperties: "user/get-all-user-details-with-properties",
   //Filter
   getAllActiveCategory: "/category/getall-active-category",
   getAllActiveSubCategory: "/sub-category/getall-active-subCategory",

@@ -2,12 +2,12 @@ import { GoHome } from "react-icons/go";
 import { lazy } from "react";
 import { pageRoutes } from "./pageRoutes";
 import {
+  Heart,
   LandPlot,
   LayoutDashboardIcon,
   TableProperties,
   User,
 } from "lucide-react";
-import UpdateProperty from "../pages/dashboard/list/UpdateProperty";
 
 // const Login = lazy(() => import("../pages/auth/Login"));
 
@@ -67,6 +67,17 @@ const Profile = lazy(() => import("../pages/dashboard/profile/Profile"));
 const AgentInfoMain = lazy(() =>
   import("../pages/agentsAndAgencies/agentinfo/AgentInfoMain")
 );
+const UpdateProperty = lazy(() =>
+  import("../pages/dashboard/list/UpdateProperty")
+);
+const LikedProperties = lazy(() =>
+  import("../pages/dashboard/list/LikedProperties")
+);
+
+const userData = JSON.parse(localStorage.getItem("userData") || "{}");
+const isAgentOrAgency =
+  userData?.role !== "Individual" && userData?.role !== "guest";
+
 const routes = [
   // {
   //   id: 1,
@@ -202,7 +213,7 @@ const routes = [
   {
     id: 19,
     isPrivate: true,
-    isVisibleInDash: true,
+    isVisibleInDash: isAgentOrAgency,
     isDashboard: true,
     icon: LandPlot,
     name: "Add Property",
@@ -212,7 +223,7 @@ const routes = [
   {
     id: 20,
     isPrivate: true,
-    isVisibleInDash: true,
+    isVisibleInDash: isAgentOrAgency,
     isDashboard: true,
     icon: TableProperties,
     name: "My Property Listing",
@@ -251,6 +262,16 @@ const routes = [
     name: "Property-Update",
     path: pageRoutes?.PROPERTY_UPDATE,
     Component: UpdateProperty,
+  },
+  {
+    id: 24,
+    isPrivate: true,
+    isDashboard: true,
+    isVisibleInDash: true,
+    name: "Like Properties",
+    icon: Heart,
+    path: pageRoutes?.LIKED_PROPERTY,
+    Component: LikedProperties,
   },
 ];
 export { routes };

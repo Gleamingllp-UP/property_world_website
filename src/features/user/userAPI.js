@@ -140,3 +140,21 @@ export const getAllUserForWeb = async (
     }
   }
 };
+
+export const getLikedProperties = async (page, limit) => {
+  try {
+    const response = await api.get(
+      endpoints.getLikedProperties + `/?page=${page}&limit=${limit}`
+    );
+    return response.data;
+  } catch (error) {
+    if (error?.status !== 401) {
+      throw (
+        error?.response?.data?.message ||
+        "Failed to fetch, please try again later."
+      );
+    } else {
+      throw error?.message || "Failed to fetch, please try again later.";
+    }
+  }
+};

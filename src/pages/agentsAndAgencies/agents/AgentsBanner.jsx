@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { pageRoutes } from "../../../router/pageRoutes";
 import { landlord_guide } from "../../../assets/images";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getBannerByTypeThunk } from "../../../features/banner/bannerSlice";
 import { getAllUserForWebThunk } from "../../../features/user/userSlice";
@@ -11,9 +11,8 @@ import {
 } from "../../../utils/requiredFormFields/requiredproparty";
 import { fetchAllUserTypes } from "../../../features/userTypes/userTypesSlice";
 
-function AgentsBanner() {
+function AgentsBanner({ page, limit }) {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const location = useLocation();
 
   const queryParams = new URLSearchParams(location.search);
@@ -42,21 +41,20 @@ function AgentsBanner() {
   }, [userTypes, queryUserType, activeId]);
 
   useEffect(() => {
-    if (queryUserType) {
-      setActiveId(queryUserType);
+    if (activeId) {
       dispatch(
         getAllUserForWebThunk({
           search,
           service_need,
           nationality,
           language,
-          user_type: queryUserType,
-          page: 1,
-          limit: 8,
+          user_type: activeId,
+          page: page,
+          limit: limit,
         })
       );
     }
-  }, [queryUserType]);
+  }, [activeId, dispatch, page]);
 
   const handleSearch = () => {
     if (!activeId) return;
@@ -67,8 +65,8 @@ function AgentsBanner() {
         nationality,
         language,
         user_type: activeId,
-        page: 1,
-        limit: 8,
+        page: page,
+        limit: limit,
       })
     );
   };
@@ -175,18 +173,17 @@ function AgentsBanner() {
                 (usertype) =>
                   usertype?.name === "Agent" || usertype?.name === "Agency"
               )
-              
+
               ?.map((usertype) => (
                 <Link
                   key={usertype?._id}
                   to={pageRoutes.AGENCIES + `/?user_type=${usertype?._id}`}
                   className={
-                    usertype?._id === queryUserType || 
-                    usertype?._id === activeId 
+                    usertype?._id === queryUserType ||
+                    usertype?._id === activeId
                       ? "slt"
                       : ""
                   }
-               
                 >
                   {usertype?.name}{" "}
                   <i className="ri-arrow-right-up-long-line"></i>
@@ -199,4 +196,4 @@ function AgentsBanner() {
   );
 }
 
-export default AgentsBanner;
+export default React.memo(AgentsBanner);

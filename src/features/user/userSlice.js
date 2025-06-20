@@ -8,6 +8,7 @@ import {
   guestUserLogin,
   updateUserDetails,
   getAllUserForWeb,
+  getLikedProperties,
 } from "./userAPI";
 
 export const initiateSignupThunk = createAsyncThunk(
@@ -38,6 +39,12 @@ export const getUserDetailsThunk = createAsyncThunk(
   "users/getUserDetails",
   async () => {
     return await getUserDetails();
+  }
+);
+export const getLikedPropertiesThunk = createAsyncThunk(
+  "users/getLikedProperties",
+  async ({ page, limit }) => {
+    return await getLikedProperties(page, limit);
   }
 );
 // features/user/userSlice.js
@@ -87,6 +94,7 @@ const usersSlice = createSlice({
   name: "users",
   initialState: {
     userData: [],
+    likedProperties: [],
     pagination: {},
     agentOrAgencyData: [],
     formData: null,
@@ -225,6 +233,20 @@ const usersSlice = createSlice({
         state.pagination = action.payload.pagination;
       })
       .addCase(getAllUserForWebThunk.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message;
+      })
+
+      //getLikedPropertiesThunk
+      .addCase(getLikedPropertiesThunk.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getLikedPropertiesThunk.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.likedProperties = action.payload.data;
+        state.pagination = action.payload.pagination;
+      })
+      .addCase(getLikedPropertiesThunk.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
       })

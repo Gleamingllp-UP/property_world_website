@@ -4,6 +4,8 @@ import { pageRoutes } from "../../../router/pageRoutes";
 import { Link } from "react-router-dom";
 import { CustomPagination } from "../../../Custom_Components/CustomPagination";
 import { AgentSkeleton } from "../../../Custom_Components/Skeleton/AgentOrAgencySkeleton";
+import ImageWithLoader from "../../../Custom_Components/ImageWithLoader";
+import { user } from "../../../assets/images";
 
 function AgentsListing({ page, limit, setPage }) {
   const { isLoading, agentOrAgencyData, pagination } = useSelector(
@@ -39,7 +41,10 @@ function AgentsListing({ page, limit, setPage }) {
                 <div className="agent_info_image agent_info_image2 agent_pennel_2">
                   <div>
                     <Link to={pageRoutes.AGENT_INFO}>
-                      <img src={agent?.agent_photo} className="img-fluid" />
+                      <ImageWithLoader
+                        src={agent?.agent_photo || user}
+                        className="img-fluid"
+                      />
                     </Link>
                   </div>
                   <div>
@@ -95,4 +100,4 @@ function AgentsListing({ page, limit, setPage }) {
   );
 }
 
-export default AgentsListing;
+export default React.memo(AgentsListing);

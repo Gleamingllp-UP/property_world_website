@@ -49,4 +49,5 @@ export const pageRoutes = {
   USER_PROPERTY_LISTING: "/my-property-listing",
   MY_PROFILE: "/my-profile",
   PROPERTY_UPDATE: "/property-update",
+  LIKED_PROPERTY: "/liked-property",
 };

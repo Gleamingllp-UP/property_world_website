@@ -158,3 +158,27 @@ export const getLikedProperties = async (page, limit) => {
     }
   }
 };
+
+export const getUserAllDetailsForWebWithProperties = async (
+  id,
+  page,
+  limit,
+  sort_by
+) => {
+  try {
+    const response = await api.get(
+      endpoints.getUserAllDetailsForWebWithProperties +
+        `/${id}/?page=${page}&limit=${limit}&sort_by=${sort_by}`
+    );
+    return response.data;
+  } catch (error) {
+    if (error?.status !== 401) {
+      throw (
+        error?.response?.data?.message ||
+        "Failed to login, please try again later."
+      );
+    } else {
+      throw error?.message || "Failed to login, please try again later.";
+    }
+  }
+};

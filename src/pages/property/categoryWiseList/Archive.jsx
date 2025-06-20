@@ -72,7 +72,7 @@ const Archive = () => {
         addOrRemoveFavouritePropertyThunk(id)
       );
       if (addOrRemoveFavouritePropertyThunk.fulfilled.match(resultAction)) {
-        console.log("object", resultAction);
+       
         showToast(resultAction?.payload?.message, "success");
       } else {
         throw new Error(resultAction?.error?.message);

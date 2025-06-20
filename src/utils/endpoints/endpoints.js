@@ -14,6 +14,7 @@ const endpoints = {
   getUserAllDetailsForWeb: "/user/get-all-user-details",
   getLikedProperties: "/user/get-all-liked-properties",
 
+  getUserAllDetailsForWebWithProperties: "user/get-all-user-details-with-properties",
   //Filter
   getAllActiveCategory: "/category/getall-active-category",
   getAllActiveSubCategory: "/sub-category/getall-active-subCategory",

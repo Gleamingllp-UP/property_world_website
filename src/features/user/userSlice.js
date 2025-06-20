@@ -96,6 +96,7 @@ export const getUserAllDetailsForWebWithPropertiesThunk = createAsyncThunk(
 
 export const logoutUser = createAsyncThunk("users/logout", async () => {
   localStorage.removeItem("userData");
+  localStorage.removeItem("formData");
   localStorage.removeItem("userToken");
   return true;
 });
@@ -129,6 +130,7 @@ const usersSlice = createSlice({
     },
     userLogOut: (state) => {
       localStorage.removeItem("userData");
+      localStorage.removeItem("formData");
       localStorage.removeItem("userToken");
       state.formData = null;
     },

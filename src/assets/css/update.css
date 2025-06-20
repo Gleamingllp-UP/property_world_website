@@ -344,3 +344,13 @@ body {
     object-fit: contain !important;
    
 }
+
+.call_action ul li a {
+    padding: 9px 15px;
+    display: block;
+    text-align: center;
+    border-radius: 100px;
+    background: #00adee3d;
+    color: #000;
+    font-size: 15px;
+}

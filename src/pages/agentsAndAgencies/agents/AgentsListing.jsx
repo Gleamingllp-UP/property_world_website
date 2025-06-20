@@ -40,7 +40,9 @@ function AgentsListing({ page, limit, setPage }) {
               <div className="col-lg-5 agency_list" key={index}>
                 <div className="agent_info_image agent_info_image2 agent_pennel_2">
                   <div>
-                    <Link to={pageRoutes.AGENT_INFO + `/?user_id=${agent?._id}`}>
+                    <Link
+                      to={pageRoutes.AGENT_INFO + `/?user_id=${agent?._id}`}
+                    >
                       <ImageWithLoader
                         src={agent?.agent_photo || user}
                         className="img-fluid"
@@ -82,7 +84,13 @@ function AgentsListing({ page, limit, setPage }) {
                 </div>
               </div>
             ))
-          : !isLoading && <p className="text-center"> No Data Available</p>}
+          : !isLoading && (
+              <div className="col-12">
+                <div className="text-center border border-light-subtle rounded py-3 bg-light text-muted fw-medium">
+                  No Data Available
+                </div>
+              </div>
+            )}
       </div>
 
       {/* Pagination */}

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { pageRoutes } from "../../../router/pageRoutes";
 import { useDispatch, useSelector } from "react-redux";
 import { getLikedPropertiesThunk } from "../../../features/user/userSlice";
@@ -9,6 +9,9 @@ import { Link } from "react-router-dom";
 import ImageWithLoader from "../../../Custom_Components/ImageWithLoader";
 import { HomeCategoryPropertySkeleton } from "../../../Custom_Components/Skeleton/PropertySkeleton";
 import { CustomPagination } from "../../../Custom_Components/CustomPagination";
+import { throttle } from "lodash";
+import { showToast } from "../../../utils/toast/toast";
+import { addOrRemoveFavouritePropertyThunk } from "../../../features/property/propertySlice";
 
 function LikedProperties() {
   const { isLoading, likedProperties, pagination } = useSelector(
@@ -28,12 +31,41 @@ function LikedProperties() {
     );
   }, [dispatch, page]);
 
+  const handleLikeToggle = async (id) => {
+    try {
+      showToast("Wait", "loading");
+      const resultAction = await dispatch(
+        addOrRemoveFavouritePropertyThunk(id)
+      );
+      if (addOrRemoveFavouritePropertyThunk.fulfilled.match(resultAction)) {
+        showToast(resultAction?.payload?.message, "success");
+        dispatch(
+          getLikedPropertiesThunk({
+            page,
+            limit,
+          })
+        );
+      } else {
+        throw new Error(resultAction?.error?.message);
+      }
+    } catch (error) {
+      showToast(error?.message || "Failed to create property.", "error");
+    }
+  };
+
+  const throttledToggleLike = useCallback(
+    throttle((propertyId) => {
+      handleLikeToggle(propertyId);
+    }, 2000),
+    []
+  );
+
   return (
     <div>
       <section className="buy_rent">
         <div className="container">
           <div className="text-center title_area">
-            <h2>Like Properties</h2>
+            <h2>Liked Properties</h2>
           </div>
           <div className="">
             <div className="tab-content " id="nav-tabContent">
@@ -46,8 +78,7 @@ function LikedProperties() {
                 <div className="row">
                   {isLoading ? (
                     <HomeCategoryPropertySkeleton />
-                  ) : (
-                    likedProperties &&
+                  ) : likedProperties?.length > 0 ? (
                     likedProperties?.map((item, index) => {
                       return (
                         <>
@@ -58,13 +89,27 @@ function LikedProperties() {
                                   className="buy"
                                   style={{
                                     backgroundColor:
-                                      item?.categoryData?.name === "Rent"
+                                      item?.category?.name === "Rent"
                                         ? "#e9012b"
                                         : "#8BC34A",
                                   }}
                                 >
-                                  {item?.categoryData?.name}
+                                  {item?.category?.name}
                                 </span>
+                                <div className="save_p">
+                                  <button>
+                                    <i
+                                      className={"ri-heart-fill text-white"}
+                                      onClick={() =>
+                                        throttledToggleLike(item?._id)
+                                      }
+                                      style={{
+                                        cursor: "pointer",
+                                        fontSize: "20px",
+                                      }}
+                                    ></i>
+                                  </button>
+                                </div>
                                 <Link
                                   to={`${pageRoutes.PROPERTY_DETAILS}?id=${item?._id}`}
                                 >
@@ -134,9 +179,14 @@ function LikedProperties() {
                         </>
                       );
                     })
+                  ) : (
+                    <div className="col-12">
+                      <div className="text-center border border-light-subtle rounded py-3 bg-light text-muted fw-medium">
+                        No Liked Property Available
+                      </div>
+                    </div>
                   )}
                 </div>
-              
 
                 {pagination?.total > limit && (
                   <div className="col-12 text-center mb-5 mt-5">

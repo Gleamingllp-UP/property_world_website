@@ -31,57 +31,59 @@ function AgenciesListing() {
           <></>
         )}
 
-        <div className>
+        <div >
           <div className="row align-items-center justify-content-center">
-            {isLoading ? (
-              Array.from({ length: 4 })?.map((_, i) => {
-                return <AgenciesSkeleton key={i} />;
-              })
-            ) : agentOrAgencyData?.length > 0 ? (
-              agentOrAgencyData?.map((item, index) => {
-                return (
-                  <div className="col-lg-5 agency_list" key={index}>
-                    <div className="agent_info_image agent_info_image2 agent_pennel_2">
-                      <div>
-                        <img
-                          src={agency1}
-                          className="img-fluid agencies_logo"
-                        />
-                      </div>
-                      <div>
-                        <h3>Aditya real estate</h3>
-                        <p>
-                          <b>Agents:</b> 20
-                        </p>
-                        <p>
-                          <b>Exp.:</b> 11 years{" "}
-                          <span className="ratt">
-                            <i className="ri-star-fill" /> 4.2
-                          </span>
-                        </p>
-                        <p>
-                          <b>Nationally:</b> Indian
-                        </p>
-                        <p>
-                          <b>Language:</b> English, Hindi
-                        </p>
-                        <div className="for_sale">
-                          <div>For Sale: 5</div>
-                          <div>For Rent: 10</div>
+            {isLoading
+              ? Array.from({ length: 4 })?.map((_, i) => {
+                  return <AgenciesSkeleton key={i} />;
+                })
+              : agentOrAgencyData?.length > 0
+              ? agentOrAgencyData?.map((item, index) => {
+                  return (
+                    <div className="col-lg-5 agency_list" key={index}>
+                      <div className="agent_info_image agent_info_image2 agent_pennel_2">
+                        <div>
+                          <img
+                            src={agency1}
+                            className="img-fluid agencies_logo"
+                          />
                         </div>
-                        <a href="agent-info.php" className="action_btn popp">
-                          <i className="ri-arrow-right-up-long-line" />
-                        </a>
+                        <div>
+                          <h3>Aditya real estate</h3>
+                          <p>
+                            <b>Agents:</b> 20
+                          </p>
+                          <p>
+                            <b>Exp.:</b> 11 years{" "}
+                            <span className="ratt">
+                              <i className="ri-star-fill" /> 4.2
+                            </span>
+                          </p>
+                          <p>
+                            <b>Nationally:</b> Indian
+                          </p>
+                          <p>
+                            <b>Language:</b> English, Hindi
+                          </p>
+                          <div className="for_sale">
+                            <div>For Sale: 5</div>
+                            <div>For Rent: 10</div>
+                          </div>
+                          <a href="agent-info.php" className="action_btn popp">
+                            <i className="ri-arrow-right-up-long-line" />
+                          </a>
+                        </div>
                       </div>
                     </div>
+                  );
+                })
+              : !isLoading && (
+                  <div className="col-12">
+                    <div className="text-center border border-light-subtle rounded py-3 bg-light text-muted fw-medium">
+                      No Data Available
+                    </div>
                   </div>
-                );
-              })
-            ) : (
-              !isLoading && (
-                <p className="text-center"> No Data Available</p>
-              )
-            )}
+                )}
           </div>
         </div>
         {pagination?.total > limit && (

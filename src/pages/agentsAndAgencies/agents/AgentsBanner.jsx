@@ -1,27 +1,29 @@
 import React, { useState, useEffect } from "react";
 import { pageRoutes } from "../../../router/pageRoutes";
 import { landlord_guide } from "../../../assets/images";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getBannerByTypeThunk } from "../../../features/banner/bannerSlice";
-import {
-  countries,
-  languages,
-} from "../../../utils/requiredFormFields/requiredproparty";
-import { fetchAllUserTypes } from "./../../../features/userTypes/userTypesSlice";
+import { getAllUserForWebThunk } from "../../../features/user/userSlice";
+import { countries, languages } from "../../../utils/requiredFormFields/requiredproparty";
+import { fetchAllUserTypes } from "../../../features/userTypes/userTypesSlice";
 
 function AgentsBanner() {
-  const [selectedLanguage, setSelectedLanguage] = useState("");
-  const [activeId, setActiveId] = useState(null);
-  const { userTypes } = useSelector((store) => store?.usersType);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const location = useLocation();
 
   const queryParams = new URLSearchParams(location.search);
+  const queryUserType = queryParams.get("user_type");
 
-  const user_type = queryParams.get("user_type");
+  const [search, setSearch] = useState("");
+  const [service_need, setServiceNeed] = useState("");
+  const [nationality, setNationality] = useState("");
+  const [language, setLanguage] = useState("");
+  const [activeId, setActiveId] = useState(queryUserType || "");
 
   const { banners } = useSelector((store) => store?.banner);
-  const dispatch = useDispatch();
+  const { userTypes } = useSelector((store) => store?.usersType);
 
   useEffect(() => {
     dispatch(getBannerByTypeThunk("agent"));
@@ -29,24 +31,58 @@ function AgentsBanner() {
   }, [dispatch]);
 
   useEffect(() => {
-    if (userTypes?.length > 0 && !activeId) {
-      setActiveId(userTypes?.[0]._id);
+    if (queryUserType) {
+      setActiveId(queryUserType);
+      dispatch(
+        getAllUserForWebThunk({
+          search,
+          service_need,
+          nationality,
+          language,
+          user_type: queryUserType,
+          page: 1,
+          limit: 8,
+        })
+      );
     }
-  }, [userTypes, activeId]);
+  }, [queryUserType]);
 
-  const handleChange = (e) => {
-    setSelectedLanguage(e.target.value);
+  const handleSearch = () => {
+    dispatch(
+      getAllUserForWebThunk({
+        search,
+        service_need,
+        nationality,
+        language,
+        user_type: activeId,
+        page: 1,
+        limit: 8,
+      })
+    );
+    navigate(`${location.pathname}?user_type=${activeId}`);
   };
-  const [nationality, setNationality] = useState("");
 
-  const handleCountry = (e) => {
-    setNationality(e.target.value);
-  };
+  const handleSelectedUserType = (userTypeId, name) => {
+    setActiveId(userTypeId);
 
-  const handleSelectedUserType = (userType) => {
-    console.log(userType);
+    const route =
+      name === "Agent"
+        ? `${pageRoutes.AGENTS}?user_type=${userTypeId}`
+        : `${pageRoutes.AGENCIES}?user_type=${userTypeId}`;
 
-    setActiveId(userType);
+    dispatch(
+      getAllUserForWebThunk({
+        search,
+        service_need,
+        nationality,
+        language,
+        user_type: userTypeId,
+        page: 1,
+        limit: 8,
+      })
+    );
+
+    navigate(route);
   };
 
   return (
@@ -67,8 +103,9 @@ function AgentsBanner() {
                 <div className="col-lg-4">
                   <div className="big_search_bb2">
                     <input
+                      value={search}
+                      onChange={(e) => setSearch(e.target.value)}
                       type="text"
-                      name="Search"
                       placeholder="Enter location or agent name"
                       className="search_bxi"
                     />
@@ -79,48 +116,45 @@ function AgentsBanner() {
                   <div className="row">
                     <div className="col-lg-4">
                       <div className="sk_box">
-                        <select>
-                          <option>Service needed</option>
-                          <option>Residential For Sale</option>
-                          <option>Residential For Rent</option>
-                          <option>Commercial For Sale</option>
-                          <option>Commercial For Rent</option>
-                        </select>
-                      </div>
-                    </div>
-                    <div className="col-lg-4">
-                      <div className="sk_box">
                         <select
-                          value={selectedLanguage}
-                          onChange={handleChange}
+                          value={service_need}
+                          onChange={(e) => setServiceNeed(e.target.value)}
                         >
-                          {languages &&
-                            languages?.map((lang, index) => (
-                              <option
-                                key={index}
-                                value={lang === "Language" ? "" : lang}
-                              >
-                                {lang}
-                              </option>
-                            ))}
+                          <option value="">Service needed</option>
+                          <option value="Residential For Sale">Residential For Sale</option>
+                          <option value="Residential For Rent">Residential For Rent</option>
+                          <option value="Commercial For Sale">Commercial For Sale</option>
+                          <option value="Commercial For Rent">Commercial For Rent</option>
                         </select>
                       </div>
                     </div>
                     <div className="col-lg-4">
                       <div className="sk_box">
                         <select
-                          id="nationality"
-                          name="nationality"
+                          value={language}
+                          onChange={(e) => setLanguage(e.target.value)}
+                        >
+                          <option value="">Language</option>
+                          {languages.map((lang, i) => (
+                            <option key={i} value={lang}>
+                              {lang}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    </div>
+                    <div className="col-lg-4">
+                      <div className="sk_box">
+                        <select
                           value={nationality}
-                          onChange={handleCountry}
+                          onChange={(e) => setNationality(e.target.value)}
                         >
                           <option value="">Nationality</option>
-                          {countries &&
-                            countries?.map((country) => (
-                              <option key={country} value={country}>
-                                {country}
-                              </option>
-                            ))}
+                          {countries.map((country, i) => (
+                            <option key={i} value={country}>
+                              {country}
+                            </option>
+                          ))}
                         </select>
                       </div>
                     </div>
@@ -128,7 +162,7 @@ function AgentsBanner() {
                 </div>
                 <div className="col-lg-1">
                   <div className="search_btn">
-                    <button>Search</button>
+                    <button onClick={handleSearch}>Search</button>
                   </div>
                 </div>
               </div>
@@ -141,22 +175,16 @@ function AgentsBanner() {
         <div className="agent_agency">
           <span>
             {userTypes
-              ?.filter(
-                (usertype) =>
-                  usertype?.name === "Agent" || usertype?.name === "Agency"
-              )
-              ?.map((usertype, index) => (
+              ?.filter((usertype) => usertype?.name === "Agent" || usertype?.name === "Agency")
+              ?.map((usertype) => (
                 <Link
-                  to={
-                    usertype?.name === "Agent"
-                      ? pageRoutes.AGENTS + `/?user_type=${usertype?._id}`
-                      : pageRoutes.AGENCIES + `/?user_type=${usertype?._id}`
-                  }
-                  onClick={() => handleSelectedUserType(usertype?._id)}
-                  className={
-                    usertype?._id ===  user_type ? "slt" : ""
-                  }
-                  key={index}
+                  key={usertype?._id}
+                  to="#"
+                  className={usertype?._id === activeId ? "slt" : ""}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleSelectedUserType(usertype?._id, usertype?.name);
+                  }}
                 >
                   {usertype?.name}{" "}
                   <i className="ri-arrow-right-up-long-line"></i>

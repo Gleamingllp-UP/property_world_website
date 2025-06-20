@@ -110,7 +110,7 @@ export const getAllProperty = async (
 export const updateProperty = async (id, payload) => {
   try {
     const response = await api.put(
-      endpoints.updatePropertyForUser + `/id=${id}`,
+      endpoints.updatePropertyForUser + `/${id}`,
       payload
     );
     return response.data;

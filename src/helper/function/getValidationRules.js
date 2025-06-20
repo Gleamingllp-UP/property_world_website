@@ -140,6 +140,11 @@ export const getValidationRules = ({
             (type) => allowedMimeTypes[type] || []
           );
 
+           if (imageURL) {
+            const result = validateUrl(imageURL);
+            return result === true ? true : result;
+          }
+          
           const noFilesProvided =
             (!fileList || fileList.length === 0) && !imageURL;
           if (!required && noFilesProvided) return true;

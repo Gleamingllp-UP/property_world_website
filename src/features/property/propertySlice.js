@@ -25,8 +25,8 @@ export const addOrRemoveFavouritePropertyThunk = createAsyncThunk(
 
 export const updatePropertyThunk = createAsyncThunk(
   "property/updateProperty",
-  async (payload) => {
-    return await updateProperty(payload);
+  async ({ id, formData }) => {
+    return await updateProperty(id, formData);
   }
 );
 export const deletePropertyThunk = createAsyncThunk(

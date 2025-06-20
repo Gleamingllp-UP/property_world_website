@@ -12,12 +12,15 @@ import { featuresList } from "../../../utils/requiredFormFields/requiredproparty
 import { useForm, Controller } from "react-hook-form";
 import { ErrorMessage } from "../../../Custom_Components/ErrorMessage";
 import { getValidationRules } from "../../../helper/function/getValidationRules";
-import { generateHandoverOptions, normalizeHandover } from "../../../helper/function/generateHandoverOptions";
+import {
+  generateHandoverOptions,
+  normalizeHandover,
+} from "../../../helper/function/generateHandoverOptions";
 import { formatRange } from "../../../helper/function/formatRange";
 import ButtonWithSpin from "../../../Custom_Components/ButtonWithSpin";
 import {
-  creatPropertyThunk,
   getPropertyDetailsThunk,
+  updatePropertyThunk,
 } from "../../../features/property/propertySlice";
 import { getUserData } from "../../../features/user/userSlice";
 import { showToast } from "../../../utils/toast/toast";
@@ -70,59 +73,66 @@ const UpdateProperty = () => {
     }
   }, [id, dispatch]);
 
- useEffect(() => {
-  if (propertyDetails) {
-    const productThumbImages = propertyDetails?.images?.filter(
-      (item) => item?.name === "Thumbnail Image"
-    );
-    const productImages = propertyDetails?.images?.filter(
-      (item) => item?.name !== "Thumbnail Image"
-    );
+  useEffect(() => {
+    if (
+      propertyDetails &&
+      categories?.length > 0 &&
+      location?.length > 0 &&
+      subCategories?.length >= 0
+    ) {
+      const productThumbImages = propertyDetails?.images?.filter(
+        (item) => item?.name === "Thumbnail Image"
+      );
+      const productImages = propertyDetails?.images?.filter(
+        (item) => item?.name !== "Thumbnail Image"
+      );
+      setBedRoom([propertyDetails?.bedrooms]);
+      setBathRoom([propertyDetails?.bathrooms]);
+      setPrevThyumbnailImg(productThumbImages?.[0]?.url);
 
-    setPrevThyumbnailImg(productThumbImages?.[0]?.url);
-
-    reset({
-      title: propertyDetails.title || "",
-      short_description: propertyDetails.short_description || "",
-      full_description: propertyDetails.full_description || "",
-      category: propertyDetails?.categoryData?._id || "",
-      subCategory: propertyDetails?.subCategoryData?._id || "",
-      subSubCategory: propertyDetails?.subSubCategoryData?._id || "",
-      duration: propertyDetails.duration || "",
-      bedrooms: propertyDetails.bedrooms || "",
-      bathrooms: propertyDetails.bathrooms || "",
-      price: propertyDetails.price || "",
-      area: propertyDetails.area || "",
-      handover_by: normalizeHandover(propertyDetails?.handover_by) || "",
-      payment_plan: propertyDetails.payment_plan || "",
-      completion: propertyDetails.completion || "",
-      unit_number: propertyDetails.unit_number || "",
-      permit_number: propertyDetails.permit_number || "",
-      parking_spaces: propertyDetails.parking_spaces ? "Yes" : "No",
-      ownership_status: propertyDetails.ownership_status || "",
-      construction_status: propertyDetails.construction_status || "",
-      location: propertyDetails.locationData?._id || "",
-      address: propertyDetails.address || "",
-      product_status: propertyDetails.product_status || "",
-      building_name: propertyDetails.building_name || "",
-      total_floors: propertyDetails.total_floors || 0,
-      features: propertyDetails.features || [],
-      building_facilities:
-        Array.isArray(propertyDetails?.amenitiesAndFacilitiesData)
+      reset({
+        title: propertyDetails.title || "",
+        short_description: propertyDetails.short_description || "",
+        full_description: propertyDetails.full_description || "",
+        category: propertyDetails?.categoryData?._id || "",
+        subCategory: propertyDetails?.subCategoryData?._id || "",
+        subSubCategory: propertyDetails?.subSubCategoryData?._id || "",
+        duration: propertyDetails.duration || "",
+        bedrooms: propertyDetails?.bedrooms || "",
+        bathrooms: propertyDetails?.bathrooms || "",
+        price: propertyDetails.price || "",
+        area: propertyDetails.area || "",
+        handover_by: normalizeHandover(propertyDetails?.handover_by) || "",
+        payment_plan: propertyDetails.payment_plan || "",
+        completion: propertyDetails.completion || "",
+        reference_number: propertyDetails?.reference_number || "",
+        unit_number: propertyDetails.unit_number || "",
+        permit_number: propertyDetails.permit_number || "",
+        parking_spaces: propertyDetails.parking_spaces ? "Yes" : "No",
+        ownership_status: propertyDetails.ownership_status || "",
+        construction_status: propertyDetails.construction_status || "",
+        location: propertyDetails.locationData?._id || "",
+        address: propertyDetails.address || "",
+        product_status: propertyDetails.product_status || "",
+        building_name: propertyDetails.building_name || "",
+        total_floors: propertyDetails.total_floors || 0,
+        features: propertyDetails.features || [],
+        building_facilities: Array.isArray(
+          propertyDetails?.amenitiesAndFacilitiesData
+        )
           ? propertyDetails.amenitiesAndFacilitiesData.map((item) => ({
               label: item?.name,
               value: item?._id,
             }))
           : [],
-      tour_types: propertyDetails.tour_types || [],
-      thumbnail_img: productThumbImages?.[0]?.url,
-      virtual_tour: [],
-      gallery: productImages,
-      floor_plan: [],
-    });
-  }
-}, [propertyDetails, reset]);
-
+        tour_types: propertyDetails.tour_types || [],
+        thumbnail_img: productThumbImages,
+        virtual_tour: [],
+        gallery: productImages,
+        floor_plan: [],
+      });
+    }
+  }, [propertyDetails, categories, location, subCategories, reset]);
 
   const selectedPurpose = watch("category");
   const selectedSubCategory = watch("subCategory");
@@ -204,6 +214,7 @@ const UpdateProperty = () => {
       setValue("gallery", files);
     }
   };
+
   const removeImage = (idx) => {
     const updated = galleryImage?.filter((_, i) => i !== idx);
     setValue("gallery", updated);
@@ -254,8 +265,7 @@ const UpdateProperty = () => {
   };
 
   const onSubmit = async (data) => {
-    // console.log(data);
-
+    console.log(data);
     const formData = new FormData();
     const maxBedroom = data?.bedrooms?.length
       ? Math.max(...data.bedrooms)
@@ -280,6 +290,8 @@ const UpdateProperty = () => {
     formData.append("payment_plan", data?.payment_plan || "");
     formData.append("completion", data?.completion || "");
     formData.append("unit_number", data?.unit_number || "");
+    formData.append("reference_number", data?.reference_number || "");
+
     formData.append("permit_number", data?.permit_number || "");
     formData.append(
       "parking_spaces",
@@ -301,7 +313,7 @@ const UpdateProperty = () => {
     if (data?.building_facilities?.length) {
       formData.append(
         "building_facilities",
-        JSON.stringify(data?.building_facilities)
+        JSON.stringify(data?.building_facilities?.map((item) => item?.value))
       );
     }
     if (data?.tour_types?.length) {
@@ -310,37 +322,62 @@ const UpdateProperty = () => {
 
     if (data?.thumbnail_img?.[0] instanceof File) {
       formData.append("thumbnail_img", data?.thumbnail_img?.[0]);
+    } else if (typeof data?.thumbnail_img?.[0]?.url === "string") {
+      formData.append("thumbnail_img", data?.thumbnail_img[0].url);
     }
+
     if (data?.virtual_tour?.[0] instanceof File) {
       formData.append("virtual_tour", data?.virtual_tour?.[0]);
+    } else if (typeof data?.virtual_tour?.[0]?.url === "string") {
+      formData.append("virtual_tour", data?.virtual_tour[0].url);
     }
 
     if (data?.gallery?.length) {
-      Array.from(data?.gallery)?.forEach((file) => {
-        formData.append("gallery", file);
+      const existingUrls = [];
+      Array.from(data?.gallery)?.forEach((item) => {
+        if (item instanceof File) {
+          formData.append("gallery", item);
+        } else if (typeof item?.url === "string") {
+          existingUrls.push(item?.url);
+        }
       });
+      if (existingUrls.length > 0) {
+        formData.append("gallery", JSON.stringify(existingUrls));
+      }
     }
 
     if (data?.floor_plan?.length) {
-      Array.from(data?.floor_plan)?.forEach((file) => {
-        formData.append("floor_plan", file);
+      const existingUrls = [];
+
+      Array.from(data?.floor_plan)?.forEach((item) => {
+        if (item instanceof File) {
+          formData.append("floor_plan", item);
+        } else if (typeof item === "string") {
+          existingUrls.push(item?.url);
+        }
       });
+      if (existingUrls.length > 0) {
+        formData.append("floor_plan", JSON.stringify(existingUrls));
+      }
     }
 
     try {
-      const resultAction = await dispatch(creatPropertyThunk(formData));
-      if (creatPropertyThunk.fulfilled.match(resultAction)) {
-        showToast("Property Created Successfull!", "success");
-        setTimeout(() => {
-          navigate(pageRoutes.USER_PROPERTY_LISTING);
-        }, 500);
+      const resultAction = await dispatch(
+        updatePropertyThunk({ id, formData })
+      );
+      if (updatePropertyThunk.fulfilled.match(resultAction)) {
+        showToast("Property Updated Successfull!", "success");
+        // setTimeout(() => {
+        //   navigate(pageRoutes.USER_PROPERTY_LISTING);
+        // }, 500);
       } else {
         throw new Error(resultAction?.error?.message);
       }
     } catch (error) {
-      showToast(error?.message || "Failed to create property.", "error");
+      showToast(error?.message || "Failed to update property.", "error");
     }
   };
+
   return (
     <>
       <div className="container py-4">
@@ -367,11 +404,12 @@ const UpdateProperty = () => {
                 }}
               >
                 <option value="">-- Select --</option>
-                {categories.map((cat, index) => (
-                  <option value={cat?._id} key={index}>
-                    {cat?.name}
-                  </option>
-                ))}
+                {categories &&
+                  categories?.map((cat, index) => (
+                    <option value={cat?._id} key={index}>
+                      {cat?.name}
+                    </option>
+                  ))}
               </select>
               {errors?.category && (
                 <ErrorMessage message={errors?.category?.message} />
@@ -396,11 +434,12 @@ const UpdateProperty = () => {
                 }}
               >
                 <option value="">-- Select --</option>
-                {subCategories.map((subcat, index) => (
-                  <option value={subcat?._id} key={index}>
-                    {subcat?.name}
-                  </option>
-                ))}
+                {subCategories &&
+                  subCategories?.map((subcat, index) => (
+                    <option value={subcat?._id} key={index}>
+                      {subcat?.name}
+                    </option>
+                  ))}
               </select>
               {errors?.subCategory && (
                 <ErrorMessage message={errors?.subCategory?.message} />
@@ -418,11 +457,12 @@ const UpdateProperty = () => {
                 })}
               >
                 <option value="">-- Select --</option>
-                {subSubCategories.map((subsubcat, index) => (
-                  <option value={subsubcat?._id} key={index}>
-                    {subsubcat?.name}
-                  </option>
-                ))}
+                {subSubCategories &&
+                  subSubCategories?.map((subsubcat, index) => (
+                    <option value={subsubcat?._id} key={index}>
+                      {subsubcat?.name}
+                    </option>
+                  ))}
               </select>
               {errors?.subSubCategory && (
                 <ErrorMessage message={errors?.subSubCategory?.message} />
@@ -592,10 +632,15 @@ const UpdateProperty = () => {
                 type="file"
                 className="form-control"
                 accept="image/*"
-                {...register(
-                  "thumbnail_img",
-                  getValidationRules({ label: "Thumbnail Image", type: "file" })
-                )}
+                {...register("thumbnail_img", {
+                  validate: (files) => {
+                    if (!files || files.length === 0) {
+                      return "Please select Thumbnail image.";
+                    }
+
+                    return true;
+                  },
+                })}
               />
               {errors?.thumbnail_img && (
                 <ErrorMessage message={errors?.thumbnail_img?.message} />
@@ -619,40 +664,41 @@ const UpdateProperty = () => {
                   />
                 </div>
               )}
-              {console.log('thumbnailImage',thumbnailImage)}
-             {thumbnailImage instanceof FileList && thumbnailImage.length > 0 && (
-                <div
-                  className="mt-2 position-relative d-inline-block"
-                  style={{
-                    height: "100px",
-                    width: "100px",
-                  }}
-                >
-                  <img
-                    src={URL.createObjectURL(thumbnailImage?.[0])}
-                    alt="Thumbnail Preview"
-                    className="border"
+              {console.log("thumbnailImage----", thumbnailImage)}
+              {thumbnailImage instanceof FileList &&
+                thumbnailImage.length > 0 && (
+                  <div
+                    className="mt-2 position-relative d-inline-block"
                     style={{
                       height: "100px",
                       width: "100px",
                     }}
-                  />
-                  <button
-                    type="button"
-                    className="btn btn-danger position-absolute top-0 start-100 translate-middle"
-                    style={{
-                      fontSize: "12px",
-                      padding: "2px 6px",
-                      lineHeight: "1",
-                    }}
-                    onClick={() => {
-                      setValue("thumbnail_img", null);
-                    }}
                   >
-                    ×
-                  </button>
-                </div>
-              )}
+                    <img
+                      src={URL.createObjectURL(thumbnailImage?.[0])}
+                      alt="Thumbnail Preview"
+                      className="border"
+                      style={{
+                        height: "100px",
+                        width: "100px",
+                      }}
+                    />
+                    <button
+                      type="button"
+                      className="btn btn-danger position-absolute top-0 start-100 translate-middle"
+                      style={{
+                        fontSize: "12px",
+                        padding: "2px 6px",
+                        lineHeight: "1",
+                      }}
+                      onClick={() => {
+                        setValue("thumbnail_img", null);
+                      }}
+                    >
+                      ×
+                    </button>
+                  </div>
+                )}
             </div>
 
             <div className="col-md-4 mb-3">
@@ -679,8 +725,6 @@ const UpdateProperty = () => {
               {errors?.gallery && (
                 <ErrorMessage message={errors?.gallery?.message} />
               )}
-
-             
             </div>
           </div>
 
@@ -698,6 +742,24 @@ const UpdateProperty = () => {
               />
               {errors?.address && (
                 <ErrorMessage message={errors?.address?.message} />
+              )}
+            </div>
+            <div className="col-md-4 mb-3">
+              <label className="form-label">Reference Number *</label>
+              <input
+                type="text"
+                className="form-control"
+                name="reference_number"
+                {...register(
+                  "reference_number",
+                  getValidationRules({
+                    label: "Reference Number",
+                    type: "text2",
+                  })
+                )}
+              />
+              {errors?.reference_number && (
+                <ErrorMessage message={errors?.reference_number?.message} />
               )}
             </div>
             <div className="col-md-4 mb-3">
@@ -748,120 +810,121 @@ const UpdateProperty = () => {
               {errors?.area && <ErrorMessage message={errors?.area?.message} />}
             </div>
 
-            {constructionStatus !== "Off-plan" && (
-              <div className="col-md-4">
-                <label className="form-label">Bedrooms & Bathroom *</label>
+            {constructionStatus !== "Off-plan" &&
+              selectedSubCategoryName !== "Commercial" && (
+                <div className="col-md-4">
+                  <label className="form-label">Bedrooms & Bathroom *</label>
 
-                {/* Main select-like box */}
-                <input
-                  type="text"
-                  readOnly
-                  className="form-control"
-                  name="price"
-                  onClick={() => {
-                    setIsDropDownOpen2(!isDropDownOpen2);
-                  }}
-                  placeholder={
-                    bedRoom.length > 0 || bathRoom.length > 0
-                      ? renderSelectedBedsAndBaths()
-                      : "Beds & Baths"
-                  }
-                />
-                {errors?.bedrooms ? (
-                  <ErrorMessage message={errors?.bedrooms?.message} />
-                ) : errors?.bathrooms ? (
-                  <ErrorMessage message={errors?.bathrooms?.message} />
-                ) : null}
+                  {/* Main select-like box */}
+                  <input
+                    type="text"
+                    readOnly
+                    className="form-control"
+                    name="price"
+                    onClick={() => {
+                      setIsDropDownOpen2(!isDropDownOpen2);
+                    }}
+                    placeholder={
+                      bedRoom?.length > 0 || bathRoom?.length > 0
+                        ? renderSelectedBedsAndBaths()
+                        : "Beds & Baths"
+                    }
+                  />
+                  {errors?.bedrooms ? (
+                    <ErrorMessage message={errors?.bedrooms?.message} />
+                  ) : errors?.bathrooms ? (
+                    <ErrorMessage message={errors?.bathrooms?.message} />
+                  ) : null}
 
-                {/* Hidden content with checkboxes */}
-                <div
-                  className={
-                    isDropDownOpen2
-                      ? "content-wrapper d-block"
-                      : "content-wrapper"
-                  }
-                  id="roomOptions"
-                >
-                  <div className="room-section" id="bedroomSection">
-                    <div className="room-title">Bedroom</div>
-                    <div className="checkbox-group">
+                  {/* Hidden content with checkboxes */}
+                  <div
+                    className={
+                      isDropDownOpen2
+                        ? "content-wrapper d-block"
+                        : "content-wrapper"
+                    }
+                    id="roomOptions"
+                  >
+                    <div className="room-section" id="bedroomSection">
+                      <div className="room-title">Bedroom</div>
+                      <div className="checkbox-group">
+                        <input
+                          type="checkbox"
+                          id="studio"
+                          value={0}
+                          checked={bedRoom?.includes(0)}
+                          onChange={(e) => handleCheckboxChangeBedroom(e, 0)}
+                        />
+                        <label htmlFor="studio">Studio *</label>
+
+                        {[...Array(8)].map((_, i) => {
+                          const value = i + 1;
+                          const labelText = value === 8 ? "7+" : value;
+
+                          return (
+                            <React.Fragment key={i}>
+                              <input
+                                type="checkbox"
+                                id={`bedroom-${value}`}
+                                value={value}
+                                checked={bedRoom?.includes(value)}
+                                onChange={(e) =>
+                                  handleCheckboxChangeBedroom(e, value)
+                                }
+                              />
+                              <label htmlFor={`bedroom-${value}`}>
+                                {labelText}
+                              </label>
+                            </React.Fragment>
+                          );
+                        })}
+                      </div>
+
+                      {/* Hidden field for RHF validation */}
                       <input
-                        type="checkbox"
-                        id="studio"
-                        value={0}
-                        checked={bedRoom?.includes(0)}
-                        onChange={(e) => handleCheckboxChangeBedroom(e, 0)}
+                        type="hidden"
+                        {...register("bedrooms", {
+                          required:
+                            "Please select at least one bedroom or studio",
+                        })}
                       />
-                      <label htmlFor="studio">Studio *</label>
-
-                      {[...Array(8)].map((_, i) => {
-                        const value = i + 1;
-                        const labelText = value === 8 ? "7+" : value;
-
-                        return (
-                          <React.Fragment key={i}>
-                            <input
-                              type="checkbox"
-                              id={`bedroom-${value}`}
-                              value={value}
-                              checked={bedRoom?.includes(value)}
-                              onChange={(e) =>
-                                handleCheckboxChangeBedroom(e, value)
-                              }
-                            />
-                            <label htmlFor={`bedroom-${value}`}>
-                              {labelText}
-                            </label>
-                          </React.Fragment>
-                        );
-                      })}
                     </div>
+                    <div className="room-section" id="bathroomSection">
+                      <div className="room-title">Bathroom</div>
+                      <div className="checkbox-group">
+                        {[...Array(8)].map((_, i) => {
+                          const value = i + 1;
+                          const labelText = value === 8 ? "7+" : value;
 
-                    {/* Hidden field for RHF validation */}
-                    <input
-                      type="hidden"
-                      {...register("bedrooms", {
-                        required:
-                          "Please select at least one bedroom or studio",
-                      })}
-                    />
-                  </div>
-                  <div className="room-section" id="bathroomSection">
-                    <div className="room-title">Bathroom</div>
-                    <div className="checkbox-group">
-                      {[...Array(8)].map((_, i) => {
-                        const value = i + 1;
-                        const labelText = value === 8 ? "7+" : value;
-
-                        return (
-                          <React.Fragment key={i}>
-                            <input
-                              type="checkbox"
-                              id={`bathRoom-${value}`}
-                              value={value}
-                              checked={bathRoom?.includes(value)}
-                              onChange={(e) =>
-                                handleCheckboxChangeBathroom(e, value)
-                              }
-                            />
-                            <label htmlFor={`bathRoom-${value}`}>
-                              {labelText}
-                            </label>
-                          </React.Fragment>
-                        );
-                      })}
+                          return (
+                            <React.Fragment key={i}>
+                              <input
+                                type="checkbox"
+                                id={`bathRoom-${value}`}
+                                value={value}
+                                checked={bathRoom?.includes(value)}
+                                onChange={(e) =>
+                                  handleCheckboxChangeBathroom(e, value)
+                                }
+                              />
+                              <label htmlFor={`bathRoom-${value}`}>
+                                {labelText}
+                              </label>
+                            </React.Fragment>
+                          );
+                        })}
+                      </div>
+                      {/* Hidden field for RHF validation */}
+                      <input
+                        type="hidden"
+                        {...register("bathrooms", {
+                          required: "Please select at least one bathroom",
+                        })}
+                      />
                     </div>
-                    {/* Hidden field for RHF validation */}
-                    <input
-                      type="hidden"
-                      {...register("bathrooms", {
-                        required: "Please select at least one bathroom",
-                      })}
-                    />
                   </div>
                 </div>
-              </div>
-            )}
+              )}
 
             <div className="col-md-4 mb-3">
               <label className="form-label">Price *</label>
@@ -1049,18 +1112,18 @@ const UpdateProperty = () => {
                       isMulti
                       className="multi-select"
                       options={amenitiesAndFacilities?.map((item) => ({
-                        label: item?.name,
-                        value: item?._id,
+                        label: item.name,
+                        value: item._id,
                       }))}
+                      value={field.value}
                       onChange={(selectedOptions) =>
-                        field.onChange(
-                          selectedOptions.map((option) => option.value)
-                        )
+                        field.onChange(selectedOptions)
                       }
                       placeholder="-- Select Amenities --"
                     />
                   )}
                 />
+
                 {errors?.building_facilities && (
                   <ErrorMessage message={errors.building_facilities.message} />
                 )}

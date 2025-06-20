@@ -662,7 +662,7 @@ const AddProperty = () => {
               <ErrorMessage message={errors?.permit_number?.message} />
             )}
           </div>
-             <div className="col-md-4 mb-3">
+          <div className="col-md-4 mb-3">
             <label className="form-label">Reference Number *</label>
             <input
               type="text"

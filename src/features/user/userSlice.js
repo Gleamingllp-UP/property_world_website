@@ -43,8 +43,24 @@ export const getUserDetailsThunk = createAsyncThunk(
 // features/user/userSlice.js
 export const getAllUserForWebThunk = createAsyncThunk(
   "users/getAllUserForWeb",
-  async ({ service_need, search, nationality, language,page,limit }) => {
-    return await getAllUserForWeb(service_need, search, nationality, language,page,limit);
+  async ({
+    service_need = "",
+    search = "",
+    nationality = "",
+    language = "",
+    user_type = "",
+    page,
+    limit,
+  }) => {
+    return await getAllUserForWeb(
+      service_need,
+      search,
+      nationality,
+      language,
+      user_type,
+      page,
+      limit
+    );
   }
 );
 
@@ -199,8 +215,8 @@ const usersSlice = createSlice({
         state.error = action.error.message;
       })
 
-//getAllUserForWebThunk
-         .addCase(getAllUserForWebThunk.pending, (state) => {
+      //getAllUserForWebThunk
+      .addCase(getAllUserForWebThunk.pending, (state) => {
         state.isLoading = true;
       })
       .addCase(getAllUserForWebThunk.fulfilled, (state, action) => {

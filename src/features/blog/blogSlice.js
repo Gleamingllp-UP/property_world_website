@@ -19,8 +19,8 @@ export const getBlogsByIdThunk = createAsyncThunk(
 );
 export const getBlogCategoryWithCountThunk = createAsyncThunk(
   "blog/getBlogCategoryWithCount",
-  async () => {
-    return await getBlogCategoryWithCount();
+  async ({searchText}) => {
+    return await getBlogCategoryWithCount(searchText);
   }
 );
 

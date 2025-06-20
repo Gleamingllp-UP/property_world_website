@@ -1,36 +1,64 @@
 import React, { useEffect, useState } from "react";
 import { agency_banner } from "../../../assets/images";
 import { pageRoutes } from "../../../router/pageRoutes";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getBannerByTypeThunk } from "../../../features/banner/bannerSlice";
 import { fetchAllUserTypes } from "../../../features/userTypes/userTypesSlice";
+import { getAllUserForWebThunk } from "../../../features/user/userSlice";
+
 function AgenciesBanner() {
-  const { banners } = useSelector((store) => store?.banner);
   const dispatch = useDispatch();
-
-  const [activeId, setActiveId] = useState(null);
-  const { userTypes } = useSelector((store) => store?.usersType);
-
+  const navigate = useNavigate();
   const location = useLocation();
 
-  const queryParams = new URLSearchParams(location.search);
+  const { banners } = useSelector((store) => store?.banner);
+  const { userTypes } = useSelector((store) => store?.usersType);
 
+  const queryParams = new URLSearchParams(location.search);
   const user_type = queryParams.get("user_type");
+
+  const [activeId, setActiveId] = useState(user_type || "");
+  const [search, setSearch] = useState("");
+  const [serviceNeed, setServiceNeed] = useState("");
+
   useEffect(() => {
     dispatch(getBannerByTypeThunk("agency"));
     dispatch(fetchAllUserTypes());
   }, [dispatch]);
 
   useEffect(() => {
-    if (userTypes?.length > 0 && !activeId) {
-      setActiveId(userTypes?.[0]._id);
+    if (user_type) {
+      setActiveId(user_type);
     }
-  }, [userTypes, activeId]);
+  }, [user_type]);
 
-  const handleSelectedUserType = (userType) => {
-    console.log(userType);
-    setActiveId(userType);
+  useEffect(() => {
+    if (user_type) {
+      setActiveId(user_type);
+      dispatch(
+        getAllUserForWebThunk({
+          search,
+          user_type: user_type,
+          page: 1,
+          limit: 8,
+        })
+      );
+    }
+  }, [user_type]);
+  
+  const handleSearch = () => {
+    if (!activeId) return;
+
+    dispatch(
+      getAllUserForWebThunk({
+        search,
+        service_need: serviceNeed,
+        user_type: activeId,
+        page: 1,
+        limit: 8,
+      })
+    );
   };
 
   return (
@@ -52,17 +80,21 @@ function AgenciesBanner() {
                   <div className="big_search_bb2">
                     <input
                       type="text"
-                      name="Search"
                       placeholder="Enter location or company name"
                       className="search_bxi"
+                      value={search}
+                      onChange={(e) => setSearch(e.target.value)}
                     />
                     <i className="ri-search-line map_iic" />
                   </div>
                 </div>
                 <div className="col-lg-3">
                   <div className="sk_box">
-                    <select>
-                      <option>Service needed</option>
+                    <select
+                      value={serviceNeed}
+                      onChange={(e) => setServiceNeed(e.target.value)}
+                    >
+                      <option value="">Service needed</option>
                       <option>Residential For Sale</option>
                       <option>Residential For Rent</option>
                       <option>Commercial For Sale</option>
@@ -72,7 +104,7 @@ function AgenciesBanner() {
                 </div>
                 <div className="col-lg-1">
                   <div className="search_btn">
-                    <button>Search</button>
+                    <button onClick={handleSearch}>Search</button>
                   </div>
                 </div>
               </div>
@@ -80,6 +112,7 @@ function AgenciesBanner() {
           </div>
         </div>
       </div>
+
       <div className="container">
         <div className="agent_agency">
           <span>
@@ -88,20 +121,19 @@ function AgenciesBanner() {
                 (usertype) =>
                   usertype?.name === "Agent" || usertype?.name === "Agency"
               )
-              ?.map((usertype, index) => (
+
+              ?.map((usertype) => (
                 <Link
-                  to={
-                    usertype?.name === "Agent"
-                      ? pageRoutes.AGENTS + `/?user_type=${usertype?._id}`
-                      : pageRoutes.AGENCIES + `/?user_type=${usertype?._id}`
-                  }
-                  onClick={() => handleSelectedUserType(usertype?._id)}
+                  key={usertype._id}
+                  to={pageRoutes.AGENTS + `/?user_type=${usertype?._id}`}
+                  // onClick={() => handleSelectedUserType(usertype?._id)}
                   className={
-                    usertype?._id === user_type || activeId ? "slt" : ""
+                    usertype?._id === user_type || usertype?._id === activeId
+                      ? "slt"
+                      : ""
                   }
-                  key={index}
                 >
-                  {usertype?.name}{" "}
+                  {usertype.name}{" "}
                   <i className="ri-arrow-right-up-long-line"></i>
                 </Link>
               ))}

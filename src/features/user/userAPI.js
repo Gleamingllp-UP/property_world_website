@@ -111,12 +111,23 @@ export const updateUserDetails = async (id, payload) => {
   }
 };
 
-
-
-export const getAllUserForWeb = async (service_need, search, nationality, language, page,limit) => {
+export const getAllUserForWeb = async (
+  service_need,
+  search,
+  nationality,
+  language,
+  user_type,
+  page,
+  limit
+) => {
   try {
-    const response = await api.get(endpoints.getAllUserForWeb + `/?page=${page}&limit=${limit}&service_need=${service_need}
-      &search=${search}&nationality=${nationality}&language=${language}`);
+    const response = await api.get(
+      endpoints.getAllUserForWeb +
+        `/?page=${page}&limit=${limit}
+        &user_type=${user_type?.trim()}
+        &service_need=${service_need}
+      &search=${search}&nationality=${nationality}&language=${language}`
+    );
     return response.data;
   } catch (error) {
     if (error?.status !== 401) {

@@ -5,7 +5,10 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getBannerByTypeThunk } from "../../../features/banner/bannerSlice";
 import { getAllUserForWebThunk } from "../../../features/user/userSlice";
-import { countries, languages } from "../../../utils/requiredFormFields/requiredproparty";
+import {
+  countries,
+  languages,
+} from "../../../utils/requiredFormFields/requiredproparty";
 import { fetchAllUserTypes } from "../../../features/userTypes/userTypesSlice";
 
 function AgentsBanner() {
@@ -31,6 +34,14 @@ function AgentsBanner() {
   }, [dispatch]);
 
   useEffect(() => {
+    if (userTypes?.length > 0 && !queryUserType && !activeId) {
+      setActiveId(userTypes?.[1]?._id);
+    } else if (queryUserType) {
+      setActiveId(queryUserType);
+    }
+  }, [userTypes, queryUserType, activeId]);
+
+  useEffect(() => {
     if (queryUserType) {
       setActiveId(queryUserType);
       dispatch(
@@ -48,6 +59,7 @@ function AgentsBanner() {
   }, [queryUserType]);
 
   const handleSearch = () => {
+    if (!activeId) return;
     dispatch(
       getAllUserForWebThunk({
         search,
@@ -59,30 +71,6 @@ function AgentsBanner() {
         limit: 8,
       })
     );
-    navigate(`${location.pathname}?user_type=${activeId}`);
-  };
-
-  const handleSelectedUserType = (userTypeId, name) => {
-    setActiveId(userTypeId);
-
-    const route =
-      name === "Agent"
-        ? `${pageRoutes.AGENTS}?user_type=${userTypeId}`
-        : `${pageRoutes.AGENCIES}?user_type=${userTypeId}`;
-
-    dispatch(
-      getAllUserForWebThunk({
-        search,
-        service_need,
-        nationality,
-        language,
-        user_type: userTypeId,
-        page: 1,
-        limit: 8,
-      })
-    );
-
-    navigate(route);
   };
 
   return (
@@ -121,10 +109,18 @@ function AgentsBanner() {
                           onChange={(e) => setServiceNeed(e.target.value)}
                         >
                           <option value="">Service needed</option>
-                          <option value="Residential For Sale">Residential For Sale</option>
-                          <option value="Residential For Rent">Residential For Rent</option>
-                          <option value="Commercial For Sale">Commercial For Sale</option>
-                          <option value="Commercial For Rent">Commercial For Rent</option>
+                          <option value="Residential For Sale">
+                            Residential For Sale
+                          </option>
+                          <option value="Residential For Rent">
+                            Residential For Rent
+                          </option>
+                          <option value="Commercial For Sale">
+                            Commercial For Sale
+                          </option>
+                          <option value="Commercial For Rent">
+                            Commercial For Rent
+                          </option>
                         </select>
                       </div>
                     </div>
@@ -150,11 +146,12 @@ function AgentsBanner() {
                           onChange={(e) => setNationality(e.target.value)}
                         >
                           <option value="">Nationality</option>
-                          {countries.map((country, i) => (
-                            <option key={i} value={country}>
-                              {country}
-                            </option>
-                          ))}
+                          {countries &&
+                            countries?.map((country, i) => (
+                              <option key={i} value={country}>
+                                {country}
+                              </option>
+                            ))}
                         </select>
                       </div>
                     </div>
@@ -170,21 +167,26 @@ function AgentsBanner() {
           </div>
         </div>
       </div>
-
       <div className="container">
         <div className="agent_agency">
           <span>
             {userTypes
-              ?.filter((usertype) => usertype?.name === "Agent" || usertype?.name === "Agency")
+              ?.filter(
+                (usertype) =>
+                  usertype?.name === "Agent" || usertype?.name === "Agency"
+              )
+              
               ?.map((usertype) => (
                 <Link
                   key={usertype?._id}
-                  to="#"
-                  className={usertype?._id === activeId ? "slt" : ""}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleSelectedUserType(usertype?._id, usertype?.name);
-                  }}
+                  to={pageRoutes.AGENCIES + `/?user_type=${usertype?._id}`}
+                  className={
+                    usertype?._id === queryUserType || 
+                    usertype?._id === activeId 
+                      ? "slt"
+                      : ""
+                  }
+               
                 >
                   {usertype?.name}{" "}
                   <i className="ri-arrow-right-up-long-line"></i>

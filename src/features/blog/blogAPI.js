@@ -24,7 +24,6 @@ export const getAllblogForUser = async (page, limit, blog_category_id) => {
   }
 };
 
-
 export const getBlogByIdForUser = async (id) => {
   try {
     const response = await api.get(endpoints.getblogForUser + `/${id}`);
@@ -41,9 +40,11 @@ export const getBlogByIdForUser = async (id) => {
   }
 };
 
-export const getBlogCategoryWithCount = async () => {
+export const getBlogCategoryWithCount = async (search) => {
   try {
-    const response = await api.get(endpoints.getBlogCategoryWithCount);
+    const response = await api.get(
+      endpoints.getBlogCategoryWithCount + `/?search=${search}`
+    );
     return response.data;
   } catch (error) {
     if (error?.status !== 401) {

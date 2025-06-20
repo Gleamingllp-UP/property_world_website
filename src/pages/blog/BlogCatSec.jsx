@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -12,26 +12,41 @@ import { format } from "date-fns";
 import { RecentPostSkeleton } from "../../Custom_Components/Skeleton/BigBlogSkeleton";
 import { news_dss } from "../../assets/images";
 import { useLocation } from "react-router-dom";
+import { debounce } from "lodash";
 
 const BlogCatSec = () => {
   const { blogsCategory, isLoading2, blogs, isLoading } = useSelector(
     (store) => store?.blog
   );
+  const [searchText, setSearchText] = useState("");
 
   const { search } = useLocation();
-const blog_category_id = new URLSearchParams(search).get("blog_category_id");
+  const blog_category_id = new URLSearchParams(search).get("blog_category_id");
 
   const dispatch = useDispatch();
   const page = 1;
   const limit = 7;
-  
-  useEffect(() => {
-    dispatch(getAllBlogsThunk({ page, limit, blog_category_id }));
-  }, [dispatch, page,blog_category_id]);
 
   useEffect(() => {
-    dispatch(getBlogCategoryWithCountThunk());
-  }, [dispatch]);
+    dispatch(getAllBlogsThunk({ page, limit, blog_category_id }));
+  }, [dispatch, page, blog_category_id]);
+
+  useEffect(() => {
+    if (!searchText?.trim()) {
+      dispatch(getBlogCategoryWithCountThunk({ searchText: "" }));
+      return;
+    }
+
+    const debouncedFetch = debounce((text) => {
+      dispatch(getBlogCategoryWithCountThunk({ searchText: text }));
+    }, 400);
+
+    debouncedFetch(searchText);
+
+    return () => {
+      debouncedFetch.cancel();
+    };
+  }, [searchText, dispatch]);
 
   useEffect(() => {
     const scriptId = "elfsight-platform-script";
@@ -55,6 +70,7 @@ const blog_category_id = new URLSearchParams(search).get("blog_category_id");
             placeholder="Search …"
             name="s"
             title="Search for:"
+            onChange={(e) => setSearchText(e.target.value)}
           />
           <button type="submit" className="search_button">
             <i className="ri-search-line" />

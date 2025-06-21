@@ -49,7 +49,10 @@ const SetPassword = ({ setStep }) => {
       };
       const resultAction = await dispatch(setPasswordThunk(payload));
       if (setPasswordThunk.fulfilled.match(resultAction)) {
-        showToast("Password successfully set! After Admin Approval You can login.", "success");
+        showToast(
+          "Password successfully set! After Admin Approval You can login.",
+          "success"
+        );
         dispatch(removeUserFormDataToken());
         setTimeout(() => {
           setStep(1);

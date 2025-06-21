@@ -315,6 +315,9 @@ video {
     opacity: 1;
     visibility: visible;
   }
+  ul.menu {
+  display: block !important;
+}
   .header .navbar {
     position: fixed;
     top: 0;
@@ -352,6 +355,9 @@ video {
     height: auto;
     margin-top: 3.5rem;
   }
+   .col-lg-4 {
+    margin-top: 20px !important;
+}
   .header .menu > .menu-item {
     display: block;
     margin: 0;

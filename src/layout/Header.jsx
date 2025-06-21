@@ -8,11 +8,16 @@ import { getAllActiveCategoryThunk } from "./../features/activeData/activeDataSl
 import { getUserDetailsThunk } from "../features/user/userSlice";
 import { user } from "../assets/images";
 import ImageWithLoader from "../Custom_Components/ImageWithLoader";
+import close from "../assets/images/closed.svg";
+import "../assets/css/style.css";
+
 function Header() {
   const [modalShow, setModalShow] = useState(false);
   const { categories, location } = useSelector((store) => store?.activeData);
   const { userData } = useSelector((store) => store?.user);
 
+  const [isMenuOpen, setIsMunu] = useState(false);
+  const [isSubMenuOpen, setIsSubMenuOpen] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -62,20 +67,26 @@ function Header() {
             <a className="brand" onClick={() => navigate(pageRoutes.HOME_PAGE)}>
               <img src={property_world_logo} className="img-fluid" />
             </a>
-            <button type="button" className="opened-menu">
+            <button
+              type="button"
+              className="opened-menu"
+              onClick={() => {
+                setIsMunu((prev) => !prev);
+                document.body.classList.toggle("scrolling");
+              }}
+            >
               <span></span>
               <span></span>
               <span></span>
               <span></span>
             </button>
-            <div className="overlay"></div>
-            <nav className="navbar">
-              <button type="button" className="closed-menu">
-                <img
-                  src="assets/images/closed.svg"
-                  className="closed-icon"
-                  alt="closed"
-                />
+            <div className={`overlay ${isMenuOpen ? "active" : ""}`}></div>
+            <nav className={`navbar  ${isMenuOpen ? "active" : ""}`}>
+              <button type="button" className="closed-menu"   onClick={() => {
+                setIsMunu((prev) => !prev);
+                document.body.classList.toggle("scrolling");
+              }}>
+                <img src={close} className="closed-icon" alt="closed" />
               </button>
               <ul className="menu">
                 {categories &&
@@ -100,11 +111,30 @@ function Header() {
                     List
                   </a>
                 </li>
-                <li className="menu-item menu-item-has-children">
-                  <a href="#" data-toggle="sub-menu">
+                <li
+                  className={`menu-item menu-item-has-children ${
+                    isSubMenuOpen === "insight" ? "active" : ""
+                  }`}
+                >
+                  <a
+                    href="#"
+                    data-toggle="sub-menu"
+                    onClick={() =>
+                      setIsSubMenuOpen((prev) =>
+                        prev === "insight" ? "" : "insight"
+                      )
+                    }
+                  >
                     Insights<i className="expand"></i>
                   </a>
-                  <ul className="sub-menu">
+                  <ul
+                    className="sub-menu"
+                    style={{
+                      maxHeight: `${
+                        isSubMenuOpen === "insight" ? "235px" : "0px"
+                      }`,
+                    }}
+                  >
                     <li className="menu-item">
                       <Link to={pageRoutes.BUYER_GUIDE}>
                         <i className="ri-arrow-right-up-long-line"></i> Buyer
@@ -136,11 +166,25 @@ function Header() {
                     </li>
                   </ul>
                 </li>
-                <li className="menu-item menu-item-has-children">
-                  <a href="#" data-toggle="sub-menu">
+                <li className={`menu-item menu-item-has-children ${
+                    isSubMenuOpen === "location" ? "active" : ""
+                  }`}>
+                  <a href="#" data-toggle="sub-menu"
+                   onClick={() =>
+                      setIsSubMenuOpen((prev) =>
+                        prev === "location" ? "" : "location"
+                      )
+                    }
+                  >
                     Location <i className="expand"></i>
                   </a>
-                  <ul className="sub-menu">
+                  <ul className="sub-menu"
+                   style={{
+                      maxHeight: `${
+                        isSubMenuOpen === "location" ? "235px" : "0px"
+                      }`,
+                    }}
+                  >
                     {location?.map((loca, index) => (
                       <li className="menu-item" key={index}>
                         <Link

@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import '../../assets/css/plan.css';
 
 const Plan = () => {
+
   return (
     <>
       <section className="pricing-section">

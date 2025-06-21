@@ -1,5 +1,6 @@
-import { chat, city2, map } from "@/assets/images";
 import React from "react";
+import ImageWithLoader from "../../../Custom_Components/ImageWithLoader";
+import { chat, city2, map } from "../../../assets/images";
 
 function HomeAssistant() {
   return (
@@ -11,7 +12,7 @@ function HomeAssistant() {
               <div className="box_area">
                 <a href="#">
                   <div className="inner_block">
-                    <img src={map} className="img-fluid" />
+                    <ImageWithLoader src={map} className="img-fluid" />
                   </div>
                   <div className="content_atra">
                     <h2>
@@ -31,7 +32,7 @@ function HomeAssistant() {
               <div className="box_area">
                 <a href="#">
                   <div className="inner_block">
-                    <img src={chat} className="img-fluid" />
+                    <ImageWithLoader src={chat} className="img-fluid" />
                   </div>
                   <div className="content_atra">
                     <h2>
@@ -41,7 +42,8 @@ function HomeAssistant() {
                       <b>Smart Property Assistant (AI Chatbot)</b>
                     </p>
                     <p>
-                      An AI-powered chatbot that helps <br />users find properties
+                      An AI-powered chatbot that helps <br />
+                      users find properties
                     </p>
                   </div>
                 </a>
@@ -51,7 +53,7 @@ function HomeAssistant() {
               <div className="box_area">
                 <a href="#">
                   <div className="inner_block">
-                    <img src={city2} className="img-fluid" />
+                    <ImageWithLoader src={city2} className="img-fluid" />
                   </div>
                   <div className="content_atra">
                     <h2>
@@ -61,7 +63,8 @@ function HomeAssistant() {
                       <b>(Property valuation feature)</b>
                     </p>
                     <p>
-                      An AI-powered chatbot that helps <br />users find properties
+                      An AI-powered chatbot that helps <br />
+                      users find properties
                     </p>
                   </div>
                 </a>
@@ -78,10 +81,8 @@ function HomeAssistant() {
               <div className="box_area1">
                 <a href="#">
                   <div className="inner_block1">
-                    <img
-                      src="assets/images/map.png"
-                      className="img-fluid mk_p"
-                    />
+                    <ImageWithLoader src={map} className="img-fluid mk_p" />
+                   
                   </div>
                   <div className="content_atra1">
                     <h2>
@@ -90,7 +91,10 @@ function HomeAssistant() {
                     <p>
                       <b>(Smart Map View)</b>
                     </p>
-                    <p>An interactive map that shows <br />nearby landmarks</p>
+                    <p>
+                      An interactive map that shows <br />
+                      nearby landmarks
+                    </p>
                   </div>
                   <div>
                     <i className="ri-arrow-right-s-line" />
@@ -102,7 +106,7 @@ function HomeAssistant() {
               <div className="box_area">
                 <a href="#">
                   <div className="inner_block">
-                    <img src="assets/images/chat.png" className="img-fluid" />
+                    <ImageWithLoader src={chat} className="img-fluid" />
                   </div>
                   <div className="content_atra">
                     <h2>
@@ -112,7 +116,8 @@ function HomeAssistant() {
                       <b>(Smart Property Assistant (AI Chatbot)</b>
                     </p>
                     <p>
-                      An AI-powered chatbot that helps <br />users find properties
+                      An AI-powered chatbot that helps <br />
+                      users find properties
                     </p>
                   </div>
                 </a>
@@ -122,7 +127,7 @@ function HomeAssistant() {
               <div className="box_area">
                 <a href="#">
                   <div className="inner_block">
-                    <img src="assets/images/city2.png" className="img-fluid" />
+                    <ImageWithLoader src={city2} className="img-fluid" />
                   </div>
                   <div className="content_atra">
                     <h2>
@@ -132,7 +137,8 @@ function HomeAssistant() {
                       <b>(Property valuation feature)</b>
                     </p>
                     <p>
-                      An AI-powered chatbot that helps <br /> users find properties
+                      An AI-powered chatbot that helps <br /> users find
+                      properties
                     </p>
                   </div>
                 </a>

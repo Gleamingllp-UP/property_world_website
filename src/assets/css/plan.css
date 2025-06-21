@@ -83,7 +83,7 @@
 }
 .pricing-section {
     position: relative;
-    padding: 100px 0 80px;
+    padding: 20px 0 80px;
     overflow: hidden;
 }
 .pricing-section .outer-box{
@@ -270,24 +270,24 @@
 
 .pricing-block:nth-child(2) .icon-box i,
 .pricing-block:nth-child(2) .inner-box{
-  border-color: #1d95d2;
+  border-color: #C0C0C0;
 }
 
 .pricing-block:nth-child(2) .btn-box a,
 .pricing-block:nth-child(2) .icon-box{
-  background-color: #1d95d2;
+  background-color: #C0C0C0;
 }
 
 .pricing-block:nth-child(2) .inner-box:hover .btn-box a{
-  color:#1d95d2;
+  color:#C0C0C0;
   background:none;
   border-radius:0px;
-  border-color:#1d95d2;
+  border-color:#C0C0C0;
 }
 
 .pricing-block:nth-child(2) .icon-box i,
 .pricing-block:nth-child(2) .price{
-  color: #1d95d2;
+  color: #C0C0C0;
 }
 
 .pricing-block:nth-child(3) .icon-box i,
@@ -310,4 +310,27 @@
   background:none;
   border-radius:0px;
   border-color:#ffc20b;
+}
+
+/* Platinum Plan - Card #4 */
+.pricing-block:nth-child(4) .icon-box i,
+.pricing-block:nth-child(4) .inner-box {
+  border-color: #1d95d2; /* Metallic Gray */
+}
+
+.pricing-block:nth-child(4) .btn-box a,
+.pricing-block:nth-child(4) .icon-box {
+  background-color: #1d95d2; /* Primary Platinum Shade */
+}
+
+.pricing-block:nth-child(4) .icon-box i,
+.pricing-block:nth-child(4) .price {
+  color: #1d95d2;
+}
+
+.pricing-block:nth-child(4) .inner-box:hover .btn-box a {
+  color: #1d95d2;
+  background: none;
+  border-radius: 0px;
+  border-color: #1d95d2;
 }

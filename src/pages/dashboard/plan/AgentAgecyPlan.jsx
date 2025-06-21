@@ -1,7 +1,7 @@
-import React from 'react';
-import '../../assets/css/plan.css';
+import React from "react";
+import "../../../assets/css/plan.css";
 
-const Plan = () => {
+function AgentAgecyPlan() {
   return (
     <>
       <section className="pricing-section">
@@ -18,12 +18,12 @@ const Plan = () => {
                 <div className="inner-box">
                   <div className="icon-box">
                     <div className="icon-outer">
-                      <i className="fas fa-paper-plane"></i>
+                      <i className="fas fa-shield-alt"></i>
                     </div>
                   </div>
                   <div className="price-box">
-                    <div className="title">Day Pass</div>
-                    <h4 className="price">AED{' '}35.99</h4>
+                    <div className="title">Basic Plan</div>
+                    <h4 className="price">AED 99.99</h4>
                   </div>
                   <ul className="features">
                     <li className="true">Conference plans</li>
@@ -33,38 +33,51 @@ const Plan = () => {
                     <li className="false">Free Contacts</li>
                   </ul>
                   <div className="btn-box">
-                    <a href="https://codepen.io/anupkumar92" className="theme-btn">BUY plan</a>
+                    <a
+                      href="https://codepen.io/anupkumar92"
+                      className="theme-btn"
+                    >
+                      BUY plan
+                    </a>
                   </div>
                 </div>
               </div>
 
               {/* Pricing Block 2 */}
-              <div className="pricing-block col-lg-4 col-md-6 col-sm-12 wow fadeInUp" data-wow-delay="400ms">
+              <div className="pricing-block col-lg-4 col-md-6 col-sm-12 wow fadeInUp">
                 <div className="inner-box">
                   <div className="icon-box">
                     <div className="icon-outer">
-                      <i className="fas fa-gem"></i>
+                      <i className="fas fa-paper-plane"></i>
                     </div>
                   </div>
                   <div className="price-box">
-                    <div className="title">Full Pass</div>
-                    <h4 className="price">AED{' '}99.99</h4>
+                    <div className="title">Starter Plan</div>
+                    <h4 className="price">AED 199.99</h4>
                   </div>
                   <ul className="features">
                     <li className="true">Conference plans</li>
                     <li className="true">Free Lunch And Coffee</li>
                     <li className="true">Certificate</li>
-                    <li className="true">Easy Access</li>
+                    <li className="false">Easy Access</li>
                     <li className="false">Free Contacts</li>
                   </ul>
                   <div className="btn-box">
-                    <a href="https://codepen.io/anupkumar92" className="theme-btn">BUY plan</a>
+                    <a
+                      href="https://codepen.io/anupkumar92"
+                      className="theme-btn"
+                    >
+                      BUY plan
+                    </a>
                   </div>
                 </div>
               </div>
 
               {/* Pricing Block 3 */}
-              <div className="pricing-block col-lg-4 col-md-6 col-sm-12 wow fadeInUp" data-wow-delay="800ms">
+              <div
+                className="pricing-block col-lg-4 col-md-6 col-sm-12 wow fadeInUp"
+                data-wow-delay="800ms"
+              >
                 <div className="inner-box">
                   <div className="icon-box">
                     <div className="icon-outer">
@@ -72,8 +85,8 @@ const Plan = () => {
                     </div>
                   </div>
                   <div className="price-box">
-                    <div className="title">Group Pass</div>
-                    <h4 className="price">AED{' '}199.99</h4>
+                    <div className="title">Pro Plan</div>
+                    <h4 className="price">AED 299.99</h4>
                   </div>
                   <ul className="features">
                     <li className="true">Conference plans</li>
@@ -83,17 +96,54 @@ const Plan = () => {
                     <li className="true">Free Contacts</li>
                   </ul>
                   <div className="btn-box">
-                    <a href="https://codepen.io/anupkumar92" className="theme-btn">BUY plan</a>
+                    <a
+                      href="https://codepen.io/anupkumar92"
+                      className="theme-btn"
+                    >
+                      BUY plan
+                    </a>
                   </div>
                 </div>
               </div>
 
+              {/* Pricing Block 4 */}
+              <div
+                className="pricing-block col-lg-4 col-md-6 col-sm-12 wow fadeInUp"
+                data-wow-delay="400ms"
+              >
+                <div className="inner-box">
+                  <div className="icon-box">
+                    <div className="icon-outer">
+                      <i className="fas fa-gem"></i>
+                    </div>
+                  </div>
+                  <div className="price-box">
+                    <div className="title">Pro Plan</div>
+                    <h4 className="price">AED 499.99</h4>
+                  </div>
+                  <ul className="features">
+                    <li className="true">Conference plans</li>
+                    <li className="true">Free Lunch And Coffee</li>
+                    <li className="true">Certificate</li>
+                    <li className="true">Easy Access</li>
+                    <li className="false">Free Contacts</li>
+                  </ul>
+                  <div className="btn-box">
+                    <a
+                      href="https://codepen.io/anupkumar92"
+                      className="theme-btn"
+                    >
+                      BUY plan
+                    </a>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </section>
     </>
   );
-};
+}
 
-export default Plan;
+export default AgentAgecyPlan;

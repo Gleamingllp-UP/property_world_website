@@ -8,6 +8,7 @@ import {
   TableProperties,
   User,
 } from "lucide-react";
+import { MdOutlineWorkspacePremium } from "react-icons/md";
 
 // const Login = lazy(() => import("../pages/auth/Login"));
 
@@ -73,6 +74,7 @@ const UpdateProperty = lazy(() =>
 const LikedProperties = lazy(() =>
   import("../pages/dashboard/list/LikedProperties")
 );
+const Plan = lazy(() => import("../pages/dashboard/plan/Plan"));
 
 const userData = JSON.parse(localStorage.getItem("userData") || "{}");
 const isAgentOrAgency =
@@ -272,6 +274,16 @@ const routes = [
     icon: Heart,
     path: pageRoutes?.LIKED_PROPERTY,
     Component: LikedProperties,
+  },
+  {
+    id: 25,
+    isPrivate: true,
+    isDashboard: true,
+    isVisibleInDash: isAgentOrAgency,
+    name: "Your Plan",
+    icon: MdOutlineWorkspacePremium,
+    path: pageRoutes?.YOUR_PLAN,
+    Component: Plan,
   },
 ];
 export { routes };

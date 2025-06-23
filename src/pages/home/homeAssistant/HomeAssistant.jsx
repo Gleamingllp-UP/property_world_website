@@ -78,13 +78,13 @@ function HomeAssistant() {
         <div className="container">
           <div className="row">
             <div className="col-lg-4">
-              <div className="box_area1">
+              <div className="box_area">
                 <a href="#">
-                  <div className="inner_block1">
+                  <div className="inner_block">
                     <ImageWithLoader src={map} className="img-fluid mk_p" />
                    
                   </div>
-                  <div className="content_atra1">
+                  <div className="content_atra">
                     <h2>
                       Proxiview <i className="ri-arrow-right-up-long-line" />
                     </h2>

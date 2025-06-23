@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "../../../assets/css/plan.css";
 import AgentAgecyPlan from "./AgentAgecyPlan";
 import IndivisualPlan from "./IndivisualPlan";

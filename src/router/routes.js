@@ -79,7 +79,6 @@ const Plan = lazy(() => import("../pages/dashboard/plan/Plan"));
 const userData = JSON.parse(localStorage.getItem("userData") || "{}");
 const isAgentOrAgency =
   userData?.role !== "Individual" && userData?.role !== "guest";
-
 const routes = [
   // {
   //   id: 1,

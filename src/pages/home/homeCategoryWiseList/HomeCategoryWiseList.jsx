@@ -23,7 +23,7 @@ function HomeCategoryWiseList() {
   );
 
   const page = 1;
-  const limit = 6;
+  const limit = 7;
 
   useEffect(() => {
     if (!selectedId && categories?.length > 0) {
@@ -88,98 +88,98 @@ function HomeCategoryWiseList() {
                   propertyData &&
                   propertyData?.map((item, index) => {
                     return (
-                      <>
-                        <div className="col-sm-4" key={index + 1}>
-                          <div className="my_property">
-                            <div className="photo_my_photo">
-                              <span
-                                className="buy"
-                                style={{
-                                  backgroundColor:
-                                    item?.categoryData?.name === "Rent"
-                                      ? "#e9012b"
-                                      : "#8BC34A",
-                                }}
-                              >
-                                {item?.categoryData?.name}
-                              </span>
-                              <Link
-                                to={`${pageRoutes.PROPERTY_DETAILS}?id=${item?._id}`}
-                              >
-                                <ImageWithLoader
-                                  src={item?.images?.[0]?.url}
-                                  className="img-fluid"
-                                />
-                              </Link>
-                              <div className="new_listng">
-                                <div>
-                                  {item?.bedrooms != null &&
-                                    item?.bedrooms !== "" && (
-                                      <>
-                                        <img src={bed} alt="bed" />{" "}
-                                        {item?.bedrooms === 0
-                                          ? "Studio"
-                                          : item?.bedrooms}{" "}
-                                      </>
-                                    )}
-                                </div>
-                                <div>
-                                  {item?.area != null && item?.area !== "" && (
+                      <div className="col-sm-4" key={index + 1}>
+                        <div className="my_property">
+                          <div className="photo_my_photo">
+                            <span
+                              className="buy"
+                              style={{
+                                backgroundColor:
+                                  item?.categoryData?.name === "Rent"
+                                    ? "#e9012b"
+                                    : "#8BC34A",
+                              }}
+                            >
+                              {item?.categoryData?.name}
+                            </span>
+                            <Link
+                              to={`${pageRoutes.PROPERTY_DETAILS}?id=${item?._id}`}
+                            >
+                              <ImageWithLoader
+                                src={item?.images?.[0]?.url}
+                                className="img-fluid"
+                              />
+                            </Link>
+                            <div className="new_listng">
+                              <div>
+                                {item?.bedrooms != null &&
+                                  item?.bedrooms !== "" && (
                                     <>
-                                      <img src={ruler} alt="area" />{" "}
-                                      {formatNumberWithCommas(item?.area)} Sq Ft
+                                      <img src={bed} alt="bed" />{" "}
+                                      {item?.bedrooms === 0
+                                        ? "Studio"
+                                        : item?.bedrooms}{" "}
                                     </>
                                   )}
-                                </div>
+                              </div>
+                              <div>
+                                {item?.area != null && item?.area !== "" && (
+                                  <>
+                                    <img src={ruler} alt="area" />{" "}
+                                    {formatNumberWithCommas(item?.area)} Sq Ft
+                                  </>
+                                )}
                               </div>
                             </div>
-                            <div className="property_data">
-                              <div className="lease">
-                                <span>{item?.duration} Years</span>
+                          </div>
+                          <div className="property_data">
+                            <div className="lease">
+                              <span>{item?.duration} Years</span>
+                            </div>
+                            <h4>{item?.title}</h4>
+                            <div className="pro_diss">
+                              <p>{item?.short_description}</p>
+                            </div>
+                            <div className="other_data_list">
+                              <div className="loction_c">
+                                <i className="ri-map-pin-line" /> UAE
                               </div>
-                              <h4>{item?.title}</h4>
-                              <div className="pro_diss">
-                                <p>{item?.short_description}</p>
+                              <div>
+                                <i className="ri-eye-line" /> {item?.address}
                               </div>
-                              <div className="other_data_list">
-                                <div className="loction_c">
-                                  <i className="ri-map-pin-line" /> UAE
-                                </div>
-                                <div>
-                                  <i className="ri-eye-line" /> {item?.address}
-                                </div>
+                            </div>
+                            <div className="action_p">
+                              <div className="list_ppc">
+                                {" "}
+                                {formatPrice(item?.price)}
                               </div>
-                              <div className="action_p">
-                                <div className="list_ppc">
-                                  {" "}
-                                  {formatPrice(item?.price)}
-                                </div>
-                                <div>
-                                  <Link
-                                    to={`${pageRoutes.PROPERTY_DETAILS}?id=${item?._id}`}
-                                  >
-                                    Read More{" "}
-                                    <i className="ri-arrow-right-up-long-line" />
-                                  </Link>
-                                </div>
+                              <div>
+                                <Link
+                                  to={`${pageRoutes.PROPERTY_DETAILS}?id=${item?._id}`}
+                                >
+                                  Read More{" "}
+                                  <i className="ri-arrow-right-up-long-line" />
+                                </Link>
                               </div>
                             </div>
                           </div>
                         </div>
-                      </>
+                      </div>
                     );
                   })
                 )}
               </div>
-              <div className="col-12 text-center">
-                <Link
-                  to={pageRoutes.PROPERTY_LISTING}
-                  className="action_btn mt20"
-                >
-                  View All Properties{" "}
-                  <i className="ri-arrow-right-up-long-line" />
-                </Link>
-              </div>
+              {propertyData && propertyData?.length > 6 && (
+                <div className="col-12 text-center">
+                  <Link
+                    to={pageRoutes.PROPERTY_LISTING}
+                    className="action_btn mt20"
+                  >
+                    View All Properties{" "}
+                    <i className="ri-arrow-right-up-long-line" />
+                  </Link>
+                </div>
+              )}
             </div>
           </div>
         </div>

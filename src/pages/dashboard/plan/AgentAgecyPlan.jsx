@@ -33,12 +33,7 @@ function AgentAgecyPlan() {
                     <li className="false">Free Contacts</li>
                   </ul>
                   <div className="btn-box">
-                    <a
-                      href="https://codepen.io/anupkumar92"
-                      className="theme-btn"
-                    >
-                      BUY plan
-                    </a>
+                    <a href="#"className="theme-btn"> BUY plan</a>
                   </div>
                 </div>
               </div>
@@ -63,12 +58,7 @@ function AgentAgecyPlan() {
                     <li className="false">Free Contacts</li>
                   </ul>
                   <div className="btn-box">
-                    <a
-                      href="https://codepen.io/anupkumar92"
-                      className="theme-btn"
-                    >
-                      BUY plan
-                    </a>
+                    <a href="#"className="theme-btn">BUY plan</a>
                   </div>
                 </div>
               </div>
@@ -96,12 +86,7 @@ function AgentAgecyPlan() {
                     <li className="true">Free Contacts</li>
                   </ul>
                   <div className="btn-box">
-                    <a
-                      href="https://codepen.io/anupkumar92"
-                      className="theme-btn"
-                    >
-                      BUY plan
-                    </a>
+                    <a href="#"className="theme-btn">BUY plan</a>
                   </div>
                 </div>
               </div>
@@ -129,12 +114,7 @@ function AgentAgecyPlan() {
                     <li className="false">Free Contacts</li>
                   </ul>
                   <div className="btn-box">
-                    <a
-                      href="https://codepen.io/anupkumar92"
-                      className="theme-btn"
-                    >
-                      BUY plan
-                    </a>
+                    <a href="#"className="theme-btn"> BUY plan</a>
                   </div>
                 </div>
               </div>

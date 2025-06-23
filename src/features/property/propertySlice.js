@@ -56,6 +56,19 @@ export const getAllUserPropertyThunk = createAsyncThunk(
   }
 );
 
+export const getAllFeaturePropertyThunk = createAsyncThunk(
+  "property/getAllFeatureProperty",
+  async ({ page, limit, searchFilters = {}, sort_by = "", features = "" }) => {
+    return await getAllProperty(
+      page,
+      limit,
+      searchFilters,
+      sort_by,
+      features
+    );
+  }
+);
+
 export const getAllPropertyThunk = createAsyncThunk(
   "property/getAllProperty",
   async ({ page, limit, searchFilters, sort_by, features }) => {
@@ -67,6 +80,7 @@ const propertySlice = createSlice({
   name: "property",
   initialState: {
     propertyData: [],
+    featuredPropertyData: [],
     propertyDetails: {},
     pagination: null,
     loading: false,
@@ -146,6 +160,20 @@ const propertySlice = createSlice({
         state.isLoading = false;
         state.error = action.error.message;
         state.propertyDetails = null;
+      })
+
+      //Feature property details
+      .addCase(getAllFeaturePropertyThunk.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getAllFeaturePropertyThunk.fulfilled, (state, action) => {
+        state.featuredPropertyData = action.payload.data;
+        state.pagination = action.payload.pagination;
+        state.isLoading = false;
+      })
+      .addCase(getAllFeaturePropertyThunk.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message;
       })
 
       .addCase(getAllUserPropertyThunk.pending, (state) => {

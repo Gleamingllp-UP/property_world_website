@@ -46,6 +46,7 @@ button {
     border: none;
     outline: none;
   }
+  
 }
 
 img,
@@ -307,6 +308,8 @@ video {
         -ms-transform: translate(-50%, -50%) rotate(0deg);
             transform: translate(-50%, -50%) rotate(0deg);
   }
+
+  
 }
 
 @media only screen and (max-width: 992px) {

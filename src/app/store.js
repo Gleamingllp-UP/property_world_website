@@ -11,6 +11,7 @@ import socialMediaReducer from "../features/socialMedia/socialMediaSlice";
 import guideReducer from "../features/guide/guideSlice";
 import inquiryReducer from "../features/inquiry/inquirySlice";
 import propertyReducer from "../features/property/propertySlice";
+import userPlanReducer from "../features/userPlan/userPlanSlice";
 
 export const store = configureStore({
   reducer: {
@@ -26,5 +27,6 @@ export const store = configureStore({
     guide: guideReducer,
     enquiry: inquiryReducer,
     property: propertyReducer,
+    userPlan: userPlanReducer,
   },
 });

@@ -279,7 +279,7 @@ const routes = [
     id: 25,
     isPrivate: true,
     isDashboard: true,
-    isVisibleInDash: isAgentOrAgency,
+    isVisibleInDash: true,
     name: "Your Plan",
     icon: MdOutlineWorkspacePremium,
     path: pageRoutes?.YOUR_PLAN,

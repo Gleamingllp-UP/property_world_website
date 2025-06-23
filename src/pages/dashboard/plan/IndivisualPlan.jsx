@@ -74,7 +74,7 @@ function IndivisualPlan() {
                             <div className="price-box">
                               <div className="title">{item?.name || "N/A"}</div>
                               <h4 className="price">
-                                {formatPrice(item?.price || 0)}
+                                {/* {formatePr(item?.price || 0)} */}
                               </h4>
                             </div>
                             <ul className="features">

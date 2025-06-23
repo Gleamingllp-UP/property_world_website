@@ -10,7 +10,7 @@ function Layout() {
       <Header />
 
       {/* Main content */}
-      <main className="overflow-x-auto">
+      <main className="overflow">
         <div className="min-h-screen">
           <Outlet />
         </div>

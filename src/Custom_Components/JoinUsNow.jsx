@@ -19,7 +19,7 @@ const JoinUsNow = () => {
                   and commercial properties, designed to meet the diverse needs
                   of buyers, sellers, and renters.
                 </p>
-                <a href="list-your-property.php" className="action_btn mt-4">
+                <a href="#" className="action_btn mt-4">
                   List Your Property{" "}
                   <i className="ri-arrow-right-up-long-line" />
                 </a>

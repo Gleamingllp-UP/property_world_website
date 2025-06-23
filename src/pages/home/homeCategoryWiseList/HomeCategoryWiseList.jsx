@@ -86,7 +86,7 @@ function HomeCategoryWiseList() {
                   <HomeCategoryPropertySkeleton />
                 ) : (
                   propertyData &&
-                  propertyData?.map((item, index) => {
+                  propertyData?.slice(0,6)?.map((item, index) => {
                     return (
                       <div className="col-sm-4" key={index + 1}>
                         <div className="my_property">

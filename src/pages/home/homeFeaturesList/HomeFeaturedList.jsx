@@ -1,11 +1,5 @@
 import {
   bed,
-  propert1,
-  propert2,
-  propert3,
-  propert4,
-  propert5,
-  propert6,
   ruler,
 } from "@/assets/images";
 import { pageRoutes } from "@/router/pageRoutes";
@@ -45,7 +39,7 @@ function HomeFeaturedList() {
             <HomeCategoryPropertySkeleton />
           ) : (
             featuredPropertyData &&
-            featuredPropertyData?.map((item, index) => (
+            featuredPropertyData?.slice(0,6).map((item, index) => (
               <div className="col-sm-4" key={index}>
                 <div className="my_property">
                   <div className="photo_my_photo">

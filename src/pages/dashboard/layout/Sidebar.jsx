@@ -34,6 +34,18 @@ const Sidebar = () => {
     user
   );
 
+  const isAgentOrAgency =
+    userData?.role !== "Individual" && userData?.role !== "guest";
+
+  const visibleRoutes = routes
+    ?.filter((route) => {
+      if (!route.isPrivate || !route.isDashboard) return false;
+      if (route.isVisibleInDash === true) return true;
+      if (route.isVisibleInDash === "agentOrAgency") return isAgentOrAgency;
+      return false;
+    })
+    .sort((a, b) => a?.id - b?.id);
+
   return (
     <>
       <div
@@ -77,15 +89,8 @@ const Sidebar = () => {
 
         <hr className="my-2" />
         <ul className="nav flex-column">
-          {routes
-            ?.filter(
-              (routes) =>
-                routes?.isPrivate &&
-                routes?.isDashboard &&
-                routes?.isVisibleInDash
-            )
-            .sort((a, b) => a?.id - b?.id)
-            .map(({ id, path, name, icon: Icon }) => {
+          {visibleRoutes &&
+            visibleRoutes?.map(({ id, path, name, icon: Icon }) => {
               const isActive = isPathActive(path, location.pathname);
               return (
                 <Link

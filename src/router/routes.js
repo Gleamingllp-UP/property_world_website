@@ -76,9 +76,6 @@ const LikedProperties = lazy(() =>
 );
 const Plan = lazy(() => import("../pages/dashboard/plan/Plan"));
 
-const userData = JSON.parse(localStorage.getItem("userData") || "{}");
-const isAgentOrAgency =
-  userData?.role !== "Individual" && userData?.role !== "guest";
 const routes = [
   // {
   //   id: 1,
@@ -214,7 +211,7 @@ const routes = [
   {
     id: 19,
     isPrivate: true,
-    isVisibleInDash: isAgentOrAgency,
+    isVisibleInDash: "agentOrAgency",
     isDashboard: true,
     icon: LandPlot,
     name: "Add Property",
@@ -224,7 +221,7 @@ const routes = [
   {
     id: 20,
     isPrivate: true,
-    isVisibleInDash: isAgentOrAgency,
+    isVisibleInDash: "agentOrAgency",
     isDashboard: true,
     icon: TableProperties,
     name: "My Property Listing",

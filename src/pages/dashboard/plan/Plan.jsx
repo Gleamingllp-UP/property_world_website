@@ -4,9 +4,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllPlanForUserThunk } from "../../../features/userPlan/userPlanSlice";
 import PlanCardSkeleton from "../../../Custom_Components/Skeleton/PlanCardSkeleton";
 import { formatPrice } from "../../../helper/function/formatPrice";
+import {
+  createStripeCheckoutSessionThunk,
+  verifyPaymentSessionThunk,
+} from "../../../features/stripe/stripeSlice";
+import { showToast } from "../../../utils/toast/toast";
+import { useSearchParams } from "react-router-dom";
 
 function AgentAgecyPlan() {
-  const { isLoading, plans } = useSelector((store) => store?.userPlan);
+  const { isLoading, plans, activePlans } = useSelector(
+    (store) => store?.userPlan
+  );
   const { userData } = useSelector((store) => store?.user);
 
   const page = 1;
@@ -27,6 +35,37 @@ function AgentAgecyPlan() {
     getAllPlan();
   }, [getAllPlan]);
 
+  const [searchParams] = useSearchParams();
+
+  const handleVerify = useCallback(
+    async (session_id) => {
+      try {
+        showToast("Verifying payment session...", "loading");
+
+        const resultAction = await dispatch(
+          verifyPaymentSessionThunk({ session_id })
+        );
+
+        if (verifyPaymentSessionThunk.fulfilled.match(resultAction)) {
+          showToast(resultAction?.payload?.message, "success");
+        } else {
+          throw new Error(resultAction?.error?.message);
+        }
+      } catch (err) {
+        showToast(err?.message || "Payment verification failed.", "error");
+      }
+    },
+    [dispatch]
+  );
+
+  useEffect(() => {
+    const sessionId = searchParams.get("session_id");
+
+    if (sessionId) {
+      handleVerify(sessionId);
+    }
+  }, [handleVerify, searchParams]);
+
   const getIconByIndex = (index) => {
     const icons = [
       "fa-paper-plane",
@@ -38,6 +77,41 @@ function AgentAgecyPlan() {
       "fa-shield-alt",
     ];
     return icons[index % icons.length];
+  };
+
+  const handleClick = async (name, amount, plan_id) => {
+    try {
+      showToast("Redirecting for payment...", "loading");
+
+      const resultAction = await dispatch(
+        createStripeCheckoutSessionThunk({
+          name,
+          amount,
+          user_id: userData?._id,
+          plan_id,
+        })
+      );
+
+      if (createStripeCheckoutSessionThunk.fulfilled.match(resultAction)) {
+        const { url } = resultAction.payload;
+
+        if (url) {
+          showToast("Redirecting to secure payment page.", "success");
+          window.location.href = url;
+        } else {
+          throw new Error("No payment URL returned from server.");
+        }
+      } else {
+        throw new Error(
+          resultAction?.error?.message || "Payment initiation failed."
+        );
+      }
+    } catch (error) {
+      showToast(
+        error?.message || "Something went wrong during payment.",
+        "error"
+      );
+    }
   };
 
   return (
@@ -60,10 +134,14 @@ function AgentAgecyPlan() {
                   [...plans]
                     ?.sort((a, b) => a?.price - b?.price)
                     ?.map((item, index) => {
-                      const { features } = item;
+                      const { features, _id } = item;
+                      const isActive = activePlans?.plan?._id === _id;
+
                       return (
                         <div
-                          className="pricing-block col-lg-4 col-md-6 col-sm-12 wow fadeInUp"
+                          className={`pricing-block col-lg-4 col-md-6 col-sm-12 wow fadeInUp ${
+                            isActive ? "active-plan" : ""
+                          }`}
                           key={index}
                         >
                           <div className="inner-box">
@@ -119,12 +197,35 @@ function AgentAgecyPlan() {
                             </ul>
 
                             <div className="btn-box">
-                              <a
-                                href="https://codepen.io/anupkumar92"
-                                className="theme-btn"
-                              >
-                                BUY plan
-                              </a>
+                              {isActive ? (
+                                <button
+                                  className="theme-btn"
+                                  onClick={() =>
+                                    handleClick(
+                                      item?.name,
+                                      item?.price,
+                                      item?._id
+                                    )
+                                  }
+                                >
+                                  Active Plan
+                                </button>
+                              ) : activePlans?.plan?._id ? (
+                                <button
+                                  className="theme-btn"
+                                  onClick={() =>
+                                    handleClick(
+                                      item?.name,
+                                      item?.price,
+                                      item?._id
+                                    )
+                                  }
+                                >
+                                  Upgrade Plan
+                                </button>
+                              ) : (
+                                <button className="theme-btn">Buy Plan</button>
+                              )}
                             </div>
                           </div>
                         </div>

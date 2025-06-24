@@ -19,3 +19,22 @@ export const getAllPlanForUser = async (page, limit, user_type) => {
     }
   }
 };
+
+export const getUserPlan = async ( user_id) => {
+  try {
+    const response = await api.get(
+      endpoints.getUserPlan +
+        `/${user_id}`
+    );
+    return response.data;
+  } catch (error) {
+    if (error?.status !== 401) {
+      throw (
+        error?.response?.data?.message ||
+        "Failed to get, please try again later."
+      );
+    } else {
+      throw error?.message || "Failed to get, please try again later.";
+    }
+  }
+};

@@ -238,7 +238,7 @@
   text-align: center;
 }
 
-.pricing-block .btn-box a{
+.pricing-block .btn-box .theme-btn{
   position: relative;
   display: inline-block;
   font-size: 14px;
@@ -257,11 +257,11 @@
   transition: all 300ms ease;
 }
 
-.pricing-block .btn-box a:hover{
+.pricing-block .btn-box .theme-btn:hover{
   color: #ffffff;
 }
 
-.pricing-block .inner-box:hover .btn-box a{
+.pricing-block .inner-box:hover .btn-box .theme-btn{
   color:#40cbb4;
   background:none;
   border-radius:0px;
@@ -273,12 +273,12 @@
   border-color: #C0C0C0;
 }
 
-.pricing-block:nth-child(2) .btn-box a,
+.pricing-block:nth-child(2) .btn-box .theme-btn,
 .pricing-block:nth-child(2) .icon-box{
   background-color: #C0C0C0;
 }
 
-.pricing-block:nth-child(2) .inner-box:hover .btn-box a{
+.pricing-block:nth-child(2) .inner-box:hover .btn-box .theme-btn{
   color:#C0C0C0;
   background:none;
   border-radius:0px;
@@ -295,7 +295,7 @@
   border-color: #ffc20b;
 }
 
-.pricing-block:nth-child(3) .btn-box a,
+.pricing-block:nth-child(3) .btn-box .theme-btn,
 .pricing-block:nth-child(3) .icon-box{
   background-color: #ffc20b;
 }
@@ -305,7 +305,7 @@
   color: #ffc20b;
 }
 
-.pricing-block:nth-child(3) .inner-box:hover .btn-box a{
+.pricing-block:nth-child(3) .inner-box:hover .btn-box .theme-btn{
   color:#ffc20b;
   background:none;
   border-radius:0px;
@@ -318,7 +318,7 @@
   border-color: #1d95d2; /* Metallic Gray */
 }
 
-.pricing-block:nth-child(4) .btn-box a,
+.pricing-block:nth-child(4) .btn-box .theme-btn,
 .pricing-block:nth-child(4) .icon-box {
   background-color: #1d95d2; /* Primary Platinum Shade */
 }
@@ -328,7 +328,7 @@
   color: #1d95d2;
 }
 
-.pricing-block:nth-child(4) .inner-box:hover .btn-box a {
+.pricing-block:nth-child(4) .inner-box:hover .btn-box .theme-btn {
   color: #1d95d2;
   background: none;
   border-radius: 0px;

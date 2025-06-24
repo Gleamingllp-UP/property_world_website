@@ -10,6 +10,7 @@ import { user } from "../assets/images";
 import ImageWithLoader from "../Custom_Components/ImageWithLoader";
 import close from "../assets/images/closed.svg";
 import "../assets/css/style.css";
+import { getUserPlanThunk } from "../features/userPlan/userPlanSlice";
 
 function Header() {
   const [modalShow, setModalShow] = useState(false);
@@ -25,6 +26,12 @@ function Header() {
     dispatch(getAllActiveCategoryThunk());
     dispatch(getUserDetailsThunk());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (userData?._id) {
+      dispatch(getUserPlanThunk({user_id:userData?._id}));
+    }
+  }, [dispatch, userData?._id]);
 
   const getValidImageSrc = (...sources) => {
     return sources.find(
@@ -82,10 +89,14 @@ function Header() {
             </button>
             <div className={`overlay ${isMenuOpen ? "active" : ""}`}></div>
             <nav className={`navbar  ${isMenuOpen ? "active" : ""}`}>
-              <button type="button" className="closed-menu"   onClick={() => {
-                setIsMunu((prev) => !prev);
-                document.body.classList.toggle("scrolling");
-              }}>
+              <button
+                type="button"
+                className="closed-menu"
+                onClick={() => {
+                  setIsMunu((prev) => !prev);
+                  document.body.classList.toggle("scrolling");
+                }}
+              >
                 <img src={close} className="closed-icon" alt="closed" />
               </button>
               <ul className="menu">
@@ -166,11 +177,15 @@ function Header() {
                     </li>
                   </ul>
                 </li>
-                <li className={`menu-item menu-item-has-children ${
+                <li
+                  className={`menu-item menu-item-has-children ${
                     isSubMenuOpen === "location" ? "active" : ""
-                  }`}>
-                  <a href="#" data-toggle="sub-menu"
-                   onClick={() =>
+                  }`}
+                >
+                  <a
+                    href="#"
+                    data-toggle="sub-menu"
+                    onClick={() =>
                       setIsSubMenuOpen((prev) =>
                         prev === "location" ? "" : "location"
                       )
@@ -178,8 +193,9 @@ function Header() {
                   >
                     Location <i className="expand"></i>
                   </a>
-                  <ul className="sub-menu"
-                   style={{
+                  <ul
+                    className="sub-menu"
+                    style={{
                       maxHeight: `${
                         isSubMenuOpen === "location" ? "235px" : "0px"
                       }`,

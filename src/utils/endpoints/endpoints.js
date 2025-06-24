@@ -69,7 +69,11 @@ const endpoints = {
 
   //Plans
   getAllPlanForUser: "/plan/getall-users-plan",
-  
+  getUserPlan: "/user-plan/user-plan",
+
+  //Stripe payment
+  createStripeCheckoutSession: "/payment/create-checkout-session",
+  verifyPaymentSession: "/payment/verify-payment-session",
 };
 
 export { endpoints };

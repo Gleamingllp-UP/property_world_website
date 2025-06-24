@@ -1,13 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { property_world_logo } from "@/assets/images";
 import { routes } from "../../../router/routes";
 import { pageRoutes } from "../../../router/pageRoutes";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { LogOut } from "lucide-react";
 import LogoutModal from "../../auth/logout/LogoutModal";
 import { user } from "../../../assets/images";
 import ImageWithLoader from "../../../Custom_Components/ImageWithLoader";
+import { getUserPlanThunk } from "../../../features/userPlan/userPlanSlice";
 const Sidebar = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -17,6 +18,13 @@ const Sidebar = () => {
   const isPathActive = (basePath, currentPath) => {
     return currentPath === basePath || currentPath.startsWith(`${basePath}/`);
   };
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (userData?._id) {
+      dispatch(getUserPlanThunk({ user_id: userData?._id }));
+    }
+  }, [dispatch, userData?._id]);
 
   const getValidImageSrc = (...sources) => {
     return sources.find(

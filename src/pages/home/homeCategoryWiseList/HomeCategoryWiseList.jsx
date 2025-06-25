@@ -8,6 +8,7 @@ import { getAllPropertyThunk } from "../../../features/property/propertySlice";
 import { HomeCategoryPropertySkeleton } from "../../../Custom_Components/Skeleton/PropertySkeleton";
 import { formatNumberWithCommas } from "../../../helper/function/formatRange";
 import { formatPrice } from "../../../helper/function/formatPrice";
+import { bath } from "../../../assets/images";
 
 function HomeCategoryWiseList() {
   const { categories } = useSelector((store) => store?.activeData);
@@ -38,7 +39,7 @@ function HomeCategoryWiseList() {
         getAllPropertyThunk({
           page,
           limit,
-          searchFilters: { category: selectedId },
+          searchFilters: { category: selectedId, is_featured: "false" },
         })
       );
     }
@@ -86,7 +87,7 @@ function HomeCategoryWiseList() {
                   <HomeCategoryPropertySkeleton />
                 ) : (
                   propertyData &&
-                  propertyData?.slice(0,6)?.map((item, index) => {
+                  propertyData?.slice(0, 6)?.map((item, index) => {
                     return (
                       <div className="col-sm-4" key={index + 1}>
                         <div className="my_property">
@@ -111,41 +112,49 @@ function HomeCategoryWiseList() {
                               />
                             </Link>
                             <div className="new_listng">
-                              <div>
-                                {item?.bedrooms != null &&
-                                  item?.bedrooms !== "" && (
-                                    <>
-                                      <img src={bed} alt="bed" />{" "}
-                                      {item?.bedrooms === 0
-                                        ? "Studio"
-                                        : item?.bedrooms}{" "}
-                                    </>
-                                  )}
-                              </div>
-                              <div>
-                                {item?.area != null && item?.area !== "" && (
-                                  <>
-                                    <img src={ruler} alt="area" />{" "}
-                                    {formatNumberWithCommas(item?.area)} Sq Ft
-                                  </>
+                              {item?.bathrooms != null &&
+                                item?.bathrooms !== "" && (
+                                  <div>
+                                    <img src={bath} alt="bed" />{" "}
+                                    {item?.bathrooms}{" "}
+                                  </div>
                                 )}
-                              </div>
+                              {item?.bedrooms != null &&
+                                item?.bedrooms !== "" && (
+                                  <div>
+                                    <img src={bed} alt="bed" />{" "}
+                                    {item?.bedrooms === 0
+                                      ? "Studio"
+                                      : item?.bedrooms}{" "}
+                                  </div>
+                                )}
+
+                              {item?.area != null && item?.area !== "" && (
+                                <div>
+                                  <img src={ruler} alt="area" />{" "}
+                                  {formatNumberWithCommas(item?.area)} Sq Ft
+                                </div>
+                              )}
                             </div>
                           </div>
                           <div className="property_data">
-                            <div className="lease">
-                              <span>{item?.duration} Years</span>
-                            </div>
-                            <h4>{item?.title}</h4>
+                            {item?.duration && (
+                              <div className="lease">
+                                <span>{item?.duration ?? "N/A"}</span>
+                              </div>
+                            )}
+
+                            <h4>{item?.title ?? "N/A"}</h4>
                             <div className="pro_diss">
-                              <p>{item?.short_description}</p>
+                              <p>{item?.short_description ?? "N/A"}</p>
                             </div>
                             <div className="other_data_list">
                               <div className="loction_c">
                                 <i className="ri-map-pin-line" /> UAE
                               </div>
                               <div>
-                                <i className="ri-eye-line" /> {item?.address}
+                                <i className="ri-eye-line" />{" "}
+                                {item?.address ?? "N/A"}
                               </div>
                             </div>
                             <div className="action_p">

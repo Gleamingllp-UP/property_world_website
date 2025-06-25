@@ -166,3 +166,41 @@ export const addOrRemoveFavouriteProperty = async (id) => {
     }
   }
 };
+
+export const trackPropertyViews = async (id) => {
+  try {
+    const response = await api.put(endpoints.trackPropertyViews + `/${id}`);
+    return response.data;
+  } catch (error) {
+    if (error?.status !== 401) {
+      throw (
+        error?.response?.data?.message ||
+        "Failed to view, please try again later."
+      );
+    } else {
+      throw (
+        error?.message ||
+        "Failed to view, please try again later."
+      );
+    }
+  }
+};
+
+export const getSimilarProperties = async (id) => {
+  try {
+    const response = await api.get(endpoints.getSimilarProperties + `/${id}`);
+    return response.data;
+  } catch (error) {
+    if (error?.status !== 401) {
+      throw (
+        error?.response?.data?.message ||
+        "Failed to get, please try again later."
+      );
+    } else {
+      throw (
+        error?.message ||
+        "Failed to get, please try again later."
+      );
+    }
+  }
+};

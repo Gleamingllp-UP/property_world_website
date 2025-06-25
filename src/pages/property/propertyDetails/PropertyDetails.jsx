@@ -2,7 +2,10 @@ import React, { useEffect } from "react";
 import GLightbox from "glightbox";
 import "glightbox/dist/css/glightbox.css";
 import { useDispatch, useSelector } from "react-redux";
-import { getPropertyDetailsThunk } from "../../../features/property/propertySlice";
+import {
+  getPropertyDetailsThunk,
+  trackPropertyViewsThunk,
+} from "../../../features/property/propertySlice";
 import { useSearchParams } from "react-router-dom";
 import ImageWithLoader from "../../../Custom_Components/ImageWithLoader";
 import { PropertyImageSkeleton } from "../../../Custom_Components/Skeleton/PropertySkeleton";
@@ -18,8 +21,14 @@ function PropertyDetails() {
     (item) => item?.name !== "Thumbnail Image"
   );
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [id]);
+
   useEffect(() => {
     if (id) {
+      dispatch(trackPropertyViewsThunk({ id }));
       dispatch(getPropertyDetailsThunk({ id }));
     }
   }, [id, dispatch]);
@@ -37,10 +46,10 @@ function PropertyDetails() {
   return (
     <>
       <div className="container">
-          {isLoading ? (
-            <PropertyImageSkeleton />
-          ) : (
-            <>
+        {isLoading ? (
+          <PropertyImageSkeleton />
+        ) : (
+          <>
             <div id="gallery" className="photos-grid-container gallery">
               <div className="main-photo img-box">
                 {propertyDetails?.images
@@ -103,9 +112,9 @@ function PropertyDetails() {
                       />
                     ))}
               </div>
-        </div>
-            </>
-          )}
+            </div>
+          </>
+        )}
       </div>
     </>
   );

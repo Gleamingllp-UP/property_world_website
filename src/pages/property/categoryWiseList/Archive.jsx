@@ -72,7 +72,6 @@ const Archive = () => {
         addOrRemoveFavouritePropertyThunk(id)
       );
       if (addOrRemoveFavouritePropertyThunk.fulfilled.match(resultAction)) {
-       
         showToast(resultAction?.payload?.message, "success");
       } else {
         throw new Error(resultAction?.error?.message);
@@ -483,7 +482,7 @@ const Archive = () => {
                           </div>
 
                           <div className="call_action">
-                            <ul>
+                            <ul className="mb-0">
                               <li>
                                 <a
                                   href={`tel:${
@@ -518,8 +517,8 @@ const Archive = () => {
                               </li>
                             </ul>
 
-                            <span>
-                              <img
+                            <span className="">
+                              <ImageWithLoader
                                 src={
                                   item?.userData?.agency_logo ||
                                   property_world_logo

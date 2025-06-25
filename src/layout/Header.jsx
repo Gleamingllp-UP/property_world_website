@@ -29,7 +29,7 @@ function Header() {
 
   useEffect(() => {
     if (userData?._id) {
-      dispatch(getUserPlanThunk({user_id:userData?._id}));
+      dispatch(getUserPlanThunk({ user_id: userData?._id }));
     }
   }, [dispatch, userData?._id]);
 

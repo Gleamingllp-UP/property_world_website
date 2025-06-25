@@ -77,7 +77,7 @@ function PropertyAllInfo() {
               <hr />
 
               <div className="key_feature">
-                <p>About Property Information</p>
+                <p>More About Property Information</p>
                 {propertyDetails?.full_description}
               </div>
               <hr />

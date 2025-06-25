@@ -7,6 +7,8 @@ import {
   updateProperty,
   deleteProperty,
   addOrRemoveFavouriteProperty,
+  trackPropertyViews,
+  getSimilarProperties,
 } from "./propertyAPI";
 
 export const creatPropertyThunk = createAsyncThunk(
@@ -20,6 +22,19 @@ export const addOrRemoveFavouritePropertyThunk = createAsyncThunk(
   "property/addOrRemoveFavouriteProperty",
   async (payload) => {
     return await addOrRemoveFavouriteProperty(payload);
+  }
+);
+export const getSimilarPropertiesThunk = createAsyncThunk(
+  "property/getSimilarProperties",
+  async ({ id }) => {
+    return await getSimilarProperties(id);
+  }
+);
+
+export const trackPropertyViewsThunk = createAsyncThunk(
+  "property/trackPropertyViews",
+  async ({ id }) => {
+    return await trackPropertyViews(id);
   }
 );
 
@@ -59,13 +74,7 @@ export const getAllUserPropertyThunk = createAsyncThunk(
 export const getAllFeaturePropertyThunk = createAsyncThunk(
   "property/getAllFeatureProperty",
   async ({ page, limit, searchFilters = {}, sort_by = "", features = "" }) => {
-    return await getAllProperty(
-      page,
-      limit,
-      searchFilters,
-      sort_by,
-      features
-    );
+    return await getAllProperty(page, limit, searchFilters, sort_by, features);
   }
 );
 
@@ -81,10 +90,12 @@ const propertySlice = createSlice({
   initialState: {
     propertyData: [],
     featuredPropertyData: [],
+    similarPropertyData: [],
     propertyDetails: {},
     pagination: null,
     loading: false,
     isLoading: false,
+    isLoadingForSimilar: false,
     error: null,
   },
   reducers: {},
@@ -112,6 +123,21 @@ const propertySlice = createSlice({
       .addCase(updatePropertyThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
+      })
+
+      //Fetch Similar property data
+      .addCase(getSimilarPropertiesThunk.pending, (state) => {
+        state.isLoadingForSimilar = true;
+        state.similarPropertyData = [];
+      })
+      .addCase(getSimilarPropertiesThunk.fulfilled, (state, action) => {
+        state.similarPropertyData = action.payload.data;
+        state.isLoadingForSimilar = false;
+      })
+      .addCase(getSimilarPropertiesThunk.rejected, (state, action) => {
+        state.isLoadingForSimilar = false;
+        state.error = action.error.message;
+        state.similarPropertyData = null;
       })
 
       //addOrRemoveFavouriteProperty

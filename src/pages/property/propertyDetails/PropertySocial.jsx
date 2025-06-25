@@ -1,8 +1,19 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { email, facebook, g_email, twitter } from "../../../assets/images";
+import { useDispatch, useSelector } from "react-redux";
+import { showToast } from "../../../utils/toast/toast";
+import {
+  addOrRemoveFavouritePropertyThunk,
+  getPropertyDetailsThunk,
+} from "../../../features/property/propertySlice";
+import { throttle } from "lodash";
 
 const PropertySocial = () => {
   const [showSocials, setShowSocials] = useState(false);
+
+  const { userData } = useSelector((store) => store?.user);
+  const { propertyDetails } = useSelector((store) => store?.property);
+
   const handleShareClick = () => {
     setShowSocials(!showSocials);
   };
@@ -10,12 +21,53 @@ const PropertySocial = () => {
   const shareUrl = encodeURIComponent(window.location.href);
   const shareText = encodeURIComponent("Check out this amazing property!");
 
+  const dispatch = useDispatch();
+
+  const handleLikeToggle = async (id) => {
+    try {
+      showToast("Wait", "loading");
+      const resultAction = await dispatch(
+        addOrRemoveFavouritePropertyThunk(id)
+      );
+      if (addOrRemoveFavouritePropertyThunk.fulfilled.match(resultAction)) {
+        showToast(resultAction?.payload?.message, "success");
+        dispatch(getPropertyDetailsThunk({ id }));
+      } else {
+        throw new Error(resultAction?.error?.message);
+      }
+    } catch (error) {
+      showToast(error?.message || "Failed to create property.", "error");
+    }
+  };
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const throttledToggleLike = useCallback(
+    throttle((propertyId) => {
+      handleLikeToggle(propertyId);
+    }, 2000),
+    []
+  );
+
   return (
     <div className="col-lg-3">
       <div className="share_post">
-        <button>
-          <i className="ri-heart-line" />
-        </button>
+        {userData?.role !== "guest" && (
+          <button>
+            <i
+              className={
+                propertyDetails?.is_liked
+                  ? "ri-heart-fill text-white"
+                  : "ri-heart-line"
+              }
+              onClick={() => throttledToggleLike(propertyDetails?._id)}
+              style={{
+                cursor: "pointer",
+                fontSize: "20px",
+              }}
+            ></i>
+          </button>
+        )}
+
         <button className="toggle" onClick={handleShareClick}>
           <i className="ri-share-line" /> Share
         </button>

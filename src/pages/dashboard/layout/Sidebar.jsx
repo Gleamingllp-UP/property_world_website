@@ -80,10 +80,14 @@ const Sidebar = () => {
               alt="Profile"
               className="profile-img mb-3"
             />
-            <h5 className="text-center">
+            <h5 className="text-center text-danger fw-medium">
               {`${userData?.first_name} ${userData?.last_name}`}
             </h5>
-            <p className="text-center small">{userData?.email || ""}</p>
+            <p
+              className="text-center small text-danger fw-medium"
+            >
+              {userData?.email || ""}
+            </p>
             <hr className="my-2 text-black" />
 
             <button

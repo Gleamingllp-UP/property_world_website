@@ -192,28 +192,37 @@ function AdvanceSearch({ page, limit, sortBy, features, scrollRef }) {
   }, []);
 
   const searchFilters = useMemo(
-    () => ({
-      category: queryParams.get("category") || selectedCategoryId,
-      subCategory: queryParams.get("subCategory") || selectedSubCategoryId,
-      subSubCategory:
-        queryParams.get("subSubCategory") || selectedSubSubCategoryId,
-      duration: queryParams.get("duration") || rentDuration,
-      construction_status: queryParams.get("construction_status") || buyType,
-      bedrooms: queryParams.get("bedrooms") || bedRoom,
-      bathrooms: queryParams.get("bathrooms") || bathRoom,
-      min_price: queryParams.get("min_price") || minPrice,
-      max_price: queryParams.get("max_price") || maxPrice,
-      min_area: queryParams.get("min_area") || minArea,
-      max_area: queryParams.get("max_area") || maxArea,
-      payment_plan: queryParams.get("payment_plan") || finalPriceRange,
-      handover_by: queryParams.get("handover_by") || handOverBy,
-      search: queryParams.get("search") || location,
-      tour_types: queryParams.get("tour_types") || selectedTour,
-      agent_agency: queryParams.get("agent_agency") || agentOrAgency,
-      developer: queryParams.get("developer") || developer,
-      keyword: queryParams.get("keyword") || keyword,
-      completion: queryParams.get("completion") || completion,
-    }),
+    () => {
+      const filters = {
+        category: queryParams.get("category") || selectedCategoryId,
+        subCategory: queryParams.get("subCategory") || selectedSubCategoryId,
+        subSubCategory:
+          queryParams.get("subSubCategory") || selectedSubSubCategoryId,
+        duration: queryParams.get("duration") || rentDuration,
+        construction_status: queryParams.get("construction_status") || buyType,
+        bedrooms: queryParams.get("bedrooms") || bedRoom,
+        bathrooms: queryParams.get("bathrooms") || bathRoom,
+        min_price: queryParams.get("min_price") || minPrice,
+        max_price: queryParams.get("max_price") || maxPrice,
+        min_area: queryParams.get("min_area") || minArea,
+        max_area: queryParams.get("max_area") || maxArea,
+        payment_plan: queryParams.get("payment_plan") || finalPriceRange,
+        handover_by: queryParams.get("handover_by") || handOverBy,
+        search: queryParams.get("search") || location,
+        tour_types: queryParams.get("tour_types") || selectedTour,
+        agent_agency: queryParams.get("agent_agency") || agentOrAgency,
+        developer: queryParams.get("developer") || developer,
+        keyword: queryParams.get("keyword") || keyword,
+        completion: queryParams.get("completion") || completion,
+      };
+
+      const is_featured = queryParams.get("is_featured");
+      if (is_featured !== null && is_featured !== undefined) {
+        filters.is_featured = is_featured;
+      }
+
+      return filters;
+    },
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [

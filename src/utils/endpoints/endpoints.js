@@ -62,6 +62,8 @@ const endpoints = {
   getUsersAllProperty: "/property/get-user-property",
   deletePropertyByUser: "/property/delete-user-property",
   addToFavouriteProperty: "/property/add-remove-favourite-property",
+  trackPropertyViews: "/property/track-property-views",
+  getSimilarProperties: "/property/get-similar-property",
 
   //AmenitiesAndFacilities
   getAllAmenitiesAndFacilitiesForUser:

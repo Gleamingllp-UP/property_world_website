@@ -1,7 +1,4 @@
-import {
-  bed,
-  ruler,
-} from "@/assets/images";
+import { bed, ruler } from "@/assets/images";
 import { pageRoutes } from "@/router/pageRoutes";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,6 +8,7 @@ import ImageWithLoader from "../../../Custom_Components/ImageWithLoader";
 import { formatNumberWithCommas } from "../../../helper/function/formatRange";
 import { formatPrice } from "../../../helper/function/formatPrice";
 import { HomeCategoryPropertySkeleton } from "./../../../Custom_Components/Skeleton/PropertySkeleton";
+import { bath } from "../../../assets/images";
 function HomeFeaturedList() {
   const dispatch = useDispatch();
   const { isLoading, featuredPropertyData } = useSelector(
@@ -23,7 +21,7 @@ function HomeFeaturedList() {
       getAllFeaturePropertyThunk({
         page,
         limit,
-        searchFilters: { is_featured: true },
+        searchFilters: { is_featured: "true" },
       })
     );
   }, [dispatch]);
@@ -39,10 +37,24 @@ function HomeFeaturedList() {
             <HomeCategoryPropertySkeleton />
           ) : (
             featuredPropertyData &&
-            featuredPropertyData?.slice(0,6).map((item, index) => (
+            featuredPropertyData?.slice(0, 6).map((item, index) => (
               <div className="col-sm-4" key={index}>
                 <div className="my_property">
                   <div className="photo_my_photo">
+                    <span
+                      className="buy"
+                      style={{
+                        position: "absolute",
+                        top: "10px",
+                        left: "100px",
+                        backgroundColor:
+                          item?.categoryData?.name === "Rent"
+                            ? "#e9012b"
+                            : "#8BC34A",
+                      }}
+                    >
+                      {item?.categoryData?.name}
+                    </span>
                     <span className="buy">Featured</span>
                     <Link to={`${pageRoutes.PROPERTY_DETAILS}?id=${item?._id}`}>
                       <ImageWithLoader
@@ -51,31 +63,35 @@ function HomeFeaturedList() {
                       />
                     </Link>
                     <div className="new_listng">
-                      <div>
-                        {item?.bedrooms != null && item?.bedrooms !== "" && (
-                          <>
-                            <img src={bed} alt="bed" />{" "}
-                            {item?.bedrooms === 0 ? "Studio" : item?.bedrooms}{" "}
-                          </>
-                        )}
-                      </div>
-                      <div>
-                        {item?.area != null && item?.area !== "" && (
-                          <>
-                            <img src={ruler} alt="area" />{" "}
-                            {formatNumberWithCommas(item?.area)} Sq Ft
-                          </>
-                        )}
-                      </div>
+                      {item?.bathrooms != null && item?.bathrooms !== "" && (
+                        <div>
+                          <img src={bath} alt="bed" /> {item?.bathrooms}{" "}
+                        </div>
+                      )}
+                      {item?.bedrooms != null && item?.bedrooms !== "" && (
+                        <div>
+                          <img src={bed} alt="bed" />{" "}
+                          {item?.bedrooms === 0 ? "Studio" : item?.bedrooms}{" "}
+                        </div>
+                      )}
+
+                      {item?.area != null && item?.area !== "" && (
+                        <div>
+                          <img src={ruler} alt="area" />{" "}
+                          {formatNumberWithCommas(item?.area)} Sq Ft
+                        </div>
+                      )}
                     </div>
                   </div>
                   <div className="property_data">
-                    <div className="lease">
-                      <span>{item?.duration} Years</span>
-                    </div>
-                    <h4>{item?.title}</h4>
+                    {item?.duration && (
+                      <div className="lease">
+                        <span>{item?.duration}</span>
+                      </div>
+                    )}
+                    <h4>{item?.title ?? "N/A"}</h4>
                     <div className="pro_diss">
-                      <p>{item?.short_description}</p>
+                      <p>{item?.short_description ?? "N/A"}</p>
                     </div>
                     <div className="other_data_list">
                       <div className="loction_c">
@@ -83,7 +99,7 @@ function HomeFeaturedList() {
                       </div>
                       <div>
                         <i className="ri-eye-line" />
-                        {item?.address}
+                        {item?.address ?? "N/A"}
                       </div>
                     </div>
                     <div className="action_p">
@@ -105,9 +121,12 @@ function HomeFeaturedList() {
             ))
           )}
         </div>
-        {featuredPropertyData && featuredPropertyData?.length > 6 && (
+        {featuredPropertyData && featuredPropertyData?.length > 1 && (
           <div className="col-12 text-center">
-            <Link to={pageRoutes.PROPERTY_LISTING} className="action_btn mt20">
+            <Link
+              to={pageRoutes.PROPERTY_LISTING + `/?is_featured=true`}
+              className="action_btn mt20"
+            >
               View All Properties <i className="ri-arrow-right-up-long-line" />
             </Link>
           </div>

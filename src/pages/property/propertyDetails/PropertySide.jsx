@@ -48,7 +48,12 @@ const PropertySide = () => {
       ) : (
         <div className="col-lg-3">
           <div className="agent">
-            <img src={property_world_logo} className="img-fluid agent_logo" />
+            <ImageWithLoader
+              src={
+                propertyDetails?.userData?.agency_logo || property_world_logo
+              }
+              className="img-fluid agent_logo rounded"
+            />
             <h5>Property Finders Real Estate</h5>
             <hr />
             <div className="agent_info">

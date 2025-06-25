@@ -75,6 +75,7 @@ const LikedProperties = lazy(() =>
   import("../pages/dashboard/list/LikedProperties")
 );
 const Plan = lazy(() => import("../pages/dashboard/plan/Plan"));
+const PaymentCancelled = lazy(() => import("../pages/dashboard/plan/PaymentCancelled"));
 
 const routes = [
   // {
@@ -262,7 +263,7 @@ const routes = [
     Component: UpdateProperty,
   },
   {
-    id: 24,
+    id: 25,
     isPrivate: true,
     isDashboard: true,
     isVisibleInDash: true,
@@ -272,7 +273,7 @@ const routes = [
     Component: LikedProperties,
   },
   {
-    id: 25,
+    id: 26,
     isPrivate: true,
     isDashboard: true,
     isVisibleInDash: true,
@@ -280,6 +281,15 @@ const routes = [
     icon: MdOutlineWorkspacePremium,
     path: pageRoutes?.YOUR_PLAN,
     Component: Plan,
+  },
+  {
+    id: 27,
+    isPrivate: false,
+    isDashboard: true,
+    isVisibleInDash: false,
+    name: "Cancel Payment",
+    path: pageRoutes?.CANCEL_PAYMENT,
+    Component: PaymentCancelled,
   },
 ];
 export { routes };

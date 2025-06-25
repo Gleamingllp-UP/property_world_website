@@ -1,15 +1,18 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
 import "../../../assets/css/plan.css";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllPlanForUserThunk } from "../../../features/userPlan/userPlanSlice";
+import {
+  getAllPlanForUserThunk,
+  getUserPlanThunk,
+} from "../../../features/userPlan/userPlanSlice";
 import PlanCardSkeleton from "../../../Custom_Components/Skeleton/PlanCardSkeleton";
 import { formatPrice } from "../../../helper/function/formatPrice";
 import {
   createStripeCheckoutSessionThunk,
   verifyPaymentSessionThunk,
 } from "../../../features/stripe/stripeSlice";
-import { showToast } from "../../../utils/toast/toast";
-import { useSearchParams } from "react-router-dom";
+import { dismissToast, showToast } from "../../../utils/toast/toast";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 function AgentAgecyPlan() {
   const { isLoading, plans, activePlans } = useSelector(
@@ -19,7 +22,21 @@ function AgentAgecyPlan() {
 
   const page = 1;
   const limit = 10;
+
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const [searchParams] = useSearchParams();
+  const sessionId = useMemo(
+    () => searchParams.get("session_id"),
+    [searchParams]
+  );
+
+  const verifiedSessions = useMemo(() => {
+    return new Set(
+      JSON.parse(localStorage.getItem("verifiedSessions") || "[]")
+    );
+  }, []);
 
   const getAllPlan = useCallback(async () => {
     dispatch(
@@ -35,8 +52,6 @@ function AgentAgecyPlan() {
     getAllPlan();
   }, [getAllPlan]);
 
-  const [searchParams] = useSearchParams();
-
   const handleVerify = useCallback(
     async (session_id) => {
       try {
@@ -47,7 +62,25 @@ function AgentAgecyPlan() {
         );
 
         if (verifyPaymentSessionThunk.fulfilled.match(resultAction)) {
-          showToast(resultAction?.payload?.message, "success");
+          const res = resultAction?.payload;
+          if (res?.alreadyProcessed || res?.assigned || res?.renewed) {
+            const updated = new Set(verifiedSessions);
+            updated.add(sessionId);
+            localStorage.setItem(
+              "verifiedSessions",
+              JSON.stringify([...updated])
+            );
+            dismissToast();
+
+            const newParams = new URLSearchParams(searchParams);
+            newParams.delete("session_id");
+            navigate({ search: newParams.toString() }, { replace: true });
+          }
+
+          if (!res?.alreadyProcessed) {
+            showToast(resultAction?.payload?.message, "success");
+          }
+          dispatch(getUserPlanThunk({ user_id: userData?._id }));
         } else {
           throw new Error(resultAction?.error?.message);
         }
@@ -55,16 +88,21 @@ function AgentAgecyPlan() {
         showToast(err?.message || "Payment verification failed.", "error");
       }
     },
-    [dispatch]
+    [
+      dispatch,
+      navigate,
+      searchParams,
+      sessionId,
+      userData?._id,
+      verifiedSessions,
+    ]
   );
 
   useEffect(() => {
-    const sessionId = searchParams.get("session_id");
+    if (!sessionId || verifiedSessions.has(sessionId)) return;
 
-    if (sessionId) {
-      handleVerify(sessionId);
-    }
-  }, [handleVerify, searchParams]);
+    handleVerify(sessionId);
+  }, [handleVerify, searchParams, sessionId, verifiedSessions]);
 
   const getIconByIndex = (index) => {
     const icons = [
@@ -120,7 +158,11 @@ function AgentAgecyPlan() {
         <div className="container">
           <div className="sec-title text-center">
             <span className="title">Get plan</span>
-            <h2>Choose a Plan</h2>
+            <h2>
+              {activePlans?.plan?._id && activePlans?.isActive
+                ? "Upgrade Plan"
+                : "Choose a plan"}
+            </h2>
           </div>
 
           <div className="outer-box">
@@ -135,7 +177,8 @@ function AgentAgecyPlan() {
                     ?.sort((a, b) => a?.price - b?.price)
                     ?.map((item, index) => {
                       const { features, _id } = item;
-                      const isActive = activePlans?.plan?._id === _id;
+                      const isActive =
+                        activePlans?.plan?._id === _id && activePlans?.isActive;
 
                       return (
                         <div
@@ -208,7 +251,7 @@ function AgentAgecyPlan() {
                                     )
                                   }
                                 >
-                                  Active Plan
+                                  Activated Plan
                                 </button>
                               ) : activePlans?.plan?._id ? (
                                 <button
@@ -224,7 +267,18 @@ function AgentAgecyPlan() {
                                   Upgrade Plan
                                 </button>
                               ) : (
-                                <button className="theme-btn">Buy Plan</button>
+                                <button
+                                  className="theme-btn"
+                                  onClick={() =>
+                                    handleClick(
+                                      item?.name,
+                                      item?.price,
+                                      item?._id
+                                    )
+                                  }
+                                >
+                                  Buy Plan
+                                </button>
                               )}
                             </div>
                           </div>

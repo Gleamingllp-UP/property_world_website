@@ -88,6 +88,9 @@ function LikedProperties() {
                                 <span
                                   className="buy"
                                   style={{
+                                    position: "absolute",
+                                    top: "10px",
+                                    left: item?.is_featured ? "100px" : "10px",
                                     backgroundColor:
                                       item?.category?.name === "Rent"
                                         ? "#e9012b"
@@ -96,6 +99,10 @@ function LikedProperties() {
                                 >
                                   {item?.category?.name}
                                 </span>
+                                {item?.is_featured && (
+                                  <span className="buy">Featured</span>
+                                )}
+
                                 <div className="save_p">
                                   <button>
                                     <i

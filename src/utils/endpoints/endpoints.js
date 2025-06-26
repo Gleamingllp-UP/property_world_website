@@ -15,7 +15,12 @@ const endpoints = {
   getLikedProperties: "/user/get-all-liked-properties",
 
   getUserAllDetailsForWebWithProperties:
-    "user/get-all-user-details-with-properties",
+    "/user/get-all-user-details-with-properties",
+
+  sendOtpToPhoneNumber: "/user/send-otp-to-phone",
+  verifyOtpForPhoneNumber: "/user/verify-otp-for-phone",
+  resendOtpToPhone: "/user/resend-otp",
+
   //Filter
   getAllActiveCategory: "/category/getall-active-category",
   getAllActiveSubCategory: "/sub-category/getall-active-subCategory",

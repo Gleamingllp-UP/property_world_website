@@ -121,7 +121,7 @@ function HomeFeaturedList() {
             ))
           )}
         </div>
-        {featuredPropertyData && featuredPropertyData?.length > 1 && (
+        {featuredPropertyData && featuredPropertyData?.length > 6 && (
           <div className="col-12 text-center">
             <Link
               to={pageRoutes.PROPERTY_LISTING + `/?is_featured=true`}

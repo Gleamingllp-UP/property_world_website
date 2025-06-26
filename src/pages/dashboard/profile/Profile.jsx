@@ -16,19 +16,24 @@ import {
 import { useEffect, useState } from "react";
 import {
   getUserDetailsThunk,
+  sendOtpToPhoneNumberThunk,
   updateUserDetailsThunk,
+  verifyOtpForPhoneNumberThunk,
 } from "../../../features/user/userSlice";
 import { MultiSelectWithLabelForm } from "../../../Custom_Components/MultiSelectWithLabelForm";
 import { TextAreaWithLabelForm } from "../../../Custom_Components/TextAreaWithLabelForm";
 import { buildFormDataFromFields } from "../../../helper/function/buildFormDataFromFields";
 import { showToast } from "../../../utils/toast/toast";
 import { getAllActiveLocationThunk } from "../../../features/activeData/activeDataSlice";
+import VerifyOtpModal from "./VerifyOtpModal";
 
 function Profile() {
   const [agentPhoto, setAgentPhoto] = useState("");
   const [agencyLogo, setAgencyLogo] = useState("");
   const [officeRegistrationNumber, setOfficeRegistrationNumber] = useState("");
   const [brokerLicenseNumber, setBrokerLicenseNumber] = useState("");
+
+  const [modalShow, setModalShow] = useState(false);
 
   const [kycForm, setKycForm] = useState("");
   const [titleDeed, setTitleDeed] = useState("");
@@ -125,6 +130,41 @@ function Profile() {
         await reset();
         showToast("Profile Updated Successfull!", "success");
         dispatch(getUserDetailsThunk());
+      } else {
+        throw new Error(resultAction?.error?.message);
+      }
+    } catch (error) {
+      showToast(error?.message || "Failed to update profile.", "error");
+    }
+  };
+
+  const handleSendOTPtoPhone = async () => {
+    try {
+      const phone_number = userData?.phone_number;
+      const resultAction = await dispatch(
+        sendOtpToPhoneNumberThunk({ phone_number })
+      );
+      if (sendOtpToPhoneNumberThunk.fulfilled.match(resultAction)) {
+        showToast(resultAction?.payload?.message, "success");
+        setModalShow(true);
+      } else {
+        throw new Error(resultAction?.error?.message);
+      }
+    } catch (error) {
+      showToast(error?.message || "Failed to update profile.", "error");
+    }
+  };
+
+  const handleVerifyOTPforPhone = async (code) => {
+    try {
+      const phone_number = userData?.phone_number;
+      const resultAction = await dispatch(
+        verifyOtpForPhoneNumberThunk({ phone_number, code })
+      );
+      if (verifyOtpForPhoneNumberThunk.fulfilled.match(resultAction)) {
+        dispatch(getUserDetailsThunk());
+        showToast(resultAction?.payload?.message, "success");
+        setModalShow(false);
       } else {
         throw new Error(resultAction?.error?.message);
       }
@@ -356,6 +396,20 @@ function Profile() {
                           ? "col-span-4"
                           : ""
                       }`}
+                      rightIcon={
+                        field?.key === "phone_number" &&
+                        !userData?.is_phone_verified && (
+                          <button
+                            type="button"
+                            className="text-success"
+                            onClick={() => {
+                              handleSendOTPtoPhone();
+                            }}
+                          >
+                            Verify
+                          </button>
+                        )
+                      }
                       rules={getValidationRules({
                         label: field?.label,
                         type:
@@ -457,6 +511,14 @@ function Profile() {
           </div>
         </form>
       )}
+
+      <VerifyOtpModal
+        show={modalShow}
+        onHide={() => setModalShow(false)}
+        onVerify={(otp) => {
+          handleVerifyOTPforPhone(otp);
+        }}
+      />
     </div>
   );
 }

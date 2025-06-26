@@ -10,6 +10,8 @@ import {
   getAllUserForWeb,
   getLikedProperties,
   getUserAllDetailsForWebWithProperties,
+  sendOtpToPhoneNumber,
+  verifyOtpForPhoneNumber
 } from "./userAPI";
 
 export const initiateSignupThunk = createAsyncThunk(
@@ -88,11 +90,29 @@ export const updateUserDetailsThunk = createAsyncThunk(
 
 export const getUserAllDetailsForWebWithPropertiesThunk = createAsyncThunk(
   "users/getUserAllDetailsForWebWithProperties",
-  async ({id, page, limit, sort_by=""}) => {
-    return await getUserAllDetailsForWebWithProperties(id, page, limit, sort_by);
+  async ({ id, page, limit, sort_by = "" }) => {
+    return await getUserAllDetailsForWebWithProperties(
+      id,
+      page,
+      limit,
+      sort_by
+    );
   }
 );
 
+export const sendOtpToPhoneNumberThunk = createAsyncThunk(
+  "users/sendOtpToPhoneNumber",
+  async ({ phone_number }) => {
+    return await sendOtpToPhoneNumber(phone_number);
+  }
+);
+
+export const verifyOtpForPhoneNumberThunk = createAsyncThunk(
+  "users/verifyOtpForPhoneNumber",
+  async ({ phone_number,code }) => {
+    return await verifyOtpForPhoneNumber(phone_number,code);
+  }
+);
 
 export const logoutUser = createAsyncThunk("users/logout", async () => {
   localStorage.removeItem("userData");
@@ -254,15 +274,21 @@ const usersSlice = createSlice({
       .addCase(getUserAllDetailsForWebWithPropertiesThunk.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(getUserAllDetailsForWebWithPropertiesThunk.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.agentOrAgencyDetails = action.payload.data;
-        state.pagination = action.payload.data.pagination;
-      })
-      .addCase(getUserAllDetailsForWebWithPropertiesThunk.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = action.error.message;
-      })
+      .addCase(
+        getUserAllDetailsForWebWithPropertiesThunk.fulfilled,
+        (state, action) => {
+          state.isLoading = false;
+          state.agentOrAgencyDetails = action.payload.data;
+          state.pagination = action.payload.data.pagination;
+        }
+      )
+      .addCase(
+        getUserAllDetailsForWebWithPropertiesThunk.rejected,
+        (state, action) => {
+          state.isLoading = false;
+          state.error = action.error.message;
+        }
+      )
 
       //getLikedPropertiesThunk
       .addCase(getLikedPropertiesThunk.pending, (state) => {
@@ -275,6 +301,30 @@ const usersSlice = createSlice({
       })
       .addCase(getLikedPropertiesThunk.rejected, (state, action) => {
         state.isLoading = false;
+        state.error = action.error.message;
+      })
+
+      //sendOtpToPhoneNumberThunk
+      .addCase(sendOtpToPhoneNumberThunk.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(sendOtpToPhoneNumberThunk.fulfilled, (state) => {
+        state.loading = false;
+      })
+      .addCase(sendOtpToPhoneNumberThunk.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+
+      //verifyOtpForPhoneNumber
+      .addCase(verifyOtpForPhoneNumberThunk.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(verifyOtpForPhoneNumberThunk.fulfilled, (state) => {
+        state.loading = false;
+      })
+      .addCase(verifyOtpForPhoneNumberThunk.rejected, (state, action) => {
+        state.loading = false;
         state.error = action.error.message;
       })
 

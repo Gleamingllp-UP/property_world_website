@@ -20,6 +20,7 @@ function PropertyDetails() {
   const productImages = propertyDetails?.images?.filter(
     (item) => item?.name !== "Thumbnail Image"
   );
+  
   const dispatch = useDispatch();
 
   useEffect(() => {

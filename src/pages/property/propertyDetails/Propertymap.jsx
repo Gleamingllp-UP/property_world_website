@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { PropertyMapSkeleton } from "../../../Custom_Components/Skeleton/PropertySkeleton";
 
 const loader = new Loader({
-  apiKey: "AIzaSyDjNkeXpHwfGwnJXuzeb630oyNHpP9MjSo",
+  apiKey: import.meta.env.VITE_GOOGLE_MAP_KEY,
   libraries: ["places"],
 });
 
@@ -28,7 +28,9 @@ const Propertymap = ({ lat = 25.3463, lng = 55.4209, address }) => {
               lng: location.lng(),
             });
           } else {
-            console.warn("Geocode failed or no result, falling back to default lat/lng");
+            console.warn(
+              "Geocode failed or no result, falling back to default lat/lng"
+            );
             setMapCenter({ lat, lng }); // fallback
           }
         });
@@ -57,7 +59,12 @@ const Propertymap = ({ lat = 25.3463, lng = 55.4209, address }) => {
       });
 
       const service = new window.google.maps.places.PlacesService(map);
-      const placeTypes = ["school", "hospital", "supermarket", "subway_station"];
+      const placeTypes = [
+        "school",
+        "hospital",
+        "supermarket",
+        "subway_station",
+      ];
 
       const nearbySearchPromises = placeTypes.map(
         (type) =>

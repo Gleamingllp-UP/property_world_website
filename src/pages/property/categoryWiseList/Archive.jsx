@@ -7,9 +7,6 @@ import Slider from "react-slick";
 import {
   bath,
   bed,
-  pro_comm3,
-  pro_comm4,
-  propert2,
   property_world_logo,
   ruler,
   user,
@@ -27,6 +24,7 @@ import { addOrRemoveFavouritePropertyThunk } from "../../../features/property/pr
 import { showToast } from "../../../utils/toast/toast";
 import { throttle } from "lodash";
 import { formatNumberWithCommas } from "../../../helper/function/formatRange";
+import NearbyPlaces from "./NearbyPlaces";
 
 const Archive = () => {
   const {
@@ -202,109 +200,6 @@ const Archive = () => {
 
         {/* Featured Property Example */}
         <div className="listing_area position-relative" ref={innerRef}>
-          <div className="list_box">
-            <div className="feat_tag">
-              <p>Featured Property</p>
-            </div>
-            <div className="row">
-              <div className="col-lg-5">
-                <div className="property_images">
-                  <div className="save_p">
-                    <button>
-                      <i className="ri-heart-line" />
-                    </button>
-                  </div>
-                  <div className="big_photo">
-                    <Link to="/property-details">
-                      <img src={propert2} className="img-fluid" />
-                    </Link>
-                  </div>
-                  <div className="small_photo">
-                    <Link to="/property-details">
-                      <img src={pro_comm3} className="img-fluid" />
-                      <img src={pro_comm4} className="img-fluid" />
-                    </Link>
-                  </div>
-                </div>
-                <div className="price_tt">
-                  <span>
-                    AED <b>850,000</b> Yearly
-                  </span>
-                  <span className="flex_box">
-                    <img src={user} className="agent_b" />{" "}
-                    <i className="ri-verified-badge-fill" />
-                  </span>
-                </div>
-              </div>
-
-              <div className="col-lg-7">
-                <div className="property_data_area">
-                  <h2>
-                    <Link to="/property-details">
-                      The Community Sports Arena
-                    </Link>
-                  </h2>
-                  <div className="p_info">
-                    <ul>
-                      <li>Apartment</li>
-                      <li>
-                        <span>
-                          <img src={bed} /> Studio
-                        </span>
-                        <span>
-                          <img src={bath} />1
-                        </span>
-                      </li>
-                      <li>
-                        <img src={ruler} /> 396
-                      </li>
-                    </ul>
-                  </div>
-                  <div className="pro_desc">
-                    At vero eos et accusamus et iusto odio dignissimos
-                    ducimus...
-                  </div>
-                  <div className="loc">
-                    <i className="ri-map-pin-line" /> Dubai Sports City
-                  </div>
-                  <div className="nearst_location">
-                    <p>
-                      <b>Nearest Location</b>
-                    </p>
-                    <ul>
-                      <li>School: 1.2 km</li>
-                      <li>Hospital: 1.5 km</li>
-                      <li>Metro Station: 800 m</li>
-                      <li>Supermarket: 600 m</li>
-                    </ul>
-                  </div>
-                  <div className="call_action">
-                    <ul>
-                      <li>
-                        <a href="#">
-                          <i className="ri-phone-line" /> Call
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <i className="ri-mail-open-line" /> Email
-                        </a>
-                      </li>
-                      <li>
-                        <a href="#">
-                          <i className="ri-whatsapp-line" /> WhatsApp
-                        </a>
-                      </li>
-                    </ul>
-                    <span>
-                      <img src={property_world_logo} />
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
           {/* Dynamic Properties List */}
           <div>
             {isLoading ? (
@@ -343,7 +238,188 @@ const Archive = () => {
                   ],
                 };
 
-                return (
+                const productImages = item?.images?.filter(
+                  (item) => item?.name !== "Thumbnail Image"
+                );
+                const productThumbnailImage = item?.images?.filter(
+                  (item) => item?.name === "Thumbnail Image"
+                );
+                return item?.is_featured ? (
+                  <div className="list_box">
+                    <div className="feat_tag">
+                      <p>Featured Property</p>
+                    </div>
+                    <div className="row">
+                      <div className="col-lg-5">
+                        <div className="property_images">
+                          <div className="save_p">
+                            {userData?.role !== "guest" && (
+                              <button>
+                                <i
+                                  className={
+                                    item?.is_liked
+                                      ? "ri-heart-fill text-white"
+                                      : "ri-heart-line"
+                                  }
+                                  onClick={() => throttledToggleLike(item?._id)}
+                                  style={{
+                                    cursor: "pointer",
+                                    fontSize: "20px",
+                                  }}
+                                ></i>
+                              </button>
+                            )}
+                          </div>
+                          <div className="big_photo">
+                            <Link
+                              to={`${pageRoutes.PROPERTY_DETAILS}?id=${item?._id}`}
+                            >
+                              <ImageWithLoader
+                                src={productThumbnailImage?.[0]?.url}
+                                className="img-fluid"
+                              />
+                            </Link>
+                          </div>
+                          <div className="small_photo">
+                            <Link
+                              to={`${pageRoutes.PROPERTY_DETAILS}?id=${item?._id}`}
+                            >
+                              {productImages?.slice(0, 2)?.map((img, ind) => {
+                                return (
+                                  <ImageWithLoader
+                                    key={ind}
+                                    src={img?.url}
+                                    className="img-fluid"
+                                  />
+                                );
+                              })}
+                            </Link>
+                          </div>
+                        </div>
+                        <div className="price_tt">
+                          <span>
+                            <b>{formatPrice(item?.price)}</b>{" "}
+                            {item?.duration || ""}
+                          </span>
+                          <span className="flex_box">
+                            <img
+                              src={item?.userData?.agent_photo || user}
+                              className="agent_b"
+                              alt="agent"
+                            />
+                            <i className="ri-verified-badge-fill" />
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="col-lg-7">
+                        <div className="property_data_area">
+                          <h2>
+                            <Link
+                              to={`${pageRoutes.PROPERTY_DETAILS}?id=${item?._id}`}
+                            >
+                              {item?.title}
+                            </Link>
+                          </h2>
+                          <div className="p_info">
+                            <ul>
+                              <li>{item?.subSubCategoryData?.name}</li>
+                              {(item?.bedrooms != null &&
+                                item?.bedrooms !== "") ||
+                              item?.bathrooms ? (
+                                <li>
+                                  {item?.bedrooms != null &&
+                                    item?.bedrooms !== "" && (
+                                      <span>
+                                        <img src={bed} alt="bed" />{" "}
+                                        {item?.bedrooms === 0
+                                          ? "Studio"
+                                          : item?.bedrooms}{" "}
+                                      </span>
+                                    )}
+                                  {item?.bathrooms ? (
+                                    <span>
+                                      <img src={bath} alt="bath" />{" "}
+                                      {item?.bathrooms}
+                                    </span>
+                                  ) : null}
+                                </li>
+                              ) : null}
+
+                              {item?.area && (
+                                <li>
+                                  <img src={ruler} alt="area" />{" "}
+                                  {formatNumberWithCommas(item?.area)}
+                                </li>
+                              )}
+                            </ul>
+                          </div>
+                          <div className="pro_desc sli">
+                            {item?.short_description ?? "No description"}
+                          </div>
+                          <div className="loc">
+                            <i className="ri-map-pin-line" />
+                            {item?.address ?? "No address"}
+                          </div>
+                          <>
+                            <NearbyPlaces
+                              address={
+                                item?.building_name + ", " + item?.address
+                              }
+                              lat={item?.locationData?.latitude}
+                              lng={item?.locationData?.longitude}
+                            />
+                          </>
+                          <div className="call_action">
+                            <ul className="mb-0">
+                              <li>
+                                <a
+                                  href={`tel:${
+                                    item?.userData?.phone_number ||
+                                    "97143533229"
+                                  }`}
+                                >
+                                  <i className="ri-phone-line" /> Call
+                                </a>
+                              </li>
+                              <li>
+                                <a
+                                  href={`mailto:${
+                                    item?.userData?.email ||
+                                    "info@propertyworld.ae"
+                                  }`}
+                                >
+                                  <i className="ri-mail-open-line" /> Email
+                                </a>
+                              </li>
+                              <li>
+                                <a
+                                  href={`https://wa.me/${
+                                    item?.userData?.whatsapp_number ||
+                                    "97143533229"
+                                  }`}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                >
+                                  <i className="ri-whatsapp-line" /> WhatsApp
+                                </a>
+                              </li>
+                            </ul>
+                            <span>
+                              <ImageWithLoader
+                                src={
+                                  item?.userData?.agency_logo ||
+                                  property_world_logo
+                                }
+                                alt="logo"
+                              />
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
                   <div className="list_box normal_listing" key={item?._id}>
                     <div className="row">
                       {/* Left Side */}

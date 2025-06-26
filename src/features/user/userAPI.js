@@ -182,3 +182,40 @@ export const getUserAllDetailsForWebWithProperties = async (
     }
   }
 };
+
+export const sendOtpToPhoneNumber = async (phone_number) => {
+  try {
+    const response = await api.post(endpoints.sendOtpToPhoneNumber, {
+      phone_number,
+    });
+    return response.data;
+  } catch (error) {
+    if (error?.status !== 401) {
+      throw (
+        error?.response?.data?.message ||
+        "Failed to send, please try again later."
+      );
+    } else {
+      throw error?.message || "Failed to send, please try again later.";
+    }
+  }
+};
+
+export const verifyOtpForPhoneNumber = async (phone_number, code) => {
+  try {
+    const response = await api.put(endpoints.verifyOtpForPhoneNumber, {
+      phone_number,
+      code,
+    });
+    return response.data;
+  } catch (error) {
+    if (error?.status !== 401) {
+      throw (
+        error?.response?.data?.message ||
+        "Failed to verify, please try again later."
+      );
+    } else {
+      throw error?.message || "Failed to verify, please try again later.";
+    }
+  }
+};

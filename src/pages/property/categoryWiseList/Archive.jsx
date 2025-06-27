@@ -25,6 +25,7 @@ import { showToast } from "../../../utils/toast/toast";
 import { throttle } from "lodash";
 import { formatNumberWithCommas } from "../../../helper/function/formatRange";
 import NearbyPlaces from "./NearbyPlaces";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const Archive = () => {
   const {
@@ -53,13 +54,13 @@ const Archive = () => {
   // Custom arrow components
   const NextArrow = ({ onClick }) => (
     <div className="custom-arrow next" onClick={onClick}>
-      <i className="ri-arrow-right-s-line"></i>
+      <ChevronRight strokeWidth={2} size={15} />
     </div>
   );
 
   const PrevArrow = ({ onClick }) => (
     <div className="custom-arrow prev" onClick={onClick}>
-      <i className="ri-arrow-left-s-line"></i>
+      <ChevronLeft strokeWidth={2} size={15} />
     </div>
   );
 
@@ -79,6 +80,7 @@ const Archive = () => {
     }
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const throttledToggleLike = useCallback(
     throttle((propertyId) => {
       handleLikeToggle(propertyId);
@@ -289,7 +291,7 @@ const Archive = () => {
                                   <ImageWithLoader
                                     key={ind}
                                     src={img?.url}
-                                    className="img-fluid"
+                                    className={ind !== 0 ? "mb-0" : ""}
                                   />
                                 );
                               })}

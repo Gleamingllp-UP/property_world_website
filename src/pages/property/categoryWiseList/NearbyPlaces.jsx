@@ -25,7 +25,7 @@ const calculateDistance = (lat1, lon1, lat2, lon2) => {
   return R * c; // distance in kilometers (raw)
 };
 
-const NearbyPlaces = ({ lat = 25.3463, lng = 55.4209, address }) => {
+const NearbyPlaces = ({ lat = 25.3463, lng = 55.4209, address,name }) => {
   const [distances, setDistances] = useState([]);
   const [coordinates, setCoordinates] = useState({ lat, lng });
 
@@ -103,7 +103,13 @@ const NearbyPlaces = ({ lat = 25.3463, lng = 55.4209, address }) => {
 
   return (
     <div className="nearst_location">
-      <p>Nearby Places</p>
+      {name === "agent" ? (
+        <p>
+          <b>Nearest Location</b>
+        </p>
+      ) : (
+        <p>Nearby Places</p>
+      )}
       <ul>
         {distances &&
           distances?.map((place) => (

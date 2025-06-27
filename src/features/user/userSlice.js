@@ -11,7 +11,9 @@ import {
   getLikedProperties,
   getUserAllDetailsForWebWithProperties,
   sendOtpToPhoneNumber,
-  verifyOtpForPhoneNumber
+  verifyOtpForPhoneNumber,
+  sendOtpToEmail,
+  verifyOtpForEmail,
 } from "./userAPI";
 
 export const initiateSignupThunk = createAsyncThunk(
@@ -109,8 +111,22 @@ export const sendOtpToPhoneNumberThunk = createAsyncThunk(
 
 export const verifyOtpForPhoneNumberThunk = createAsyncThunk(
   "users/verifyOtpForPhoneNumber",
-  async ({ phone_number,code }) => {
-    return await verifyOtpForPhoneNumber(phone_number,code);
+  async ({ phone_number, code }) => {
+    return await verifyOtpForPhoneNumber(phone_number, code);
+  }
+);
+
+export const sendOtpToEmailThunk = createAsyncThunk(
+  "users/sendOtpToEmail",
+  async ({ email }) => {
+    return await sendOtpToEmail(email);
+  }
+);
+
+export const verifyOtpForEmailThunk = createAsyncThunk(
+  "users/verifyOtpForEmail",
+  async ({ email, code }) => {
+    return await verifyOtpForEmail(email, code);
   }
 );
 
@@ -131,6 +147,8 @@ const usersSlice = createSlice({
     agentOrAgencyDetails: {},
     formData: null,
     loading: false,
+    isEmailVerifying: false,
+    isPhoneVerifying: false,
     isLoading: false,
     error: null,
   },
@@ -324,6 +342,30 @@ const usersSlice = createSlice({
         state.loading = false;
       })
       .addCase(verifyOtpForPhoneNumberThunk.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+
+      //sendOtpToEmailThunk
+      .addCase(sendOtpToEmailThunk.pending, (state) => {
+        state.isEmailVerifying = true;
+      })
+      .addCase(sendOtpToEmailThunk.fulfilled, (state) => {
+        state.isEmailVerifying = false;
+      })
+      .addCase(sendOtpToEmailThunk.rejected, (state, action) => {
+        state.isEmailVerifying = false;
+        state.error = action.error.message;
+      })
+
+      //verifyOtpForEmailThunk
+      .addCase(verifyOtpForEmailThunk.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(verifyOtpForEmailThunk.fulfilled, (state) => {
+        state.loading = false;
+      })
+      .addCase(verifyOtpForEmailThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
       })

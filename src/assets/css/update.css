@@ -333,7 +333,7 @@ body {
   content: "";
 }
 .cursor-pointer {
-  cursor: pointer;
+  cursor: pointer !important;
 }
 .res_done {
   display: flex;

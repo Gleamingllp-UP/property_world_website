@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
-import {useSelector } from "react-redux";
-
+import { useSelector } from "react-redux";
+import ImageWithLoader from "../../../Custom_Components/ImageWithLoader";
 
 const AgentInfoBanner = () => {
   const [isExpanded, setIsExpanded] = useState(false);
-   
+
   const { agentOrAgencyDetails } = useSelector((store) => store?.user);
-  
+
   const toggleText = () => {
     setIsExpanded(!isExpanded);
   };
@@ -19,7 +19,7 @@ const AgentInfoBanner = () => {
             <div className="col-lg-6">
               <div className="agent_info_image">
                 <div>
-                  <img
+                  <ImageWithLoader
                     src={
                       agentOrAgencyDetails?.profile_picture ||
                       agentOrAgencyDetails?.agent_photo
@@ -108,7 +108,7 @@ const AgentInfoBanner = () => {
                     {agentOrAgencyDetails?.property_summary?.categories?.map(
                       (item, i) => (
                         <React.Fragment key={i}>
-                          For {item?.name} {item?.count}
+                          For {item?.name} {item?.count}{" "}
                         </React.Fragment>
                       )
                     )}
@@ -126,10 +126,11 @@ const AgentInfoBanner = () => {
                     >
                       <b>Description:</b> {agentOrAgencyDetails?.bio}
                     </div>
-
-                    <button id="toggleButton" onClick={toggleText}>
-                      {isExpanded ? "Read Less" : "Read More"}
-                    </button>
+                    {agentOrAgencyDetails?.bio && (
+                      <button id="toggleButton" onClick={toggleText}>
+                        {isExpanded ? "Read Less" : "Read More"}
+                      </button>
+                    )}
                   </li>
                   <li>
                     <b>BRN:</b> {agentOrAgencyDetails?.brn}

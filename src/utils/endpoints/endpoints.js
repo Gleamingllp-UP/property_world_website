@@ -21,6 +21,9 @@ const endpoints = {
   verifyOtpForPhoneNumber: "/user/verify-otp-for-phone",
   resendOtpToPhone: "/user/resend-otp",
 
+  sendOtpToEmail: "/user/send-otp-to-email",
+  verifyOtpToEmail: "/user/verify-otp-for-email",
+
   //Filter
   getAllActiveCategory: "/category/getall-active-category",
   getAllActiveSubCategory: "/sub-category/getall-active-subCategory",

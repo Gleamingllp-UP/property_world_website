@@ -219,3 +219,40 @@ export const verifyOtpForPhoneNumber = async (phone_number, code) => {
     }
   }
 };
+
+export const sendOtpToEmail = async (email) => {
+  try {
+    const response = await api.post(endpoints.sendOtpToEmail, {
+      email,
+    });
+    return response.data;
+  } catch (error) {
+    if (error?.status !== 401) {
+      throw (
+        error?.response?.data?.message ||
+        "Failed to send, please try again later."
+      );
+    } else {
+      throw error?.message || "Failed to send, please try again later.";
+    }
+  }
+};
+
+export const verifyOtpForEmail = async (email, code) => {
+  try {
+    const response = await api.put(endpoints.verifyOtpToEmail, {
+      email,
+      code,
+    });
+    return response.data;
+  } catch (error) {
+    if (error?.status !== 401) {
+      throw (
+        error?.response?.data?.message ||
+        "Failed to verify, please try again later."
+      );
+    } else {
+      throw error?.message || "Failed to verify, please try again later.";
+    }
+  }
+};

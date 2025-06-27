@@ -16,8 +16,10 @@ import {
 import { useEffect, useState } from "react";
 import {
   getUserDetailsThunk,
+  sendOtpToEmailThunk,
   sendOtpToPhoneNumberThunk,
   updateUserDetailsThunk,
+  verifyOtpForEmailThunk,
   verifyOtpForPhoneNumberThunk,
 } from "../../../features/user/userSlice";
 import { MultiSelectWithLabelForm } from "../../../Custom_Components/MultiSelectWithLabelForm";
@@ -26,6 +28,7 @@ import { buildFormDataFromFields } from "../../../helper/function/buildFormDataF
 import { showToast } from "../../../utils/toast/toast";
 import { getAllActiveLocationThunk } from "../../../features/activeData/activeDataSlice";
 import VerifyOtpModal from "./VerifyOtpModal";
+import VerifyOtpForEmailModal from "./VerifyOtpForEmailModal";
 
 function Profile() {
   const [agentPhoto, setAgentPhoto] = useState("");
@@ -34,6 +37,7 @@ function Profile() {
   const [brokerLicenseNumber, setBrokerLicenseNumber] = useState("");
 
   const [modalShow, setModalShow] = useState(false);
+  const [modalShow2, setModalShow2] = useState(false);
 
   const [kycForm, setKycForm] = useState("");
   const [titleDeed, setTitleDeed] = useState("");
@@ -41,7 +45,9 @@ function Profile() {
   const [agreementOrNoc, setAgreementOrNoc] = useState("");
 
   const { handleSubmit, control, reset } = useForm();
-  const { loading, userData } = useSelector((store) => store?.user);
+  const { loading, userData, isEmailVerifying, isPhoneVerifying } = useSelector(
+    (store) => store?.user
+  );
   const { location } = useSelector((store) => store?.activeData);
   const dispatch = useDispatch();
 
@@ -151,7 +157,22 @@ function Profile() {
         throw new Error(resultAction?.error?.message);
       }
     } catch (error) {
-      showToast(error?.message || "Failed to update profile.", "error");
+      showToast(error?.message || "Failed to send.", "error");
+    }
+  };
+
+  const handleSendOTPtoEmail = async () => {
+    try {
+      const email = userData?.email;
+      const resultAction = await dispatch(sendOtpToEmailThunk({ email }));
+      if (sendOtpToEmailThunk.fulfilled.match(resultAction)) {
+        showToast(resultAction?.payload?.message, "success");
+        setModalShow2(true);
+      } else {
+        throw new Error(resultAction?.error?.message);
+      }
+    } catch (error) {
+      showToast(error?.message || "Failed to send.", "error");
     }
   };
 
@@ -169,7 +190,25 @@ function Profile() {
         throw new Error(resultAction?.error?.message);
       }
     } catch (error) {
-      showToast(error?.message || "Failed to update profile.", "error");
+      showToast(error?.message || "Failed to verify.", "error");
+    }
+  };
+
+  const handleVerifyOTPforEmail = async (code) => {
+    try {
+      const email = userData?.email;
+      const resultAction = await dispatch(
+        verifyOtpForEmailThunk({ email, code })
+      );
+      if (verifyOtpForEmailThunk.fulfilled.match(resultAction)) {
+        dispatch(getUserDetailsThunk());
+        showToast(resultAction?.payload?.message, "success");
+        setModalShow2(false);
+      } else {
+        throw new Error(resultAction?.error?.message);
+      }
+    } catch (error) {
+      showToast(error?.message || "Failed to verify.", "error");
     }
   };
   return (
@@ -210,6 +249,57 @@ function Profile() {
                             ? "col-span-4"
                             : ""
                         }`}
+                        rightIcon={
+                          field?.key === "phone_number" &&
+                          !userData?.is_phone_verified ? (
+                            isPhoneVerifying ? (
+                              <div
+                                className="spinner-border"
+                                style={{
+                                  height: "20px",
+                                  width: "20px",
+                                  borderWidth: "2px",
+                                }}
+                                role="status"
+                              ></div>
+                            ) : (
+                              <button
+                                type="button"
+                                className="text-success cursor-pointer"
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  handleSendOTPtoPhone();
+                                }}
+                              >
+                                Verify
+                              </button>
+                            )
+                          ) : field?.key === "email" &&
+                            !userData?.is_email_verified ? (
+                            isEmailVerifying ? (
+                              <div
+                                className="spinner-border"
+                                style={{
+                                  height: "20px",
+                                  width: "20px",
+                                  borderWidth: "2px",
+                                }}
+                                role="status"
+                              ></div>
+                            ) : (
+                              <button
+                                type="button"
+                                className="text-success cursor-pointer"
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  handleSendOTPtoEmail();
+                                }}
+                              >
+                                Verify
+                              </button>
+                            )
+                          ) : null
+                        }
                         previewUrl={
                           field?.key === "kyc_form"
                             ? kycForm
@@ -398,17 +488,54 @@ function Profile() {
                       }`}
                       rightIcon={
                         field?.key === "phone_number" &&
-                        !userData?.is_phone_verified && (
-                          <button
-                            type="button"
-                            className="text-success"
-                            onClick={() => {
-                              handleSendOTPtoPhone();
-                            }}
-                          >
-                            Verify
-                          </button>
-                        )
+                        !userData?.is_phone_verified ? (
+                          isPhoneVerifying ? (
+                            <div
+                              className="spinner-border"
+                              style={{
+                                height: "20px",
+                                width: "20px",
+                                borderWidth: "2px",
+                              }}
+                              role="status"
+                            ></div>
+                          ) : (
+                            <button
+                              type="button"
+                              className="text-success cursor-pointer"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                handleSendOTPtoPhone();
+                              }}
+                            >
+                              Verify
+                            </button>
+                          )
+                        ) : field?.key === "email" &&
+                          !userData?.is_email_verified ? (
+                          isEmailVerifying ? (
+                            <div
+                              className="spinner-border"
+                              style={{
+                                height: "20px",
+                                width: "20px",
+                                borderWidth: "2px",
+                              }}
+                              role="status"
+                            ></div>
+                          ) : (
+                            <button
+                              type="button"
+                              className="text-success cursor-pointer"
+                              onClick={(e) => {
+                                e.preventDefault();
+                                handleSendOTPtoEmail();
+                              }}
+                            >
+                              Verify
+                            </button>
+                          )
+                        ) : null
                       }
                       rules={getValidationRules({
                         label: field?.label,
@@ -517,6 +644,13 @@ function Profile() {
         onHide={() => setModalShow(false)}
         onVerify={(otp) => {
           handleVerifyOTPforPhone(otp);
+        }}
+      />
+      <VerifyOtpForEmailModal
+        show={modalShow2}
+        onHide={() => setModalShow2(false)}
+        onVerify={(otp) => {
+          handleVerifyOTPforEmail(otp);
         }}
       />
     </div>

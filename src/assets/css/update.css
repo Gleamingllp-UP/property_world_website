@@ -339,15 +339,12 @@ body {
   display: flex;
 }
 .john {
-  
-    height: 100px;
-    object-fit: contain !important;
-   
+  height: 100px;
+  object-fit: contain !important;
 }
 
-
-.ri-arrow-right-s-line::before{
-  content: '';
+.ri-arrow-right-s-line::before {
+  content: "";
 }
 
 @media (max-width: 768px) {
@@ -366,4 +363,8 @@ input[type="number"]::-webkit-inner-spin-button {
 /* For Firefox */
 input[type="number"] {
   -moz-appearance: textfield;
+}
+
+.a_logo {
+  height: 40px !important;
 }

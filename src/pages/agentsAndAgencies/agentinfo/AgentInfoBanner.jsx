@@ -124,7 +124,7 @@ const AgentInfoBanner = () => {
                         WebkitLineClamp: isExpanded ? "unset" : 1,
                       }}
                     >
-                      <b>Description:</b> {agentOrAgencyDetails?.bio}
+                      <b>Description:</b> {agentOrAgencyDetails?.bio ?? "N/A"}
                     </div>
                     {agentOrAgencyDetails?.bio && (
                       <button id="toggleButton" onClick={toggleText}>
@@ -133,10 +133,11 @@ const AgentInfoBanner = () => {
                     )}
                   </li>
                   <li>
-                    <b>BRN:</b> {agentOrAgencyDetails?.brn}
+                    <b>BRN:</b> {agentOrAgencyDetails?.brn ?? "N/A"}
                   </li>
                   <li>
-                    <b>Experience:</b> {agentOrAgencyDetails?.experience} years
+                    <b>Experience:</b> {agentOrAgencyDetails?.experience || 0}{" "}
+                    years
                   </li>
                 </ul>
               </div>

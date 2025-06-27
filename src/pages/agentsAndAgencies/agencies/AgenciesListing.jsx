@@ -1,15 +1,13 @@
-import React, { useState } from "react";
-import { agency1, agency2 } from "../../../assets/images";
+import React from "react";
+import { agency1 } from "../../../assets/images";
 import { useSelector } from "react-redux";
 import { AgenciesSkeleton } from "../../../Custom_Components/Skeleton/AgentOrAgencySkeleton";
 import { CustomPagination } from "../../../Custom_Components/CustomPagination";
 
-function AgenciesListing() {
+function AgenciesListing({ page, limit, setPage }) {
   const { isLoading, agentOrAgencyData, pagination } = useSelector(
     (store) => store?.user
   );
-  const [page, setPage] = useState(1);
-  const limit = 8;
 
   return (
     <>
@@ -31,7 +29,7 @@ function AgenciesListing() {
           <></>
         )}
 
-        <div >
+        <div>
           <div className="row align-items-center justify-content-center">
             {isLoading
               ? Array.from({ length: 4 })?.map((_, i) => {

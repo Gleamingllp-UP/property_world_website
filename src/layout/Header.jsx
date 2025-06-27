@@ -141,9 +141,9 @@ function Header() {
                   <ul
                     className="sub-menu"
                     style={{
-                      maxHeight: `${
-                        isSubMenuOpen === "insight" ? "235px" : "0px"
-                      }`,
+                      ...(isSubMenuOpen === "insight" && {
+                        maxHeight: "235px",
+                      }),
                     }}
                   >
                     <li className="menu-item">
@@ -196,9 +196,9 @@ function Header() {
                   <ul
                     className="sub-menu"
                     style={{
-                      maxHeight: `${
-                        isSubMenuOpen === "location" ? "235px" : "0px"
-                      }`,
+                      ...(isSubMenuOpen === "location" && {
+                        maxHeight: "329px",
+                      }),
                     }}
                   >
                     {location?.map((loca, index) => (

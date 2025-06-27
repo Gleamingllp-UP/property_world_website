@@ -207,7 +207,7 @@ const Archive = () => {
             {isLoading ? (
               <PropertyListingCardSkeleton />
             ) : propertyData?.length > 0 ? (
-              propertyData.map((item) => {
+              propertyData?.map((item,index) => {
                 const sliderSettings = {
                   dots: false,
                   infinite: true,
@@ -247,7 +247,7 @@ const Archive = () => {
                   (item) => item?.name === "Thumbnail Image"
                 );
                 return item?.is_featured ? (
-                  <div className="list_box">
+                  <div className="list_box" key={index}>
                     <div className="feat_tag">
                       <p>Featured Property</p>
                     </div>
@@ -422,7 +422,7 @@ const Archive = () => {
                     </div>
                   </div>
                 ) : (
-                  <div className="list_box normal_listing" key={item?._id}>
+                  <div className="list_box normal_listing" key={index}>
                     <div className="row">
                       {/* Left Side */}
                       <div className="col-lg-5">

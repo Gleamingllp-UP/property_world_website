@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { CustomPagination } from "../../../Custom_Components/CustomPagination";
 import { AgentSkeleton } from "../../../Custom_Components/Skeleton/AgentOrAgencySkeleton";
 import ImageWithLoader from "../../../Custom_Components/ImageWithLoader";
-import { user } from "../../../assets/images";
+import { property_world_logo, user } from "../../../assets/images";
 
 function AgentsListing({ page, limit, setPage }) {
   const { isLoading, agentOrAgencyData, pagination } = useSelector(
@@ -59,15 +59,17 @@ function AgentsListing({ page, limit, setPage }) {
                     <p>
                       <b>Exp.:</b> {agent?.experience} years{" "}
                       <span className="ratt">
-                        <i className="ri-star-fill" /> 4.2
+                        <i className="ri-star-fill" /> {agent?.rating || 0}
                       </span>
                     </p>
                     <p>
-                      <b>Nationally:</b> {agent?.country_of_residance}
+                      <b>Nationality:</b> {agent?.country_of_residance ?? ""}
                     </p>
                     <p>
                       <b>Language:</b>{" "}
-                      {agent?.languages?.map((lang) => lang)?.join(", ")}
+                      {agent?.languages?.length > 0
+                        ? agent?.languages?.map((lang) => lang)?.join(", ")
+                        : "No Language"}
                     </p>
                     <div className="for_sale">
                       {agent?.property_summary?.categories?.map((item, i) => (
@@ -76,11 +78,20 @@ function AgentsListing({ page, limit, setPage }) {
                         </div>
                       ))}
                     </div>
-                    <Link to={pageRoutes} className="action_btn popp">
+                    <Link
+                      to={pageRoutes.AGENT_INFO + `/?user_id=${agent?._id}`}
+                      className="action_btn popp"
+                    >
                       <i className="ri-arrow-right-up-long-line" />
                     </Link>
                   </div>
-                  <img src={agent?.agency_logo} className="a_logo" />
+                  <img
+                    src={agent?.agency_logo || property_world_logo}
+                    className="a_logo"
+                    style={{
+                      height: "20px !important",
+                    }}
+                  />
                 </div>
               </div>
             ))

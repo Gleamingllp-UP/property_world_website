@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { pageRoutes } from "../../../router/pageRoutes";
 import { landlord_guide } from "../../../assets/images";
 import { Link, useLocation } from "react-router-dom";
@@ -10,6 +10,7 @@ import {
   languages,
 } from "../../../utils/requiredFormFields/requiredproparty";
 import { fetchAllUserTypes } from "../../../features/userTypes/userTypesSlice";
+import { debounce, throttle } from "lodash";
 
 function AgentsBanner({ page, limit }) {
   const dispatch = useDispatch();
@@ -41,7 +42,9 @@ function AgentsBanner({ page, limit }) {
   }, [userTypes, queryUserType, activeId]);
 
   useEffect(() => {
-    if (activeId) {
+    if (!activeId) return;
+
+    const debouncedFn = debounce(() => {
       dispatch(
         getAllUserForWebThunk({
           search,
@@ -49,27 +52,57 @@ function AgentsBanner({ page, limit }) {
           nationality,
           language,
           user_type: activeId,
-          page: page,
-          limit: limit,
+          page,
+          limit,
         })
       );
-    }
-  }, [activeId, dispatch, page]);
+    }, 1000);
 
-  const handleSearch = () => {
-    if (!activeId) return;
-    dispatch(
-      getAllUserForWebThunk({
-        search,
-        service_need,
-        nationality,
-        language,
-        user_type: activeId,
-        page: page,
-        limit: limit,
-      })
-    );
-  };
+    debouncedFn();
+
+    return () => {
+      debouncedFn.cancel();
+    };
+  }, [
+    search,
+    activeId,
+    page,
+    service_need,
+    nationality,
+    language,
+    dispatch,
+    limit,
+  ]);
+
+  const throttledSearch = useMemo(() => {
+    return throttle(() => {
+      if (!activeId) return;
+      dispatch(
+        getAllUserForWebThunk({
+          search,
+          service_need,
+          nationality,
+          language,
+          user_type: activeId,
+          page,
+          limit,
+        })
+      );
+    }, 2000);
+  }, [
+    dispatch,
+    search,
+    service_need,
+    nationality,
+    language,
+    activeId,
+    page,
+    limit,
+  ]);
+
+  const handleSearch = useCallback(() => {
+    throttledSearch();
+  }, [throttledSearch]);
 
   return (
     <>

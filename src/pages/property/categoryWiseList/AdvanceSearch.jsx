@@ -61,13 +61,15 @@ function AdvanceSearch({ page, limit, sortBy, features, scrollRef }) {
     (store) => store?.activeData
   );
 
+  const { isLoading } = useSelector((store) => store?.property);
+
   const scroll = useCallback(() => {
     scrollRef?.current?.scrollIntoView({ behavior: "smooth" });
   }, [scrollRef]);
 
   const dispatch = useDispatch();
 
-  const debouncedDispatch = useMemo(() => debounce(dispatch, 500), []);
+  const debouncedDispatch = useMemo(() => debounce(dispatch, 1500), []);
 
   const handleReset = () => {
     setSelectedCategoryId("");
@@ -249,6 +251,15 @@ function AdvanceSearch({ page, limit, sortBy, features, scrollRef }) {
     ]
   );
 
+  const prevLoading = useRef(true);
+
+  useEffect(() => {
+    if (prevLoading.current && !isLoading) {
+      scroll();
+    }
+    prevLoading.current = isLoading;
+  }, [isLoading, scroll]);
+
   useEffect(() => {
     debouncedDispatch(
       getAllPropertyThunk({
@@ -259,8 +270,7 @@ function AdvanceSearch({ page, limit, sortBy, features, scrollRef }) {
         features,
       })
     );
-    scroll();
-  }, [page, sortBy, features, searchFilters, limit, debouncedDispatch, scroll]);
+  }, [page, sortBy, features, searchFilters, limit, debouncedDispatch]);
 
   function haldelSearch() {
     dispatch(
@@ -575,7 +585,7 @@ function AdvanceSearch({ page, limit, sortBy, features, scrollRef }) {
                         )}
                       </div>
                       {subSubCategories?.length > 0 && (
-                        <div className="res_done">
+                        <div className="res_done  d-flex justify-content-between gap-2">
                           <button className="btn" onClick={handleReset}>
                             Reset
                           </button>
@@ -655,7 +665,7 @@ function AdvanceSearch({ page, limit, sortBy, features, scrollRef }) {
                       />
                     </div>
                   </div>
-                  <div className="res_done">
+                  <div className="res_done  d-flex justify-content-between gap-2">
                     <button
                       className="btn"
                       type="button"
@@ -833,7 +843,7 @@ function AdvanceSearch({ page, limit, sortBy, features, scrollRef }) {
                       />
                     </div>
                   </div>
-                  <div className="res_done">
+                  <div className="res_done d-flex justify-content-between gap-2">
                     <button
                       className="btn"
                       type="button"
@@ -1144,11 +1154,11 @@ function AdvanceSearch({ page, limit, sortBy, features, scrollRef }) {
                             }}
                           />
                         </div>
-                        <div className="res_done">
+                        <div className="res_done d-flex justify-content-between gap-2">
                           <button
                             className="btn"
                             type="button"
-                            onClick={handleResetPrice}
+                            onClick={() => setPriceRange("")}
                           >
                             Reset
                           </button>

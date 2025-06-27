@@ -39,7 +39,7 @@ const BlogCatSec = () => {
 
     const debouncedFetch = debounce((text) => {
       dispatch(getBlogCategoryWithCountThunk({ searchText: text }));
-    }, 400);
+    }, 1000);
 
     debouncedFetch(searchText);
 

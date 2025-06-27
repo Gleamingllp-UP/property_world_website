@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { agency_banner } from "../../../assets/images";
 import { pageRoutes } from "../../../router/pageRoutes";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getBannerByTypeThunk } from "../../../features/banner/bannerSlice";
 import { fetchAllUserTypes } from "../../../features/userTypes/userTypesSlice";
 import { getAllUserForWebThunk } from "../../../features/user/userSlice";
+import { debounce, throttle } from "lodash";
 
-function AgenciesBanner() {
+function AgenciesBanner({ page, limit }) {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const location = useLocation();
 
   const { banners } = useSelector((store) => store?.banner);
@@ -34,32 +34,45 @@ function AgenciesBanner() {
   }, [user_type]);
 
   useEffect(() => {
-    if (user_type) {
-      setActiveId(user_type);
+    if (!user_type) return;
+
+    const debouncedFn = debounce(() => {
       dispatch(
         getAllUserForWebThunk({
           search,
+          service_need: serviceNeed,
           user_type: user_type,
-          page: 1,
-          limit: 8,
+          page,
+          limit,
         })
       );
-    }
-  }, [user_type]);
-  
-  const handleSearch = () => {
-    if (!activeId) return;
+    }, 1000);
 
-    dispatch(
-      getAllUserForWebThunk({
-        search,
-        service_need: serviceNeed,
-        user_type: activeId,
-        page: 1,
-        limit: 8,
-      })
-    );
-  };
+    debouncedFn();
+
+    return () => {
+      debouncedFn.cancel();
+    };
+  }, [search, activeId, page, serviceNeed, dispatch, limit, user_type]);
+
+  const throttledSearch = useMemo(() => {
+    return throttle(() => {
+      if (!activeId) return;
+      dispatch(
+        getAllUserForWebThunk({
+          search,
+          service_need: serviceNeed,
+          user_type: activeId,
+          page,
+          limit,
+        })
+      );
+    }, 2000);
+  }, [dispatch, search, serviceNeed, activeId, page, limit]);
+
+  const handleSearch = useCallback(() => {
+    throttledSearch();
+  }, [throttledSearch]);
 
   return (
     <>

@@ -35,8 +35,7 @@ function HomeFeaturedList() {
         <div className="row">
           {isLoading ? (
             <HomeCategoryPropertySkeleton />
-          ) : (
-            featuredPropertyData &&
+          ) : featuredPropertyData ? (
             featuredPropertyData?.slice(0, 6).map((item, index) => (
               <div className="col-sm-4" key={index}>
                 <div className="my_property">
@@ -119,6 +118,12 @@ function HomeFeaturedList() {
                 </div>
               </div>
             ))
+          ) : (
+            <div className="col-12">
+              <div className="text-center border border-light-subtle rounded py-3 bg-light text-muted fw-medium">
+                No Data Available
+              </div>
+            </div>
           )}
         </div>
         {featuredPropertyData && featuredPropertyData?.length > 6 && (

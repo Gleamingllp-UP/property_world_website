@@ -85,8 +85,7 @@ function HomeCategoryWiseList() {
               <div className="row">
                 {isLoading ? (
                   <HomeCategoryPropertySkeleton />
-                ) : (
-                  propertyData &&
+                ) : propertyData?.length > 0 ? (
                   propertyData?.slice(0, 6)?.map((item, index) => {
                     return (
                       <div className="col-sm-4" key={index + 1}>
@@ -176,8 +175,15 @@ function HomeCategoryWiseList() {
                       </div>
                     );
                   })
+                ) : (
+                  <div className="col-12">
+                    <div className="text-center border border-light-subtle rounded py-3 bg-light text-muted fw-medium">
+                      No Data Available
+                    </div>
+                  </div>
                 )}
               </div>
+
               {propertyData && propertyData?.length > 6 && (
                 <div className="col-12 text-center">
                   <Link

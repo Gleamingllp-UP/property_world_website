@@ -9,6 +9,7 @@ import {
   addOrRemoveFavouriteProperty,
   trackPropertyViews,
   getSimilarProperties,
+  getPopularSearchProperties,
 } from "./propertyAPI";
 
 export const creatPropertyThunk = createAsyncThunk(
@@ -24,10 +25,18 @@ export const addOrRemoveFavouritePropertyThunk = createAsyncThunk(
     return await addOrRemoveFavouriteProperty(payload);
   }
 );
+
 export const getSimilarPropertiesThunk = createAsyncThunk(
   "property/getSimilarProperties",
   async ({ id }) => {
     return await getSimilarProperties(id);
+  }
+);
+
+export const getPopularSearchPropertiesThunk = createAsyncThunk(
+  "property/getPopularSearchProperties",
+  async () => {
+    return await getPopularSearchProperties();
   }
 );
 
@@ -91,11 +100,13 @@ const propertySlice = createSlice({
     propertyData: [],
     featuredPropertyData: [],
     similarPropertyData: [],
+    popularPropertyData: [],
     propertyDetails: {},
     pagination: null,
     loading: false,
     isLoading: false,
     isLoadingForSimilar: false,
+    isLoadingForPopular: false,
     error: null,
   },
   reducers: {},
@@ -138,6 +149,21 @@ const propertySlice = createSlice({
         state.isLoadingForSimilar = false;
         state.error = action.error.message;
         state.similarPropertyData = null;
+      })
+
+      //Fetch getPopularSearchPropertiesThunk property data
+      .addCase(getPopularSearchPropertiesThunk.pending, (state) => {
+        state.isLoadingForPopular = true;
+        state.popularPropertyData = [];
+      })
+      .addCase(getPopularSearchPropertiesThunk.fulfilled, (state, action) => {
+        state.popularPropertyData = action.payload.data;
+        state.isLoadingForPopular = false;
+      })
+      .addCase(getPopularSearchPropertiesThunk.rejected, (state, action) => {
+        state.isLoadingForPopular = false;
+        state.error = action.error.message;
+        state.popularPropertyData = null;
       })
 
       //addOrRemoveFavouriteProperty
@@ -200,6 +226,7 @@ const propertySlice = createSlice({
       .addCase(getAllFeaturePropertyThunk.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
+        state.featuredPropertyData = null;
       })
 
       .addCase(getAllUserPropertyThunk.pending, (state) => {
@@ -213,6 +240,7 @@ const propertySlice = createSlice({
       .addCase(getAllUserPropertyThunk.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
+        state.propertyData = null;
       })
 
       .addCase(getAllPropertyThunk.pending, (state) => {
@@ -227,6 +255,7 @@ const propertySlice = createSlice({
       .addCase(getAllPropertyThunk.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
+        state.propertyData = null;
       });
   },
 });

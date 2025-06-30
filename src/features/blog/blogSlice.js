@@ -8,7 +8,7 @@ import {
 export const getAllBlogsThunk = createAsyncThunk(
   "blog/getall",
   async ({ page, limit, blog_category_id }) => {
-    return await getAllblogForUser(page, limit,blog_category_id);
+    return await getAllblogForUser(page, limit, blog_category_id);
   }
 );
 export const getBlogsByIdThunk = createAsyncThunk(
@@ -19,7 +19,7 @@ export const getBlogsByIdThunk = createAsyncThunk(
 );
 export const getBlogCategoryWithCountThunk = createAsyncThunk(
   "blog/getBlogCategoryWithCount",
-  async ({searchText}) => {
+  async ({ searchText }) => {
     return await getBlogCategoryWithCount(searchText);
   }
 );
@@ -51,6 +51,7 @@ const BlogSlice = createSlice({
       .addCase(getAllBlogsThunk.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
+        state.blogs = null;
       })
 
       // Get Blog by id

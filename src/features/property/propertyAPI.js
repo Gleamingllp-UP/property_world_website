@@ -150,7 +150,9 @@ export const deleteProperty = async (id) => {
 
 export const addOrRemoveFavouriteProperty = async (id) => {
   try {
-    const response = await api.post(endpoints.addToFavouriteProperty + `/${id}`);
+    const response = await api.post(
+      endpoints.addToFavouriteProperty + `/${id}`
+    );
     return response.data;
   } catch (error) {
     if (error?.status !== 401) {
@@ -178,10 +180,7 @@ export const trackPropertyViews = async (id) => {
         "Failed to view, please try again later."
       );
     } else {
-      throw (
-        error?.message ||
-        "Failed to view, please try again later."
-      );
+      throw error?.message || "Failed to view, please try again later.";
     }
   }
 };
@@ -197,10 +196,23 @@ export const getSimilarProperties = async (id) => {
         "Failed to get, please try again later."
       );
     } else {
+      throw error?.message || "Failed to get, please try again later.";
+    }
+  }
+};
+
+export const getPopularSearchProperties = async () => {
+  try {
+    const response = await api.get(endpoints.getPopularSearchProperties);
+    return response.data;
+  } catch (error) {
+    if (error?.status !== 401) {
       throw (
-        error?.message ||
+        error?.response?.data?.message ||
         "Failed to get, please try again later."
       );
+    } else {
+      throw error?.message || "Failed to get, please try again later.";
     }
   }
 };

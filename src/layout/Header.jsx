@@ -1,4 +1,4 @@
-import { property_world_logo, contact_photo } from "@/assets/images";
+import { property_world_logo } from "@/assets/images";
 import { Link, useNavigate } from "react-router-dom";
 import { pageRoutes } from "../router/pageRoutes";
 import { useEffect, useState } from "react";

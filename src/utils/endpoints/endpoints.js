@@ -72,6 +72,7 @@ const endpoints = {
   addToFavouriteProperty: "/property/add-remove-favourite-property",
   trackPropertyViews: "/property/track-property-views",
   getSimilarProperties: "/property/get-similar-property",
+  getPopularSearchProperties: "/property/get-popular-search-property",
 
   //AmenitiesAndFacilities
   getAllAmenitiesAndFacilitiesForUser:

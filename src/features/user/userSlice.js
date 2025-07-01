@@ -14,6 +14,9 @@ import {
   verifyOtpForPhoneNumber,
   sendOtpToEmail,
   verifyOtpForEmail,
+  updatePassword,
+  forgetPassword,
+  resetPassword,
 } from "./userAPI";
 
 export const initiateSignupThunk = createAsyncThunk(
@@ -28,12 +31,35 @@ export const verifyCodeThunk = createAsyncThunk(
     return await verifyCode(payload);
   }
 );
+
 export const setPasswordThunk = createAsyncThunk(
   "users/setPassword",
   async (payload) => {
     return await setPassword(payload);
   }
 );
+
+export const updatePasswordThunk = createAsyncThunk(
+  "users/updatePassword",
+  async ({ current_password, new_password }) => {
+    return await updatePassword(current_password, new_password);
+  }
+);
+
+export const forgetPasswordThunk = createAsyncThunk(
+  "users/forgetPassword",
+  async ({ email }) => {
+    return await forgetPassword(email);
+  }
+);
+
+export const resetPasswordThunk = createAsyncThunk(
+  "users/resetPassword",
+  async ({ token, new_password }) => {
+    return await resetPassword(token, new_password);
+  }
+);
+
 export const userLoginThunk = createAsyncThunk(
   "users/userLogin",
   async (payload) => {
@@ -217,18 +243,54 @@ const usersSlice = createSlice({
         state.error = action.error.message;
       })
 
+      //update Password
+      .addCase(updatePasswordThunk.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updatePasswordThunk.fulfilled, (state) => {
+        state.loading = false;
+      })
+      .addCase(updatePasswordThunk.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+
+      //forget Password
+      .addCase(forgetPasswordThunk.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(forgetPasswordThunk.fulfilled, (state) => {
+        state.loading = false;
+      })
+      .addCase(forgetPasswordThunk.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+
+      //reset Password
+      .addCase(resetPasswordThunk.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(resetPasswordThunk.fulfilled, (state) => {
+        state.loading = false;
+      })
+      .addCase(resetPasswordThunk.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+
       //User Login
       .addCase(userLoginThunk.pending, (state) => {
-        state.isLoading = true;
+        state.loading = true;
       })
       .addCase(userLoginThunk.fulfilled, (state, action) => {
-        state.isLoading = false;
+        state.loading = false;
         state.userData = action.payload.data;
         localStorage.setItem("userToken", action.payload.token);
         localStorage.setItem("userData", JSON.stringify(action.payload.data));
       })
       .addCase(userLoginThunk.rejected, (state, action) => {
-        state.isLoading = false;
+        state.loading = false;
         state.error = action.error.message;
       })
 
@@ -237,11 +299,11 @@ const usersSlice = createSlice({
         state.loading = true;
       })
       .addCase(logoutUser.fulfilled, (state) => {
-        state.isLoading = false;
+        state.loading = false;
         state.userData = [];
       })
       .addCase(logoutUser.rejected, (state, action) => {
-        state.isLoading = false;
+        state.loading = false;
         state.error = action.error.message;
       })
 

@@ -256,3 +256,59 @@ export const verifyOtpForEmail = async (email, code) => {
     }
   }
 };
+
+export const updatePassword = async (current_password, new_password) => {
+  try {
+    const response = await api.put(endpoints.updatePassword, {
+      current_password,
+      new_password,
+    });
+    return response.data;
+  } catch (error) {
+    if (error?.status !== 401) {
+      throw (
+        error?.response?.data?.message ||
+        "Failed to update, please try again later."
+      );
+    } else {
+      throw error?.message || "Failed to update, please try again later.";
+    }
+  }
+};
+
+export const forgetPassword = async (email) => {
+  try {
+    const response = await api.post(endpoints.forgetPassword, {
+      email,
+    });
+    return response.data;
+  } catch (error) {
+    if (error?.status !== 401) {
+      throw (
+        error?.response?.data?.message ||
+        "Failed to send, please try again later."
+      );
+    } else {
+      throw error?.message || "Failed to send, please try again later.";
+    }
+  }
+};
+
+export const resetPassword = async (token, new_password) => {
+  try {
+    const response = await api.put(endpoints.resetPassword, {
+      token,
+      new_password,
+    });
+    return response.data;
+  } catch (error) {
+    if (error?.status !== 401) {
+      throw (
+        error?.response?.data?.message ||
+        "Failed to send, please try again later."
+      );
+    } else {
+      throw error?.message || "Failed to send, please try again later.";
+    }
+  }
+};

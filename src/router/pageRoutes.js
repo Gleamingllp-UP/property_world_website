@@ -52,4 +52,6 @@ export const pageRoutes = {
   LIKED_PROPERTY: "/liked-property",
   YOUR_PLAN: "/your-plan",
   CANCEL_PAYMENT: "/cancel-payment",
+  UPDATE_PASSWORD: "/update-password",
+  RESET_PASSWORD: "/reset-password",
 };

@@ -23,6 +23,9 @@ const endpoints = {
 
   sendOtpToEmail: "/user/send-otp-to-email",
   verifyOtpToEmail: "/user/verify-otp-for-email",
+  updatePassword: "/user/update-user-password",
+  forgetPassword: "/user/forget-user-password",
+  resetPassword: "/user/reset-user-password",
 
   //Filter
   getAllActiveCategory: "/category/getall-active-category",

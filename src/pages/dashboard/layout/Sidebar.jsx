@@ -58,7 +58,7 @@ const Sidebar = () => {
     <>
       <div
         className="custom-sidebar text-white p-2 vh-100 "
-        style={{ width: "300px", position: "fixed" }}
+        style={{ width: "300px", position: "fixed" ,overflowY:"auto"}}
       >
         <img
           src={property_world_logo}

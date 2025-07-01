@@ -5,6 +5,7 @@ import {
   Heart,
   LandPlot,
   LayoutDashboardIcon,
+  Settings,
   TableProperties,
   User,
 } from "lucide-react";
@@ -76,6 +77,8 @@ const LikedProperties = lazy(() =>
 );
 const Plan = lazy(() => import("../pages/dashboard/plan/Plan"));
 const PaymentCancelled = lazy(() => import("../pages/dashboard/plan/PaymentCancelled"));
+const UpdatePassword = lazy(() => import("../pages/dashboard/profile/UpdatePassword"));
+const ResetPassword = lazy(() => import("../pages/dashboard/profile/ResetPassword"));
 
 const routes = [
   // {
@@ -290,6 +293,25 @@ const routes = [
     name: "Cancel Payment",
     path: pageRoutes?.CANCEL_PAYMENT,
     Component: PaymentCancelled,
+  },
+  {
+    id: 28,
+    isPrivate: true,
+    isDashboard: true,
+    isVisibleInDash: true,
+    name: "Update Password",
+    icon: Settings,
+    path: pageRoutes?.UPDATE_PASSWORD,
+    Component: UpdatePassword,
+  },
+  {
+    id: 29,
+    isPrivate: false,
+    isDashboard: false,
+    isVisibleInDash: false,
+    name: "Reset Password",
+    path: pageRoutes?.RESET_PASSWORD,
+    Component: ResetPassword,
   },
 ];
 export { routes };

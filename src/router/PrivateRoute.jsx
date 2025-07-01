@@ -1,5 +1,6 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
+import { pageRoutes } from "./pageRoutes";
 
 function PrivateRoute({ children }) {
   let isAuthenticated;
@@ -7,7 +8,7 @@ function PrivateRoute({ children }) {
   if (token) {
     isAuthenticated = true;
   }
-  return isAuthenticated ? children : <Navigate to="/" />;
+  return isAuthenticated ? children : <Navigate to={pageRoutes.HOME_PAGE} />;
 }
 
 export default PrivateRoute;

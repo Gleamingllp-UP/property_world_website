@@ -5,18 +5,30 @@ import { pageRoutes } from "../../../router/pageRoutes";
 import { useForm } from "react-hook-form";
 import { ErrorMessage } from "../../../Custom_Components/ErrorMessage";
 import { showToast } from "../../../utils/toast/toast";
-import { useDispatch } from "react-redux";
-import { userLoginThunk } from "../../../features/user/userSlice";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  forgetPasswordThunk,
+  userLoginThunk,
+} from "../../../features/user/userSlice";
+import ButtonWithSpin from "../../../Custom_Components/ButtonWithSpin";
 
 function LoginModal({ show, onHide }) {
   const [type, setType] = useState("password");
   const [step, setStep] = useState(1);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const { loading } = useSelector((store) => store?.user);
   const {
     register,
     handleSubmit,
     formState: { errors },
+  } = useForm();
+
+  const {
+    register: resisterForgetPassword,
+    handleSubmit: handleSubmitForgetPassword,
+    formState: { errors: errorsForgetPassword },
   } = useForm();
 
   const onSubmit = async (data) => {
@@ -33,6 +45,26 @@ function LoginModal({ show, onHide }) {
       }
     } catch (error) {
       showToast(error?.message || "Failed to Login.", "error");
+    }
+  };
+
+  const onSubmit2 = async (data) => {
+    try {
+      const { email } = data;
+      const resultAction = await dispatch(forgetPasswordThunk({ email }));
+      if (forgetPasswordThunk.fulfilled.match(resultAction)) {
+        showToast(
+          "Reset password link has been sent to your email.",
+          "success"
+        );
+        setTimeout(() => {
+          onHide();
+        }, 500);
+      } else {
+        throw new Error(resultAction?.error?.message);
+      }
+    } catch (error) {
+      showToast(error?.message || "Failed to send.", "error");
     }
   };
 
@@ -114,15 +146,18 @@ function LoginModal({ show, onHide }) {
                     />
                   )}
 
-                  <p className="forgot ms-auto">
+                  <p className="forgot ms-auto cursor-pointer">
                     <a id="forgot" onClick={() => setStep(step + 1)}>
                       Fogot password?
                     </a>
                   </p>
                 </div>
               </div>
-
-              <button className="action_btn">Login</button>
+              {loading ? (
+                <ButtonWithSpin />
+              ) : (
+                <button className="action_btn">Login</button>
+              )}
               <div className="no_reg">
                 Not registered yet?{" "}
                 <a
@@ -139,22 +174,37 @@ function LoginModal({ show, onHide }) {
           </form>
         )}
         {step === 2 && (
-          <div className="login_areee">
-            <div className="gp">
-              <input
-                type="text"
-                id="user name"
-                name="user"
-                placeholder="Enter Your Registered Email id"
-              />
+          <form onSubmit={handleSubmitForgetPassword(onSubmit2)}>
+            <div className="login_areee">
+              <div className="gp">
+                <input
+                  type="text"
+                  id="user name"
+                  name="user"
+                  placeholder="Enter your registered email"
+                  {...resisterForgetPassword("email", {
+                    required: "Email is required",
+                  })}
+                />
+                {errorsForgetPassword?.email && (
+                  <ErrorMessage
+                    message={errorsForgetPassword?.email?.message}
+                    className="my-1"
+                  />
+                )}
+              </div>
+              {loading ? (
+                <ButtonWithSpin />
+              ) : (
+                <button className="action_btn">Get Reset Link</button>
+              )}
+              <div className="no_reg">
+                <a href="#" id="back_login" onClick={() => setStep(step - 1)}>
+                  Back to Login
+                </a>
+              </div>
             </div>
-            <button className="action_btn">Get New Password</button>
-            <div className="no_reg">
-              <a href="#" id="back_login" onClick={() => setStep(step - 1)}>
-                Back to Login
-              </a>
-            </div>
-          </div>
+          </form>
         )}
       </Modal.Body>
     </Modal>

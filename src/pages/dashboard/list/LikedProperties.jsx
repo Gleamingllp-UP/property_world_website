@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { pageRoutes } from "../../../router/pageRoutes";
 import { useDispatch, useSelector } from "react-redux";
 import { getLikedPropertiesThunk } from "../../../features/user/userSlice";
-import { bed, ruler } from "../../../assets/images";
+import { bath, bed, ruler } from "../../../assets/images";
 import { formatNumberWithCommas } from "../../../helper/function/formatRange";
 import { formatPrice } from "../../../helper/function/formatPrice";
 import { Link } from "react-router-dom";
@@ -126,6 +126,15 @@ function LikedProperties() {
                                   />
                                 </Link>
                                 <div className="new_listng">
+                                  <div>
+                                    {item?.bathrooms != null &&
+                                      item?.bathrooms !== "" && (
+                                        <>
+                                          <img src={bath} alt="bed" />{" "}
+                                          {item?.bathrooms}{" "}
+                                        </>
+                                      )}
+                                  </div>
                                   <div>
                                     {item?.bedrooms != null &&
                                       item?.bedrooms !== "" && (

@@ -21,7 +21,10 @@ const UpdatePassword = () => {
 
   const navigate = useNavigate();
 
-  const [type, SetType] = useState(true);
+  const [confirmPassword, SetConfirmPassword] = useState(true);
+  const [currentPassword, SetCurrentPassword] = useState(true);
+  const [newPassword, SetNewPassword] = useState(true);
+
   const dispatch = useDispatch();
   const new_password = watch("new_password");
 
@@ -86,17 +89,17 @@ const UpdatePassword = () => {
               control={control}
               name="current_password"
               label="Current Password *"
-              type={type ? "password" : "text"}
+              type={currentPassword ? "password" : "text"}
               rightIcon={
-                type ? (
+                currentPassword ? (
                   <IoEyeOffSharp
                     className="cursor-pointer text-success"
-                    onClick={() => SetType(!type)}
+                    onClick={() => SetCurrentPassword(!currentPassword)}
                   />
                 ) : (
                   <MdRemoveRedEye
                     className="cursor-pointer text-success"
-                    onClick={() => SetType(!type)}
+                    onClick={() => SetCurrentPassword(!currentPassword)}
                   />
                 )
               }
@@ -110,17 +113,17 @@ const UpdatePassword = () => {
               control={control}
               name="new_password"
               label="New Password *"
-              type={type ? "password" : "text"}
+              type={newPassword ? "password" : "text"}
               rightIcon={
-                type ? (
+                newPassword ? (
                   <IoEyeOffSharp
                     className="cursor-pointer text-success"
-                    onClick={() => SetType(!type)}
+                    onClick={() => SetNewPassword(!newPassword)}
                   />
                 ) : (
                   <MdRemoveRedEye
                     className="cursor-pointer text-success"
-                    onClick={() => SetType(!type)}
+                    onClick={() => SetNewPassword(!newPassword)}
                   />
                 )
               }
@@ -140,17 +143,17 @@ const UpdatePassword = () => {
               control={control}
               name="confirmPassword"
               label="Confirm Password *"
-              type={type ? "password" : "text"}
+              type={confirmPassword ? "password" : "text"}
               rightIcon={
-                type ? (
+                confirmPassword ? (
                   <IoEyeOffSharp
                     className="cursor-pointer text-success"
-                    onClick={() => SetType(!type)}
+                    onClick={() => SetConfirmPassword(!confirmPassword)}
                   />
                 ) : (
                   <MdRemoveRedEye
                     className="cursor-pointer text-success"
-                    onClick={() => SetType(!type)}
+                    onClick={() => SetConfirmPassword(!confirmPassword)}
                   />
                 )
               }

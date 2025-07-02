@@ -27,6 +27,8 @@ const endpoints = {
   forgetPassword: "/user/forget-user-password",
   resetPassword: "/user/reset-user-password",
 
+  createVisitors: "/visitors/log-visitors",
+
   //Filter
   getAllActiveCategory: "/category/getall-active-category",
   getAllActiveSubCategory: "/sub-category/getall-active-subCategory",

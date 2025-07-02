@@ -312,3 +312,22 @@ export const resetPassword = async (token, new_password) => {
     }
   }
 };
+
+export const createVisitors = async () => {
+  try {
+    const alreadyTracked = sessionStorage.getItem("visitTracked");
+    if (!alreadyTracked) {
+      const response = await api.post(endpoints.createVisitors);
+      return response.data;
+    }
+  } catch (error) {
+    if (error?.status !== 401) {
+      throw (
+        error?.response?.data?.message ||
+        "Failed to send, please try again later."
+      );
+    } else {
+      throw error?.message || "Failed to send, please try again later.";
+    }
+  }
+};

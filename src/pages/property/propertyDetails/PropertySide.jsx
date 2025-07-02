@@ -54,7 +54,10 @@ const PropertySide = () => {
               }
               className="img-fluid agent_logo rounded"
             />
-            <h5>Property Finders Real Estate</h5>
+            <h5>
+              {propertyDetails?.userData?.company_name || "Property Finders"}
+            </h5>
+
             <hr />
             <div className="agent_info">
               <a
@@ -89,10 +92,10 @@ const PropertySide = () => {
                   </a>
                 </b>
               </p>
-              <p className="mt-2 mb-3">
+              {/* <p className="mt-2 mb-3">
                 {propertyDetails?.userData?.userTypeData?.name || "N/A"}:{" "}
                 {propertyDetails?.userData?.company_name || "Property Finders"}
-              </p>
+              </p> */}
               <small>
                 {propertyDetails?.userData?.bio ||
                   "With a passion for helping people find the perfect place to call home..."}

@@ -63,7 +63,7 @@ function PropertyAllInfo() {
                   </div>
 
                   <p>
-                    <i className="ri-map-pin-line" /> Location :
+                    <i className="ri-map-pin-line" /> Location :{" "}
                     {propertyDetails?.address ||
                       propertyDetails?.locationData?.name}
                   </p>
@@ -71,16 +71,19 @@ function PropertyAllInfo() {
                 </>
               )}
               <div className="key_feature">
-                <p>Property Information</p>
-                {propertyDetails?.short_description}
+                <p>Property DESCRIPTION</p>
+
+                <span className="d-block mb-2">
+                  {propertyDetails?.short_description}
+                </span>
+
+                <span className="d-block">
+                  {propertyDetails?.full_description}
+                </span>
               </div>
+
               <hr />
 
-              <div className="key_feature">
-                <p>More About Property Information</p>
-                {propertyDetails?.full_description}
-              </div>
-              <hr />
               {isLoading ? (
                 <PropertyFeaturesSkeleton />
               ) : (
@@ -204,76 +207,53 @@ function PropertyAllInfo() {
               />
 
               <hr />
-              <div className="key_feature">
-                <p>Virtual Tour </p>
-                {isLoading ? (
-                  <VirtualTourSkeleton />
-                ) : (
+
+              {isLoading ? (
+                <VirtualTourSkeleton />
+              ) : propertyDetails?.virtual_tour ? (
+                <div className="key_feature">
+                  <p>Virtual Tour </p>
                   <MediaWithLoader
-                    src={
-                      propertyDetails?.virtual_tour ||
-                      "https://www.youtube.com/embed/B4o8PvcqHC4?si=oneK1BnR6P_P9GxA"
-                    }
+                    src={propertyDetails?.virtual_tour}
                     height={415}
                     className="rounded"
                     fallbackText="Virtual tour not uploaded"
                   />
-                )}
-                {/* {propertyDetails?.virtual_tour ? (
-                  <iframe
-                    key={propertyDetails.virtual_tour}
-                    width="100%"
-                    height={415}
-                    src={propertyDetails.virtual_tour}
-                    title="YouTube video player"
-                    frameBorder={0}
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    referrerPolicy="strict-origin-when-cross-origin"
-                    allowFullScreen
-                  />
-                ) : (
-                  <p>Loading virtual tour...</p>
-                )} */}
-              </div>
-              <hr />
-              <div className="key_feature">
-                <p>Floor Plan</p>
-                <div className="floor_pll">
-                  {isLoading ? (
-                    <FloorPlanSkeleton />
-                  ) : (
-                    <ul className="row gx-3 gy-4">
-                      {propertyDetails?.floor_plan?.length > 0 ? (
-                        propertyDetails.floor_plan.map((floor, index) => (
-                          <li key={index} className="col-12 col-sm-6 col-lg-4">
-                            <div className="border rounded shadow-sm overflow-hidden h-100">
-                              <a
-                                href={floor}
-                                className="d-block lightbox"
-                                data-glightbox="type: image"
-                              >
-                                <ImageWithLoader
-                                  src={floor}
-                                  className="img-fluid w-100"
-                                  alt={`Floor Plan ${index + 1}`}
-                                />
-                              </a>
-                            </div>
-                          </li>
-                        ))
-                      ) : (
-                        <div className="col-12">
-                          <div className="text-center border border-light-subtle rounded py-5 bg-light text-muted fw-medium">
-                            No floor plans available
-                          </div>
-                        </div>
-                      )}
-                    </ul>
-                  )}
+                  <hr />
                 </div>
-              </div>
+              ) : null}
+
+              {isLoading ? (
+                <FloorPlanSkeleton />
+              ) : propertyDetails?.floor_plan?.length > 0 ? (
+                <div className="key_feature">
+                  <p>Floor Plan</p>
+                  <div className="floor_pll">
+                    <ul className="row gx-3 gy-4">
+                      {propertyDetails.floor_plan.map((floor, index) => (
+                        <li key={index} className="col-12 col-sm-6 col-lg-4">
+                          <div className="border rounded shadow-sm overflow-hidden h-100">
+                            <a
+                              href={floor}
+                              className="d-block lightbox"
+                              data-glightbox="type: image"
+                            >
+                              <ImageWithLoader
+                                src={floor}
+                                className="img-fluid w-100"
+                                alt={`Floor Plan ${index + 1}`}
+                              />
+                            </a>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              ) : null}
+
               <SimlarProperty />
-              <hr />
+
               <div className="key_feature regulatory">
                 <p>Regulatory Information</p>
                 {isLoading ? (

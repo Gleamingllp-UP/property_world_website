@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { pageRoutes } from "../router/pageRoutes";
 
 function ConnectionStatusPage({ type }) {
   const navigate = useNavigate();
@@ -36,13 +37,13 @@ function ConnectionStatusPage({ type }) {
           <div className="d-flex justify-content-center gap-3 flex-wrap">
             <button
               onClick={() => window.location.reload()}
-              className="btn btn-light px-4 py-2 shadow-sm"
+              className="btn btn-dark px-4 py-2 shadow-sm"
             >
               Retry
             </button>
             <button
-              onClick={() => navigate("/")}
-              className="btn btn-light px-4 py-2 shadow-sm"
+              onClick={() => navigate(pageRoutes.HOME_PAGE)}
+              className="btn btn-outline-dark px-4 py-2 shadow-sm"
             >
               Go Back Home
             </button>

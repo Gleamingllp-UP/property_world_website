@@ -44,7 +44,7 @@ export const pageRoutes = {
   AGENT_INFO: "/agent-info",
 
   //Dashboard
-  USER_DASHBOARD: "/userdashboard",
+  USER_DASHBOARD: "/user-dashboard",
   ADD_PROPERTY: "/add-property",
   USER_PROPERTY_LISTING: "/my-property-listing",
   MY_PROFILE: "/my-profile",

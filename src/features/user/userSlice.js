@@ -17,6 +17,7 @@ import {
   updatePassword,
   forgetPassword,
   resetPassword,
+  createVisitors,
 } from "./userAPI";
 
 export const initiateSignupThunk = createAsyncThunk(
@@ -57,6 +58,13 @@ export const resetPasswordThunk = createAsyncThunk(
   "users/resetPassword",
   async ({ token, new_password }) => {
     return await resetPassword(token, new_password);
+  }
+);
+
+export const createVisitorsThunk = createAsyncThunk(
+  "users/createVisitors",
+  async () => {
+    return await createVisitors();
   }
 );
 
@@ -304,6 +312,20 @@ const usersSlice = createSlice({
       })
       .addCase(logoutUser.rejected, (state, action) => {
         state.loading = false;
+        state.error = action.error.message;
+      })
+
+      //Log visior
+      .addCase(createVisitorsThunk.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(createVisitorsThunk.fulfilled, (state) => {
+        state.isLoading = false;
+        sessionStorage.setItem("visitTracked", "true");
+      })
+      .addCase(createVisitorsThunk.rejected, (state, action) => {
+        state.isLoading = false;
+        sessionStorage.setItem("visitTracked", "false");
         state.error = action.error.message;
       })
 

@@ -24,13 +24,13 @@ function PageNotFound() {
           <div className="d-flex justify-content-center gap-3 flex-wrap">
             <button
               onClick={() => navigate(pageRoutes.HOME_PAGE)}
-              className="btn btn-light px-4 py-2 shadow-sm"
+              className="btn btn-dark px-4 py-2 shadow-sm"
             >
               Go Back Home
             </button>
             <button
               onClick={() => navigate(-1)}
-              className="btn btn-light px-4 py-2 shadow-sm"
+              className="btn btn-outline-dark px-4 py-2 shadow-sm"
             >
               Go Back
             </button>

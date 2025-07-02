@@ -22,7 +22,9 @@ const ResetPassword = () => {
   const [searchParams] = useSearchParams();
   const token = searchParams.get("token");
 
-  const [type, SetType] = useState(true);
+  const [confirmPassword, SetConfirmPassword] = useState(true);
+  const [newPassword, SetNewPassword] = useState(true);
+
   const dispatch = useDispatch();
   const new_password = watch("new_password");
 
@@ -98,17 +100,17 @@ const ResetPassword = () => {
             control={control}
             name="new_password"
             label="New Password *"
-            type={type ? "password" : "text"}
+            type={newPassword ? "password" : "text"}
             rightIcon={
-              type ? (
+              newPassword ? (
                 <IoEyeOffSharp
                   className="cursor-pointer text-success"
-                  onClick={() => SetType(!type)}
+                  onClick={() => SetNewPassword(!newPassword)}
                 />
               ) : (
                 <MdRemoveRedEye
                   className="cursor-pointer text-success"
-                  onClick={() => SetType(!type)}
+                  onClick={() => SetNewPassword(!newPassword)}
                 />
               )
             }
@@ -126,17 +128,17 @@ const ResetPassword = () => {
             control={control}
             name="confirmPassword"
             label="Confirm Password *"
-            type={type ? "password" : "text"}
+            type={confirmPassword ? "password" : "text"}
             rightIcon={
-              type ? (
+              confirmPassword ? (
                 <IoEyeOffSharp
                   className="cursor-pointer text-success"
-                  onClick={() => SetType(!type)}
+                  onClick={() => SetConfirmPassword(!confirmPassword)}
                 />
               ) : (
                 <MdRemoveRedEye
                   className="cursor-pointer text-success"
-                  onClick={() => SetType(!type)}
+                  onClick={() => SetConfirmPassword(!confirmPassword)}
                 />
               )
             }

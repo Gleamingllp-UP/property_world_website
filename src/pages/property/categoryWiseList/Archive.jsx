@@ -26,8 +26,9 @@ import { throttle } from "lodash";
 import { formatNumberWithCommas } from "../../../helper/function/formatRange";
 import NearbyPlaces from "./NearbyPlaces";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import PropertyMapView from "../propertyDetails/PropertyMapView";
 
-const Archive = () => {
+const Archive = ({ isMapView, setIsMapView }) => {
   const {
     isLoading,
     propertyData = [],
@@ -37,6 +38,7 @@ const Archive = () => {
   const innerRef = useRef(null);
 
   const [modalShow, setModalShow] = useState(false);
+  const [isGridView, setIsGridView] = useState(true);
 
   const [page, setPage] = useState(1);
   const [sortBy, setSortBy] = useState("");
@@ -76,7 +78,7 @@ const Archive = () => {
         throw new Error(resultAction?.error?.message);
       }
     } catch (error) {
-      showToast(error?.message || "Failed to create property.", "error");
+      showToast(error?.message || "Failed to create item.", "error");
     }
   };
 
@@ -107,7 +109,7 @@ const Archive = () => {
       <hr />
 
       {/* Property List */}
-      <div className="col-lg-9">
+      <div className={isMapView ? "col-lg-12" : "col-lg-9"}>
         <div className="pro_keyword">
           <div className="mb-3">
             <h3>Properties for sale in UAE</h3>
@@ -185,12 +187,18 @@ const Archive = () => {
                   })}
                 </select>
                 <div className="list_map">
-                  <button className="act_list">
+                  <a
+                    className={!isMapView ? "act_list" : ""}
+                    onClick={() => setIsMapView(false)}
+                  >
                     <i className="ri-list-check" /> List
-                  </button>
-                  <button>
+                  </a>
+                  <a
+                    className={isMapView ? "act_list" : ""}
+                    onClick={() => setIsMapView(true)}
+                  >
                     <i className="ri-map-pin-line" /> Map
-                  </button>
+                  </a>
                 </div>
               </div>
             </div>
@@ -201,435 +209,859 @@ const Archive = () => {
         <ArchiveLocation />
 
         {/* Featured Property Example */}
-        <div className="listing_area position-relative" ref={innerRef}>
-          {/* Dynamic Properties List */}
-          <div>
-            {isLoading ? (
-              <PropertyListingCardSkeleton />
-            ) : propertyData?.length > 0 ? (
-              propertyData?.map((item,index) => {
-                const sliderSettings = {
-                  dots: false,
-                  infinite: true,
-                  speed: 1000,
-                  slidesToShow: 2,
-                  slidesToScroll: 1,
-                  arrows: true,
-                  variableWidth: false,
-                  nextArrow: <NextArrow />,
-                  prevArrow: <PrevArrow />,
-                  responsive: [
-                    {
-                      breakpoint: 1024,
-                      settings: {
-                        slidesToShow: 2,
+        {!isMapView && (
+          <div className="listing_area position-relative" ref={innerRef}>
+            {/* Dynamic Properties List */}
+            <div>
+              {isLoading ? (
+                <PropertyListingCardSkeleton />
+              ) : propertyData?.length > 0 ? (
+                propertyData?.map((item, index) => {
+                  const sliderSettings = {
+                    dots: false,
+                    infinite: true,
+                    speed: 1000,
+                    slidesToShow: 2,
+                    slidesToScroll: 1,
+                    arrows: true,
+                    variableWidth: false,
+                    nextArrow: <NextArrow />,
+                    prevArrow: <PrevArrow />,
+                    responsive: [
+                      {
+                        breakpoint: 1024,
+                        settings: {
+                          slidesToShow: 2,
+                        },
                       },
-                    },
-                    {
-                      breakpoint: 768,
-                      settings: {
-                        slidesToShow: 1,
+                      {
+                        breakpoint: 768,
+                        settings: {
+                          slidesToShow: 1,
+                        },
                       },
-                    },
-                    {
-                      breakpoint: 480,
-                      settings: {
-                        slidesToShow: 1,
+                      {
+                        breakpoint: 480,
+                        settings: {
+                          slidesToShow: 1,
+                        },
                       },
-                    },
-                  ],
-                };
+                    ],
+                  };
 
-                const productImages = item?.images?.filter(
-                  (item) => item?.name !== "Thumbnail Image"
-                );
-                const productThumbnailImage = item?.images?.filter(
-                  (item) => item?.name === "Thumbnail Image"
-                );
-                return item?.is_featured ? (
-                  <div className="list_box" key={index}>
-                    <div className="feat_tag">
-                      <p>Featured Property</p>
-                    </div>
-                    <div className="row">
-                      <div className="col-lg-5">
-                        <div className="property_images">
-                          <div className="save_p">
-                            {userData?.role !== "guest" && (
-                              <button>
-                                <i
-                                  className={
-                                    item?.is_liked
-                                      ? "ri-heart-fill text-white"
-                                      : "ri-heart-line"
-                                  }
-                                  onClick={() => throttledToggleLike(item?._id)}
-                                  style={{
-                                    cursor: "pointer",
-                                    fontSize: "20px",
-                                  }}
-                                ></i>
-                              </button>
-                            )}
-                          </div>
-                          <div className="big_photo">
-                            <Link
-                              to={`${pageRoutes.PROPERTY_DETAILS}?id=${item?._id}`}
-                            >
-                              <ImageWithLoader
-                                src={productThumbnailImage?.[0]?.url}
-                                className="img-fluid"
-                              />
-                            </Link>
-                          </div>
-                          <div className="small_photo">
-                            <Link
-                              to={`${pageRoutes.PROPERTY_DETAILS}?id=${item?._id}`}
-                            >
-                              {productImages?.slice(0, 2)?.map((img, ind) => {
-                                return (
-                                  <ImageWithLoader
-                                    key={ind}
-                                    src={img?.url}
-                                    className={ind !== 0 ? "mb-0" : ""}
-                                  />
-                                );
-                              })}
-                            </Link>
-                          </div>
-                        </div>
-                        <div className="price_tt">
-                          <span>
-                            <b>{formatPrice(item?.price)}</b>{" "}
-                            {item?.duration || ""}
-                          </span>
-                          <span className="flex_box">
-                            <img
-                              src={item?.userData?.agent_photo || user}
-                              className="agent_b"
-                              alt="agent"
-                            />
-                            <i className="ri-verified-badge-fill" />
-                          </span>
-                        </div>
+                  const productImages = item?.images?.filter(
+                    (item) => item?.name !== "Thumbnail Image"
+                  );
+                  const productThumbnailImage = item?.images?.filter(
+                    (item) => item?.name === "Thumbnail Image"
+                  );
+                  return item?.is_featured ? (
+                    <div className="list_box" key={index}>
+                      <div className="feat_tag">
+                        <p>Featured Property</p>
                       </div>
-
-                      <div className="col-lg-7">
-                        <div className="property_data_area">
-                          <h2>
-                            <Link
-                              to={`${pageRoutes.PROPERTY_DETAILS}?id=${item?._id}`}
-                            >
-                              {item?.title}
-                            </Link>
-                          </h2>
-                          <div className="p_info">
-                            <ul>
-                              <li>{item?.subSubCategoryData?.name}</li>
-                              {(item?.bedrooms != null &&
-                                item?.bedrooms !== "") ||
-                              item?.bathrooms ? (
-                                <li>
-                                  {item?.bedrooms != null &&
-                                    item?.bedrooms !== "" && (
-                                      <span>
-                                        <img src={bed} alt="bed" />{" "}
-                                        {item?.bedrooms === 0
-                                          ? "Studio"
-                                          : item?.bedrooms}{" "}
-                                      </span>
-                                    )}
-                                  {item?.bathrooms ? (
-                                    <span>
-                                      <img src={bath} alt="bath" />{" "}
-                                      {item?.bathrooms}
-                                    </span>
-                                  ) : null}
-                                </li>
-                              ) : null}
-
-                              {item?.area && (
-                                <li>
-                                  <img src={ruler} alt="area" />{" "}
-                                  {formatNumberWithCommas(item?.area)}
-                                </li>
+                      <div className="row">
+                        <div className="col-lg-5">
+                          <div className="property_images">
+                            <div className="save_p">
+                              {userData?.role !== "guest" && (
+                                <button>
+                                  <i
+                                    className={
+                                      item?.is_liked
+                                        ? "ri-heart-fill text-white"
+                                        : "ri-heart-line"
+                                    }
+                                    onClick={() =>
+                                      throttledToggleLike(item?._id)
+                                    }
+                                    style={{
+                                      cursor: "pointer",
+                                      fontSize: "20px",
+                                    }}
+                                  ></i>
+                                </button>
                               )}
-                            </ul>
+                            </div>
+                            <div className="big_photo">
+                              <Link
+                                to={`${pageRoutes.PROPERTY_DETAILS}?id=${item?._id}`}
+                              >
+                                <ImageWithLoader
+                                  src={productThumbnailImage?.[0]?.url}
+                                  className="img-fluid"
+                                />
+                              </Link>
+                            </div>
+                            <div className="small_photo">
+                              <Link
+                                to={`${pageRoutes.PROPERTY_DETAILS}?id=${item?._id}`}
+                              >
+                                {productImages?.slice(0, 2)?.map((img, ind) => {
+                                  return (
+                                    <ImageWithLoader
+                                      key={ind}
+                                      src={img?.url}
+                                      className={ind !== 0 ? "mb-0" : ""}
+                                    />
+                                  );
+                                })}
+                              </Link>
+                            </div>
                           </div>
-                          <div className="pro_desc sli">
-                            {item?.short_description ?? "No description"}
-                          </div>
-                          <div className="loc">
-                            <i className="ri-map-pin-line" />
-                            {item?.address ?? "No address"}
-                          </div>
-                          <>
-                            <NearbyPlaces
-                              address={
-                                item?.building_name + ", " + item?.address
-                              }
-                              lat={item?.locationData?.latitude}
-                              lng={item?.locationData?.longitude}
-                            />
-                          </>
-                          <div className="call_action">
-                            <ul className="mb-0">
-                              <li>
-                                <a
-                                  href={`tel:${
-                                    item?.userData?.phone_number ||
-                                    "97143533229"
-                                  }`}
-                                >
-                                  <i className="ri-phone-line" /> Call
-                                </a>
-                              </li>
-                              <li>
-                                <a
-                                  href={`mailto:${
-                                    item?.userData?.email ||
-                                    "info@propertyworld.ae"
-                                  }`}
-                                >
-                                  <i className="ri-mail-open-line" /> Email
-                                </a>
-                              </li>
-                              <li>
-                                <a
-                                  href={`https://wa.me/${
-                                    item?.userData?.whatsapp_number ||
-                                    "97143533229"
-                                  }`}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                >
-                                  <i className="ri-whatsapp-line" /> WhatsApp
-                                </a>
-                              </li>
-                            </ul>
+                          <div className="price_tt">
                             <span>
-                              <ImageWithLoader
-                                src={
-                                  item?.userData?.agency_logo ||
-                                  property_world_logo
-                                }
-                                alt="logo"
+                              <b>{formatPrice(item?.price)}</b>{" "}
+                              {item?.duration || ""}
+                            </span>
+                            <span className="flex_box">
+                              <img
+                                src={item?.userData?.agent_photo || user}
+                                className="agent_b"
+                                alt="agent"
                               />
+                              <i className="ri-verified-badge-fill" />
                             </span>
                           </div>
                         </div>
+
+                        <div className="col-lg-7">
+                          <div className="property_data_area">
+                            <h2>
+                              <Link
+                                to={`${pageRoutes.PROPERTY_DETAILS}?id=${item?._id}`}
+                              >
+                                {item?.title}
+                              </Link>
+                            </h2>
+                            <div className="p_info">
+                              <ul>
+                                <li>{item?.subSubCategoryData?.name}</li>
+                                {(item?.bedrooms != null &&
+                                  item?.bedrooms !== "") ||
+                                item?.bathrooms ? (
+                                  <li>
+                                    {item?.bedrooms != null &&
+                                      item?.bedrooms !== "" && (
+                                        <span>
+                                          <img src={bed} alt="bed" />{" "}
+                                          {item?.bedrooms === 0
+                                            ? "Studio"
+                                            : item?.bedrooms}{" "}
+                                        </span>
+                                      )}
+                                    {item?.bathrooms ? (
+                                      <span>
+                                        <img src={bath} alt="bath" />{" "}
+                                        {item?.bathrooms}
+                                      </span>
+                                    ) : null}
+                                  </li>
+                                ) : null}
+
+                                {item?.area && (
+                                  <li>
+                                    <img src={ruler} alt="area" />{" "}
+                                    {formatNumberWithCommas(item?.area)}
+                                  </li>
+                                )}
+                              </ul>
+                            </div>
+                            <div className="pro_desc sli">
+                              {item?.short_description ?? "No description"}
+                            </div>
+                            <div className="loc">
+                              <i className="ri-map-pin-line" />
+                              {item?.address ?? "No address"}
+                            </div>
+                            <>
+                              <NearbyPlaces
+                                address={
+                                  item?.building_name + ", " + item?.address
+                                }
+                                lat={item?.locationData?.latitude}
+                                lng={item?.locationData?.longitude}
+                              />
+                            </>
+                            <div className="call_action">
+                              <ul className="mb-0">
+                                <li>
+                                  <a
+                                    href={`tel:${
+                                      item?.userData?.phone_number ||
+                                      "97143533229"
+                                    }`}
+                                  >
+                                    <i className="ri-phone-line" /> Call
+                                  </a>
+                                </li>
+                                <li>
+                                  <a
+                                    href={`mailto:${
+                                      item?.userData?.email ||
+                                      "info@propertyworld.ae"
+                                    }`}
+                                  >
+                                    <i className="ri-mail-open-line" /> Email
+                                  </a>
+                                </li>
+                                <li>
+                                  <a
+                                    href={`https://wa.me/${
+                                      item?.userData?.whatsapp_number ||
+                                      "97143533229"
+                                    }`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                  >
+                                    <i className="ri-whatsapp-line" /> WhatsApp
+                                  </a>
+                                </li>
+                              </ul>
+                              <span>
+                                <ImageWithLoader
+                                  src={
+                                    item?.userData?.agency_logo ||
+                                    property_world_logo
+                                  }
+                                  alt="logo"
+                                />
+                              </span>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ) : (
-                  <div className="list_box normal_listing" key={index}>
-                    <div className="row">
-                      {/* Left Side */}
-                      <div className="col-lg-5">
-                        <div className="normal_slider">
-                          <div
-                            className="agent_d"
-                            data-bs-toggle="modal"
-                            data-bs-target="#agency_info"
-                            onClick={() => setModalShow(true)}
-                          >
-                            <i className="ri-checkbox-circle-fill" /> Checked
-                          </div>
-                          <div className="save_p">
-                            {userData?.role !== "guest" && (
-                              <button>
-                                <i
-                                  className={
-                                    item?.is_liked
-                                      ? "ri-heart-fill text-white"
-                                      : "ri-heart-line"
-                                  }
-                                  onClick={() => throttledToggleLike(item?._id)}
-                                  style={{
-                                    cursor: "pointer",
-                                    fontSize: "20px",
-                                  }}
-                                ></i>
-                              </button>
-                            )}
-                          </div>
-
-                          <div className="my-slider">
-                            <Slider {...sliderSettings}>
-                              {item?.images?.map((img, i) => (
-                                <div key={i}>
-                                  <Link
-                                    to={`${pageRoutes.PROPERTY_DETAILS}?id=${item?._id}`}
-                                  >
-                                    <ImageWithLoader src={img?.url} />
-                                  </Link>
-                                </div>
-                              ))}
-                            </Slider>
-                          </div>
-                        </div>
-
-                        <div className="price_tt normal">
-                          <span>
-                            <b>{formatPrice(item?.price)}</b>{" "}
-                            {item?.duration || ""}
-                          </span>
-                          <span className="flex_box">
-                            <img
-                              src={item?.userData?.agent_photo || user}
-                              className="agent_b"
-                              alt="agent"
-                            />
-                            <i className="ri-verified-badge-fill" />
-                          </span>
-                        </div>
-                      </div>
-
-                      {/* Right Side */}
-                      <div className="col-lg-7">
-                        <div className="property_data_area">
-                          <h2>
-                            <Link
-                              to={`${pageRoutes.PROPERTY_DETAILS}?id=${item?._id}`}
+                  ) : (
+                    <div className="list_box normal_listing" key={index}>
+                      <div className="row">
+                        {/* Left Side */}
+                        <div className="col-lg-5">
+                          <div className="normal_slider">
+                            <div
+                              className="agent_d"
+                              data-bs-toggle="modal"
+                              data-bs-target="#agency_info"
+                              onClick={() => setModalShow(true)}
                             >
-                              {item?.title}
-                            </Link>
-                          </h2>
-
-                          <div className="p_info">
-                            <ul>
-                              <li>{item?.subSubCategoryData?.name}</li>
-                              {(item?.bedrooms != null &&
-                                item?.bedrooms !== "") ||
-                              item?.bathrooms ? (
-                                <li>
-                                  {item?.bedrooms != null &&
-                                    item?.bedrooms !== "" && (
-                                      <span>
-                                        <img src={bed} alt="bed" />{" "}
-                                        {item?.bedrooms === 0
-                                          ? "Studio"
-                                          : item?.bedrooms}{" "}
-                                      </span>
-                                    )}
-                                  {item?.bathrooms ? (
-                                    <span>
-                                      <img src={bath} alt="bath" />{" "}
-                                      {item?.bathrooms}
-                                    </span>
-                                  ) : null}
-                                </li>
-                              ) : null}
-
-                              {item?.area && (
-                                <li>
-                                  <img src={ruler} alt="area" />{" "}
-                                  {formatNumberWithCommas(item?.area)}
-                                </li>
+                              <i className="ri-checkbox-circle-fill" /> Checked
+                            </div>
+                            <div className="save_p">
+                              {userData?.role !== "guest" && (
+                                <button>
+                                  <i
+                                    className={
+                                      item?.is_liked
+                                        ? "ri-heart-fill text-white"
+                                        : "ri-heart-line"
+                                    }
+                                    onClick={() =>
+                                      throttledToggleLike(item?._id)
+                                    }
+                                    style={{
+                                      cursor: "pointer",
+                                      fontSize: "20px",
+                                    }}
+                                  ></i>
+                                </button>
                               )}
-                            </ul>
+                            </div>
+
+                            <div className="my-slider">
+                              <Slider {...sliderSettings}>
+                                {item?.images?.map((img, i) => (
+                                  <div key={i}>
+                                    <Link
+                                      to={`${pageRoutes.PROPERTY_DETAILS}?id=${item?._id}`}
+                                    >
+                                      <ImageWithLoader src={img?.url} />
+                                    </Link>
+                                  </div>
+                                ))}
+                              </Slider>
+                            </div>
                           </div>
 
-                          {item?.amenitiesAndFacilitiesData?.length > 0 ? (
-                            <div className="key_property">
-                              <a href="#">
-                                {item?.amenitiesAndFacilitiesData
-                                  ?.slice(0, 4)
-                                  .map((af) => af?.name)
-                                  .join(" | ")}
-                              </a>
+                          <div className="price_tt normal">
+                            <span>
+                              <b>{formatPrice(item?.price)}</b>{" "}
+                              {item?.duration || ""}
+                            </span>
+                            <span className="flex_box">
+                              <img
+                                src={item?.userData?.agent_photo || user}
+                                className="agent_b"
+                                alt="agent"
+                              />
+                              <i className="ri-verified-badge-fill" />
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Right Side */}
+                        <div className="col-lg-7">
+                          <div className="property_data_area">
+                            <h2>
+                              <Link
+                                to={`${pageRoutes.PROPERTY_DETAILS}?id=${item?._id}`}
+                              >
+                                {item?.title}
+                              </Link>
+                            </h2>
+
+                            <div className="p_info">
+                              <ul>
+                                <li>{item?.subSubCategoryData?.name}</li>
+                                {(item?.bedrooms != null &&
+                                  item?.bedrooms !== "") ||
+                                item?.bathrooms ? (
+                                  <li>
+                                    {item?.bedrooms != null &&
+                                      item?.bedrooms !== "" && (
+                                        <span>
+                                          <img src={bed} alt="bed" />{" "}
+                                          {item?.bedrooms === 0
+                                            ? "Studio"
+                                            : item?.bedrooms}{" "}
+                                        </span>
+                                      )}
+                                    {item?.bathrooms ? (
+                                      <span>
+                                        <img src={bath} alt="bath" />{" "}
+                                        {item?.bathrooms}
+                                      </span>
+                                    ) : null}
+                                  </li>
+                                ) : null}
+
+                                {item?.area && (
+                                  <li>
+                                    <img src={ruler} alt="area" />{" "}
+                                    {formatNumberWithCommas(item?.area)}
+                                  </li>
+                                )}
+                              </ul>
                             </div>
-                          ) : (
-                            item?.building_facilities?.length > 0 && (
+
+                            {item?.amenitiesAndFacilitiesData?.length > 0 ? (
                               <div className="key_property">
                                 <a href="#">
-                                  {item?.building_facilities
+                                  {item?.amenitiesAndFacilitiesData
                                     ?.slice(0, 4)
+                                    .map((af) => af?.name)
                                     .join(" | ")}
                                 </a>
                               </div>
-                            )
-                          )}
+                            ) : (
+                              item?.building_facilities?.length > 0 && (
+                                <div className="key_property">
+                                  <a href="#">
+                                    {item?.building_facilities
+                                      ?.slice(0, 4)
+                                      .join(" | ")}
+                                  </a>
+                                </div>
+                              )
+                            )}
 
-                          <div className="pro_desc sli">
-                            {item?.short_description}
-                          </div>
-                          <div className="loc">
-                            <i className="ri-map-pin-line" />{" "}
-                            {item?.locationData?.name}
-                          </div>
+                            <div className="pro_desc sli">
+                              {item?.short_description}
+                            </div>
+                            <div className="loc">
+                              <i className="ri-map-pin-line" />{" "}
+                              {item?.locationData?.name}
+                            </div>
 
-                          <div className="call_action">
-                            <ul className="mb-0">
-                              <li>
-                                <a
-                                  href={`tel:${
-                                    item?.userData?.phone_number ||
-                                    "97143533229"
-                                  }`}
-                                >
-                                  <i className="ri-phone-line" /> Call
-                                </a>
-                              </li>
-                              <li>
-                                <a
-                                  href={`mailto:${
-                                    item?.userData?.email ||
-                                    "info@propertyworld.ae"
-                                  }`}
-                                >
-                                  <i className="ri-mail-open-line" /> Email
-                                </a>
-                              </li>
-                              <li>
-                                <a
-                                  href={`https://wa.me/${
-                                    item?.userData?.whatsapp_number ||
-                                    "97143533229"
-                                  }`}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                >
-                                  <i className="ri-whatsapp-line" /> WhatsApp
-                                </a>
-                              </li>
-                            </ul>
+                            <div className="call_action">
+                              <ul className="mb-0">
+                                <li>
+                                  <a
+                                    href={`tel:${
+                                      item?.userData?.phone_number ||
+                                      "97143533229"
+                                    }`}
+                                  >
+                                    <i className="ri-phone-line" /> Call
+                                  </a>
+                                </li>
+                                <li>
+                                  <a
+                                    href={`mailto:${
+                                      item?.userData?.email ||
+                                      "info@propertyworld.ae"
+                                    }`}
+                                  >
+                                    <i className="ri-mail-open-line" /> Email
+                                  </a>
+                                </li>
+                                <li>
+                                  <a
+                                    href={`https://wa.me/${
+                                      item?.userData?.whatsapp_number ||
+                                      "97143533229"
+                                    }`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                  >
+                                    <i className="ri-whatsapp-line" /> WhatsApp
+                                  </a>
+                                </li>
+                              </ul>
 
-                            <span className="">
-                              <ImageWithLoader
-                                src={
-                                  item?.userData?.agency_logo ||
-                                  property_world_logo
-                                }
-                                alt="logo"
-                              />
-                            </span>
+                              <span className="">
+                                <ImageWithLoader
+                                  src={
+                                    item?.userData?.agency_logo ||
+                                    property_world_logo
+                                  }
+                                  alt="logo"
+                                />
+                              </span>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
+                  );
+                })
+              ) : (
+                <div className="col-12">
+                  <div className="text-center border border-light-subtle rounded py-3 bg-light text-muted fw-medium">
+                    No Property Available
                   </div>
-                );
-              })
-            ) : (
-              <div className="col-12">
-                <div className="text-center border border-light-subtle rounded py-3 bg-light text-muted fw-medium">
-                  No Property Available
                 </div>
-              </div>
+              )}
+            </div>
+
+            {isLoading && (
+              <div
+                className="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center"
+                style={{
+                  backgroundColor: "rgba(238, 238, 238, 0.6)",
+                  zIndex: 10,
+                }}
+              ></div>
             )}
           </div>
+        )}
 
-          {isLoading && (
-            <div
-              className="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center"
-              style={{
-                backgroundColor: "rgba(238, 238, 238, 0.6)",
-                zIndex: 10,
-              }}
-            ></div>
-          )}
-        </div>
+        {/* Map View */}
+        {isMapView && (
+          <div className="listing_area position-relative" ref={innerRef}>
+            <div className="row">
+              <div
+                className="col-lg-5"
+                style={{
+                  maxHeight: "600px",
+                  overflowY: "auto",
+                  scrollbarWidth: "0px",
+                }}
+              >
+                <div className="row g-4">
+                  <button
+                    className="btn btn-primary mb-4"
+                    onClick={() => setIsGridView(!isGridView)}
+                  >
+                    {isGridView ? "Switch to List View" : "Switch to Grid View"}
+                  </button>{" "}
+                  {isLoading ? (
+                    <PropertyListingCardSkeleton />
+                  ) : propertyData?.length > 0 ? (
+                    propertyData?.map((item, index) => {
+                      const sliderSettings = {
+                        dots: false,
+                        infinite: true,
+                        speed: 1000,
+                        slidesToShow: 1,
+                        slidesToScroll: 1,
+                        arrows: true,
+                        variableWidth: false,
+                        nextArrow: <NextArrow />,
+                        prevArrow: <PrevArrow />,
+                        responsive: [
+                          {
+                            breakpoint: 1024,
+                            settings: {
+                              slidesToShow: 2,
+                            },
+                          },
+                          {
+                            breakpoint: 768,
+                            settings: {
+                              slidesToShow: 1,
+                            },
+                          },
+                          {
+                            breakpoint: 480,
+                            settings: {
+                              slidesToShow: 1,
+                            },
+                          },
+                        ],
+                      };
+                      return item?.is_featured ? (
+                        <div
+                          className={
+                            isGridView ? "col-12 col-md-6 " : "col-12 "
+                          }
+                          key={index}
+                        >
+                          <div className="list_box mb-0">
+                            <div className="feat_tag">
+                              <p>Featured Property</p>
+                            </div>
+
+                            <div
+                              className={`row g-0 ${
+                                isGridView ? "flex-column" : "flex-row"
+                              }`}
+                            >
+                              {/* Left Side */}
+                              <div
+                                className={
+                                  isGridView ? "col-12" : "col-md-5 col-5"
+                                }
+                              >
+                                <div className="normal_slider position-relative h-100">
+                                  <div
+                                    className="agent_d position-absolute"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#agency_info"
+                                    onClick={() => setModalShow(true)}
+                                  >
+                                    <i className="ri-checkbox-circle-fill" />{" "}
+                                    Checked
+                                  </div>
+
+                                  <div className="save_p position-absolute top-0 end-0">
+                                    {userData?.role !== "guest" && (
+                                      <button className="bg-transparent border-0">
+                                        <i
+                                          className={
+                                            item?.is_liked
+                                              ? "ri-heart-fill text-white"
+                                              : "ri-heart-line"
+                                          }
+                                          onClick={() =>
+                                            throttledToggleLike(item?._id)
+                                          }
+                                          style={{
+                                            cursor: "pointer",
+                                            fontSize: "20px",
+                                          }}
+                                        ></i>
+                                      </button>
+                                    )}
+                                  </div>
+
+                                  <div className="my-slider">
+                                    <Slider {...sliderSettings}>
+                                      {item?.images?.map((img, i) => (
+                                        <div key={i}>
+                                          <Link
+                                            to={`${pageRoutes.PROPERTY_DETAILS}?id=${item?._id}`}
+                                          >
+                                            <ImageWithLoader src={img?.url} style={{
+                                              height:"210px"
+                                            }}/>
+                                          </Link>
+                                        </div>
+                                      ))}
+                                    </Slider>
+                                  </div>
+
+                                  <div className="price_tt">
+                                    <span>
+                                      <b>{formatPrice(item?.price)}</b>{" "}
+                                      {item?.duration || ""}
+                                    </span>
+                                    <span className="flex_box">
+                                      <img
+                                        src={
+                                          item?.userData?.agent_photo || user
+                                        }
+                                        className="agent_b"
+                                        alt="agent"
+                                      />
+                                      <i className="ri-verified-badge-fill" />
+                                    </span>
+                                  </div>
+                                </div>
+                              </div>
+
+                              {/* Right Side */}
+                              <div
+                                className={
+                                  isGridView
+                                    ? "col-12 p-3 py-1"
+                                    : "col-lg-7 col-7 p-3 py-1"
+                                }
+                              >
+                                <div className="property_data_area">
+                                  <h2 className="pro_desc sli">
+                                    <Link
+                                      to={`${pageRoutes.PROPERTY_DETAILS}?id=${item?._id}`}
+                                    >
+                                      {item?.title}
+                                    </Link>
+                                  </h2>
+
+                                  <div className="p_info">
+                                    <ul className=" ">
+                                      {/* <li>{item?.subSubCategoryData?.name}</li> */}
+                                      {(item?.bedrooms != null &&
+                                        item?.bedrooms !== "") ||
+                                      item?.bathrooms ? (
+                                        <>
+                                          <li>
+                                            {item?.bedrooms != null &&
+                                              item?.bedrooms !== "" && (
+                                                <span>
+                                                  <img src={bed} alt="bed" />{" "}
+                                                  {item?.bedrooms === 0
+                                                    ? "Studio"
+                                                    : item?.bedrooms}{" "}
+                                                </span>
+                                              )}
+                                          </li>
+                                          <li>
+                                            {item?.bathrooms ? (
+                                              <span>
+                                                <img src={bath} alt="bath" />{" "}
+                                                {item?.bathrooms}
+                                              </span>
+                                            ) : null}
+                                          </li>
+                                        </>
+                                      ) : null}
+
+                                      {item?.area && (
+                                        <li>
+                                          <img src={ruler} alt="area" />{" "}
+                                          {formatNumberWithCommas(item?.area)}
+                                        </li>
+                                      )}
+                                    </ul>
+                                  </div>
+                                  <div className="pro_desc sli">
+                                    {item?.short_description ??
+                                      "No description"}
+                                  </div>
+                                  <div className="loc pro_desc sli">
+                                    <i className="ri-map-pin-line" />
+                                    {item?.address ?? "No address"}
+                                  </div>
+                                  {!isGridView && (
+                                    <>
+                                      <div className="call_action justify-content-end">
+                                        <span className="h-50">
+                                          <ImageWithLoader
+                                            src={
+                                              item?.userData?.agency_logo ||
+                                              property_world_logo
+                                            }
+                                            alt="logo"
+                                          />
+                                        </span>
+                                      </div>
+                                    </>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ) : (
+                        <div
+                          className={isGridView ? "col-12 col-md-6" : "col-12"}
+                        >
+                          <div className="card h-100">
+                            <div
+                              className={`row g-0 ${
+                                isGridView ? "flex-column" : "flex-row"
+                              }`}
+                            >
+                              {/* Left Side: Image Slider */}
+                              <div
+                                className={
+                                  isGridView ? "col-12" : "col-md-5 col-5"
+                                }
+                              >
+                                <div className="normal_slider position-relative h-100">
+                                  <div
+                                    className="agent_d position-absolute"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#agency_info"
+                                    onClick={() => setModalShow(true)}
+                                  >
+                                    <i className="ri-checkbox-circle-fill" />{" "}
+                                    Checked
+                                  </div>
+
+                                  <div className="save_p position-absolute top-0 end-0">
+                                    {userData?.role !== "guest" && (
+                                      <button className="bg-transparent border-0">
+                                        <i
+                                          className={
+                                            item?.is_liked
+                                              ? "ri-heart-fill text-white"
+                                              : "ri-heart-line"
+                                          }
+                                          onClick={() =>
+                                            throttledToggleLike(item?._id)
+                                          }
+                                          style={{
+                                            cursor: "pointer",
+                                            fontSize: "20px",
+                                          }}
+                                        ></i>
+                                      </button>
+                                    )}
+                                  </div>
+
+                                  <div className="my-slider">
+                                    <Slider {...sliderSettings}>
+                                      {item?.images?.map((img, i) => (
+                                        <div key={i}>
+                                          <Link
+                                            to={`${pageRoutes.PROPERTY_DETAILS}?id=${item?._id}`}
+                                          >
+                                            <ImageWithLoader src={img?.url} />
+                                          </Link>
+                                        </div>
+                                      ))}
+                                    </Slider>
+                                  </div>
+
+                                  <div className="price_tt normal d-flex justify-content-between p-2">
+                                    <span>
+                                      <b>{formatPrice(item?.price)}</b>{" "}
+                                      {item?.duration || ""}
+                                    </span>
+                                    <span className="flex_box">
+                                      <img
+                                        src={
+                                          item?.userData?.agent_photo || user
+                                        }
+                                        className="agent_b"
+                                        alt="agent"
+                                      />
+                                      <i className="ri-verified-badge-fill" />
+                                    </span>
+                                  </div>
+                                </div>
+                              </div>
+
+                              {/* Right Side: Content */}
+                              <div
+                                className={
+                                  isGridView ? "col-12" : "col-md-7 col-7"
+                                }
+                              >
+                                <div className="property_data_area p-3 py-1">
+                                  <h2 className="mb-2 pro_desc sli">
+                                    <Link
+                                      to={`${pageRoutes.PROPERTY_DETAILS}?id=${item?._id}`}
+                                    >
+                                      {item?.title}
+                                    </Link>
+                                  </h2>
+
+                                  <div className="p_info mb-2">
+                                    <ul className="">
+                                      {/* {item?.subSubCategoryData?.name && (
+                                        <li>
+                                          {item?.subSubCategoryData?.name}
+                                        </li>
+                                      )} */}
+                                      {(item?.bedrooms !== null ||
+                                        item?.bathrooms) && (
+                                        <>
+                                          <li>
+                                            {item?.bedrooms !== null && (
+                                              <span>
+                                                <img src={bed} alt="bed" />{" "}
+                                                {item?.bedrooms === 0
+                                                  ? "Studio"
+                                                  : item?.bedrooms}
+                                              </span>
+                                            )}
+                                          </li>
+                                          <li>
+                                            {item?.bathrooms && (
+                                              <span className="">
+                                                <img src={bath} alt="bath" />{" "}
+                                                {item?.bathrooms}
+                                              </span>
+                                            )}
+                                          </li>
+                                        </>
+                                      )}
+                                      {item?.area && (
+                                        <li>
+                                          <img src={ruler} alt="area" />{" "}
+                                          {formatNumberWithCommas(item?.area)}
+                                        </li>
+                                      )}
+                                    </ul>
+                                  </div>
+
+                                  {item?.amenitiesAndFacilitiesData?.length >
+                                  0 ? (
+                                    <div className="key_property mb-2">
+                                      <a href="#">
+                                        {item?.amenitiesAndFacilitiesData
+                                          .slice(0, 4)
+                                          .map((af) => af?.name)
+                                          .join(" | ")}
+                                      </a>
+                                    </div>
+                                  ) : item?.building_facilities?.length > 0 ? (
+                                    <div className="key_property mb-2">
+                                      <a href="#">
+                                        {item?.building_facilities
+                                          .slice(0, 4)
+                                          .join(" | ")}
+                                      </a>
+                                    </div>
+                                  ) : null}
+
+                                  <div className="loc">
+                                    <i className="ri-map-pin-line" />{" "}
+                                    {item?.locationData?.name}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })
+                  ) : (
+                    <div className="col-12">
+                      <div className="text-center border border-light-subtle rounded py-3 bg-light text-muted fw-medium">
+                        No Property Available
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+              <div className="col-lg-7 p-0">
+                <PropertyMapView />
+              </div>
+            </div>
+
+            {isLoading && (
+              <div
+                className="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center"
+                style={{
+                  backgroundColor: "rgba(238, 238, 238, 0.6)",
+                  zIndex: 10,
+                }}
+              ></div>
+            )}
+          </div>
+        )}
 
         {/* Pagination */}
         {propertyData?.length > 0 && (
@@ -640,11 +1072,11 @@ const Archive = () => {
             onPageChange={(newPage) => setPage(newPage)}
           />
         )}
-        <ArchiveTop />
+        {!isMapView && <ArchiveTop />}
         <CheckedModal show={modalShow} onHide={() => setModalShow(false)} />
       </div>
     </>
   );
 };
 
-export default Archive;
+export default React.memo(Archive);

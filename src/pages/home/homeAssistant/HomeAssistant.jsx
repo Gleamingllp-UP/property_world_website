@@ -3,6 +3,20 @@ import ImageWithLoader from "../../../Custom_Components/ImageWithLoader";
 import { chat, city2, map } from "../../../assets/images";
 
 function HomeAssistant() {
+  const handleAssistantOpen = () => {
+    const agentContainer = document.querySelector(".embedded-agent-container");
+    const animationContainer = document.querySelector(
+      ".ai-agent-chat-animation-container"
+    );
+
+    if (agentContainer && animationContainer) {
+      agentContainer.classList.toggle("opened");
+      animationContainer.classList.toggle("isOpened");
+    } else {
+      console.warn("Chatbot containers not found");
+    }
+  };
+
   return (
     <>
       <section className="proxiview_area prox_desktop">
@@ -29,24 +43,25 @@ function HomeAssistant() {
               </div>
             </div>
             <div className="col-lg-4">
-              <div className="box_area">
-                <a href="#">
-                  <div className="inner_block">
-                    <ImageWithLoader src={chat} className="img-fluid" />
-                  </div>
-                  <div className="content_atra">
-                    <h2>
-                      PropBot <i className="ri-arrow-right-up-long-line" />
-                    </h2>
-                    <p>
-                      <b>Smart Property Assistant (AI Chatbot)</b>
-                    </p>
-                    <p>
-                      An AI-powered chatbot that helps <br />
-                      users find properties
-                    </p>
-                  </div>
-                </a>
+              <div
+                className="box_area cursor-pointer"
+                onClick={() => handleAssistantOpen()}
+              >
+                <div className="inner_block">
+                  <ImageWithLoader src={chat} className="img-fluid" />
+                </div>
+                <div className="content_atra">
+                  <h2>
+                    PropBot <i className="ri-arrow-right-up-long-line" />
+                  </h2>
+                  <p>
+                    <b>Smart Property Assistant (AI Chatbot)</b>
+                  </p>
+                  <p>
+                    An AI-powered chatbot that helps <br />
+                    users find properties
+                  </p>
+                </div>
               </div>
             </div>
             <div className="col-lg-4">
@@ -82,7 +97,6 @@ function HomeAssistant() {
                 <a href="#">
                   <div className="inner_block">
                     <ImageWithLoader src={map} className="img-fluid mk_p" />
-                   
                   </div>
                   <div className="content_atra">
                     <h2>
@@ -103,24 +117,25 @@ function HomeAssistant() {
               </div>
             </div>
             <div className="col-lg-4">
-              <div className="box_area">
-                <a href="#">
-                  <div className="inner_block">
-                    <ImageWithLoader src={chat} className="img-fluid" />
-                  </div>
-                  <div className="content_atra">
-                    <h2>
-                      PropBot <i className="ri-arrow-right-up-long-line" />
-                    </h2>
-                    <p>
-                      <b>(Smart Property Assistant (AI Chatbot)</b>
-                    </p>
-                    <p>
-                      An AI-powered chatbot that helps <br />
-                      users find properties
-                    </p>
-                  </div>
-                </a>
+              <div
+                className="box_area cursor-pointer"
+                onClick={() => handleAssistantOpen()}
+              >
+                <div className="inner_block">
+                  <ImageWithLoader src={chat} className="img-fluid" />
+                </div>
+                <div className="content_atra">
+                  <h2>
+                    PropBot <i className="ri-arrow-right-up-long-line" />
+                  </h2>
+                  <p>
+                    <b>(Smart Property Assistant (AI Chatbot)</b>
+                  </p>
+                  <p>
+                    An AI-powered chatbot that helps <br />
+                    users find properties
+                  </p>
+                </div>
               </div>
             </div>
             <div className="col-lg-4">

@@ -384,8 +384,8 @@ function AdvanceSearch({ page, limit, sortBy, features, scrollRef }) {
                   >
                     <div className="fxx w-100">
                       {categories?.map((cat, i) => (
-                        <>
-                          <div className="res_done w-100 gap-1" key={i}>
+                        <React.Fragment key={i}>
+                          <div className="res_done w-100 gap-1" >
                             <button
                               className={`btn w-100 ${
                                 cat?._id === selectedCategoryId ? "done_b" : ""
@@ -397,7 +397,7 @@ function AdvanceSearch({ page, limit, sortBy, features, scrollRef }) {
                               {cat?.name}
                             </button>
                           </div>
-                        </>
+                        </React.Fragment>
                       ))}
                     </div>
                     {categories?.length > 0 && (
@@ -1007,8 +1007,8 @@ function AdvanceSearch({ page, limit, sortBy, features, scrollRef }) {
                   <div className=" d-flex flex-wrap gap-2 w-100">
                     {["Floor Plans", "Video Tour", "360 Tours"]?.map(
                       (item, i) => (
-                        <>
-                          <div className="res_done gap-1" key={i}>
+                        <React.Fragment key={i}>
+                          <div className="res_done gap-1" >
                             <button
                               className={`btn w-100 ${
                                 item === selectedTour ? "done_b" : ""
@@ -1020,7 +1020,7 @@ function AdvanceSearch({ page, limit, sortBy, features, scrollRef }) {
                               {item}
                             </button>
                           </div>
-                        </>
+                        </React.Fragment>
                       )
                     )}
                   </div>

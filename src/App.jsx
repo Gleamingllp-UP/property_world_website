@@ -1,5 +1,6 @@
 import ConnectionStatusPage from "./Custom_Components/ConnectionStatusPage";
 import { useNetworkStatus } from "./helper/hook/useNetworkStatus";
+import Assistant from "./pages/home/homeAssistant/Assistant";
 import Path from "./router/Path";
 import { Toaster } from "react-hot-toast";
 function App() {
@@ -12,6 +13,7 @@ function App() {
   return (
     <div className="flex flex-col items-center justify-center min-h-svh">
       <Path />
+      <Assistant/>
       <Toaster
         position="bottom-right"
         reverseOrder={false}

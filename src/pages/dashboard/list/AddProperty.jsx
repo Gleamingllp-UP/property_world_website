@@ -809,7 +809,8 @@ const AddProperty = () => {
                   </div>
                 </div>
               </div>
-            )}
+            )
+            }
 
           <div className="col-md-4 mb-3">
             <label className="form-label">Price *</label>

@@ -368,3 +368,11 @@ input[type="number"] {
 .a_logo {
   height: 40px !important;
 }
+
+.list_map button {
+  color: #000;
+  width: 80px;
+  font-size: 14px;
+  display: inline-block;
+  text-align: center;
+}

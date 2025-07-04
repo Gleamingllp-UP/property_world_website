@@ -198,9 +198,9 @@ function PropertyAllInfo() {
 
               <Propertymap
                 address={
-                  propertyDetails?.building_name +
-                  ", " +
-                  propertyDetails?.address
+                  String(propertyDetails?.building_name) +
+                  " " +
+                  String(propertyDetails?.address)
                 }
                 lat={propertyDetails?.locationData?.latitude}
                 lng={propertyDetails?.locationData?.longitude}

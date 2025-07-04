@@ -11,6 +11,7 @@ import ImageWithLoader from "../Custom_Components/ImageWithLoader";
 import close from "../assets/images/closed.svg";
 import "../assets/css/style.css";
 import { getUserPlanThunk } from "../features/userPlan/userPlanSlice";
+import LoginPromptModal from "../pages/auth/login/LoginPromptModal";
 
 function Header() {
   const [modalShow, setModalShow] = useState(false);
@@ -257,6 +258,7 @@ function Header() {
       </div>
 
       <LoginModal show={modalShow} onHide={() => setModalShow(false)} />
+      <LoginPromptModal openLogin={() => setModalShow(true)} />
     </header>
   );
 }

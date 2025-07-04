@@ -15,7 +15,7 @@ function App() {
       <Path />
       <Assistant/>
       <Toaster
-        position="bottom-right"
+        position="top-right"
         reverseOrder={false}
         gutter={8}
         containerClassName=""

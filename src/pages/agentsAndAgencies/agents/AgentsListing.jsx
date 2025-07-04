@@ -6,6 +6,7 @@ import { CustomPagination } from "../../../Custom_Components/CustomPagination";
 import { AgentSkeleton } from "../../../Custom_Components/Skeleton/AgentOrAgencySkeleton";
 import ImageWithLoader from "../../../Custom_Components/ImageWithLoader";
 import { property_world_logo, user } from "../../../assets/images";
+import { formatTextToTitle } from "../../../helper/function/formatTextToTitle";
 
 function AgentsListing({ page, limit, setPage }) {
   const { isLoading, agentOrAgencyData, pagination } = useSelector(
@@ -68,7 +69,7 @@ function AgentsListing({ page, limit, setPage }) {
                     <p>
                       <b>Language:</b>{" "}
                       {agent?.languages?.length > 0
-                        ? agent?.languages?.map((lang) => lang)?.join(", ")
+                        ? agent?.languages?.map((lang) => formatTextToTitle(lang))?.join(", ")
                         : "No Language"}
                     </p>
                     <div className="for_sale">

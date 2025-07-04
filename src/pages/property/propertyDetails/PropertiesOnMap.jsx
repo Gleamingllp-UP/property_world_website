@@ -1,6 +1,12 @@
-import React, { useEffect, useRef, useCallback } from "react";
+import React, { useEffect, useRef } from "react";
 import { Loader } from "@googlemaps/js-api-loader";
 import { MarkerClusterer } from "@googlemaps/markerclusterer";
+import { formatPrice } from "../../../helper/function/formatPrice";
+import { useDispatch } from "react-redux";
+import {
+  clearHoveredProperty,
+  setHoveredProperty,
+} from "../../../features/property/propertySlice";
 
 const loader = new Loader({
   apiKey: import.meta.env.VITE_GOOGLE_MAP_KEY,
@@ -30,6 +36,7 @@ const groupProperties = (props) => {
   return Object.values(grouped).map((group) => ({
     location: group.location,
     count: group.count,
+    properties: group.properties,
     title: group.properties[0].title,
     price: group.properties[0].price,
     address: group.properties[0].address,
@@ -51,7 +58,13 @@ const createMarkerIcon = (count = 1) => {
   return `data:image/svg+xml;base64,${window.btoa(svg)}`;
 };
 
-function renderMarkers(props, mapInstance, clustererRef, infoWindowRef) {
+function renderMarkers(
+  props,
+  mapInstance,
+  clustererRef,
+  infoWindowRef,
+  dispatch
+) {
   clustererRef.current?.clearMarkers?.();
 
   const markers = props.map((property) => {
@@ -66,24 +79,49 @@ function renderMarkers(props, mapInstance, clustererRef, infoWindowRef) {
 
     const infoWindow = new window.google.maps.InfoWindow({
       content: `
-      <div style="min-width:200px; font-family:sans-serif;">
-        <h4 style="margin-bottom:4px;">${property.title || "Property"}</h4>
-        ${
-          property.price
-            ? `<p style="margin:2px 0;">Price: ${property.price}</p>`
-            : ""
-        }
-        ${
-          property.address
-            ? `<p style="margin:2px 0;">${property.address}</p>`
-            : ""
-        }
-        ${
-          property.image
-            ? `<img src="${property.image}" alt="${property.title}" style="width:100%; height:auto; margin-top:6px; border-radius:4px;" />`
-            : ""
-        }
-      </div>
+    <div style="
+      max-width: 280px;
+      padding: 2px 10px;
+      box-sizing: border-box;
+      background-color: #fff;
+      border-radius: 6px;
+      line-height: 1.4;
+      color: #333;
+    ">
+      ${
+        property.image
+          ? `<div style="margin-bottom: 8px;">
+              <img src="${property.image}" alt="${property.title || "Property"}"
+              style="
+                width: 100%;
+                height: 120px;
+                object-fit: cover;
+                border-radius: 5px;
+              " />
+            </div>`
+          : ""
+      }
+
+      <h3 style="margin: 0 0 4px; font-size: 18px; font-weight:500; color: #00367d;">${
+        property.title || "Property"
+      }</h3>
+
+      ${
+        property.price
+          ? `<p style="margin: 2px 0; font-size: 13px;">
+              <strong>Price:</strong> ${formatPrice(property.price)}
+            </p>`
+          : ""
+      }
+
+      ${
+        property.address
+          ? `<p style="margin: 2px 0; font-size: 12px; color: #666;">
+              ${property.address}
+            </p>`
+          : ""
+      }
+    </div>
     `,
     });
 
@@ -91,10 +129,16 @@ function renderMarkers(props, mapInstance, clustererRef, infoWindowRef) {
       if (property.count === 1) {
         infoWindow.open(mapInstance.current, marker);
       }
+      const hoveredProps = property?.properties?.length
+        ? property.properties
+        : [property];
+
+      dispatch(setHoveredProperty(hoveredProps));
     });
 
     marker.addListener("mouseout", () => {
       infoWindow.close();
+      dispatch(clearHoveredProperty());
     });
 
     marker.addListener("click", () => {
@@ -143,6 +187,8 @@ const PropertiesOnMap = ({
   const infoWindowRef = useRef(null);
   const clustererRef = useRef(null);
 
+  const dispatch = useDispatch();
+
   useEffect(() => {
     const initMap = async () => {
       await loader.load();
@@ -157,13 +203,15 @@ const PropertiesOnMap = ({
         groupProperties(properties),
         mapInstance,
         clustererRef,
-        infoWindowRef
+        infoWindowRef,
+        dispatch
       );
       fitMapToProperties(properties);
     };
 
     initMap();
-  }, [defaultCenter, properties, zoom]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (mapInstance.current) {
@@ -171,11 +219,12 @@ const PropertiesOnMap = ({
         groupProperties(properties),
         mapInstance,
         clustererRef,
-        infoWindowRef
+        infoWindowRef,
+        dispatch
       );
       fitMapToProperties(properties);
     }
-  }, [properties]);
+  }, [dispatch, properties]);
 
   const fitMapToProperties = (props) => {
     if (!props.length) return;

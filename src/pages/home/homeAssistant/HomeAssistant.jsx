@@ -1,8 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import ImageWithLoader from "../../../Custom_Components/ImageWithLoader";
 import { chat, city2, map } from "../../../assets/images";
+import { Link } from "react-router-dom";
+import { pageRoutes } from "../../../router/pageRoutes";
+import QuickContactFormModal from "./QuickContactFormModal";
 
 function HomeAssistant() {
+  const [modalShow, setModalShow] = useState(false);
+
   const handleAssistantOpen = () => {
     const agentContainer = document.querySelector(".embedded-agent-container");
     const animationContainer = document.querySelector(
@@ -24,7 +29,7 @@ function HomeAssistant() {
           <div className="row">
             <div className="col-lg-4">
               <div className="box_area">
-                <a href="#">
+                <Link to={pageRoutes.PROPERTY_LISTING + "/?map_view=true"}>
                   <div className="inner_block">
                     <ImageWithLoader src={map} className="img-fluid" />
                   </div>
@@ -39,7 +44,7 @@ function HomeAssistant() {
                       An interactive map that shows <br /> nearby landmarks
                     </p>
                   </div>
-                </a>
+                </Link>
               </div>
             </div>
             <div className="col-lg-4">
@@ -65,24 +70,25 @@ function HomeAssistant() {
               </div>
             </div>
             <div className="col-lg-4">
-              <div className="box_area">
-                <a href="#">
-                  <div className="inner_block">
-                    <ImageWithLoader src={city2} className="img-fluid" />
-                  </div>
-                  <div className="content_atra">
-                    <h2>
-                      TrueWorth <i className="ri-arrow-right-up-long-line" />
-                    </h2>
-                    <p>
-                      <b>(Property valuation feature)</b>
-                    </p>
-                    <p>
-                      An AI-powered chatbot that helps <br />
-                      users find properties
-                    </p>
-                  </div>
-                </a>
+              <div
+                className="box_area cursor-pointer"
+                onClick={() => setModalShow(true)}
+              >
+                <div className="inner_block">
+                  <ImageWithLoader src={city2} className="img-fluid" />
+                </div>
+                <div className="content_atra">
+                  <h2>
+                    TrueWorth <i className="ri-arrow-right-up-long-line" />
+                  </h2>
+                  <p>
+                    <b>(Property valuation feature)</b>
+                  </p>
+                  <p>
+                    An AI-powered chatbot that helps <br />
+                    users find properties
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -94,7 +100,7 @@ function HomeAssistant() {
           <div className="row">
             <div className="col-lg-4">
               <div className="box_area">
-                <a href="#">
+                <Link to={pageRoutes.PROPERTY_LISTING + "/?map_view=true"}>
                   <div className="inner_block">
                     <ImageWithLoader src={map} className="img-fluid mk_p" />
                   </div>
@@ -113,7 +119,7 @@ function HomeAssistant() {
                   <div>
                     <i className="ri-arrow-right-s-line" />
                   </div>
-                </a>
+                </Link>
               </div>
             </div>
             <div className="col-lg-4">
@@ -139,29 +145,34 @@ function HomeAssistant() {
               </div>
             </div>
             <div className="col-lg-4">
-              <div className="box_area">
-                <a href="#">
-                  <div className="inner_block">
-                    <ImageWithLoader src={city2} className="img-fluid" />
-                  </div>
-                  <div className="content_atra">
-                    <h2>
-                      TrueWorth <i className="ri-arrow-right-up-long-line" />
-                    </h2>
-                    <p>
-                      <b>(Property valuation feature)</b>
-                    </p>
-                    <p>
-                      An AI-powered chatbot that helps <br /> users find
-                      properties
-                    </p>
-                  </div>
-                </a>
+              <div
+                className="box_area cursor-pointer"
+                onClick={() => setModalShow(true)}
+              >
+                <div className="inner_block">
+                  <ImageWithLoader src={city2} className="img-fluid" />
+                </div>
+                <div className="content_atra">
+                  <h2>
+                    TrueWorth <i className="ri-arrow-right-up-long-line" />
+                  </h2>
+                  <p>
+                    <b>(Property valuation feature)</b>
+                  </p>
+                  <p>
+                    An AI-powered chatbot that helps <br /> users find
+                    properties
+                  </p>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </section>
+      <QuickContactFormModal
+        show={modalShow}
+        onHide={() => setModalShow(false)}
+      />
     </>
   );
 }

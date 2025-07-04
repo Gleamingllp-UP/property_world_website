@@ -16,7 +16,7 @@ const Propertymap = ({ lat = 25.3463, lng = 55.4209, address }) => {
     const loadMapData = async () => {
       await loader.load();
 
-      console.log("fsd", address);
+      // console.log("fsd", address);
       const geocoder = new window.google.maps.Geocoder();
 
       if (address) {

@@ -19,7 +19,7 @@ import { PropertyListingCardSkeleton } from "../../../Custom_Components/Skeleton
 import AdvanceSearch from "./AdvanceSearch";
 import { formatPrice } from "../../../helper/function/formatPrice";
 import CheckedModal from "./CheckedModal";
-import { getUserData } from "../../../features/user/userSlice";
+import { getUserData, openLoginPrompt } from "../../../features/user/userSlice";
 import { addOrRemoveFavouritePropertyThunk } from "../../../features/property/propertySlice";
 import { showToast } from "../../../utils/toast/toast";
 import { throttle } from "lodash";
@@ -33,12 +33,15 @@ const Archive = ({ isMapView, setIsMapView }) => {
     isLoading,
     propertyData = [],
     pagination = {},
+    hoveredProperty,
   } = useSelector((store) => store?.property);
 
   const innerRef = useRef(null);
 
   const [modalShow, setModalShow] = useState(false);
   const [isGridView, setIsGridView] = useState(true);
+
+  const propertyRefs = useRef({});
 
   const [page, setPage] = useState(1);
   const [sortBy, setSortBy] = useState("");
@@ -52,6 +55,16 @@ const Archive = ({ isMapView, setIsMapView }) => {
   useEffect(() => {
     dispatch(getUserData());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (hoveredProperty?.length) {
+      const firstProp = hoveredProperty?.[0];
+      const target = propertyRefs?.current[firstProp?.title];
+      if (target) {
+        target.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+    }
+  }, [hoveredProperty]);
 
   // Custom arrow components
   const NextArrow = ({ onClick }) => (
@@ -68,6 +81,10 @@ const Archive = ({ isMapView, setIsMapView }) => {
 
   const handleLikeToggle = async (id) => {
     try {
+      if (userData?.role === "guest") {
+        dispatch(openLoginPrompt());
+        return;
+      }
       showToast("Wait", "loading");
       const resultAction = await dispatch(
         addOrRemoveFavouritePropertyThunk(id)
@@ -208,6 +225,17 @@ const Archive = ({ isMapView, setIsMapView }) => {
         {/* Location Filter */}
         <ArchiveLocation />
 
+        {isMapView && (
+          <div className="d-flex justify-content-end align-items-center my-3">
+            <button
+              className="action_btn"
+              onClick={() => setIsGridView(!isGridView)}
+            >
+              {isGridView ? "Switch to List View" : "Switch to Grid View"}
+            </button>
+          </div>
+        )}
+
         {/* Featured Property Example */}
         {!isMapView && (
           <div className="listing_area position-relative" ref={innerRef}>
@@ -264,24 +292,20 @@ const Archive = ({ isMapView, setIsMapView }) => {
                         <div className="col-lg-5">
                           <div className="property_images">
                             <div className="save_p">
-                              {userData?.role !== "guest" && (
-                                <button>
-                                  <i
-                                    className={
-                                      item?.is_liked
-                                        ? "ri-heart-fill text-white"
-                                        : "ri-heart-line"
-                                    }
-                                    onClick={() =>
-                                      throttledToggleLike(item?._id)
-                                    }
-                                    style={{
-                                      cursor: "pointer",
-                                      fontSize: "20px",
-                                    }}
-                                  ></i>
-                                </button>
-                              )}
+                              <button>
+                                <i
+                                  className={
+                                    item?.is_liked
+                                      ? "ri-heart-fill text-white"
+                                      : "ri-heart-line"
+                                  }
+                                  onClick={() => throttledToggleLike(item?._id)}
+                                  style={{
+                                    cursor: "pointer",
+                                    fontSize: "20px",
+                                  }}
+                                ></i>
+                              </button>
                             </div>
                             <div className="big_photo">
                               <Link
@@ -447,24 +471,20 @@ const Archive = ({ isMapView, setIsMapView }) => {
                               <i className="ri-checkbox-circle-fill" /> Checked
                             </div>
                             <div className="save_p">
-                              {userData?.role !== "guest" && (
-                                <button>
-                                  <i
-                                    className={
-                                      item?.is_liked
-                                        ? "ri-heart-fill text-white"
-                                        : "ri-heart-line"
-                                    }
-                                    onClick={() =>
-                                      throttledToggleLike(item?._id)
-                                    }
-                                    style={{
-                                      cursor: "pointer",
-                                      fontSize: "20px",
-                                    }}
-                                  ></i>
-                                </button>
-                              )}
+                              <button>
+                                <i
+                                  className={
+                                    item?.is_liked
+                                      ? "ri-heart-fill text-white"
+                                      : "ri-heart-line"
+                                  }
+                                  onClick={() => throttledToggleLike(item?._id)}
+                                  style={{
+                                    cursor: "pointer",
+                                    fontSize: "20px",
+                                  }}
+                                ></i>
+                              </button>
                             </div>
 
                             <div className="my-slider">
@@ -648,22 +668,15 @@ const Archive = ({ isMapView, setIsMapView }) => {
         {/* Map View */}
         {isMapView && (
           <div className="listing_area position-relative" ref={innerRef}>
-            <div className="row">
+            <div className="row mb-4">
               <div
-                className="col-lg-5"
+                className="col-lg-5 scrollable-container "
                 style={{
                   maxHeight: "600px",
                   overflowY: "auto",
-                  scrollbarWidth: "0px",
                 }}
               >
-                <div className="row g-4">
-                  <button
-                    className="btn btn-primary mb-4"
-                    onClick={() => setIsGridView(!isGridView)}
-                  >
-                    {isGridView ? "Switch to List View" : "Switch to Grid View"}
-                  </button>{" "}
+                <div className="row g-0">
                   {isLoading ? (
                     <PropertyListingCardSkeleton />
                   ) : propertyData?.length > 0 ? (
@@ -699,12 +712,25 @@ const Archive = ({ isMapView, setIsMapView }) => {
                           },
                         ],
                       };
+                      const productImages = item?.images?.filter(
+                        (item) => item?.name !== "Thumbnail Image"
+                      );
+                      const productThumbnailImage = item?.images?.filter(
+                        (item) => item?.name === "Thumbnail Image"
+                      );
+                      const isHovered = hoveredProperty?.some(
+                        (hovered) => hovered?.title === item?.title
+                      );
+
                       return item?.is_featured ? (
                         <div
-                          className={
-                            isGridView ? "col-12 col-md-6 " : "col-12 "
-                          }
                           key={index}
+                          ref={(el) => (propertyRefs.current[item?.title] = el)}
+                          className={`${
+                            isGridView ? "col-12 col-md-6" : "col-12"
+                          } property-item p-2 rounded ${
+                            isHovered ? "bg-primary-subtle" : "bg-white"
+                          } `}
                         >
                           <div className="list_box mb-0">
                             <div className="feat_tag">
@@ -734,36 +760,40 @@ const Archive = ({ isMapView, setIsMapView }) => {
                                   </div>
 
                                   <div className="save_p position-absolute top-0 end-0">
-                                    {userData?.role !== "guest" && (
-                                      <button className="bg-transparent border-0">
-                                        <i
-                                          className={
-                                            item?.is_liked
-                                              ? "ri-heart-fill text-white"
-                                              : "ri-heart-line"
-                                          }
-                                          onClick={() =>
-                                            throttledToggleLike(item?._id)
-                                          }
-                                          style={{
-                                            cursor: "pointer",
-                                            fontSize: "20px",
-                                          }}
-                                        ></i>
-                                      </button>
-                                    )}
+                                    <button className="bg-transparent border-0">
+                                      <i
+                                        className={
+                                          item?.is_liked
+                                            ? "ri-heart-fill text-white"
+                                            : "ri-heart-line"
+                                        }
+                                        onClick={() =>
+                                          throttledToggleLike(item?._id)
+                                        }
+                                        style={{
+                                          cursor: "pointer",
+                                          fontSize: "20px",
+                                        }}
+                                      ></i>
+                                    </button>
                                   </div>
 
                                   <div className="my-slider">
                                     <Slider {...sliderSettings}>
-                                      {item?.images?.map((img, i) => (
+                                      {[
+                                        ...productThumbnailImage,
+                                        ...productImages,
+                                      ]?.map((img, i) => (
                                         <div key={i}>
                                           <Link
                                             to={`${pageRoutes.PROPERTY_DETAILS}?id=${item?._id}`}
                                           >
-                                            <ImageWithLoader src={img?.url} style={{
-                                              height:"210px"
-                                            }}/>
+                                            <ImageWithLoader
+                                              src={img?.url}
+                                              style={{
+                                                height: "210px",
+                                              }}
+                                            />
                                           </Link>
                                         </div>
                                       ))}
@@ -873,7 +903,12 @@ const Archive = ({ isMapView, setIsMapView }) => {
                         </div>
                       ) : (
                         <div
-                          className={isGridView ? "col-12 col-md-6" : "col-12"}
+                          ref={(el) => (propertyRefs.current[item?.title] = el)}
+                          className={`${
+                            isGridView ? "col-12 col-md-6" : "col-12"
+                          } property-item p-2 rounded ${
+                            isHovered ? "bg-primary-subtle" : "bg-white"
+                          } `}
                         >
                           <div className="card h-100">
                             <div
@@ -899,29 +934,30 @@ const Archive = ({ isMapView, setIsMapView }) => {
                                   </div>
 
                                   <div className="save_p position-absolute top-0 end-0">
-                                    {userData?.role !== "guest" && (
-                                      <button className="bg-transparent border-0">
-                                        <i
-                                          className={
-                                            item?.is_liked
-                                              ? "ri-heart-fill text-white"
-                                              : "ri-heart-line"
-                                          }
-                                          onClick={() =>
-                                            throttledToggleLike(item?._id)
-                                          }
-                                          style={{
-                                            cursor: "pointer",
-                                            fontSize: "20px",
-                                          }}
-                                        ></i>
-                                      </button>
-                                    )}
+                                    <button className="bg-transparent border-0">
+                                      <i
+                                        className={
+                                          item?.is_liked
+                                            ? "ri-heart-fill text-white"
+                                            : "ri-heart-line"
+                                        }
+                                        onClick={() =>
+                                          throttledToggleLike(item?._id)
+                                        }
+                                        style={{
+                                          cursor: "pointer",
+                                          fontSize: "20px",
+                                        }}
+                                      ></i>
+                                    </button>
                                   </div>
 
                                   <div className="my-slider">
                                     <Slider {...sliderSettings}>
-                                      {item?.images?.map((img, i) => (
+                                      {[
+                                        ...productThumbnailImage,
+                                        ...productImages,
+                                      ]?.map((img, i) => (
                                         <div key={i}>
                                           <Link
                                             to={`${pageRoutes.PROPERTY_DETAILS}?id=${item?._id}`}
@@ -1044,9 +1080,17 @@ const Archive = ({ isMapView, setIsMapView }) => {
                       </div>
                     </div>
                   )}
+                  {propertyData?.length > 0 && (
+                    <CustomPagination
+                      total={pagination?.total}
+                      page={page}
+                      limit={limit}
+                      onPageChange={(newPage) => setPage(newPage)}
+                    />
+                  )}
                 </div>
               </div>
-              <div className="col-lg-7 p-0">
+              <div className="col-lg-7 p-0 py-2">
                 <PropertyMapView />
               </div>
             </div>
@@ -1055,16 +1099,15 @@ const Archive = ({ isMapView, setIsMapView }) => {
               <div
                 className="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center"
                 style={{
-                  backgroundColor: "rgba(238, 238, 238, 0.6)",
+                  backgroundColor: "rgba(214, 214, 214, 0.6)",
                   zIndex: 10,
                 }}
               ></div>
             )}
           </div>
         )}
-
         {/* Pagination */}
-        {propertyData?.length > 0 && (
+        {!isMapView && propertyData?.length > 0 && (
           <CustomPagination
             total={pagination?.total}
             page={page}

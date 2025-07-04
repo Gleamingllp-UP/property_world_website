@@ -180,6 +180,7 @@ const usersSlice = createSlice({
     agentOrAgencyData: [],
     agentOrAgencyDetails: {},
     formData: null,
+    loginPromptOpen: false,
     loading: false,
     isEmailVerifying: false,
     isPhoneVerifying: false,
@@ -187,6 +188,12 @@ const usersSlice = createSlice({
     error: null,
   },
   reducers: {
+    openLoginPrompt: (state) => {
+      state.loginPromptOpen = true;
+    },
+    closeLoginPrompt: (state) => {
+      state.loginPromptOpen = false;
+    },
     getUserFormData: (state) => {
       const formData = JSON.parse(localStorage.getItem("formData"));
       state.formData = formData;
@@ -475,5 +482,7 @@ export const {
   removeUserFormDataToken,
   getUserData,
   userLogOut,
+  openLoginPrompt,
+  closeLoginPrompt,
 } = usersSlice.actions;
 export default usersSlice.reducer;

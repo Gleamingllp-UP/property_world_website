@@ -7,6 +7,7 @@ import {
   getPropertyDetailsThunk,
 } from "../../../features/property/propertySlice";
 import { throttle } from "lodash";
+import { openLoginPrompt } from "../../../features/user/userSlice";
 
 const PropertySocial = () => {
   const [showSocials, setShowSocials] = useState(false);
@@ -25,6 +26,10 @@ const PropertySocial = () => {
 
   const handleLikeToggle = async (id) => {
     try {
+      if (userData?.role === "guest") {
+        dispatch(openLoginPrompt());
+        return;
+      }
       showToast("Wait", "loading");
       const resultAction = await dispatch(
         addOrRemoveFavouritePropertyThunk(id)
@@ -51,22 +56,20 @@ const PropertySocial = () => {
   return (
     <div className="col-lg-3">
       <div className="share_post">
-        {userData?.role !== "guest" && (
-          <button>
-            <i
-              className={
-                propertyDetails?.is_liked
-                  ? "ri-heart-fill text-white"
-                  : "ri-heart-line"
-              }
-              onClick={() => throttledToggleLike(propertyDetails?._id)}
-              style={{
-                cursor: "pointer",
-                fontSize: "20px",
-              }}
-            ></i>
-          </button>
-        )}
+        <button>
+          <i
+            className={
+              propertyDetails?.is_liked
+                ? "ri-heart-fill text-white"
+                : "ri-heart-line"
+            }
+            onClick={() => throttledToggleLike(propertyDetails?._id)}
+            style={{
+              cursor: "pointer",
+              fontSize: "20px",
+            }}
+          ></i>
+        </button>
 
         <button className="toggle" onClick={handleShareClick}>
           <i className="ri-share-line" /> Share

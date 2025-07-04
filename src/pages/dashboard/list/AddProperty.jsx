@@ -385,7 +385,8 @@ const AddProperty = () => {
           </div>
 
           {/*Construction Status */}
-          {selectedCategoryName === "Buy" && (
+          {
+          // selectedCategoryName === "Buy" && (
             <div className="col-md-4 mb-3">
               <label className="form-label">Construction Status *</label>
               <select
@@ -421,10 +422,12 @@ const AddProperty = () => {
                 <ErrorMessage message={errors?.construction_status?.message} />
               )}
             </div>
-          )}
+          // )
+          }
 
           {/*Handover By */}
-          {selectedCategoryName === "Buy" &&
+          {
+          // selectedCategoryName === "Buy" &&
             constructionStatus === "Off-plan" && (
               <div className="col-md-4 mb-3">
                 <label className="form-label">Handover By *</label>
@@ -454,10 +457,12 @@ const AddProperty = () => {
                   <ErrorMessage message={errors?.handover_by?.message} />
                 )}
               </div>
-            )}
+            )
+            }
 
           {/*Precentage  By */}
-          {selectedCategoryName === "Buy" &&
+          {
+          // selectedCategoryName === "Buy" &&
             constructionStatus === "Off-plan" && (
               <>
                 <div className="col-md-4 mb-3">
@@ -511,7 +516,8 @@ const AddProperty = () => {
                   )}
                 </div>
               </>
-            )}
+            )
+            }
           {/* Thumbnail Upload + Preview */}
           <div className="col-md-4 mb-3">
             <label className="form-label">Thumbnail Image *</label>
@@ -695,8 +701,8 @@ const AddProperty = () => {
             {errors?.area && <ErrorMessage message={errors?.area?.message} />}
           </div>
 
-          {constructionStatus !== "Off-plan" &&
-            selectedSubCategoryName !== "Commercial" && (
+          {/* {constructionStatus !== "Off-plan" && */}
+            {/* selectedSubCategoryName !== "Commercial" && ( */}
               <div className="col-md-4">
                 <label className="form-label">Bedrooms & Bathroom *</label>
 
@@ -809,8 +815,8 @@ const AddProperty = () => {
                   </div>
                 </div>
               </div>
-            )
-            }
+            {/* ) */}
+            {/* } */}
 
           <div className="col-md-4 mb-3">
             <label className="form-label">Price *</label>

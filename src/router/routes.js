@@ -76,9 +76,15 @@ const LikedProperties = lazy(() =>
   import("../pages/dashboard/list/LikedProperties")
 );
 const Plan = lazy(() => import("../pages/dashboard/plan/Plan"));
-const PaymentCancelled = lazy(() => import("../pages/dashboard/plan/PaymentCancelled"));
-const UpdatePassword = lazy(() => import("../pages/dashboard/profile/UpdatePassword"));
-const ResetPassword = lazy(() => import("../pages/dashboard/profile/ResetPassword"));
+const PaymentCancelled = lazy(() =>
+  import("../pages/dashboard/plan/PaymentCancelled")
+);
+const UpdatePassword = lazy(() =>
+  import("../pages/dashboard/profile/UpdatePassword")
+);
+const ResetPassword = lazy(() =>
+  import("../pages/dashboard/profile/ResetPassword")
+);
 
 const routes = [
   // {
@@ -279,7 +285,7 @@ const routes = [
     id: 26,
     isPrivate: true,
     isDashboard: true,
-    isVisibleInDash: true,
+    isVisibleInDash: "agentOrAgency",
     name: "Your Plan",
     icon: MdOutlineWorkspacePremium,
     path: pageRoutes?.YOUR_PLAN,

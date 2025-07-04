@@ -150,69 +150,69 @@ export const requiredProfileFieldsForIndividual = [
     inputType: "select",
   },
 
-  {
-    key: "expertise",
-    label: "Expertise *",
-    type: "text",
-    inputType: "text",
-  },
+  // {
+  //   key: "expertise",
+  //   label: "Expertise *",
+  //   type: "text",
+  //   inputType: "text",
+  // },
 
-  {
-    key: "languages",
-    label: "Languages *",
-    type: "text",
-    inputType: "select",
-    isMulti: true,
-  },
+  // {
+  //   key: "languages",
+  //   label: "Languages *",
+  //   type: "text",
+  //   inputType: "select",
+  //   isMulti: true,
+  // },
   
-  {
-    key: "service_areas",
-    label: "Service Areas *",
-    type: "text",
-    inputType: "select",
-    isMulti: true,
-  },
+  // {
+  //   key: "service_areas",
+  //   label: "Service Areas *",
+  //   type: "text",
+  //   inputType: "select",
+  //   isMulti: true,
+  // },
 
-  {
-    key: "bio",
-    label: "Bio *",
-    type: "text",
-    inputType: "textarea",
-  },
-  {
-    key: "brn",
-    label: "BRN *",
-    type: "number",
-    inputType: "text",
-  },
-  {
-    key: "experience",
-    label: "Experience *",
-    type: "number",
-    inputType: "text",
-  },
-  {
-    key: "kyc_form",
-    label: "KYC form *",
-    type: "file",
-    inputType: "text",
-  },
-  {
-    key: "title_deed",
-    label: "Title Deed *",
-    type: "file",
-    inputType: "text",
-  },
-  {
-    key: "eid_or_passport",
-    label: "EID / Passport *",
-    type: "file",
-    inputType: "text",
-  },
-  {
-    key: "agreement_noc",
-    label: "Agreement / NOC *",
-    type: "file",
-    inputType: "text",
-  },
+  // {
+  //   key: "bio",
+  //   label: "Bio *",
+  //   type: "text",
+  //   inputType: "textarea",
+  // },
+  // {
+  //   key: "brn",
+  //   label: "BRN *",
+  //   type: "number",
+  //   inputType: "text",
+  // },
+  // {
+  //   key: "experience",
+  //   label: "Experience *",
+  //   type: "number",
+  //   inputType: "text",
+  // },
+  // {
+  //   key: "kyc_form",
+  //   label: "KYC form *",
+  //   type: "file",
+  //   inputType: "text",
+  // },
+  // {
+  //   key: "title_deed",
+  //   label: "Title Deed *",
+  //   type: "file",
+  //   inputType: "text",
+  // },
+  // {
+  //   key: "eid_or_passport",
+  //   label: "EID / Passport *",
+  //   type: "file",
+  //   inputType: "text",
+  // },
+  // {
+  //   key: "agreement_noc",
+  //   label: "Agreement / NOC *",
+  //   type: "file",
+  //   inputType: "text",
+  // },
 ];

@@ -1,41 +1,83 @@
+import React, { useEffect, useState } from "react";
 import PropertiesOnMap from "./PropertiesOnMap";
 
-export default function PropertyMapView() {
- 
+import { Loader } from "@googlemaps/js-api-loader";
+import { useSelector } from "react-redux";
+
+const loader = new Loader({
+  apiKey: import.meta.env.VITE_GOOGLE_MAP_KEY,
+  libraries: ["places"],
+});
+
+const geocodeProperties = async (properties) => {
+  await loader.load();
+  const geocoder = new window.google.maps.Geocoder();
+
+  const geocodePromises = properties.map(
+    (property) =>
+      new Promise((resolve) => {
+        // if (property.location?.lat && property.location?.lng) {
+        //   // Skip if already has coordinates
+        //   resolve(property);
+        // } else {
+        geocoder.geocode(
+          {
+            address:
+              String(property?.building_name)  + " " + String(property?.address),
+          },
+          (results, status) => {
+            if (status === "OK" && results[0]) {
+              const loc = results[0].geometry.location;
+              const productThumbnailImage = property?.images?.filter(
+                (item) => item?.name === "Thumbnail Image"
+              );
+              resolve({
+                image: productThumbnailImage?.[0]?.url,
+                address: property?.building_name + " " + property?.address,
+                title: property?.title,
+                price: property?.price,
+                location: {
+                  lat: loc.lat(),
+                  lng: loc.lng(),
+                },
+              });
+            } else {
+              console.warn(`Geocode failed for ${property.address}`);
+              resolve({ ...property, location: null });
+            }
+          }
+        );
+        // }
+      })
+  );
+
+  const results = await Promise.all(geocodePromises);
+  return results.filter((prop) => prop.location);
+};
+
+function PropertyMapView() {
+  const [propertiesWithLocation, setPropertiesWithLocation] = useState([]);
+
+  const { propertyData } = useSelector((store) => store?.property);
+
+  useEffect(() => {
+    const loadCoordinates = async () => {
+      const geocoded = await geocodeProperties(propertyData);
+      setPropertiesWithLocation(geocoded);
+    };
+
+    loadCoordinates();
+  }, [propertyData]);
 
   return (
     <div>
       <PropertiesOnMap
-        properties={[
-          {
-            title: "Luxury Villa",
-            location: { lat: 25.1123, lng: 55.1381 },
-            price: "$2M",
-            address: "Palm Jumeirah",
-          },
-          {
-            title: "Luxury Villa23",
-            location: { lat: 25.1123, lng: 55.1381 },
-            price: "$2M",
-            address: "Palm Jumeirah",
-          },
-          {
-            title: "Apartment Downtown",
-            location: { lat: 25.2048, lng: 55.2708 },
-            price: "$750K",
-            address: "Downtown Dubai",
-          },
-          {
-            title: "Skyline Studio",
-            location: { lat: 25.1843, lng: 55.2657 },
-            price: "$350K",
-            address: "Business Bay",
-          },
-          // ...filtered property list
-        ]}
+        properties={propertiesWithLocation}
         defaultCenter={{ lat: 25.2048, lng: 55.2708 }}
         zoom={10}
       />
     </div>
   );
 }
+
+export default React.memo(PropertyMapView);

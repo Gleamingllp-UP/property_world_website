@@ -1,7 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Modal, Form, Button } from "react-bootstrap";
+import ButtonWithSpin from "../../../Custom_Components/ButtonWithSpin";
+import { useSelector } from "react-redux";
 
 function VerifyOtpModal({ show, onHide, onVerify }) {
+
+  const { loading } = useSelector((store) => store?.user);
+  
   const inputRefs = useRef([]);
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const [error, setError] = useState("");
@@ -77,9 +82,13 @@ function VerifyOtpModal({ show, onHide, onVerify }) {
           <Button variant="outline-secondary" onClick={onHide}>
             Cancel
           </Button>
-          <Button variant="primary" onClick={handleVerify}>
-            Verify
-          </Button>
+          {loading ? (
+            <ButtonWithSpin />
+          ) : (
+            <Button variant="primary" onClick={handleVerify}>
+              Verify
+            </Button>
+          )}
         </div>
       </Modal.Body>
     </Modal>

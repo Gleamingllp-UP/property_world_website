@@ -1,12 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import AgentInfoside from "./AgentInfoside";
 import { Link, useLocation } from "react-router-dom";
-import {
-  bath,
-  bed,
-  property_world_logo,
-  ruler,
-} from "../../../assets/images";
+import { bath, bed, property_world_logo, ruler } from "../../../assets/images";
 import "../../../assets/css/arrow.css";
 import Slider from "react-slick";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,7 +11,10 @@ import ImageWithLoader from "../../../Custom_Components/ImageWithLoader";
 import { formatPrice } from "../../../helper/function/formatPrice";
 import { formatNumberWithCommas } from "../../../helper/function/formatRange";
 import CheckedModal from "../../property/categoryWiseList/CheckedModal";
-import { getUserAllDetailsForWebWithPropertiesThunk } from "../../../features/user/userSlice";
+import {
+  getUserAllDetailsForWebWithPropertiesThunk,
+  openLoginPrompt,
+} from "../../../features/user/userSlice";
 import { CustomPagination } from "./../../../Custom_Components/CustomPagination";
 import { throttle } from "lodash";
 import { showToast } from "../../../utils/toast/toast";
@@ -69,6 +67,10 @@ const AgentInfo = () => {
 
   const handleLikeToggle = async (id) => {
     try {
+      if (userData?.role === "guest") {
+        dispatch(openLoginPrompt());
+        return;
+      }
       showToast("Wait", "loading");
       const resultAction = await dispatch(
         addOrRemoveFavouritePropertyThunk(id)
@@ -216,24 +218,20 @@ const AgentInfo = () => {
                         <div className="col-lg-5">
                           <div className="property_images">
                             <div className="save_p">
-                              {userData?.role !== "guest" && (
-                                <button>
-                                  <i
-                                    className={
-                                      item?.is_liked
-                                        ? "ri-heart-fill text-white"
-                                        : "ri-heart-line"
-                                    }
-                                    onClick={() =>
-                                      throttledToggleLike(item?._id)
-                                    }
-                                    style={{
-                                      cursor: "pointer",
-                                      fontSize: "20px",
-                                    }}
-                                  ></i>
-                                </button>
-                              )}
+                              <button>
+                                <i
+                                  className={
+                                    item?.is_liked
+                                      ? "ri-heart-fill text-white"
+                                      : "ri-heart-line"
+                                  }
+                                  onClick={() => throttledToggleLike(item?._id)}
+                                  style={{
+                                    cursor: "pointer",
+                                    fontSize: "20px",
+                                  }}
+                                ></i>
+                              </button>
                             </div>
                             <div className="big_photo">
                               <Link
@@ -396,24 +394,20 @@ const AgentInfo = () => {
                               <i className="ri-checkbox-circle-fill" /> Checked
                             </div>
                             <div className="save_p">
-                              {userData?.role !== "guest" && (
-                                <button>
-                                  <i
-                                    className={
-                                      item?.is_liked
-                                        ? "ri-heart-fill text-white"
-                                        : "ri-heart-line"
-                                    }
-                                    onClick={() =>
-                                      throttledToggleLike(item?._id)
-                                    }
-                                    style={{
-                                      cursor: "pointer",
-                                      fontSize: "20px",
-                                    }}
-                                  ></i>
-                                </button>
-                              )}
+                              <button>
+                                <i
+                                  className={
+                                    item?.is_liked
+                                      ? "ri-heart-fill text-white"
+                                      : "ri-heart-line"
+                                  }
+                                  onClick={() => throttledToggleLike(item?._id)}
+                                  style={{
+                                    cursor: "pointer",
+                                    fontSize: "20px",
+                                  }}
+                                ></i>
+                              </button>
                             </div>
 
                             <div className="my-slider">

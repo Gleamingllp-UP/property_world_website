@@ -102,6 +102,7 @@ const propertySlice = createSlice({
     similarPropertyData: [],
     popularPropertyData: [],
     propertyDetails: {},
+    hoveredProperty: [],
     pagination: null,
     loading: false,
     isLoading: false,
@@ -109,7 +110,14 @@ const propertySlice = createSlice({
     isLoadingForPopular: false,
     error: null,
   },
-  reducers: {},
+  reducers: {
+    setHoveredProperty(state, action) {
+      state.hoveredProperty = action.payload;
+    },
+    clearHoveredProperty(state) {
+      state.hoveredProperty = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
       //Create property
@@ -259,5 +267,7 @@ const propertySlice = createSlice({
       });
   },
 });
+
+export const { setHoveredProperty, clearHoveredProperty } = propertySlice.actions;
 
 export default propertySlice.reducer;

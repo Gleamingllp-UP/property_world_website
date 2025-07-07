@@ -18,6 +18,7 @@ import {
   forgetPassword,
   resetPassword,
   createVisitors,
+  updateProfilePicture,
 } from "./userAPI";
 
 export const initiateSignupThunk = createAsyncThunk(
@@ -65,6 +66,13 @@ export const createVisitorsThunk = createAsyncThunk(
   "users/createVisitors",
   async () => {
     return await createVisitors();
+  }
+);
+
+export const updateProfilePictureThunk = createAsyncThunk(
+  "users/updateProfilePicture",
+  async (formData) => {
+    return await updateProfilePicture(formData);
   }
 );
 
@@ -181,6 +189,7 @@ const usersSlice = createSlice({
     agentOrAgencyDetails: {},
     formData: null,
     loginPromptOpen: false,
+    loginPromptText: null,
     loading: false,
     isEmailVerifying: false,
     isPhoneVerifying: false,
@@ -188,11 +197,13 @@ const usersSlice = createSlice({
     error: null,
   },
   reducers: {
-    openLoginPrompt: (state) => {
+    openLoginPrompt: (state, action) => {
       state.loginPromptOpen = true;
+      state.loginPromptText = action.payload;
     },
     closeLoginPrompt: (state) => {
       state.loginPromptOpen = false;
+      state.loginPromptText = null;
     },
     getUserFormData: (state) => {
       const formData = JSON.parse(localStorage.getItem("formData"));
@@ -333,6 +344,18 @@ const usersSlice = createSlice({
       .addCase(createVisitorsThunk.rejected, (state, action) => {
         state.isLoading = false;
         sessionStorage.setItem("visitTracked", "false");
+        state.error = action.error.message;
+      })
+
+      //updateProfilePictureThunk
+      .addCase(updateProfilePictureThunk.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updateProfilePictureThunk.fulfilled, (state) => {
+        state.loading = false;
+      })
+      .addCase(updateProfilePictureThunk.rejected, (state, action) => {
+        state.loading = false;
         state.error = action.error.message;
       })
 

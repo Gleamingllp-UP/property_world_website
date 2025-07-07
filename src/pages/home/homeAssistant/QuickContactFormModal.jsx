@@ -24,6 +24,7 @@ function QuickContactFormModal({ show, onHide }) {
       if (initiateInquiryThunk.fulfilled.match(resultAction)) {
         showToast("Your Free Property Valuation Form is Submited", "success");
         reset();
+        onHide();
       } else {
         throw new Error(resultAction?.error?.message);
       }

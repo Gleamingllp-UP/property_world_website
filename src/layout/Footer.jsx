@@ -1,6 +1,6 @@
 import { footer_line } from "@/assets/images";
 import Copyright from "./Copyright";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { pageRoutes } from "../router/pageRoutes";
 import { useDispatch, useSelector } from "react-redux";
 import { useCallback, useEffect, useState } from "react";
@@ -8,14 +8,17 @@ import { getAllContactUsThunk } from "../features/contactUs/contactUsSlice";
 import { getAllActiveCategoryThunk } from "./../features/activeData/activeDataSlice";
 import LoginModal from "../pages/auth/login/LoginModal";
 import { getAllActiveLocationThunk } from "./../features/activeData/activeDataSlice";
+import { openLoginPrompt } from "../features/user/userSlice";
 function Footer() {
   const { location } = useSelector((store) => store?.activeData);
+  const { userData } = useSelector((store) => store?.user);
 
   const [modalShow, setModalShow] = useState(false);
 
   const { contactUs, isLoading } = useSelector((store) => store?.contactUs);
   const { categories } = useSelector((store) => store?.activeData);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const getAllContactUsDetails = useCallback(async () => {
     dispatch(getAllContactUsThunk());
@@ -120,29 +123,41 @@ function Footer() {
               <ul className="cs-footer-links">
                 <li>
                   <Link to={pageRoutes.HOME_PAGE}>Home</Link>
-               
                 </li>
                 <li>
                   <Link to={pageRoutes.ABOUT_US}>About Us</Link>
                 </li>
 
-                {categories?.map((item) => (
-                  <li key={item?._id}>
-                    <Link
-                      to={
-                        pageRoutes.PROPERTY_LISTING + `?category=${item?._id}`
-                      }
-                    >
-                      {item?.name}
-                    </Link>
-                  </li>
-                ))}
+                {categories &&
+                  categories?.map((item) => (
+                    <li key={item?._id}>
+                      <Link
+                        to={
+                          pageRoutes.PROPERTY_LISTING + `?category=${item?._id}`
+                        }
+                      >
+                        {item?.name}
+                      </Link>
+                    </li>
+                  ))}
 
                 <li>
-                  <a href="property-listing.php">Commercial</a>
-                </li>
-                <li>
-                  <a onClick={() => setModalShow(true)}>List Your Property</a>
+                  <a
+                    onClick={() => {
+                      if (userData?.role === "guest") {
+                        dispatch(
+                          openLoginPrompt(
+                            "Log in to your account to list your properties."
+                          )
+                        );
+                        return;
+                      } else {
+                        navigate(pageRoutes.ADD_PROPERTY);
+                      }
+                    }}
+                  >
+                    List Your Property
+                  </a>
                 </li>
                 <li>
                   <Link to={pageRoutes.CONTACT_US}>Contact Us</Link>
@@ -186,7 +201,9 @@ function Footer() {
                 {location?.map((loca, index) => (
                   <li key={index}>
                     <Link
-                      to={pageRoutes.PROPERTY_LISTING + `/?search=${loca?.name}`}
+                      to={
+                        pageRoutes.PROPERTY_LISTING + `/?search=${loca?.name}`
+                      }
                     >
                       {loca?.name}
                     </Link>

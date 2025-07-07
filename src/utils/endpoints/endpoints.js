@@ -27,6 +27,8 @@ const endpoints = {
   forgetPassword: "/user/forget-user-password",
   resetPassword: "/user/reset-user-password",
 
+  updateProfilePicture:"/user/update-profile-picture",
+
   createVisitors: "/visitors/log-visitors",
 
   //Filter

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   deletePropertyThunk,
@@ -11,15 +11,21 @@ import { pageRoutes } from "../../../router/pageRoutes";
 import { getSerialNumber } from "../../../helper/function/getSerialNumber";
 import { Modal, Button } from "react-bootstrap";
 import { showToast } from "../../../utils/toast/toast";
+import Tab from "react-bootstrap/Tab";
+import Tabs from "react-bootstrap/Tabs";
+import { debounce } from "lodash";
 
 function MyPropertyListing() {
   const dispatch = useDispatch();
+
   const { isLoading, propertyData, pagination } = useSelector(
     (store) => store?.property
   );
 
   const [page, setPage] = useState(1);
   const limit = 5;
+
+  const [status, setStatus] = useState("");
 
   const [showModal, setShowModal] = useState(false);
   const [showModalDelete, setShowModalDelete] = useState(false);
@@ -28,13 +34,28 @@ function MyPropertyListing() {
 
   const navigate = useNavigate();
 
+  const debouncedFetch = useCallback(
+    debounce((page, limit, status) => {
+      const searchFilters = {
+        ...(status !== null && status !== undefined && { is_verified: status }),
+      };
+      dispatch(getAllUserPropertyThunk({ page, limit, searchFilters }));
+    }, 400),
+    [dispatch]
+  );
+
   useEffect(() => {
-    dispatch(getAllUserPropertyThunk({ page, limit }));
-  }, [dispatch, page]);
+    debouncedFetch(page, limit, status);
+
+    return () => {
+      debouncedFetch.cancel();
+    };
+  }, [debouncedFetch, page, limit, status]);
 
   const handleEyeClick = (id) => {
     navigate(`${pageRoutes.PROPERTY_DETAILS}?id=${id}`);
   };
+  
   //Delete Property
   const handleDeleteclick = (id) => {
     setShowModalDelete(true);
@@ -47,7 +68,7 @@ function MyPropertyListing() {
       if (deletePropertyThunk.fulfilled.match(resultAction)) {
         showToast("Property Deleted Successfull!", "success");
         setTimeout(() => {
-    dispatch(getAllUserPropertyThunk({ page, limit }))
+          dispatch(getAllUserPropertyThunk({ page, limit }));
           setShowModalDelete(false);
         }, 500);
       } else {
@@ -65,17 +86,45 @@ function MyPropertyListing() {
     }
   };
 
+  const handleTabSelect = (selectedKey) => {
+    const selectedStatus = selectedKey;
+    setStatus(selectedStatus);
+  };
+
   return (
     <>
       <div className="container mt-4 my_listing_table">
-        <h4 className="mb-3">Listing Property</h4>
-
         {isLoading ? (
           <p>Loading properties...</p>
         ) : propertyData?.length === 0 ? (
           <p>No properties found.</p>
         ) : (
           <>
+            <Tabs
+              activeKey={status}
+              onSelect={handleTabSelect}
+              className="mb-3"
+            >
+              <Tab eventKey="" title="All"></Tab>
+
+              <Tab eventKey="0" title="Pending"></Tab>
+
+              <Tab eventKey="1" title="Approved"></Tab>
+
+              <Tab eventKey="2" title="Rejected"></Tab>
+            </Tabs>
+
+            <h4 className="my-4">
+              {status === "0"
+                ? "Pending"
+                : status === "1"
+                ? "Approved"
+                : status === "2"
+                ? "Rejected"
+                : "All"}{" "}
+              Property Listings
+            </h4>
+
             <table className="table table-striped table-hover">
               <thead className="thead-dark">
                 <tr>
@@ -198,7 +247,7 @@ function MyPropertyListing() {
           <Button variant="secondary" onClick={() => setShowModalDelete(false)}>
             No
           </Button>
-          <Button variant="danger" onClick={() => handleDelete() } >
+          <Button variant="danger" onClick={() => handleDelete()}>
             Yes
           </Button>
         </Modal.Footer>

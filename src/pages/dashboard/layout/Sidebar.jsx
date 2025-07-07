@@ -1,14 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { property_world_logo } from "@/assets/images";
 import { routes } from "../../../router/routes";
 import { pageRoutes } from "../../../router/pageRoutes";
 import { useDispatch, useSelector } from "react-redux";
-import { LogOut } from "lucide-react";
+import { LogOut, SquarePen } from "lucide-react";
 import LogoutModal from "../../auth/logout/LogoutModal";
 import { user } from "../../../assets/images";
 import ImageWithLoader from "../../../Custom_Components/ImageWithLoader";
 import { getUserPlanThunk } from "../../../features/userPlan/userPlanSlice";
+import GLightbox from "glightbox";
+import "glightbox/dist/css/glightbox.css";
+import ProfilePicPreviewModal from "../profile/ProfilePicPreviewModal";
+
 const Sidebar = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -25,6 +29,16 @@ const Sidebar = () => {
       dispatch(getUserPlanThunk({ user_id: userData?._id }));
     }
   }, [dispatch, userData?._id]);
+
+  useEffect(() => {
+    const lightbox2 = GLightbox({
+      selector: ".lightbox2",
+    });
+
+    return () => {
+      lightbox2.destroy();
+    };
+  }, [userData?.profile_picture, userData?.agent_photo]);
 
   const getValidImageSrc = (...sources) => {
     return sources.find(
@@ -54,11 +68,31 @@ const Sidebar = () => {
     })
     .sort((a, b) => a?.id - b?.id);
 
+  const fileInputRef = useRef(null);
+
+  const [preview, setPreview] = useState(imageSrc);
+  const [showPreview, setShowPreview] = useState(false);
+  const [selectedFile, setSelectedFile] = useState(null);
+
+  const handleFileChange = async (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const imageUrl = URL.createObjectURL(file);
+      setPreview(imageUrl);
+      setSelectedFile(file);
+      setShowPreview(true);
+    }
+  };
+
+  const triggerFileInput = () => {
+    fileInputRef.current?.click();
+  };
+
   return (
     <>
       <div
         className="custom-sidebar text-white p-2 vh-100 "
-        style={{ width: "300px", position: "fixed" ,overflowY:"auto"}}
+        style={{ width: "300px", position: "fixed", overflowY: "auto" }}
       >
         <img
           src={property_world_logo}
@@ -73,19 +107,45 @@ const Sidebar = () => {
         />
 
         <hr className="my-2" />
+
         {userData && Object.entries(userData)?.length > 0 && (
           <div className="d-flex flex-column align-items-center text-white p-3">
-            <ImageWithLoader
-              src={imageSrc}
-              alt="Profile"
-              className="profile-img mb-3"
-            />
+            <div className="position-relative">
+              <a
+                href={imageSrc}
+                className="lightbox2"
+                data-glightbox="type: image"
+              >
+                <ImageWithLoader
+                  src={imageSrc}
+                  alt="Profile"
+                  className="profile-img mb-3"
+                />
+              </a>
+
+              {/* Camera Icon Button */}
+              <button
+                type="button"
+                className="btn btn-sm text-white btn-secondary rounded-circle position-absolute"
+                style={{ bottom: "19px", right: "0", padding: "3px" }}
+                onClick={triggerFileInput}
+              >
+                <SquarePen size={17} strokeWidth={2} />
+              </button>
+
+              {/* Hidden File Input */}
+              <input
+                type="file"
+                accept="image/*"
+                ref={fileInputRef}
+                onChange={handleFileChange}
+                className="d-none"
+              />
+            </div>
             <h5 className="text-center text-danger fw-medium">
               {`${userData?.first_name} ${userData?.last_name}`}
             </h5>
-            <p
-              className="text-center small text-danger fw-medium"
-            >
+            <p className="text-center small text-danger fw-medium">
               {userData?.email || ""}
             </p>
             <hr className="my-2 text-black" />
@@ -142,6 +202,12 @@ const Sidebar = () => {
           </Link>
         </ul>
         <LogoutModal show={modalShow} onHide={() => setModalShow(false)} />
+        <ProfilePicPreviewModal
+          preview={preview}
+          showPreview={showPreview}
+          setShowPreview={setShowPreview}
+          selectedFile={selectedFile}
+        />
       </div>
     </>
   );

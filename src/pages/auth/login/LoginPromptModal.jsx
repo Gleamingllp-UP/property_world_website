@@ -4,7 +4,9 @@ import { closeLoginPrompt } from "../../../features/user/userSlice";
 
 const LoginPromptModal = ({ openLogin }) => {
   const dispatch = useDispatch();
-  const { loginPromptOpen: show } = useSelector((state) => state?.user);
+  const { loginPromptOpen: show, loginPromptText } = useSelector(
+    (state) => state?.user
+  );
 
   const handleClose = () => dispatch(closeLoginPrompt());
   const handleLogin = () => {
@@ -22,7 +24,9 @@ const LoginPromptModal = ({ openLogin }) => {
 
       <Modal.Body>
         <p className="text-muted small mb-0">
-          Log in to your account to save properties to your favourites.
+          {loginPromptText
+            ? loginPromptText
+            : "Log in to your account to save properties to your favourites."}
         </p>
       </Modal.Body>
 

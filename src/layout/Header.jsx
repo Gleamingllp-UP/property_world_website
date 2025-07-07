@@ -5,7 +5,10 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import LoginModal from "../pages/auth/login/LoginModal";
 import { getAllActiveCategoryThunk } from "./../features/activeData/activeDataSlice";
-import { getUserDetailsThunk } from "../features/user/userSlice";
+import {
+  getUserDetailsThunk,
+  openLoginPrompt,
+} from "../features/user/userSlice";
 import { user } from "../assets/images";
 import ImageWithLoader from "../Custom_Components/ImageWithLoader";
 import close from "../assets/images/closed.svg";
@@ -118,7 +121,18 @@ function Header() {
                   <a
                     data-bs-toggle="modal"
                     data-bs-target="#login_form"
-                    onClick={() => setModalShow(true)}
+                    onClick={() => {
+                      if (userData?.role === "guest") {
+                        dispatch(
+                          openLoginPrompt(
+                            "Log in to your account to list your properties."
+                          )
+                        );
+                        return;
+                      } else {
+                        navigate(pageRoutes.ADD_PROPERTY);
+                      }
+                    }}
                   >
                     List
                   </a>

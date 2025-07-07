@@ -8,6 +8,7 @@ import Form from "react-bootstrap/Form";
 import { useNavigate } from "react-router-dom";
 import { pageRoutes } from "../../../router/pageRoutes";
 import CategoryFetcher from "./CategoryFetcher";
+import { openLoginPrompt } from "../../../features/user/userSlice";
 
 function HomeSearch() {
   const [selectedCategoryId, setSelectedCategoryId] = useState("");
@@ -42,6 +43,7 @@ function HomeSearch() {
   const { categories, subCategories, subSubCategories, loading } = useSelector(
     (store) => store?.activeData
   );
+  const { userData } = useSelector((store) => store?.user);
 
   const dispatch = useDispatch();
 
@@ -811,8 +813,18 @@ function HomeSearch() {
         <div>
           <a
             className="chat_ptb"
-            data-bs-toggle="modal"
-            data-bs-target="#login_form"
+            onClick={() => {
+              if (userData?.role === "guest") {
+                dispatch(
+                  openLoginPrompt(
+                    "Log in to your account to list your properties with us."
+                  )
+                );
+                return;
+              } else {
+                navigate(pageRoutes.ADD_PROPERTY);
+              }
+            }}
           >
             List with us <i className="ri-arrow-right-up-long-line" />
           </a>

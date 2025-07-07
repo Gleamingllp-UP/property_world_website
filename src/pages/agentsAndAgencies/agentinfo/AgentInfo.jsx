@@ -566,7 +566,7 @@ const AgentInfo = () => {
                   );
                 })
               ) : (
-                <div className="col-12">
+                <div className="col-12 my-4">
                   <div className="text-center border border-light-subtle rounded py-3 bg-light text-muted fw-medium">
                     No Property Available
                   </div>

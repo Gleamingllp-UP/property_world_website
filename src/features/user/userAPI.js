@@ -331,3 +331,19 @@ export const createVisitors = async () => {
     }
   }
 };
+
+export const updateProfilePicture = async (formData) => {
+  try {
+    const response = await api.patch(endpoints.updateProfilePicture, formData);
+    return response.data;
+  } catch (error) {
+    if (error?.status !== 401) {
+      throw (
+        error?.response?.data?.message ||
+        "Failed to update, please try again later."
+      );
+    } else {
+      throw error?.message || "Failed to update, please try again later.";
+    }
+  }
+};

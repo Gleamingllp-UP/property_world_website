@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 import { Loader } from "@googlemaps/js-api-loader";
 import { useSelector } from "react-redux";
 import { PropertyMapSkeleton } from "../../../Custom_Components/Skeleton/PropertySkeleton";
+import debounce from "lodash.debounce";
 
 const loader = new Loader({
   apiKey: import.meta.env.VITE_GOOGLE_MAP_KEY,
@@ -9,103 +10,10 @@ const loader = new Loader({
 });
 
 const Propertymap = ({ lat = 25.3463, lng = 55.4209, address }) => {
+  const mapRef = useRef(null);
+  const mapInstanceRef = useRef(null);
   const [places, setPlaces] = useState([]);
-  const [mapCenter, setMapCenter] = useState({ lat, lng });
-
-  useEffect(() => {
-    const loadMapData = async () => {
-      await loader.load();
-
-      // console.log("fsd", address);
-      const geocoder = new window.google.maps.Geocoder();
-
-      if (address) {
-        geocoder.geocode({ address }, (results, status) => {
-          if (status === "OK" && results[0]) {
-            const location = results[0].geometry.location;
-            setMapCenter({
-              lat: location.lat(),
-              lng: location.lng(),
-            });
-          } else {
-            console.warn(
-              "Geocode failed or no result, falling back to default lat/lng"
-            );
-            setMapCenter({ lat, lng }); // fallback
-          }
-        });
-      } else {
-        setMapCenter({ lat, lng }); // if no address
-      }
-    };
-
-    loadMapData();
-  }, [address, lat, lng]);
-
-  useEffect(() => {
-    const initMapAndPlaces = async () => {
-      await loader.load();
-
-      const mapDiv = document.getElementById("map");
-      const map = new window.google.maps.Map(mapDiv, {
-        center: mapCenter,
-        zoom: 15,
-      });
-
-      new window.google.maps.Marker({
-        position: mapCenter,
-        map,
-        title: "Center Location",
-      });
-
-      const service = new window.google.maps.places.PlacesService(map);
-      const placeTypes = [
-        "school",
-        "hospital",
-        "supermarket",
-        "subway_station",
-      ];
-
-      const nearbySearchPromises = placeTypes.map(
-        (type) =>
-          new Promise((resolve) => {
-            service.nearbySearch(
-              {
-                location: mapCenter,
-                radius: 2000,
-                type,
-              },
-              (results, status) => {
-                if (
-                  status === window.google.maps.places.PlacesServiceStatus.OK &&
-                  results.length
-                ) {
-                  resolve({
-                    type,
-                    name: results[0].name,
-                    distance: calculateDistance(
-                      mapCenter.lat,
-                      mapCenter.lng,
-                      results[0].geometry.location.lat(),
-                      results[0].geometry.location.lng()
-                    ),
-                  });
-                } else {
-                  resolve({ type, name: "Not found", distance: null });
-                }
-              }
-            );
-          })
-      );
-
-      const resolvedPlaces = await Promise.all(nearbySearchPromises);
-      setPlaces(resolvedPlaces);
-    };
-
-    if (mapCenter.lat && mapCenter.lng) {
-      initMapAndPlaces();
-    }
-  }, [mapCenter]);
+  const { isLoading } = useSelector((store) => store?.property);
 
   const calculateDistance = (lat1, lon1, lat2, lon2) => {
     const toRad = (val) => (val * Math.PI) / 180;
@@ -134,7 +42,125 @@ const Propertymap = ({ lat = 25.3463, lng = 55.4209, address }) => {
     }
   };
 
-  const { isLoading } = useSelector((store) => store?.property);
+  const initMapAndPlaces = useCallback(async (center) => {
+    await loader.load();
+
+    if (!mapRef.current) return;
+
+    // Initialize map
+    const map = new window.google.maps.Map(mapRef.current, {
+      center,
+      zoom: 15,
+    });
+    mapInstanceRef.current = map;
+
+    // Add marker at center
+    new window.google.maps.Marker({
+      position: center,
+      map,
+      title: "Center Location",
+    });
+
+    // New Place Search API migration coming in future
+    const service = new window.google.maps.places.PlacesService(map);
+    const placeTypes = ["school", "hospital", "supermarket", "subway_station"];
+
+    const nearbySearchPromises = placeTypes.map(
+      (type) =>
+        new Promise((resolve) => {
+          service.nearbySearch(
+            { location: center, radius: 2000, type },
+            (results, status) => {
+              if (
+                status === window.google.maps.places.PlacesServiceStatus.OK &&
+                results.length
+              ) {
+                resolve({
+                  type,
+                  name: results[0].name,
+                  distance: calculateDistance(
+                    center.lat,
+                    center.lng,
+                    results[0].geometry.location.lat(),
+                    results[0].geometry.location.lng()
+                  ),
+                });
+              } else {
+                resolve({ type, name: "Not found", distance: null });
+              }
+            }
+          );
+        })
+    );
+
+    const resolvedPlaces = await Promise.all(nearbySearchPromises);
+    setPlaces(resolvedPlaces);
+  }, []);
+
+  /** Geocode the address and init map */
+  const loadMapData = useCallback(
+    async (addressValue) => {
+      console.log("Geocoding address:", addressValue);
+      await loader.load();
+      const geocoder = new window.google.maps.Geocoder();
+
+      let finalCenter = { lat, lng };
+
+      if (addressValue) {
+        const location = await new Promise((resolve) => {
+          geocoder.geocode({ address: addressValue }, (results, status) => {
+            if (status === "OK" && results[0]) {
+              resolve(results[0].geometry.location);
+            } else {
+              console.warn("Geocode failed:", status);
+              resolve(null);
+            }
+          });
+        });
+
+        if (location) {
+          finalCenter = {
+            lat: location.lat(),
+            lng: location.lng(),
+          };
+        }
+      }
+
+      initMapAndPlaces(finalCenter);
+    },
+    [initMapAndPlaces, lat, lng]
+  );
+
+  /** Debounce the geocode & map loading when address changes */
+  const debouncedLoadMapData = useCallback(
+    debounce((addressValue) => {
+      loadMapData(addressValue);
+    }, 400),
+    [loadMapData]
+  );
+
+  /** Run on mount & whenever address changes */
+  useEffect(() => {
+    if (!address) {
+      console.log("No address provided, falling back to default lat/lng");
+      loadMapData("");
+      return;
+    }
+    debouncedLoadMapData(address);
+
+    return () => {
+      debouncedLoadMapData.cancel();
+    };
+  }, [address, debouncedLoadMapData, loadMapData]);
+
+  /** Cleanup map instance on unmount */
+  useEffect(() => {
+    return () => {
+      if (mapInstanceRef.current) {
+        mapInstanceRef.current = null;
+      }
+    };
+  }, []);
 
   return (
     <div className="key_feature">
@@ -144,22 +170,20 @@ const Propertymap = ({ lat = 25.3463, lng = 55.4209, address }) => {
       ) : (
         <>
           <div
-            id="map"
+            ref={mapRef}
             style={{ height: "350px", width: "100%", borderRadius: "10px" }}
-          ></div>
-
+          />
           <p className="mt-3">Nearby Places</p>
-          {places &&
-            places.map((place) => (
-              <div className="near_p" key={place?.type}>
-                <ul>
-                  <li>
-                    <i className={getIconClass(place?.type)} /> {place?.name}:{" "}
-                    {place?.distance ? `${place?.distance} km` : "N/A"}
-                  </li>
-                </ul>
-              </div>
-            ))}
+          {places.map((place) => (
+            <div className="near_p" key={place.type}>
+              <ul>
+                <li>
+                  <i className={getIconClass(place.type)} /> {place.name}:{" "}
+                  {place.distance ? `${place.distance} km` : "N/A"}
+                </li>
+              </ul>
+            </div>
+          ))}
         </>
       )}
     </div>

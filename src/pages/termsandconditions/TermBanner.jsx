@@ -18,11 +18,15 @@ const TermBanner = ({ scrollRef }) => {
     <>
       <div
         className="inner_banner"
-        style={{ backgroundImage: `url(${banners?.imageUrl || seller_guide})` }}
+        style={{
+          backgroundImage: `url(${
+            banners["terms_conditions"]?.imageUrl || seller_guide
+          })`,
+        }}
       >
         <div className="container">
           <div className="buyer_d">
-            <h1>{banners?.title || 'Terms & Conditions'}</h1>
+            <h1>{banners?.title || "Terms & Conditions"}</h1>
             <p />
           </div>
         </div>

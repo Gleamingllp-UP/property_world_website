@@ -17,7 +17,7 @@ const Banner = ({ scrollRef }) => {
     <>
       <div
         className="inner_banner"
-        style={{ backgroundImage: `url(${banners?.imageUrl || about_banner})` }}
+        style={{ backgroundImage: `url(${banners["contact_us"]?.imageUrl || about_banner})` }}
       >
         <div className="container">
           <div className="buyer_d">

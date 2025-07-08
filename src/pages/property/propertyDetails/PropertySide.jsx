@@ -5,18 +5,27 @@ import {
   property_world_logo,
   user,
 } from "../../../assets/images";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ImageWithLoader from "../../../Custom_Components/ImageWithLoader";
 
 import GLightbox from "glightbox";
 import "glightbox/dist/css/glightbox.css";
 import { ContactSidebarSkeleton } from "../../../Custom_Components/Skeleton/PropertySkeleton";
+import { getBannerByTypeThunk } from "../../../features/banner/bannerSlice";
 
 const PropertySide = () => {
   const { propertyDetails, isLoading } = useSelector(
     (store) => store?.property
   );
   const [loadingType, setLoadingType] = useState(null);
+
+  const { banners } = useSelector((store) => store?.banner);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getBannerByTypeThunk("property_detail_side_small"));
+    dispatch(getBannerByTypeThunk("property_detail_side_big"));
+  }, [dispatch]);
 
   const handleClick = (type) => {
     setLoadingType(type);
@@ -183,14 +192,16 @@ const PropertySide = () => {
           </div>
 
           <div className="new_adss">
-            <a href="#">
-              <img src={ads_banner} className="img-fluid" />
-            </a>
+            <ImageWithLoader
+              src={
+                banners["property_detail_side_small"]?.imageUrl || ads_banner
+              }
+            />
           </div>
           <div className="new_adss">
-            <a href="#">
-              <img src={ads_banner2} className="img-fluid" />
-            </a>
+            <ImageWithLoader
+              src={banners["property_detail_side_big"]?.imageUrl || ads_banner2}
+            />
           </div>
         </div>
       )}

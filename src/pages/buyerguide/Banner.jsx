@@ -18,7 +18,7 @@ const Banner = ({ scrollRef }) => {
       <div className="inner_banner_video">
         <div className="my_video">
           <video width="100%" height={300} loop muted autoPlay>
-            <source src={banners?.imageUrl || video} type="video/mp4" />
+            <source src={banners["buyer_guide"]?.imageUrl || video} type="video/mp4" />
           </video>
         </div>
         <div className="video_data">

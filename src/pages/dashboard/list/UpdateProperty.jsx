@@ -27,6 +27,7 @@ import { showToast } from "../../../utils/toast/toast";
 import { pageRoutes } from "../../../router/pageRoutes";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { allowedTourTypes } from "../../../helper/function/options";
+import AddressSelector from "./AddressSelector";
 
 const UpdateProperty = () => {
   const {
@@ -57,6 +58,11 @@ const UpdateProperty = () => {
   const [bedRoom, setBedRoom] = useState([]);
   const [bathRoom, setBathRoom] = useState([]);
   const [isDropDownOpen2, setIsDropDownOpen2] = useState(false);
+
+  const [latlng, setLatLng] = useState({
+    lat: "",
+    lng: "",
+  });
 
   const [prevThumbnailImg, setPrevThyumbnailImg] = useState("");
   const [prevGellayImg, setPrevGellayImg] = useState("");
@@ -89,6 +95,11 @@ const UpdateProperty = () => {
       setBedRoom([propertyDetails?.bedrooms]);
       setBathRoom([propertyDetails?.bathrooms]);
       setPrevThyumbnailImg(productThumbImages?.[0]?.url);
+
+      setLatLng({
+        lat: propertyDetails?.lat ? Number(propertyDetails.lat) : "",
+        lng: propertyDetails?.lng ? Number(propertyDetails.lng) : "",
+      });
 
       reset({
         title: propertyDetails.title || "",
@@ -301,6 +312,8 @@ const UpdateProperty = () => {
     formData.append("construction_status", data?.construction_status || "");
     formData.append("location", data?.location || "");
     formData.append("address", data?.address || "");
+    formData.append("lat", latlng?.lat || "");
+    formData.append("lng", latlng?.lng || "");
     formData.append("user", userData?._id || "");
     formData.append("product_status", data?.product_status || "");
     formData.append("building_name", data?.building_name || "");
@@ -367,9 +380,9 @@ const UpdateProperty = () => {
       );
       if (updatePropertyThunk.fulfilled.match(resultAction)) {
         showToast("Property Updated Successfull!", "success");
-        // setTimeout(() => {
-        //   navigate(pageRoutes.USER_PROPERTY_LISTING);
-        // }, 500);
+        setTimeout(() => {
+          navigate(pageRoutes.USER_PROPERTY_LISTING);
+        }, 500);
       } else {
         throw new Error(resultAction?.error?.message);
       }
@@ -496,48 +509,47 @@ const UpdateProperty = () => {
             </div>
 
             {/*Construction Status */}
-            {selectedCategoryName === "Buy" && (
-              <div className="col-md-4 mb-3">
-                <label className="form-label">Construction Status *</label>
-                <select
-                  className="form-select"
-                  name="construction_status"
-                  {...register("construction_status", {
-                    required: "Construction Status is required",
-                  })}
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    const event = {
-                      target: { name: "construction_status", value },
-                    };
-                    register("construction_status").onChange(event);
+            {/* {selectedCategoryName === "Buy" && ( */}
+            <div className="col-md-4 mb-3">
+              <label className="form-label">Construction Status *</label>
+              <select
+                className="form-select"
+                name="construction_status"
+                {...register("construction_status", {
+                  required: "Construction Status is required",
+                })}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  const event = {
+                    target: { name: "construction_status", value },
+                  };
+                  register("construction_status").onChange(event);
 
-                    setValue("bedrooms", "");
-                    setValue("bathrooms", "");
-                    setValue("handover_by", "");
-                    setValue("area", "");
-                    setValue("payment_plan", "");
-                  }}
-                >
-                  <option value="">-- Select --</option>
-                  {["Ready", "Off-plan"]?.map((item, index) => {
-                    return (
-                      <option value={item} key={index}>
-                        {item}
-                      </option>
-                    );
-                  })}
-                </select>
-                {errors?.construction_status && (
-                  <ErrorMessage
-                    message={errors?.construction_status?.message}
-                  />
-                )}
-              </div>
-            )}
+                  setValue("bedrooms", "");
+                  setValue("bathrooms", "");
+                  setValue("handover_by", "");
+                  setValue("area", "");
+                  setValue("payment_plan", "");
+                }}
+              >
+                <option value="">-- Select --</option>
+                {["Ready", "Off-plan"]?.map((item, index) => {
+                  return (
+                    <option value={item} key={index}>
+                      {item}
+                    </option>
+                  );
+                })}
+              </select>
+              {errors?.construction_status && (
+                <ErrorMessage message={errors?.construction_status?.message} />
+              )}
+            </div>
+            {/* )} */}
 
             {/*Handover By */}
-            {selectedCategoryName === "Buy" &&
+            {
+              // selectedCategoryName === "Buy" &&
               constructionStatus === "Off-plan" && (
                 <div className="col-md-4 mb-3">
                   <label className="form-label">Handover By *</label>
@@ -567,10 +579,12 @@ const UpdateProperty = () => {
                     <ErrorMessage message={errors?.handover_by?.message} />
                   )}
                 </div>
-              )}
+              )
+            }
 
             {/*Precentage  By */}
-            {selectedCategoryName === "Buy" &&
+            {
+              // selectedCategoryName === "Buy" &&
               constructionStatus === "Off-plan" && (
                 <>
                   <div className="col-md-4 mb-3">
@@ -624,7 +638,8 @@ const UpdateProperty = () => {
                     )}
                   </div>
                 </>
-              )}
+              )
+            }
             {/* Thumbnail Upload + Preview */}
             <div className="col-md-4 mb-3">
               <label className="form-label">Thumbnail Image *</label>
@@ -729,21 +744,31 @@ const UpdateProperty = () => {
           </div>
 
           <div className="row">
-            <div className="col-md-4 mb-3">
+            <div className="col-12 mb-3">
               <label className="form-label">Location *</label>
-              <input
-                type="text"
-                className="form-control"
+              <Controller
+                control={control}
                 name="address"
-                {...register(
-                  "address",
-                  getValidationRules({ label: "Address", type: "title" })
+                rules={getValidationRules({ label: "Address", type: "title" })}
+                render={({ field, fieldState: { error } }) => (
+                  <AddressSelector
+                    value={field.value}
+                    onChange={field.onChange}
+                    onBlur={field.onBlur}
+                    error={error?.message}
+                    defaultCenter={
+                      latlng?.lat && latlng?.lng
+                        ? { lat: Number(latlng?.lat), lng: Number(latlng?.lng) }
+                        : undefined
+                    }
+                    setLatLng={setLatLng}
+                  />
                 )}
               />
-              {errors?.address && (
-                <ErrorMessage message={errors?.address?.message} />
-              )}
             </div>
+          </div>
+
+          <div className="row">
             <div className="col-md-4 mb-3">
               <label className="form-label">Reference Number *</label>
               <input
@@ -810,121 +835,120 @@ const UpdateProperty = () => {
               {errors?.area && <ErrorMessage message={errors?.area?.message} />}
             </div>
 
-            {constructionStatus !== "Off-plan" &&
-              selectedSubCategoryName !== "Commercial" && (
-                <div className="col-md-4">
-                  <label className="form-label">Bedrooms & Bathroom *</label>
+            {/* {constructionStatus !== "Off-plan" && */}
+            {/* selectedSubCategoryName !== "Commercial" && ( */}
+            <div className="col-md-4">
+              <label className="form-label">Bedrooms & Bathroom *</label>
 
-                  {/* Main select-like box */}
-                  <input
-                    type="text"
-                    readOnly
-                    className="form-control"
-                    name="price"
-                    onClick={() => {
-                      setIsDropDownOpen2(!isDropDownOpen2);
-                    }}
-                    placeholder={
-                      bedRoom?.length > 0 || bathRoom?.length > 0
-                        ? renderSelectedBedsAndBaths()
-                        : "Beds & Baths"
-                    }
-                  />
-                  {errors?.bedrooms ? (
-                    <ErrorMessage message={errors?.bedrooms?.message} />
-                  ) : errors?.bathrooms ? (
-                    <ErrorMessage message={errors?.bathrooms?.message} />
-                  ) : null}
+              {/* Main select-like box */}
+              <input
+                type="text"
+                readOnly
+                className="form-control"
+                name="price"
+                onClick={() => {
+                  setIsDropDownOpen2(!isDropDownOpen2);
+                }}
+                placeholder={
+                  bedRoom?.length > 0 || bathRoom?.length > 0
+                    ? renderSelectedBedsAndBaths()
+                    : "Beds & Baths"
+                }
+              />
+              {errors?.bedrooms ? (
+                <ErrorMessage message={errors?.bedrooms?.message} />
+              ) : errors?.bathrooms ? (
+                <ErrorMessage message={errors?.bathrooms?.message} />
+              ) : null}
 
-                  {/* Hidden content with checkboxes */}
-                  <div
-                    className={
-                      isDropDownOpen2
-                        ? "content-wrapper d-block"
-                        : "content-wrapper"
-                    }
-                    id="roomOptions"
-                  >
-                    <div className="room-section" id="bedroomSection">
-                      <div className="room-title">Bedroom</div>
-                      <div className="checkbox-group">
-                        <input
-                          type="checkbox"
-                          id="studio"
-                          value={0}
-                          checked={bedRoom?.includes(0)}
-                          onChange={(e) => handleCheckboxChangeBedroom(e, 0)}
-                        />
-                        <label htmlFor="studio">Studio *</label>
+              {/* Hidden content with checkboxes */}
+              <div
+                className={
+                  isDropDownOpen2
+                    ? "content-wrapper d-block"
+                    : "content-wrapper"
+                }
+                id="roomOptions"
+              >
+                <div className="room-section" id="bedroomSection">
+                  <div className="room-title">Bedroom</div>
+                  <div className="checkbox-group">
+                    <input
+                      type="checkbox"
+                      id="studio"
+                      value={0}
+                      checked={bedRoom?.includes(0)}
+                      onChange={(e) => handleCheckboxChangeBedroom(e, 0)}
+                    />
+                    <label htmlFor="studio">Studio *</label>
 
-                        {[...Array(8)].map((_, i) => {
-                          const value = i + 1;
-                          const labelText = value === 8 ? "7+" : value;
+                    {[...Array(8)].map((_, i) => {
+                      const value = i + 1;
+                      const labelText = value === 8 ? "7+" : value;
 
-                          return (
-                            <React.Fragment key={i}>
-                              <input
-                                type="checkbox"
-                                id={`bedroom-${value}`}
-                                value={value}
-                                checked={bedRoom?.includes(value)}
-                                onChange={(e) =>
-                                  handleCheckboxChangeBedroom(e, value)
-                                }
-                              />
-                              <label htmlFor={`bedroom-${value}`}>
-                                {labelText}
-                              </label>
-                            </React.Fragment>
-                          );
-                        })}
-                      </div>
-
-                      {/* Hidden field for RHF validation */}
-                      <input
-                        type="hidden"
-                        {...register("bedrooms", {
-                          required:
-                            "Please select at least one bedroom or studio",
-                        })}
-                      />
-                    </div>
-                    <div className="room-section" id="bathroomSection">
-                      <div className="room-title">Bathroom</div>
-                      <div className="checkbox-group">
-                        {[...Array(8)].map((_, i) => {
-                          const value = i + 1;
-                          const labelText = value === 8 ? "7+" : value;
-
-                          return (
-                            <React.Fragment key={i}>
-                              <input
-                                type="checkbox"
-                                id={`bathRoom-${value}`}
-                                value={value}
-                                checked={bathRoom?.includes(value)}
-                                onChange={(e) =>
-                                  handleCheckboxChangeBathroom(e, value)
-                                }
-                              />
-                              <label htmlFor={`bathRoom-${value}`}>
-                                {labelText}
-                              </label>
-                            </React.Fragment>
-                          );
-                        })}
-                      </div>
-                      {/* Hidden field for RHF validation */}
-                      <input
-                        type="hidden"
-                        {...register("bathrooms", {
-                          required: "Please select at least one bathroom",
-                        })}
-                      />
-                    </div>
+                      return (
+                        <React.Fragment key={i}>
+                          <input
+                            type="checkbox"
+                            id={`bedroom-${value}`}
+                            value={value}
+                            checked={bedRoom?.includes(value)}
+                            onChange={(e) =>
+                              handleCheckboxChangeBedroom(e, value)
+                            }
+                          />
+                          <label htmlFor={`bedroom-${value}`}>
+                            {labelText}
+                          </label>
+                        </React.Fragment>
+                      );
+                    })}
                   </div>
+
+                  {/* Hidden field for RHF validation */}
+                  <input
+                    type="hidden"
+                    {...register("bedrooms", {
+                      required: "Please select at least one bedroom or studio",
+                    })}
+                  />
                 </div>
-              )}
+                <div className="room-section" id="bathroomSection">
+                  <div className="room-title">Bathroom</div>
+                  <div className="checkbox-group">
+                    {[...Array(8)].map((_, i) => {
+                      const value = i + 1;
+                      const labelText = value === 8 ? "7+" : value;
+
+                      return (
+                        <React.Fragment key={i}>
+                          <input
+                            type="checkbox"
+                            id={`bathRoom-${value}`}
+                            value={value}
+                            checked={bathRoom?.includes(value)}
+                            onChange={(e) =>
+                              handleCheckboxChangeBathroom(e, value)
+                            }
+                          />
+                          <label htmlFor={`bathRoom-${value}`}>
+                            {labelText}
+                          </label>
+                        </React.Fragment>
+                      );
+                    })}
+                  </div>
+                  {/* Hidden field for RHF validation */}
+                  <input
+                    type="hidden"
+                    {...register("bathrooms", {
+                      required: "Please select at least one bathroom",
+                    })}
+                  />
+                </div>
+              </div>
+            </div>
+            {/* )} */}
 
             <div className="col-md-4 mb-3">
               <label className="form-label">Price *</label>
@@ -1263,8 +1287,8 @@ const UpdateProperty = () => {
           {loading ? (
             <ButtonWithSpin />
           ) : (
-            <div className="col-lg-12 text-end mt-5">
-              <button type="submit" className="btn custom-button">
+            <div className="col-lg-12 text-start mt-5">
+              <button type="submit" className="btn action_btn">
                 Update Property
               </button>
             </div>

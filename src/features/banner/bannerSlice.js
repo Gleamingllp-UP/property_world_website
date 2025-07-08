@@ -27,7 +27,9 @@ const BannerSlice = createSlice({
       })
       .addCase(getBannerByTypeThunk.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.banners = action.payload.data;
+        const bannerData = action.payload.data;
+        const bannerType = bannerData.type;
+        state.banners[bannerType] = bannerData;
       })
       .addCase(getBannerByTypeThunk.rejected, (state, action) => {
         state.isLoading = false;

@@ -3,11 +3,8 @@ import { Loader } from "@googlemaps/js-api-loader";
 import { useSelector } from "react-redux";
 import { PropertyMapSkeleton } from "../../../Custom_Components/Skeleton/PropertySkeleton";
 import debounce from "lodash.debounce";
+import loader from "../../dashboard/list/googleMapsLoader";
 
-const loader = new Loader({
-  apiKey: import.meta.env.VITE_GOOGLE_MAP_KEY,
-  libraries: ["places"],
-});
 
 const Propertymap = ({ lat = 25.3463, lng = 55.4209, address }) => {
   const mapRef = useRef(null);

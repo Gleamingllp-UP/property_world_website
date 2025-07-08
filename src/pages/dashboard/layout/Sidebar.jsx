@@ -142,12 +142,17 @@ const Sidebar = () => {
                 className="d-none"
               />
             </div>
-            <h5 className="text-center text-danger fw-medium">
-              {`${userData?.first_name} ${userData?.last_name}`}
-            </h5>
-            <p className="text-center small text-danger fw-medium">
-              {userData?.email || ""}
-            </p>
+            {userData?.first_name && userData?.email && (
+              <>
+                <h5 className="text-center text-danger fw-medium">
+                  {`${userData?.first_name} ${userData?.last_name}`}
+                </h5>
+                <p className="text-center small text-danger fw-medium">
+                  {userData?.email || ""}
+                </p>
+              </>
+            )}
+
             <hr className="my-2 text-black" />
 
             <button

@@ -141,7 +141,11 @@ function PropertyAllInfo() {
                         </tr>
                         <tr>
                           <td>Reference</td>
-                          <td>Ref - 105235-Fc3aqd</td>
+                          <td>
+                            Ref -{" "}
+                            {propertyDetails?.reference_number ??
+                              "105235-Fc3aqd"}
+                          </td>
                         </tr>
                         <tr>
                           <td>Added on</td>
@@ -197,13 +201,16 @@ function PropertyAllInfo() {
               <Features />
 
               <Propertymap
-                address={
-                  String(propertyDetails?.building_name) +
-                  " " +
-                  String(propertyDetails?.address)
-                }
-                lat={propertyDetails?.locationData?.latitude}
-                lng={propertyDetails?.locationData?.longitude}
+                {...(propertyDetails?.lat && propertyDetails?.lng
+                  ? {
+                      lat: Number(propertyDetails?.lat),
+                      lng: Number(propertyDetails?.lng),
+                    }
+                  : {
+                      address: `${propertyDetails?.building_name || ""} ${
+                        propertyDetails?.address || ""
+                      }`,
+                    })}
               />
 
               <hr />

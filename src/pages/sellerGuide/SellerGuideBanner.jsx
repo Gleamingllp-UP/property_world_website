@@ -21,7 +21,7 @@ function SellerGuideBanner({ scrollRef }) {
       <div className="inner_banner_video">
         <div className="my_video">
           <MediaWithLoader
-            src={banners?.imageUrl}
+            src={banners["seller_guide"]?.imageUrl}
             height={300}
             setIsImgLoaded={setIsImgLoaded}
             className="rounded"

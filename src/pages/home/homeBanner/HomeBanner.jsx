@@ -16,7 +16,7 @@ function HomeBanner() {
     <div className="main_banner">
       <div
         className="banner position-relative"
-        style={{ backgroundImage: `url(${banners?.imageUrl || banner_home})` }}
+        style={{ backgroundImage: `url(${banners["home_page"]?.imageUrl || banner_home})` }}
       />
       <HomeSearch />
     </div>

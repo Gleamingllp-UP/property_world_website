@@ -109,7 +109,7 @@ function AgentsBanner({ page, limit }) {
       <div
         className="inner_banner"
         style={{
-          backgroundImage: `url(${banners?.imageUrl || landlord_guide})`,
+          backgroundImage: `url(${banners["agent"]?.imageUrl || landlord_guide})`,
         }}
       >
         <div className="container">

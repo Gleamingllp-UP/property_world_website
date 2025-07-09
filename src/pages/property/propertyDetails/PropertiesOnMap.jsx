@@ -1,5 +1,4 @@
 import React, { useEffect, useRef } from "react";
-import { Loader } from "@googlemaps/js-api-loader";
 import { MarkerClusterer } from "@googlemaps/markerclusterer";
 import { formatPrice } from "../../../helper/function/formatPrice";
 import { useDispatch } from "react-redux";
@@ -7,11 +6,7 @@ import {
   clearHoveredProperty,
   setHoveredProperty,
 } from "../../../features/property/propertySlice";
-
-const loader = new Loader({
-  apiKey: import.meta.env.VITE_GOOGLE_MAP_KEY,
-  libraries: ["places"],
-});
+import loader from "../../dashboard/list/googleMapsLoader";
 
 const groupProperties = (props) => {
   const grouped = {};

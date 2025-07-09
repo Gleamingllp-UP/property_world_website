@@ -95,7 +95,7 @@ function Footer() {
                           contactUs?.[0]?.tele_phone || "97143533229"
                         }`}
                       >
-                        <i className="ri-phone-line" /> tel:+{" "}
+                        <i className="ri-phone-line" /> tel:{" "}+
                         {contactUs?.[0]?.tele_phone || "N/A"}
                       </a>
                     </li>

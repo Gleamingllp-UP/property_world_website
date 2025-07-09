@@ -82,14 +82,14 @@ function HomeCategoryWiseList() {
               role="tabpanel"
               aria-labelledby="nav-buy-tab"
             >
-              <div className="row">
+              <div className="row align-items-stretch">
                 {isLoading ? (
                   <HomeCategoryPropertySkeleton />
                 ) : propertyData?.length > 0 ? (
                   propertyData?.slice(0, 6)?.map((item, index) => {
                     return (
-                      <div className="col-sm-4" key={index + 1}>
-                        <div className="my_property">
+                      <div className="col-sm-4 d-flex" key={index + 1}>
+                        <div className="my_property w-100">
                           <div className="photo_my_photo">
                             <span
                               className="buy"
@@ -187,7 +187,9 @@ function HomeCategoryWiseList() {
               {propertyData && propertyData?.length > 6 && (
                 <div className="col-12 text-center">
                   <Link
-                    to={pageRoutes.PROPERTY_LISTING}
+                    to={
+                      pageRoutes.PROPERTY_LISTING + `/?category=${selectedId}`
+                    }
                     className="action_btn mt20"
                   >
                     View All Properties{" "}

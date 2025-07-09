@@ -1,12 +1,10 @@
 import React, { useEffect, useState, useCallback, useRef } from "react";
-import { Loader } from "@googlemaps/js-api-loader";
 import { useSelector } from "react-redux";
 import { PropertyMapSkeleton } from "../../../Custom_Components/Skeleton/PropertySkeleton";
 import debounce from "lodash.debounce";
 import loader from "../../dashboard/list/googleMapsLoader";
 
-
-const Propertymap = ({ lat = 25.3463, lng = 55.4209, address }) => {
+const Propertymap = ({ lat, lng, address }) => {
   const mapRef = useRef(null);
   const mapInstanceRef = useRef(null);
   const [places, setPlaces] = useState([]);
@@ -42,6 +40,7 @@ const Propertymap = ({ lat = 25.3463, lng = 55.4209, address }) => {
   const initMapAndPlaces = useCallback(async (center) => {
     await loader.load();
 
+    // console.log('objectcenter',center)
     if (!mapRef.current) return;
 
     // Initialize map
@@ -94,7 +93,6 @@ const Propertymap = ({ lat = 25.3463, lng = 55.4209, address }) => {
     setPlaces(resolvedPlaces);
   }, []);
 
-  /** Geocode the address and init map */
   const loadMapData = useCallback(
     async (addressValue) => {
       console.log("Geocoding address:", addressValue);
@@ -128,7 +126,6 @@ const Propertymap = ({ lat = 25.3463, lng = 55.4209, address }) => {
     [initMapAndPlaces, lat, lng]
   );
 
-  /** Debounce the geocode & map loading when address changes */
   const debouncedLoadMapData = useCallback(
     debounce((addressValue) => {
       loadMapData(addressValue);
@@ -136,11 +133,10 @@ const Propertymap = ({ lat = 25.3463, lng = 55.4209, address }) => {
     [loadMapData]
   );
 
-  /** Run on mount & whenever address changes */
   useEffect(() => {
     if (!address) {
-      console.log("No address provided, falling back to default lat/lng");
-      loadMapData("");
+      // console.log("No address provided, falling back to default lat/lng");
+      debouncedLoadMapData("");
       return;
     }
     debouncedLoadMapData(address);
@@ -150,7 +146,6 @@ const Propertymap = ({ lat = 25.3463, lng = 55.4209, address }) => {
     };
   }, [address, debouncedLoadMapData, loadMapData]);
 
-  /** Cleanup map instance on unmount */
   useEffect(() => {
     return () => {
       if (mapInstanceRef.current) {

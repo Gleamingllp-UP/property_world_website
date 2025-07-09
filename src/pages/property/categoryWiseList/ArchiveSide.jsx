@@ -1,6 +1,15 @@
-import React from "react";
+import React, { useEffect } from "react";
 import new_side from "../../../assets/images/new_ads.jpg";
+import { useDispatch, useSelector } from "react-redux";
+import { getBannerByTypeThunk } from "../../../features/banner/bannerSlice";
+import ImageWithLoader from "../../../Custom_Components/ImageWithLoader";
 const ArchiveSide = () => {
+  const { banners } = useSelector((store) => store?.banner);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getBannerByTypeThunk("property_listing"));
+  }, [dispatch]);
   return (
     <>
       <div className="col-lg-3">
@@ -26,7 +35,9 @@ const ArchiveSide = () => {
             </ul>
           </div>
           <div className="new_adss">
-            <img src={new_side} className="img-fluid" />
+            <ImageWithLoader
+              src={banners["property_listing"]?.imageUrl || new_side}
+            />
           </div>
         </div>
       </div>

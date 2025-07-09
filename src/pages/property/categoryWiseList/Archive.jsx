@@ -400,11 +400,21 @@ const Archive = ({ isMapView, setIsMapView }) => {
                             </div>
                             <>
                               <NearbyPlaces
-                                address={
-                                  item?.building_name + ", " + item?.address
-                                }
-                                lat={item?.locationData?.latitude}
-                                lng={item?.locationData?.longitude}
+                                {...(item?.lat && item?.lng
+                                  ? {
+                                      lat: Number(item?.lat),
+                                      lng: Number(item?.lng),
+                                    }
+                                  : {
+                                      address: `${item?.building_name || ""} ${
+                                        item?.address || ""
+                                      }`,
+                                    })}
+                                // address={
+                                //   item?.building_name + ", " + item?.address
+                                // }
+                                // lat={item?.locationData?.latitude}
+                                // lng={item?.locationData?.longitude}
                               />
                             </>
                             <div className="call_action">

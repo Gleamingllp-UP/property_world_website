@@ -32,13 +32,13 @@ function HomeFeaturedList() {
         <div className="text-center title_area">
           <h2>Featured Properties</h2>
         </div>
-        <div className="row">
+        <div className="row d-flex align-items-stretch">
           {isLoading ? (
             <HomeCategoryPropertySkeleton />
           ) : featuredPropertyData ? (
             featuredPropertyData?.slice(0, 6).map((item, index) => (
-              <div className="col-sm-4" key={index}>
-                <div className="my_property">
+              <div className="col-sm-4 d-flex" key={index}>
+                <div className="my_property w-100">
                   <div className="photo_my_photo">
                     <span
                       className="buy"

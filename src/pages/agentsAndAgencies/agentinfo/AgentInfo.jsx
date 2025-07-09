@@ -322,11 +322,21 @@ const AgentInfo = () => {
                             </div>
                             <>
                               <NearbyPlaces
-                                address={
-                                  item?.building_name + ", " + item?.address
-                                }
-                                lat={item?.locationData?.latitude}
-                                lng={item?.locationData?.longitude}
+                                // address={
+                                //   item?.building_name + ", " + item?.address
+                                // }
+                                // lat={item?.locationData?.latitude}
+                                // lng={item?.locationData?.longitude}
+                                 {...(item?.lat && item?.lng
+                                  ? {
+                                      lat: Number(item?.lat),
+                                      lng: Number(item?.lng),
+                                    }
+                                  : {
+                                      address: `${item?.building_name || ""} ${
+                                        item?.address || ""
+                                      }`,
+                                    })}
                                 name={"agent"}
                               />
                             </>

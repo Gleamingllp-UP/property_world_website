@@ -20,8 +20,10 @@ import {
   PropertyFeaturesSkeleton,
   PropertyHeaderSkeleton,
   PropertyInfoSkeleton,
+  PropertyMapSkeleton,
   VirtualTourSkeleton,
 } from "../../../Custom_Components/Skeleton/PropertySkeleton";
+import { formatNumberWithCommas } from "../../../helper/function/formatRange";
 function PropertyAllInfo() {
   const { propertyDetails, isLoading } = useSelector(
     (store) => store?.property
@@ -70,20 +72,7 @@ function PropertyAllInfo() {
                   <hr />
                 </>
               )}
-              <div className="key_feature">
-                <p>Property DESCRIPTION</p>
-
-                <span className="d-block mb-2">
-                  {propertyDetails?.short_description}
-                </span>
-
-                <span className="d-block">
-                  {propertyDetails?.full_description}
-                </span>
-              </div>
-
-              <hr />
-
+             
               {isLoading ? (
                 <PropertyFeaturesSkeleton />
               ) : (
@@ -109,7 +98,7 @@ function PropertyAllInfo() {
                         {propertyDetails?.area > 0 && (
                           <li>
                             <i className="ri-ruler-line" /> Size:{" "}
-                            {propertyDetails?.area} sqft
+                            {formatNumberWithCommas(propertyDetails?.area)} sqft
                           </li>
                         )}
                       </ul>
@@ -118,6 +107,21 @@ function PropertyAllInfo() {
                   </>
                 )
               )}
+
+               <div className="key_feature">
+                <p>Property DESCRIPTION</p>
+
+                <span className="d-block mb-2">
+                  {propertyDetails?.short_description}
+                </span>
+
+                <span className="d-block">
+                  {propertyDetails?.full_description}
+                </span>
+              </div>
+
+              <hr />
+
 
               <div className="key_feature">
                 <p>Property Information </p>
@@ -165,7 +169,7 @@ function PropertyAllInfo() {
                           <td>Built-up Area </td>
                           <td>
                             <i className="ri-ruler-line" />{" "}
-                            {propertyDetails?.area || 0} sqft
+                            {formatNumberWithCommas(propertyDetails?.area) || 0} sqft
                           </td>
                         </tr>
                         <tr>
@@ -200,18 +204,25 @@ function PropertyAllInfo() {
 
               <Features />
 
-              <Propertymap
-                {...(propertyDetails?.lat && propertyDetails?.lng
-                  ? {
-                      lat: Number(propertyDetails?.lat),
-                      lng: Number(propertyDetails?.lng),
-                    }
-                  : {
-                      address: `${propertyDetails?.building_name || ""} ${
-                        propertyDetails?.address || ""
-                      }`,
-                    })}
-              />
+              {propertyDetails &&
+              (propertyDetails?.lat != null ||
+                propertyDetails?.address?.trim()) ? (
+                <Propertymap
+                  {...(propertyDetails?.lat != null &&
+                  propertyDetails?.lng != null
+                    ? {
+                        lat: Number(propertyDetails?.lat),
+                        lng: Number(propertyDetails?.lng),
+                      }
+                    : {
+                        address: `${propertyDetails?.building_name || ""} ${
+                          propertyDetails?.address || ""
+                        }`,
+                      })}
+                />
+              ) : (
+                <PropertyMapSkeleton />
+              )}
 
               <hr />
 

@@ -1,10 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Loader } from "@googlemaps/js-api-loader";
-
-const loader = new Loader({
-  apiKey: import.meta.env.VITE_GOOGLE_MAP_KEY,
-  libraries: ["places"],
-});
+import loader from "../../dashboard/list/googleMapsLoader";
 
 const placeTypes = [
   { type: "school", label: "School" },
@@ -25,7 +20,7 @@ const calculateDistance = (lat1, lon1, lat2, lon2) => {
   return R * c; // distance in kilometers (raw)
 };
 
-const NearbyPlaces = ({ lat = 25.3463, lng = 55.4209, address,name }) => {
+const NearbyPlaces = ({ lat, lng, address, name }) => {
   const [distances, setDistances] = useState([]);
   const [coordinates, setCoordinates] = useState({ lat, lng });
 

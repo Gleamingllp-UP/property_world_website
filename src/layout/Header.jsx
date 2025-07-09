@@ -20,6 +20,7 @@ function Header() {
   const [modalShow, setModalShow] = useState(false);
   const { categories, location } = useSelector((store) => store?.activeData);
   const { userData } = useSelector((store) => store?.user);
+  const { contactUs } = useSelector((store) => store?.contactUs);
 
   const [isMenuOpen, setIsMunu] = useState(false);
   const [isSubMenuOpen, setIsSubMenuOpen] = useState("");
@@ -28,11 +29,11 @@ function Header() {
 
   useEffect(() => {
     dispatch(getAllActiveCategoryThunk());
-    dispatch(getUserDetailsThunk());
   }, [dispatch]);
 
   useEffect(() => {
     if (userData?._id) {
+      dispatch(getUserDetailsThunk());
       dispatch(getUserPlanThunk({ user_id: userData?._id }));
     }
   }, [dispatch, userData?._id]);
@@ -60,13 +61,16 @@ function Header() {
           <div className="row">
             <div className="col-lg-6">
               <div className="email_us">
-                <i className="ri-mail-open-line"></i> info@propertyworld.ae
+                <i className="ri-mail-open-line"></i>{" "}
+                {contactUs?.[0]?.email ?? "info@propertyworld.ae"}
               </div>
             </div>
             <div className="col-lg-6">
               <div className="call_us">
                 <i className="ri-phone-line"></i> Call us:{" "}
-                <a href="tel:+447717628097">+44 7717 628097</a>
+                <a href={`tel:+${contactUs?.[0]?.tele_phone || "97143533229"}`}>
+                  +{contactUs?.[0]?.tele_phone || "N/A"}
+                </a>
               </div>
             </div>
           </div>

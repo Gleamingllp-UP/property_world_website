@@ -375,5 +375,32 @@ input[type="number"] {
 
 .scrollable-container {
   -ms-overflow-style: none;
-  scrollbar-width: none; 
+  scrollbar-width: none;
+}
+
+.off_plan {
+  width: 70%;
+}
+@media (max-width: 768px) {
+  .border-end {
+    border-right: none !important;
+    border-bottom: 1px solid #dee2e6; /* optional: add a bottom divider instead */
+  }
+  .off_plan {
+    width: 100%;
+  }
+}
+
+.featured .my-slider {
+  padding: 0 0px;
+  min-height: 303px;
+}
+.featured .my-slider img {
+  width: 100%;
+  min-height: 301px;
+}
+.featured .normal_slider {
+  min-height: 303px;
+  overflow: hidden;
+  border-radius: 8px 0px 0px 0px;
 }

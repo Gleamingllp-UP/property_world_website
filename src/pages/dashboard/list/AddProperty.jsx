@@ -393,7 +393,7 @@ const AddProperty = () => {
 
           {/*Construction Status */}
           {
-            // selectedCategoryName === "Buy" && (
+            selectedCategoryName === "Buy" && (
             <div className="col-md-4 mb-3">
               <label className="form-label">Construction Status *</label>
               <select
@@ -429,12 +429,12 @@ const AddProperty = () => {
                 <ErrorMessage message={errors?.construction_status?.message} />
               )}
             </div>
-            // )
+            )
           }
 
           {/*Handover By */}
           {
-            // selectedCategoryName === "Buy" &&
+            selectedCategoryName === "Buy" &&
             constructionStatus === "Off-plan" && (
               <div className="col-md-4 mb-3">
                 <label className="form-label">Handover By *</label>
@@ -469,7 +469,7 @@ const AddProperty = () => {
 
           {/*Precentage  By */}
           {
-            // selectedCategoryName === "Buy" &&
+            selectedCategoryName === "Buy" &&
             constructionStatus === "Off-plan" && (
               <>
                 <div className="col-md-4 mb-3">

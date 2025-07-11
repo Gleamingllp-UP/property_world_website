@@ -27,6 +27,9 @@ import { formatNumberWithCommas } from "../../../helper/function/formatRange";
 import NearbyPlaces from "./NearbyPlaces";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import PropertyMapView from "../propertyDetails/PropertyMapView";
+import { getQuarterFromDate } from "../../../helper/function/generateHandoverOptions";
+import PaymentPlanPopover from "./PaymentPlanPopover";
+import { getPaymentPlanBreakdown } from "../../../helper/function/getPaymentPlanBreakdown";
 
 const Archive = ({ isMapView, setIsMapView }) => {
   const {
@@ -283,14 +286,25 @@ const Archive = ({ isMapView, setIsMapView }) => {
                   const productThumbnailImage = item?.images?.filter(
                     (item) => item?.name === "Thumbnail Image"
                   );
+                  const { downPayment, onConstruction, onHandover } =
+                    getPaymentPlanBreakdown(item?.payment_plan);
+
                   return item?.is_featured ? (
                     <div className="list_box" key={index}>
                       <div className="feat_tag">
                         <p>Featured Property</p>
                       </div>
                       <div className="row">
-                        <div className="col-lg-5">
-                          <div className="property_images">
+                        <div className="col-lg-5 featured">
+                          <div className="normal_slider">
+                            <div
+                              className="agent_d"
+                              data-bs-toggle="modal"
+                              data-bs-target="#agency_info"
+                              onClick={() => setModalShow(true)}
+                            >
+                              <i className="ri-checkbox-circle-fill" /> Checked
+                            </div>
                             <div className="save_p">
                               <button>
                                 <i
@@ -307,30 +321,27 @@ const Archive = ({ isMapView, setIsMapView }) => {
                                 ></i>
                               </button>
                             </div>
-                            <div className="big_photo">
-                              <Link
-                                to={`${pageRoutes.PROPERTY_DETAILS}?id=${item?._id}`}
-                              >
-                                <ImageWithLoader
-                                  src={productThumbnailImage?.[0]?.url}
-                                  className="img-fluid"
-                                />
-                              </Link>
-                            </div>
-                            <div className="small_photo">
-                              <Link
-                                to={`${pageRoutes.PROPERTY_DETAILS}?id=${item?._id}`}
-                              >
-                                {productImages?.slice(0, 2)?.map((img, ind) => {
-                                  return (
-                                    <ImageWithLoader
-                                      key={ind}
-                                      src={img?.url}
-                                      className={ind !== 0 ? "mb-0" : ""}
-                                    />
-                                  );
-                                })}
-                              </Link>
+
+                            <div className="my-slider">
+                              <Slider {...sliderSettings}>
+                                {[
+                                  ...productThumbnailImage,
+                                  ...productImages,
+                                ]?.map((img, i) => (
+                                  <div key={i}>
+                                    <Link
+                                      to={`${pageRoutes.PROPERTY_DETAILS}?id=${item?._id}`}
+                                    >
+                                      <ImageWithLoader
+                                        src={img?.url}
+                                        style={{
+                                          height: "210px",
+                                        }}
+                                      />
+                                    </Link>
+                                  </div>
+                                ))}
+                              </Slider>
                             </div>
                           </div>
                           <div className="price_tt">
@@ -394,8 +405,8 @@ const Archive = ({ isMapView, setIsMapView }) => {
                             <div className="pro_desc sli">
                               {item?.short_description ?? "No description"}
                             </div>
-                            <div className="loc">
-                              <i className="ri-map-pin-line" />
+                            <div className="loc pro_desc sli">
+                              <i className="ri-map-pin-line" />{" "}
                               {item?.address ?? "No address"}
                             </div>
                             <>
@@ -417,6 +428,44 @@ const Archive = ({ isMapView, setIsMapView }) => {
                                 // lng={item?.locationData?.longitude}
                               />
                             </>
+                            {item?.handover_by !== "" &&
+                              item?.payment_plan !== "" &&
+                              item?.payment_plan !== null &&
+                              item?.handover_by !== null && (
+                                <div
+                                  className="d-flex flex-wrap gap-2"
+                                  style={{ width: "70%" }}
+                                >
+                                  <div
+                                    className="bg-light rounded px-3 py-2 text-center flex-fill"
+                                    style={{ flex: "0 0 47%" }}
+                                  >
+                                    <div className="text-uppercase small text-secondary fw-semibold">
+                                      Handover
+                                    </div>
+                                    <div className="fw-bold">
+                                      {getQuarterFromDate(item?.handover_by)}
+                                    </div>
+                                  </div>
+                                  <div
+                                    className="bg-light rounded px-3 py-2 text-center flex-fill"
+                                    style={{ flex: "0 0 47%" }}
+                                  >
+                                    <div className="text-uppercase small text-secondary fw-semibold d-flex justify-content-center align-items-center gap-1">
+                                      <span>Payment Plan</span>
+                                      <PaymentPlanPopover
+                                        payment={item?.payment_plan}
+                                      />
+                                    </div>
+
+                                    <div className="fw-bold">
+                                      {downPayment + onConstruction}/
+                                      {onHandover}
+                                    </div>
+                                  </div>
+                                </div>
+                              )}
+
                             <div className="call_action">
                               <ul className="mb-0">
                                 <li>
@@ -499,12 +548,20 @@ const Archive = ({ isMapView, setIsMapView }) => {
 
                             <div className="my-slider">
                               <Slider {...sliderSettings}>
-                                {item?.images?.map((img, i) => (
+                                {[
+                                  ...productThumbnailImage,
+                                  ...productImages,
+                                ]?.map((img, i) => (
                                   <div key={i}>
                                     <Link
                                       to={`${pageRoutes.PROPERTY_DETAILS}?id=${item?._id}`}
                                     >
-                                      <ImageWithLoader src={img?.url} />
+                                      <ImageWithLoader
+                                        src={img?.url}
+                                        style={{
+                                          height: "210px",
+                                        }}
+                                      />
                                     </Link>
                                   </div>
                                 ))}
@@ -601,7 +658,42 @@ const Archive = ({ isMapView, setIsMapView }) => {
                               <i className="ri-map-pin-line" />{" "}
                               {item?.locationData?.name}
                             </div>
-
+                            {item?.handover_by !== "" &&
+                              item?.payment_plan !== "" &&
+                              item?.payment_plan !== null &&
+                              item?.handover_by !== null && (
+                                <div
+                                  className="d-flex flex-wrap gap-2 my-3"
+                                  style={{ width: "70%" }}
+                                >
+                                  <div
+                                    className="bg-light rounded px-3 py-2 text-center flex-fill"
+                                    style={{ flex: "0 0 48%" }}
+                                  >
+                                    <div className="text-uppercase small text-secondary fw-semibold">
+                                      Handover
+                                    </div>
+                                    <div className="fw-bold">
+                                      {getQuarterFromDate(item?.handover_by)}
+                                    </div>
+                                  </div>
+                                  <div
+                                    className="bg-light rounded px-3 py-2 text-center flex-fill"
+                                    style={{ flex: "0 0 48%" }}
+                                  >
+                                    <div className="text-uppercase small text-secondary fw-semibold d-flex justify-content-center align-items-center gap-1">
+                                      <span>Payment Plan</span>
+                                      <PaymentPlanPopover
+                                        payment={item?.payment_plan}
+                                      />
+                                    </div>
+                                    <div className="fw-bold">
+                                      {downPayment + onConstruction}/
+                                      {onHandover}
+                                    </div>
+                                  </div>
+                                </div>
+                              )}
                             <div className="call_action">
                               <ul className="mb-0">
                                 <li>
@@ -731,6 +823,9 @@ const Archive = ({ isMapView, setIsMapView }) => {
                       const isHovered = hoveredProperty?.some(
                         (hovered) => hovered?.title === item?.title
                       );
+
+                      const { downPayment, onConstruction, onHandover } =
+                        getPaymentPlanBreakdown(item?.payment_plan);
 
                       return item?.is_featured ? (
                         <div
@@ -888,9 +983,51 @@ const Archive = ({ isMapView, setIsMapView }) => {
                                       "No description"}
                                   </div>
                                   <div className="loc pro_desc sli">
-                                    <i className="ri-map-pin-line" />
+                                    <i className="ri-map-pin-line" />{" "}
                                     {item?.address ?? "No address"}
                                   </div>
+                                  {
+                                    // !isGridView &&
+                                    item?.handover_by !== "" &&
+                                      item?.payment_plan !== "" &&
+                                      item?.payment_plan !== null &&
+                                      item?.handover_by !== null && (
+                                        <div
+                                          className="d-flex flex-wrap gap-2"
+                                          style={{ width: "100%" }}
+                                        >
+                                          <div
+                                            className="bg-light rounded px-3 py-2 text-center flex-fill"
+                                            style={{ flex: "0 0 40%" }}
+                                          >
+                                            <div className="text-uppercase small text-secondary fw-semibold">
+                                              Handover
+                                            </div>
+                                            <div className="fw-bold">
+                                              {getQuarterFromDate(
+                                                item?.handover_by
+                                              )}
+                                            </div>
+                                          </div>
+                                          <div
+                                            className="bg-light rounded px-3 py-2 text-center flex-fill"
+                                            style={{ flex: "0 0 40%" }}
+                                          >
+                                            <div className="text-uppercase small text-secondary fw-semibold d-flex justify-content-center align-items-center gap-1">
+                                              <span>Payment Plan</span>
+                                              <PaymentPlanPopover
+                                                payment={item?.payment_plan}
+                                              />
+                                            </div>
+                                            <div className="fw-bold">
+                                              {downPayment + onConstruction}/
+                                              {onHandover}
+                                            </div>
+                                          </div>
+                                        </div>
+                                      )
+                                  }
+
                                   {!isGridView && (
                                     <>
                                       <div className="call_action justify-content-end">
@@ -1072,10 +1209,51 @@ const Archive = ({ isMapView, setIsMapView }) => {
                                     </div>
                                   ) : null}
 
-                                  <div className="loc">
+                                  <div className="loc pro_desc sli">
                                     <i className="ri-map-pin-line" />{" "}
-                                    {item?.locationData?.name}
+                                    {item?.address ?? "No Address"}
                                   </div>
+                                  {
+                                    //  !isGridView &&
+                                    item?.handover_by !== "" &&
+                                      item?.payment_plan !== "" &&
+                                      item?.payment_plan !== null &&
+                                      item?.handover_by !== null && (
+                                        <div
+                                          className="d-flex flex-wrap gap-2"
+                                          style={{ width: "100%" }}
+                                        >
+                                          <div
+                                            className="bg-light rounded px-3 py-2 text-center flex-fill"
+                                            style={{ flex: "0 0 40%" }}
+                                          >
+                                            <div className="text-uppercase small text-secondary fw-semibold">
+                                              Handover
+                                            </div>
+                                            <div className="fw-bold">
+                                              {getQuarterFromDate(
+                                                item?.handover_by
+                                              )}
+                                            </div>
+                                          </div>
+                                          <div
+                                            className="bg-light rounded px-3 py-2 text-center flex-fill"
+                                            style={{ flex: "0 0 40%" }}
+                                          >
+                                            <div className="text-uppercase small text-secondary fw-semibold d-flex justify-content-center align-items-center gap-1">
+                                              <span>Payment Plan</span>
+                                              <PaymentPlanPopover
+                                                payment={item?.payment_plan}
+                                              />
+                                            </div>
+                                            <div className="fw-bold">
+                                              {downPayment + onConstruction}/
+                                              {onHandover}
+                                            </div>
+                                          </div>
+                                        </div>
+                                      )
+                                  }
                                 </div>
                               </div>
                             </div>

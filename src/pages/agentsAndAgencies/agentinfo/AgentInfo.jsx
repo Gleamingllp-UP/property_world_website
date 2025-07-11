@@ -1,7 +1,13 @@
 import React, { useCallback, useEffect, useState } from "react";
 import AgentInfoside from "./AgentInfoside";
 import { Link, useLocation } from "react-router-dom";
-import { bath, bed, property_world_logo, ruler } from "../../../assets/images";
+import {
+  bath,
+  bed,
+  property_world_logo,
+  ruler,
+  user,
+} from "../../../assets/images";
 import "../../../assets/css/arrow.css";
 import Slider from "react-slick";
 import { useDispatch, useSelector } from "react-redux";
@@ -21,6 +27,9 @@ import { showToast } from "../../../utils/toast/toast";
 import { addOrRemoveFavouritePropertyThunk } from "../../../features/property/propertySlice";
 import NearbyPlaces from "../../property/categoryWiseList/NearbyPlaces";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { getQuarterFromDate } from "../../../helper/function/generateHandoverOptions";
+import { getPaymentPlanBreakdown } from "../../../helper/function/getPaymentPlanBreakdown";
+import PaymentPlanPopover from "../../property/categoryWiseList/PaymentPlanPopover";
 const AgentInfo = () => {
   const [modalShow, setModalShow] = useState(false);
 
@@ -208,6 +217,8 @@ const AgentInfo = () => {
                   const productThumbnailImage = item?.images?.filter(
                     (item) => item?.name === "Thumbnail Image"
                   );
+                  const { downPayment, onConstruction, onHandover } =
+                    getPaymentPlanBreakdown(item?.payment_plan);
 
                   return item?.is_featured ? (
                     <div className="list_box">
@@ -215,10 +226,19 @@ const AgentInfo = () => {
                         <p>Featured Property</p>
                       </div>
                       <div className="row">
-                        <div className="col-lg-5">
-                          <div className="property_images">
-                            <div className="save_p">
-                              <button>
+                        <div className="col-lg-5 featured">
+                          <div className="normal_slider position-relative h-100">
+                            <div
+                              className="agent_d position-absolute"
+                              data-bs-toggle="modal"
+                              data-bs-target="#agency_info"
+                              onClick={() => setModalShow(true)}
+                            >
+                              <i className="ri-checkbox-circle-fill" /> Checked
+                            </div>
+
+                            <div className="save_p position-absolute top-0 end-0">
+                              <button className="bg-transparent border-0">
                                 <i
                                   className={
                                     item?.is_liked
@@ -233,41 +253,38 @@ const AgentInfo = () => {
                                 ></i>
                               </button>
                             </div>
-                            <div className="big_photo">
-                              <Link
-                                to={`${pageRoutes.PROPERTY_DETAILS}?id=${item?._id}`}
-                              >
-                                <ImageWithLoader
-                                  src={productThumbnailImage?.[0]?.url}
-                                  className="img-fluid"
+
+                            <div className="my-slider">
+                              <Slider {...sliderSettings}>
+                                {[
+                                  ...productThumbnailImage,
+                                  ...productImages,
+                                ]?.map((img, i) => (
+                                  <div key={i}>
+                                    <Link
+                                      to={`${pageRoutes.PROPERTY_DETAILS}?id=${item?._id}`}
+                                    >
+                                      <ImageWithLoader src={img?.url} />
+                                    </Link>
+                                  </div>
+                                ))}
+                              </Slider>
+                            </div>
+
+                            <div className="price_tt">
+                              <span>
+                                <b>{formatPrice(item?.price)}</b>{" "}
+                                {item?.duration || ""}
+                              </span>
+                              <span className="flex_box">
+                                <img
+                                  src={item?.userData?.agent_photo || user}
+                                  className="agent_b"
+                                  alt="agent"
                                 />
-                              </Link>
+                                <i className="ri-verified-badge-fill" />
+                              </span>
                             </div>
-                            <div className="small_photo">
-                              <Link
-                                to={`${pageRoutes.PROPERTY_DETAILS}?id=${item?._id}`}
-                              >
-                                {productImages?.slice(0, 2)?.map((img, ind) => {
-                                  return (
-                                    <ImageWithLoader
-                                      key={ind}
-                                      src={img?.url}
-                                      className={ind !== 0 ? "mb-0" : ""}
-                                    />
-                                  );
-                                })}
-                              </Link>
-                            </div>
-                          </div>
-                          <div className="price_tt">
-                            <span>
-                              <b>{formatPrice(item?.price)}</b>{" "}
-                              {item?.duration || ""}
-                            </span>
-                            <span className="flex_box">
-                              Verified
-                              <i className="ri-verified-badge-fill" />
-                            </span>
                           </div>
                         </div>
 
@@ -316,7 +333,7 @@ const AgentInfo = () => {
                             {/* <div className="pro_desc sli">
                               {item?.short_description ?? "No description"}
                             </div> */}
-                            <div className="loc">
+                            <div className="loc pro_desc sli">
                               <i className="ri-map-pin-line" />
                               {item?.address ?? "No address"}
                             </div>
@@ -327,7 +344,7 @@ const AgentInfo = () => {
                                 // }
                                 // lat={item?.locationData?.latitude}
                                 // lng={item?.locationData?.longitude}
-                                 {...(item?.lat && item?.lng
+                                {...(item?.lat && item?.lng
                                   ? {
                                       lat: Number(item?.lat),
                                       lng: Number(item?.lng),
@@ -340,6 +357,39 @@ const AgentInfo = () => {
                                 name={"agent"}
                               />
                             </>
+                            {item?.handover_by !== "" &&
+                              item?.payment_plan !== "" &&
+                              item?.payment_plan !== null &&
+                              item?.handover_by !== null && (
+                                <div className="d-flex flex-wrap gap-2 my-3 off_plan">
+                                  <div
+                                    className="bg-light rounded px-3 py-2 text-center flex-fill"
+                                    style={{ flex: "0 0 48%" }}
+                                  >
+                                    <div className="text-uppercase small text-secondary fw-semibold">
+                                      Handover
+                                    </div>
+                                    <div className="fw-bold">
+                                      {getQuarterFromDate(item?.handover_by)}
+                                    </div>
+                                  </div>
+                                  <div
+                                    className="bg-light rounded px-3 py-2 text-center flex-fill"
+                                    style={{ flex: "0 0 48%" }}
+                                  >
+                                    <div className="text-uppercase small text-secondary fw-semibold d-flex justify-content-center align-items-center gap-1">
+                                      <span>Payment Plan</span>
+                                      <PaymentPlanPopover
+                                        payment={item?.payment_plan}
+                                      />
+                                    </div>
+                                    <div className="fw-bold">
+                                      {downPayment + onConstruction}/
+                                      {onHandover}
+                                    </div>
+                                  </div>
+                                </div>
+                              )}
                             <div className="call_action">
                               <ul className="mb-0">
                                 <li>
@@ -495,18 +545,18 @@ const AgentInfo = () => {
                             </div>
 
                             {item?.amenitiesAndFacilitiesData?.length > 0 ? (
-                              <div className="key_property">
+                              <div className="key_property pro_desc sli">
                                 <a href="#">
                                   {item?.amenitiesAndFacilitiesData
-                                    ?.slice(0, 4)
+                                    // ?.slice(0, 4)
                                     .map((af) => af?.name)
                                     .join(" | ")}
                                 </a>
                               </div>
                             ) : (
                               item?.building_facilities?.length > 0 && (
-                                <div className="key_property">
-                                  <a href="#">
+                                <div className="key_property pro_desc sli">
+                                  <a>
                                     {item?.building_facilities
                                       ?.slice(0, 4)
                                       .join(" | ")}
@@ -518,11 +568,43 @@ const AgentInfo = () => {
                             {/* <div className="pro_desc sli">
                               {item?.short_description}
                             </div> */}
-                            <div className="loc">
+                            <div className="loc pro_desc sli">
                               <i className="ri-map-pin-line" />{" "}
-                              {item?.locationData?.name}
+                              {item?.address ?? "No Address"}
                             </div>
-
+                            {item?.handover_by !== "" &&
+                              item?.payment_plan !== "" &&
+                              item?.payment_plan !== null &&
+                              item?.handover_by !== null && (
+                                <div className="d-flex flex-wrap gap-2 my-3 off_plan">
+                                  <div
+                                    className="bg-light rounded px-3 py-2 text-center flex-fill"
+                                    style={{ flex: "0 0 48%" }}
+                                  >
+                                    <div className="text-uppercase small text-secondary fw-semibold">
+                                      Handover
+                                    </div>
+                                    <div className="fw-bold">
+                                      {getQuarterFromDate(item?.handover_by)}
+                                    </div>
+                                  </div>
+                                  <div
+                                    className="bg-light rounded px-3 py-2 text-center flex-fill"
+                                    style={{ flex: "0 0 48%" }}
+                                  >
+                                    <div className="text-uppercase small text-secondary fw-semibold d-flex justify-content-center align-items-center gap-1">
+                                      <span>Payment Plan</span>
+                                      <PaymentPlanPopover
+                                        payment={item?.payment_plan}
+                                      />
+                                    </div>
+                                    <div className="fw-bold">
+                                      {downPayment + onConstruction}/
+                                      {onHandover}
+                                    </div>
+                                  </div>
+                                </div>
+                              )}
                             <div className="call_action">
                               <ul>
                                 <li>

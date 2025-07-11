@@ -468,7 +468,11 @@ function AdvanceSearch({ page, limit, sortBy, features, scrollRef }) {
                         name="radio-group02"
                         value={option?.value}
                         checked={buyType === String(option?.value)}
-                        onChange={() => setBuyType(String(option?.value))}
+                        onChange={() => {
+                          if(handOverBy){
+                            setHandOverBy("")
+                          }
+                          setBuyType(String(option?.value))}}
                       />
                       <label
                         htmlFor={`radio_${option?.value || index}`}

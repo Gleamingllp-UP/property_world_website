@@ -9,6 +9,9 @@ import { HomeCategoryPropertySkeleton } from "../../../Custom_Components/Skeleto
 import { formatNumberWithCommas } from "../../../helper/function/formatRange";
 import { formatPrice } from "../../../helper/function/formatPrice";
 import { bath } from "../../../assets/images";
+import { getQuarterFromDate } from "../../../helper/function/generateHandoverOptions";
+import PaymentPlanPopover from "../../property/categoryWiseList/PaymentPlanPopover";
+import { getPaymentPlanBreakdown } from "../../../helper/function/getPaymentPlanBreakdown";
 
 function HomeCategoryWiseList() {
   const { categories } = useSelector((store) => store?.activeData);
@@ -87,6 +90,9 @@ function HomeCategoryWiseList() {
                   <HomeCategoryPropertySkeleton />
                 ) : propertyData?.length > 0 ? (
                   propertyData?.slice(0, 6)?.map((item, index) => {
+                    const { downPayment, onConstruction, onHandover } =
+                      getPaymentPlanBreakdown(item?.payment_plan);
+
                     return (
                       <div className="col-sm-4 d-flex" key={index + 1}>
                         <div className="my_property w-100">
@@ -156,6 +162,54 @@ function HomeCategoryWiseList() {
                                 {item?.address ?? "N/A"}
                               </div>
                             </div>
+                            {item?.handover_by !== "" &&
+                              item?.payment_plan !== "" &&
+                              item?.payment_plan !== null &&
+                              item?.handover_by !== null && (
+                                <div
+                                  className="d-flex bg-light rounded border my-2 flex-wrap align-items-center"
+                                  style={{ width: "100%" }}
+                                >
+                                  <div
+                                    className="rounded px-3 py-2 text-center"
+                                    style={{ flex: "0 0 40%" }}
+                                  >
+                                    <div className="text-uppercase small text-secondary fw-semibold">
+                                      Handover
+                                    </div>
+                                    <div className="fw-bold">
+                                      {getQuarterFromDate(item?.handover_by)}
+                                    </div>
+                                  </div>
+
+                                  {/* Divider */}
+                                  <div
+                                    className="d-none d-md-block"
+                                    style={{
+                                      width: "1px",
+                                      height: "40px",
+                                      backgroundColor: "#ccc",
+                                      margin: "0 8px",
+                                    }}
+                                  />
+
+                                  <div
+                                    className=" rounded px-3 py-2 text-center"
+                                    style={{ flex: "0 0 53%" }}
+                                  >
+                                    <div className="text-uppercase small text-secondary fw-semibold d-flex justify-content-center align-items-center gap-1">
+                                      <span>Payment Plan</span>
+                                      <PaymentPlanPopover
+                                        payment={item?.payment_plan}
+                                      />
+                                    </div>
+                                    <div className="fw-bold">
+                                      {downPayment + onConstruction}/
+                                      {onHandover}
+                                    </div>
+                                  </div>
+                                </div>
+                              )}
                             <div className="action_p">
                               <div className="list_ppc">
                                 {" "}

@@ -9,6 +9,9 @@ import { formatNumberWithCommas } from "../../../helper/function/formatRange";
 import { formatPrice } from "../../../helper/function/formatPrice";
 import { HomeCategoryPropertySkeleton } from "./../../../Custom_Components/Skeleton/PropertySkeleton";
 import { bath } from "../../../assets/images";
+import { getQuarterFromDate } from "../../../helper/function/generateHandoverOptions";
+import PaymentPlanPopover from "../../property/categoryWiseList/PaymentPlanPopover";
+import { getPaymentPlanBreakdown } from "../../../helper/function/getPaymentPlanBreakdown";
 function HomeFeaturedList() {
   const dispatch = useDispatch();
   const { isLoading, featuredPropertyData } = useSelector(
@@ -36,88 +39,142 @@ function HomeFeaturedList() {
           {isLoading ? (
             <HomeCategoryPropertySkeleton />
           ) : featuredPropertyData ? (
-            featuredPropertyData?.slice(0, 6).map((item, index) => (
-              <div className="col-sm-4 d-flex" key={index}>
-                <div className="my_property w-100">
-                  <div className="photo_my_photo">
-                    <span
-                      className="buy"
-                      style={{
-                        position: "absolute",
-                        top: "10px",
-                        left: "100px",
-                        backgroundColor:
-                          item?.categoryData?.name === "Rent"
-                            ? "#e9012b"
-                            : "#8BC34A",
-                      }}
-                    >
-                      {item?.categoryData?.name}
-                    </span>
-                    <span className="buy">Featured</span>
-                    <Link to={`${pageRoutes.PROPERTY_DETAILS}?id=${item?._id}`}>
-                      <ImageWithLoader
-                        src={item?.images?.[0]?.url}
-                        className="img-fluid"
-                      />
-                    </Link>
-                    <div className="new_listng">
-                      {item?.bathrooms != null && item?.bathrooms !== "" && (
-                        <div>
-                          <img src={bath} alt="bed" /> {item?.bathrooms}{" "}
-                        </div>
-                      )}
-                      {item?.bedrooms != null && item?.bedrooms !== "" && (
-                        <div>
-                          <img src={bed} alt="bed" />{" "}
-                          {item?.bedrooms === 0 ? "Studio" : item?.bedrooms}{" "}
-                        </div>
-                      )}
+            featuredPropertyData?.slice(0, 6).map((item, index) => {
+              const { downPayment, onConstruction, onHandover } =
+                getPaymentPlanBreakdown(item?.payment_plan);
 
-                      {item?.area != null && item?.area !== "" && (
-                        <div>
-                          <img src={ruler} alt="area" />{" "}
-                          {formatNumberWithCommas(item?.area)} Sq Ft
+              return (
+                <div className="col-sm-4 d-flex" key={index}>
+                  <div className="my_property w-100">
+                    <div className="photo_my_photo">
+                      <span
+                        className="buy"
+                        style={{
+                          position: "absolute",
+                          top: "10px",
+                          left: "100px",
+                          backgroundColor:
+                            item?.categoryData?.name === "Rent"
+                              ? "#e9012b"
+                              : "#8BC34A",
+                        }}
+                      >
+                        {item?.categoryData?.name}
+                      </span>
+                      <span className="buy">Featured</span>
+                      <Link
+                        to={`${pageRoutes.PROPERTY_DETAILS}?id=${item?._id}`}
+                      >
+                        <ImageWithLoader
+                          src={item?.images?.[0]?.url}
+                          className="img-fluid"
+                        />
+                      </Link>
+                      <div className="new_listng">
+                        {item?.bathrooms != null && item?.bathrooms !== "" && (
+                          <div>
+                            <img src={bath} alt="bed" /> {item?.bathrooms}{" "}
+                          </div>
+                        )}
+                        {item?.bedrooms != null && item?.bedrooms !== "" && (
+                          <div>
+                            <img src={bed} alt="bed" />{" "}
+                            {item?.bedrooms === 0 ? "Studio" : item?.bedrooms}{" "}
+                          </div>
+                        )}
+
+                        {item?.area != null && item?.area !== "" && (
+                          <div>
+                            <img src={ruler} alt="area" />{" "}
+                            {formatNumberWithCommas(item?.area)} Sq Ft
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                    <div className="property_data">
+                      {item?.duration && (
+                        <div className="lease">
+                          <span>{item?.duration}</span>
                         </div>
                       )}
-                    </div>
-                  </div>
-                  <div className="property_data">
-                    {item?.duration && (
-                      <div className="lease">
-                        <span>{item?.duration}</span>
+                      <h4>{item?.title ?? "N/A"}</h4>
+                      <div className="pro_diss">
+                        <p>{item?.short_description ?? "N/A"}</p>
                       </div>
-                    )}
-                    <h4>{item?.title ?? "N/A"}</h4>
-                    <div className="pro_diss">
-                      <p>{item?.short_description ?? "N/A"}</p>
-                    </div>
-                    <div className="other_data_list">
-                      <div className="loction_c">
-                        <i className="ri-map-pin-line" /> UAE
+                      <div className="other_data_list ">
+                        <div className="loction_c">
+                          <i className="ri-map-pin-line" /> UAE
+                        </div>
+                        <div className="">
+                          <i className="ri-eye-line" />
+                          {item?.address ?? "N/A"}
+                        </div>
                       </div>
-                      <div>
-                        <i className="ri-eye-line" />
-                        {item?.address ?? "N/A"}
-                      </div>
-                    </div>
-                    <div className="action_p">
-                      <div className="list_ppc">
-                        {formatPrice(item?.price)}{" "}
-                      </div>
-                      <div>
-                        <Link
-                          to={`${pageRoutes.PROPERTY_DETAILS}?id=${item?._id}`}
-                        >
-                          Read More{" "}
-                          <i className="ri-arrow-right-up-long-line" />
-                        </Link>
+                      {item?.handover_by !== "" &&
+                        item?.payment_plan !== "" &&
+                        item?.payment_plan !== null &&
+                        item?.handover_by !== null && (
+                          <div
+                            className="d-flex bg-light rounded border my-2 flex-wrap align-items-center"
+                            style={{ width: "100%" }}
+                          >
+                            <div
+                              className="rounded px-3 py-2 text-center"
+                              style={{ flex: "0 0 40%" }}
+                            >
+                              <div className="text-uppercase small text-secondary fw-semibold">
+                                Handover
+                              </div>
+                              <div className="fw-bold">
+                                {getQuarterFromDate(item?.handover_by)}
+                              </div>
+                            </div>
+
+                            {/* Divider */}
+                            <div
+                              className="d-none d-md-block"
+                              style={{
+                                width: "1px",
+                                height: "40px",
+                                backgroundColor: "#ccc",
+                                margin: "0 8px",
+                              }}
+                            />
+
+                            <div
+                              className=" rounded px-3 py-2 text-center"
+                              style={{ flex: "0 0 53%" }}
+                            >
+                              <div className="text-uppercase small text-secondary fw-semibold d-flex justify-content-center align-items-center gap-1">
+                                <span>Payment Plan</span>
+                                <PaymentPlanPopover
+                                  payment={item?.payment_plan}
+                                />
+                              </div>
+                              <div className="fw-bold">
+                                {downPayment + onConstruction}/{onHandover}
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                      <div className="action_p">
+                        <div className="list_ppc">
+                          {formatPrice(item?.price)}{" "}
+                        </div>
+                        <div>
+                          <Link
+                            to={`${pageRoutes.PROPERTY_DETAILS}?id=${item?._id}`}
+                          >
+                            Read More{" "}
+                            <i className="ri-arrow-right-up-long-line" />
+                          </Link>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            ))
+              );
+            })
           ) : (
             <div className="col-12">
               <div className="text-center border border-light-subtle rounded py-3 bg-light text-muted fw-medium">

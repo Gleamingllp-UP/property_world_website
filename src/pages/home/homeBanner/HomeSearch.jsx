@@ -201,6 +201,7 @@ function HomeSearch() {
       max_price: maxPrice,
       min_area: minArea,
       max_area: maxArea,
+      construction_status: buyType,
       payment_plan: priceRange,
       handover_by: handOverBy,
       search: location,

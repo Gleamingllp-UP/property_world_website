@@ -7,6 +7,7 @@ import Loader from "@/Custom_Components/Loader";
 import PageNotFound from "@/Custom_Components/PageNotFound/PageNotFound";
 import ErrorBoundary from "@/Custom_Components/ErrorBoundary/ErrorBoundary";
 import Index from "../pages/dashboard/layout/Index";
+import PrivateRouteForDash from "./PrivateRouteForDash";
 function Path() {
   return (
     <ErrorBoundary>
@@ -43,9 +44,9 @@ function Path() {
                   key={id}
                   path={path}
                   element={
-                    <PrivateRoute>
+                    <PrivateRouteForDash>
                       <Component />
-                    </PrivateRoute>
+                    </PrivateRouteForDash>
                   }
                 />
               ))}

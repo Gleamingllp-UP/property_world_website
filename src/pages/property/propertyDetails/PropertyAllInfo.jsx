@@ -24,9 +24,15 @@ import {
   VirtualTourSkeleton,
 } from "../../../Custom_Components/Skeleton/PropertySkeleton";
 import { formatNumberWithCommas } from "../../../helper/function/formatRange";
+import { getQuarterFromDate } from "../../../helper/function/generateHandoverOptions";
+import PaymentPlanPopover from "../categoryWiseList/PaymentPlanPopover";
+import { getPaymentPlanBreakdown } from "../../../helper/function/getPaymentPlanBreakdown";
 function PropertyAllInfo() {
   const { propertyDetails, isLoading } = useSelector(
     (store) => store?.property
+  );
+  const { downPayment, onConstruction, onHandover } = getPaymentPlanBreakdown(
+    propertyDetails?.payment_plan
   );
 
   useEffect(() => {
@@ -72,7 +78,7 @@ function PropertyAllInfo() {
                   <hr />
                 </>
               )}
-             
+
               {isLoading ? (
                 <PropertyFeaturesSkeleton />
               ) : (
@@ -107,8 +113,58 @@ function PropertyAllInfo() {
                   </>
                 )
               )}
+              {propertyDetails?.handover_by !== "" &&
+                propertyDetails?.payment_plan !== "" &&
+                propertyDetails?.payment_plan !== null &&
+                propertyDetails?.handover_by !== null && (
+                  <>
+                    <div
+                      className="d-flex rounded border my-2 flex-wrap align-items-center"
+                      style={{ width: "100%" }}
+                    >
+                      <div
+                        className="rounded px-3 py-2 text-center"
+                        style={{ flex: "0 0 45%" }}
+                      >
+                        <div className="text-uppercase small text-secondary fw-semibold">
+                          Handover
+                        </div>
+                        <div className="fw-bold">
+                          {getQuarterFromDate(propertyDetails?.handover_by)}
+                        </div>
+                      </div>
 
-               <div className="key_feature">
+                      {/* Divider */}
+                      <div
+                        className="d-none d-md-block"
+                        style={{
+                          width: "1px",
+                          height: "40px",
+                          backgroundColor: "#ccc",
+                          margin: "0 8px",
+                        }}
+                      />
+
+                      <div
+                        className=" rounded px-3 py-2 text-center"
+                        style={{ flex: "0 0 45%" }}
+                      >
+                        <div className="text-uppercase small text-secondary fw-semibold d-flex justify-content-center align-items-center gap-1">
+                          <span>Payment Plan</span>
+                          <PaymentPlanPopover
+                            payment={propertyDetails?.payment_plan}
+                          />
+                        </div>
+                        <div className="fw-bold">
+                          {downPayment + onConstruction}/{onHandover}
+                        </div>
+                      </div>
+                    </div>
+                    <hr />
+                  </>
+                )}
+
+              <div className="key_feature">
                 <p>Property DESCRIPTION</p>
 
                 <span className="d-block mb-2">
@@ -121,7 +177,6 @@ function PropertyAllInfo() {
               </div>
 
               <hr />
-
 
               <div className="key_feature">
                 <p>Property Information </p>
@@ -169,7 +224,8 @@ function PropertyAllInfo() {
                           <td>Built-up Area </td>
                           <td>
                             <i className="ri-ruler-line" />{" "}
-                            {formatNumberWithCommas(propertyDetails?.area) || 0} sqft
+                            {formatNumberWithCommas(propertyDetails?.area) || 0}{" "}
+                            sqft
                           </td>
                         </tr>
                         <tr>

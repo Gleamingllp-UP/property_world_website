@@ -1,0 +1,84 @@
+/* Override Bootstrap dialog */
+.propbot-modal-dialog {
+  position: fixed !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  width: 80vw !important;
+  height: 80vh !important;
+  max-width: 80vw !important;
+  max-height: 80vh !important;
+  margin: 0 !important;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  z-index: 1055; /* Above everything else */
+}
+
+/* Full height/width modal content */
+.propbot-modal-content {
+  width: 100% !important;
+  height: 100% !important;
+  display: flex;
+  flex-direction: column;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
+}
+
+/* Scrollable modal body */
+.propbot-modal-content .modal-body {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 2rem 1.5rem;
+}
+
+/* Sticky header & input/footer bar */
+.propbot-modal-content .modal-header,
+.propbot-modal-content .modal-footer {
+  flex-shrink: 0;
+}
+@media (max-width: 768px) {
+  .propbot-modal-dialog {
+    width: 95vw !important;
+    height: 90vh !important;
+  }
+}
+
+.chat-input {
+  font-size: 0.875rem; 
+  border-radius: 8px;
+  box-shadow: none;
+  border: 1px solid #ccc;
+  padding: 8px 12px;
+}
+
+.chat-input:focus {
+  outline: none !important;
+  box-shadow: none !important;
+  border-color: #ccc; 
+}
+
+.custom-modal-content {
+  border-radius: 14px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  border: 1px solid #dee2e6;
+}
+
+.terms-body {
+  max-height: 400px;
+  overflow-y: auto;
+  padding-right: 5px;
+  font-size: 0.94rem;
+  color: #333;
+  line-height: 1.6;
+}
+
+.terms-body ul {
+  padding-left: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.terms-body p {
+  margin-bottom: 1rem;
+}

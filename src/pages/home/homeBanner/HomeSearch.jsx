@@ -822,6 +822,12 @@ function HomeSearch() {
                   )
                 );
                 return;
+              } else if (userData?.role?.toLowerCase() === "individual") {
+                dispatch(
+                  openLoginPrompt(
+                    "Log in with your Agent or Agency account to list your properties with us."
+                  )
+                );
               } else {
                 navigate(pageRoutes.ADD_PROPERTY);
               }

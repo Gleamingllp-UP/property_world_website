@@ -5,9 +5,9 @@
   left: 50% !important;
   transform: translate(-50%, -50%) !important;
   width: 80vw !important;
-  height: 80vh !important;
+  height: 90vh !important;
   max-width: 80vw !important;
-  max-height: 80vh !important;
+  max-height: 90vh !important;
   margin: 0 !important;
   display: flex !important;
   align-items: center;
@@ -81,4 +81,132 @@
 
 .terms-body p {
   margin-bottom: 1rem;
+}
+/* In PropBotGPTModal.css */
+.scroll-smooth {
+  scroll-behavior: smooth;
+}
+.date-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 2rem 0 1rem;
+  color: #6c757d;
+  font-size: 0.75rem;
+  font-weight: 500;
+  gap: 1rem;
+}
+
+.date-divider::before,
+.date-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background-color: #dee2e6;
+  opacity: 0.6;
+}
+
+.date-divider span {
+  background: #f8f9fa;
+  padding: 2px 12px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+/* Variables replaced with static colors */
+:root {
+  --light-bg: #C9CBCB;
+  --mobi-primary: #ec2d2d;
+  --mobi-primary-dark: #ff0000;
+}
+
+/* THREE-DOT variant */
+.message-loader-2 {
+  align-items: center;
+  border-radius: 15px;
+  display: flex;
+  height: 20px;
+  justify-content: space-between;
+  padding: 0 5px;
+  width: 45px;
+}
+
+.message-loader-2 .loader-bar-2 {
+  background: var(--light-bg);
+  border-radius: 5px;
+  height: 8px;
+  position: relative;
+  width: 8px;
+}
+
+.message-loader-2 .loader-bar-2:first-of-type {
+  animation: chat-typing-indicator 1.5s infinite;
+}
+
+.message-loader-2 .loader-bar-2:nth-of-type(2) {
+  animation: chat-typing-indicator 1.5s infinite 0.2s;
+}
+
+.message-loader-2 .loader-bar-2:nth-of-type(3) {
+  animation: chat-typing-indicator 1.5s infinite 0.4s;
+}
+
+@keyframes chat-typing-bar {
+  0% {
+    width: 8px;
+    background: var(--mobi-primary);
+    left: 5px;
+  }
+  25% {
+    width: calc(100% - 10px);
+    left: 5px;
+  }
+  50% {
+    width: 8px;
+    background: var(--mobi-primary-dark);
+    left: calc(100% - 13px);
+  }
+  75% {
+    width: calc(100% - 10px);
+    left: 5px;
+  }
+  100% {
+    width: 8px;
+    background: var(--mobi-primary);
+    left: 5px;
+  }
+}
+
+@keyframes chat-typing-indicator {
+  0% {
+    top: 0;
+    background: var(--light-bg);
+  }
+  6.25% {
+    top: -1px;
+  }
+  12.5% {
+    top: 0;
+    background: var(--mobi-primary);
+  }
+  18.75% {
+    top: 1px;
+  }
+  25% {
+    top: 0;
+    background: var(--light-bg);
+  }
+}
+.propbot-body {
+  max-height: 70vh;         /* or let Bootstrap modal size decide */
+  overflow: hidden;         /* prevent body scroll */
+}
+
+.propbot-chat {
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.scroll-smooth {
+  scroll-behavior: smooth;
 }

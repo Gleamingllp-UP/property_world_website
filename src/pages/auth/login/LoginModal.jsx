@@ -76,13 +76,13 @@ function LoginModal({ show, onHide }) {
         setStep(1);
         onHide();
       }}
-      aria-labelledby="contained-modal-title-vcenter"
       centered
+      contentClassName="custom-modal-content-login"
     >
       <Modal.Header
         closeButton
-        className="d-flex justify-content-center align-items-center position-relative"
-        style={{ background: "rgb(0 54 125 / 22%)", borderRadius: "0px" }}
+        className="d-flex justify-content-center align-items-center position-relative rounded-top"
+        style={{ background: "rgb(0 54 125 / 22%)" }}
       >
         <Modal.Title
           id="contained-modal-title-vcenter"

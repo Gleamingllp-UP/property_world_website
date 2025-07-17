@@ -1,8 +1,9 @@
 import ConnectionStatusPage from "./Custom_Components/ConnectionStatusPage";
 import { useNetworkStatus } from "./helper/hook/useNetworkStatus";
-import Assistant from "./pages/home/homeAssistant/Assistant";
+// import Assistant from "./pages/home/homeAssistant/Assistant";
 import Path from "./router/Path";
 import { Toaster } from "react-hot-toast";
+import "./i18n/i18n";
 function App() {
 
  const { isOnline, isSlow, isBackendDown } = useNetworkStatus("/ping");
@@ -10,10 +11,11 @@ function App() {
   if (!isOnline) return <ConnectionStatusPage type="offline" />;
   if (isBackendDown) return <ConnectionStatusPage type="server" />;
   if (isSlow) return <ConnectionStatusPage type="slow" />;
+  
   return (
     <div className="flex flex-col items-center justify-center min-h-svh">
       <Path />
-      <Assistant/>
+      {/* <Assistant/> */}
       <Toaster
         position="top-right"
         reverseOrder={false}

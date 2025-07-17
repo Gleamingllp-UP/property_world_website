@@ -129,10 +129,18 @@ function Header() {
                       if (userData?.role === "guest") {
                         dispatch(
                           openLoginPrompt(
-                            "Log in to your account to list your properties."
+                            "Log in to your account to list your properties with us."
                           )
                         );
                         return;
+                      } else if (
+                        userData?.role?.toLowerCase() === "individual"
+                      ) {
+                        dispatch(
+                          openLoginPrompt(
+                            "Log in with your Agent or Agency account to list your properties with us."
+                          )
+                        );
                       } else {
                         navigate(pageRoutes.ADD_PROPERTY);
                       }

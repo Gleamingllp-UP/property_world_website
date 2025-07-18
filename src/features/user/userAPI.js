@@ -347,3 +347,22 @@ export const updateProfilePicture = async (formData) => {
     }
   }
 };
+
+export const addPropertiesSuggestionDetails = async (payload) => {
+  try {
+    const response = await api.post(
+      endpoints.addPropertiesSuggestionDetails,
+      payload
+    );
+    return response.data;
+  } catch (error) {
+    if (error?.status !== 401) {
+      throw (
+        error?.response?.data?.message ||
+        "Failed to add, please try again later."
+      );
+    } else {
+      throw error?.message || "Failed to add, please try again later.";
+    }
+  }
+};

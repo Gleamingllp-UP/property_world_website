@@ -28,5 +28,48 @@
   "review_propbot": "查看 PropBot",
   "terms": "条款",
   "clear_chat": "清除聊天",
-  "ask_me_anything": "问我任何关于阿联酋房地产的问题。"
+  "ask_me_anything": "问我任何关于阿联酋房地产的问题。",
+   "location": "位置",
+    "bedrooms": "卧室",
+    "bathrooms": "浴室",
+    "size": "面积",
+    "price": "价格",
+    "features": "特点",
+    "viewListing": "查看房源",
+     "propertiesAvailableLabel": "可用房源",
+    "propertiesAvailable_one": "有 {{count}} 套房源",
+    "propertiesAvailable_other": "有 {{count}} 套房源",
+    "feelFreeText": "随时打开任何房源或询问更多选项！",
+    
+  "lead_capture": {
+    "open_button": "获取房产推荐",
+    "title": "获取更好的房产推荐",
+    "description": "您是否愿意提供详细信息以获得更好的房产推荐？",
+    "fields": {
+      "name": "姓名 *",
+      "email": "电子邮箱 *",
+      "phone": "电话号码 *",
+      "budget": "预算"
+    },
+    "placeholders": {
+      "name": "请输入您的姓名",
+      "email": "请输入您的邮箱",
+      "phone": "请输入您的电话号码",
+      "budget": "例如：¥500万 - ¥1000万"
+    },
+    "errors": {
+      "name_required": "姓名是必填项",
+      "email_required": "邮箱是必填项",
+      "email_invalid": "邮箱格式无效",
+      "phone_required": "电话号码是必填项",
+      "phone_invalid": "请输入有效的电话号码"
+    },
+    "buttons": {
+      "skip": "跳过",
+      "submit": "提交",
+      "submitting": "提交中..."
+    }
+  }
+
+
 }

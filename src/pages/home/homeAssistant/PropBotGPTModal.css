@@ -46,7 +46,7 @@
 }
 
 .chat-input {
-  font-size: 0.875rem; 
+  font-size: 0.875rem;
   border-radius: 8px;
   box-shadow: none;
   border: 1px solid #ccc;
@@ -56,7 +56,7 @@
 .chat-input:focus {
   outline: none !important;
   box-shadow: none !important;
-  border-color: #ccc; 
+  border-color: #ccc;
 }
 
 .custom-modal-content {
@@ -115,7 +115,7 @@
 
 /* Variables replaced with static colors */
 :root {
-  --light-bg: #C9CBCB;
+  --light-bg: #c9cbcb;
   --mobi-primary: #ec2d2d;
   --mobi-primary-dark: #ff0000;
 }
@@ -198,8 +198,8 @@
   }
 }
 .propbot-body {
-  max-height: 70vh;         /* or let Bootstrap modal size decide */
-  overflow: hidden;         /* prevent body scroll */
+  max-height: 70vh; /* or let Bootstrap modal size decide */
+  overflow: hidden; /* prevent body scroll */
 }
 
 .propbot-chat {
@@ -209,4 +209,70 @@
 
 .scroll-smooth {
   scroll-behavior: smooth;
+}
+
+/* /////////////////////// */
+.language-modal.lead-capture-modal .modal-dialog {
+  max-width: 480px;
+}
+.custom-modal-content-lead {
+  border-radius: 14px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  border: 1px solid #dee2e6;
+}
+.custom-modal-content-lead .modal-header {
+  border: 0;
+  justify-content: center;
+}
+.custom-modal-content-lead .modal-title {
+  font-weight: 600;
+}
+.custom-modal-content-lead .modal-body {
+  padding: 2rem ;
+  text-align: center;
+}
+.custom-modal-content-lead .modal-footer {
+  border: 0;
+  padding-bottom: 2rem;
+  justify-content: center;
+}
+/* Floating trigger button (top-right corner) */
+.lead-capture-trigger {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 1080; /* above modals? adjust */
+  opacity: 0.85;
+  transition: opacity 0.15s ease-in-out, transform 0.15s ease-in-out;
+}
+.lead-capture-trigger:hover {
+  opacity: 1;
+  transform: scale(1.02);
+}
+.lead-capture-trigger.btn-sm {
+  padding: 0.25rem 0.5rem;
+}
+/* Input icons */
+.lead-capture-input-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  opacity: 0.8;
+}
+/* Validation states override to look polished */
+.was-validated .form-control:invalid,
+.form-control.is-invalid {
+  border-color: var(--bs-danger) !important;
+}
+.was-validated .form-control:valid,
+.form-control.is-valid {
+  border-color: var(--bs-success) !important;
+}
+/* budget adornment */
+.budget-input .input-group-text {
+  min-width: 3rem;
+  justify-content: center;
+}
+/* small helper text */
+.form-text-xs {
+  font-size: 0.75rem;
 }

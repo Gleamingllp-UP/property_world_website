@@ -28,5 +28,49 @@
   "review_propbot": "Review PropBot",
   "terms": "Terms",
   "clear_chat": "Clear Chat",
-  "ask_me_anything": "Ask me anything about UAE real estate."
+  "ask_me_anything": "Ask me anything about UAE real estate.",
+   "location": "Location",
+    "bedrooms": "Bedrooms",
+    "bathrooms": "Bathrooms",
+    "size": "Size",
+    "price": "Price",
+    "features": "Features",
+    "viewListing": "View Listing",
+    "propertiesAvailableLabel": "Properties Available",
+    "propertiesAvailable_one": "{{count}} Property Available",
+    "propertiesAvailable_other": "{{count}} Properties Available",
+    "feelFreeText": "Feel free to open any listing or ask for more options!",
+    
+  "lead_capture": {
+    "open_button": "Get Property Suggestions",
+  "title": "Get Better Property Suggestions",
+    "description": "Would you like to provide your details to get better property suggestions?",
+    "fields": {
+      "name": "Name *",
+      "email": "Email *",
+      "phone": "Phone Number *",
+      "budget": "Budget"
+    },
+    "placeholders": {
+      "name": "Enter your name",
+      "email": "Enter your email",
+      "phone": "Enter your phone number",
+      "budget": "e.g., ₹50L - ₹1Cr"
+    },
+    "errors": {
+      "name_required": "Name is required",
+      "email_required": "Email is required",
+      "email_invalid": "Invalid email format",
+      "phone_required": "Phone number is required",
+      "phone_invalid": "Enter a valid phone number"
+    },
+    "buttons": {
+      "skip": "Skip",
+      "submit": "Submit",
+      "submitting": "Submitting..."
+    }
+  }
+
+
 }
+

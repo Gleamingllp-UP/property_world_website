@@ -202,6 +202,7 @@ function AdvanceSearch({ page, limit, sortBy, features, scrollRef }) {
           queryParams.get("subSubCategory") || selectedSubSubCategoryId,
         duration: queryParams.get("duration") || rentDuration,
         construction_status: queryParams.get("construction_status") || buyType,
+        features : queryParams.get("features") || features,
         bedrooms: queryParams.get("bedrooms") || bedRoom,
         bathrooms: queryParams.get("bathrooms") || bathRoom,
         min_price: queryParams.get("min_price") || minPrice,

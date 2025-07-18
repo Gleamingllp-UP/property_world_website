@@ -28,5 +28,48 @@
     "review_propbot": "مراجعة PropBot",
   "terms": "الشروط",
   "clear_chat": "مسح المحادثة",
-  "ask_me_anything": "اسألني أي شيء عن العقارات في الإمارات."
+  "ask_me_anything": "اسألني أي شيء عن العقارات في الإمارات.",
+      "location": "الموقع",
+    "bedrooms": "غرف نوم",
+    "bathrooms": "حمامات",
+    "size": "المساحة",
+    "price": "السعر",
+    "features": "المميزات",
+    "viewListing": "عرض القائمة",
+     "propertiesAvailableLabel": "العقارات المتاحة",
+    "propertiesAvailable_one": "{{count}} عقار متاح",
+    "propertiesAvailable_other": "{{count}} عقارات متاحة",
+     "feelFreeText": "لا تتردد في فتح أي قائمة أو طلب المزيد من الخيارات!",
+     
+  "lead_capture": {
+      "open_button": "احصل على اقتراحات عقارية",
+    "title": "احصل على اقتراحات عقارية أفضل",
+    "description": "هل ترغب في تقديم تفاصيلك للحصول على اقتراحات عقارية أفضل؟",
+    "fields": {
+      "name": "الاسم *",
+      "email": "البريد الإلكتروني *",
+      "phone": "رقم الهاتف *",
+      "budget": "الميزانية"
+    },
+    "placeholders": {
+      "name": "أدخل اسمك",
+      "email": "أدخل بريدك الإلكتروني",
+      "phone": "أدخل رقم الهاتف",
+      "budget": "مثال: ٥٠ لاك - ١ كرور"
+    },
+    "errors": {
+      "name_required": "الاسم مطلوب",
+      "email_required": "البريد الإلكتروني مطلوب",
+      "email_invalid": "تنسيق البريد الإلكتروني غير صالح",
+      "phone_required": "رقم الهاتف مطلوب",
+      "phone_invalid": "أدخل رقم هاتف صالح"
+    },
+    "buttons": {
+      "skip": "تخطي",
+      "submit": "إرسال",
+      "submitting": "جارٍ الإرسال..."
+    }
+  }
+
+
 }

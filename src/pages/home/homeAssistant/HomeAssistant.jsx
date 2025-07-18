@@ -5,12 +5,20 @@ import { Link } from "react-router-dom";
 import { pageRoutes } from "../../../router/pageRoutes";
 import QuickContactFormModal from "./QuickContactFormModal";
 import PropBotGPTModal from "./PropBotGPTModal";
+import { useDispatch, useSelector } from "react-redux";
+import { openLoginPrompt } from "../../../features/user/userSlice";
 
 function HomeAssistant() {
   const [modalShow, setModalShow] = useState(false);
   const [modalShow2, setModalShow2] = useState(false);
+  const { userData } = useSelector((store) => store?.user);
 
+  const dispatch = useDispatch();
   const handleAssistantOpen = () => {
+    if (userData?.role === "guest") {
+      dispatch(openLoginPrompt("Log in to your account for access PropBot."));
+      return;
+    }
     setModalShow2(true);
     // const agentContainer = document.querySelector(".embedded-agent-container");
     // const animationContainer = document.querySelector(

@@ -20,11 +20,13 @@ import LanguageSelectorModal from "./LanguageSelectorModal";
 import { useTranslation } from "react-i18next";
 import LanguageDropdown from "./LanguageDropdown";
 import PropertyListMessage from "./PropertyListMessage";
+import LeadCaptureModal from "./LeadCaptureModal";
 
 function PropBotGPTModal({ show, handleClose }) {
   const [showTerms, setShowTerms] = useState(false);
   const [showClearChat, setShowClearChat] = useState(false);
   const [modalShow, setModalShow] = useState(false);
+  const [modalShowLead, setModalShowLead] = useState(false);
 
   const [showLanguagePrompt, setShowLanguagePrompt] = useState(true);
 
@@ -299,10 +301,17 @@ function PropBotGPTModal({ show, handleClose }) {
     socketRef.current.emit("chat:message", { sessionId, message: input });
   };
 
-  useEffect(() => {
+  const scroll = () => {
     if (chatRef.current) {
-      chatRef.current.scrollTop = chatRef.current.scrollHeight;
+      chatRef.current.scrollIntoView({ behavior: "smooth" });
     }
+  };
+  useEffect(() => {
+    // Call scroll after messages are updated
+    scroll();
+  }, [messages, isBotTyping]);
+  useEffect(() => {
+    // chatRef.current.scrollTop = chatRef.current.scrollHeight;
 
     if (modalBodyRef.current) {
       setTimeout(() => {
@@ -367,14 +376,21 @@ function PropBotGPTModal({ show, handleClose }) {
               sessionId={sessionId}
             />
           </div>
-
-          <Button
-            variant="light"
-            onClick={handleClose}
-            className="border-0 p-1 bg-none"
-          >
-            <X size={20} />
-          </Button>
+          <div className="d-flex align-items-center gap-2">
+            <Button
+              onClick={() => setModalShowLead(true)}
+              className="border text-primary fs-6 bg-white language-toggle"
+            >
+              {t("lead_capture.open_button", { lng: i18n?.language })}
+            </Button>
+            <Button
+              variant="light"
+              onClick={handleClose}
+              className="border-0 p-1 bg-none"
+            >
+              <X size={20} />
+            </Button>
+          </div>
         </div>
       </Modal.Header>
 
@@ -441,7 +457,6 @@ function PropBotGPTModal({ show, handleClose }) {
           <div
             className="p-3 scroll-smooth "
             style={{ maxHeight: "400px", overflowY: "auto" }}
-            ref={chatRef}
           >
             {Object.entries(groupedMessages)?.map(([date, msgs], idx) => (
               <div key={`group-${date + idx}`}>
@@ -517,6 +532,7 @@ function PropBotGPTModal({ show, handleClose }) {
                 </div>
               </div>
             )}
+            <div ref={chatRef}></div>
           </div>
         </div>
       </Modal.Body>
@@ -585,6 +601,11 @@ function PropBotGPTModal({ show, handleClose }) {
             }}
           />
         )}
+        <LeadCaptureModal
+          show={modalShowLead}
+          onClose={() => setModalShowLead(false)}
+          language={i18n?.language}
+        />
       </>
     </Modal>
   );

@@ -28,5 +28,47 @@
   "review_propbot": "PropBot überprüfen",
   "terms": "Bedingungen",
   "clear_chat": "Chat löschen",
-  "ask_me_anything": "Frag mich alles über Immobilien in den VAE."
+  "ask_me_anything": "Frag mich alles über Immobilien in den VAE.",
+    "location": "Standort",
+    "bedrooms": "Schlafzimmer",
+    "bathrooms": "Badezimmer",
+    "size": "Größe",
+    "price": "Preis",
+    "features": "Merkmale",
+    "viewListing": "Anzeige ansehen",
+    "propertiesAvailableLabel": "Verfügbare Objekte",
+    "propertiesAvailable_one": "{{count}} Objekt verfügbar",
+    "propertiesAvailable_other": "{{count}} Objekte verfügbar",
+     "feelFreeText": "Öffnen Sie gerne ein beliebiges Inserat oder fragen Sie nach weiteren Optionen!",
+     
+  "lead_capture": {
+    "open_button": "Immobilienvorschläge erhalten",
+    "title": "Erhalten Sie bessere Immobilienvorschläge",
+    "description": "Möchten Sie Ihre Daten angeben, um bessere Immobilienvorschläge zu erhalten?",
+    "fields": {
+      "name": "Name *",
+      "email": "E-Mail *",
+      "phone": "Telefonnummer *",
+      "budget": "Budget"
+    },
+    "placeholders": {
+      "name": "Geben Sie Ihren Namen ein",
+      "email": "Geben Sie Ihre E-Mail ein",
+      "phone": "Geben Sie Ihre Telefonnummer ein",
+      "budget": "z.B. €500.000 - €1.000.000"
+    },
+    "errors": {
+      "name_required": "Name ist erforderlich",
+      "email_required": "E-Mail ist erforderlich",
+      "email_invalid": "Ungültiges E-Mail-Format",
+      "phone_required": "Telefonnummer ist erforderlich",
+      "phone_invalid": "Geben Sie eine gültige Telefonnummer ein"
+    },
+    "buttons": {
+      "skip": "Überspringen",
+      "submit": "Senden",
+      "submitting": "Wird gesendet..."
+    }
+  }
+
 }

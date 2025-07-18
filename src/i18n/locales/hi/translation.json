@@ -28,5 +28,49 @@
   "review_propbot": "प्रॉपबॉट की समीक्षा",
   "terms": "नियम",
   "clear_chat": "चैट साफ़ करें",
-  "ask_me_anything": "यूएई रियल एस्टेट के बारे में मुझसे कुछ भी पूछें।"
+  "ask_me_anything": "यूएई रियल एस्टेट के बारे में मुझसे कुछ भी पूछें।",
+  "location": "स्थान",
+    "bedrooms": "शयनकक्ष",
+    "bathrooms": "स्नानघर",
+    "size": "आकार",
+    "price": "कीमत",
+    "features": "विशेषताएँ",
+    "viewListing": "लिस्टिंग देखें",
+    "propertiesAvailableLabel": "उपलब्ध संपत्तियाँ",
+    "propertiesAvailable_one": "{{count}} संपत्ति उपलब्ध",
+    "propertiesAvailable_other": "{{count}} संपत्तियाँ उपलब्ध",
+     "feelFreeText": "किसी भी लिस्टिंग को खोलें या और विकल्पों के लिए पूछें!",
+     
+  "lead_capture": {
+     "open_button": "प्रॉपर्टी सुझाव प्राप्त करें",
+    "title": "बेहतर प्रॉपर्टी सुझाव प्राप्त करें",
+    "description": "क्या आप बेहतर प्रॉपर्टी सुझाव पाने के लिए अपनी जानकारी देना चाहेंगे?",
+    "fields": {
+      "name": "नाम *",
+      "email": "ईमेल *",
+      "phone": "फ़ोन नंबर *",
+      "budget": "बजट"
+    },
+    "placeholders": {
+      "name": "अपना नाम दर्ज करें",
+      "email": "अपना ईमेल दर्ज करें",
+      "phone": "अपना फ़ोन नंबर दर्ज करें",
+      "budget": "उदा., ₹50 लाख - ₹1 करोड़"
+    },
+    "errors": {
+      "name_required": "नाम आवश्यक है",
+      "email_required": "ईमेल आवश्यक है",
+      "email_invalid": "अमान्य ईमेल प्रारूप",
+      "phone_required": "फ़ोन नंबर आवश्यक है",
+      "phone_invalid": "मान्य फ़ोन नंबर दर्ज करें"
+    },
+    "buttons": {
+      "skip": "छोड़ें",
+      "submit": "सबमिट करें",
+      "submitting": "सबमिट हो रहा है..."
+    }
+  }
+
+ 
 }
+

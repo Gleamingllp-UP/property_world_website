@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 export default function PropertyListMessage({
   msg,
@@ -11,11 +12,14 @@ export default function PropertyListMessage({
     link,
     linkText,
     totalProperties,
+    language,
     data = [],
     done,
   } = msg;
 
   const [visibleLines, setVisibleLines] = useState([]);
+
+  const { t } = useTranslation();
 
   function hasVal(v) {
     if (v === null || v === undefined) return false;
@@ -43,10 +47,17 @@ export default function PropertyListMessage({
     };
 
     const parts = [];
-
-    if (hasVal(bedrooms)) parts.push(`${L.bedrooms}: ${bedrooms}`);
-    if (hasVal(bathrooms)) parts.push(`${L.bathrooms}: ${bathrooms}`);
-    if (hasVal(size)) parts.push(`${L.size}: ${size}`);
+    console.log("language");
+    if (hasVal(bedrooms))
+      parts.push(
+        `${t(L?.bedrooms?.toLowerCase(), { lng: language })}: ${bedrooms}`
+      );
+    if (hasVal(bathrooms))
+      parts.push(
+        `${t(L?.bathrooms?.toLowerCase(), { lng: language })}: ${bathrooms}`
+      );
+    if (hasVal(size))
+      parts.push(`${t(L?.size?.toLowerCase(), { lng: language })}: ${size}`);
 
     return parts.length ? parts.join(" | ") : null;
   }
@@ -57,47 +68,57 @@ export default function PropertyListMessage({
     if (link) {
       out.push({
         kind: "link",
-        text: `${linkText || "View Listings"}${
+        text: `${t(linkText ?? "viewListing", { lng: language })}${
           typeof totalProperties === "number"
-            ? ` (${totalProperties} properties available)`
+            ? ` (${t("propertiesAvailable", {
+                lng: language,
+                count: totalProperties,
+              })} )`
             : ""
         }`,
         href: link,
       });
     }
-    data.forEach((prop, idx) => {
-      const meta = buildMetaLine(prop);
+    data &&
+      data?.forEach((prop, idx) => {
+        const meta = buildMetaLine(prop, language);
 
-      out.push({ kind: "spacer", text: "" });
-      out.push({ kind: "prop_title", text: `${idx + 1}. ${prop.title}` });
-      if (prop.type)
-        out.push({ kind: "prop_line", text: `Type: ${prop.type}` });
-      out.push({ kind: "prop_line", text: `Location: ${prop.location}` });
-      if (meta) {
+        out.push({ kind: "spacer", text: "" });
+        out.push({ kind: "prop_title", text: `${idx + 1}. ${prop.title}` });
+        if (prop.type)
+          out.push({ kind: "prop_line", text: `Type: ${prop.type}` });
         out.push({
           kind: "prop_line",
-          text: meta,
+          text: `${t("location", { lng: language })}: ${prop.location}`,
         });
-      }
+        if (meta) {
+          out.push({
+            kind: "prop_line",
+            text: meta,
+          });
+        }
 
-      out.push({
-        kind: "prop_line",
-        text: `Price: ${prop.price}${
-          prop.price_per_sqft ? ` ${prop.price_per_sqft}` : ""
-        }`,
+        out.push({
+          kind: "prop_line",
+          text: `${t("price", { lng: language })}: ${prop.price}${
+            prop.price_per_sqft ? ` ${prop.price_per_sqft}` : ""
+          }`,
+        });
+        if (prop?.features?.length) {
+          const featureText =
+            prop?.features.slice(0, 5).join(", ") +
+            (prop?.features?.length > 5 ? ", and more." : "");
+          out.push({
+            kind: "prop_line",
+            text: `${t("features", { lng: language })}: ${featureText}`,
+          });
+        }
+        out.push({
+          kind: "prop_cta",
+          text: t("viewListing", { lng: language }),
+          href: prop?.link,
+        });
       });
-      if (prop.features?.length) {
-        const featureText =
-          prop.features.slice(0, 5).join(", ") +
-          (prop.features.length > 5 ? ", and more." : "");
-        out.push({ kind: "prop_line", text: `Features: ${featureText}` });
-      }
-      out.push({
-        kind: "prop_cta",
-        text: "View Listing",
-        href: prop.link,
-      });
-    });
     return out;
   }, [message, subMessage, link, linkText, totalProperties, data]);
 
@@ -116,72 +137,73 @@ export default function PropertyListMessage({
 
   return (
     <div className="text-start">
-      {visibleLines.map((ln, idx) => {
-        switch (ln.kind) {
-          case "header":
-            return (
-              <p key={idx} className="fw-bold mb-2">
-                {ln.text}
-              </p>
-            );
-          case "sub":
-            return (
-              <p key={idx} className="fw-semibold mb-2">
-                {ln.text}
-              </p>
-            );
-          case "link":
-            return (
-              <p key={idx} className="mb-2">
-                <a
-                  href={ln.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-primary fw-semibold text-decoration-none"
-                >
+      {visibleLines &&
+        visibleLines?.map((ln, idx) => {
+          switch (ln.kind) {
+            case "header":
+              return (
+                <p key={idx} className="fw-bold mb-2">
                   {ln.text}
-                </a>
-              </p>
-            );
-          case "spacer":
-            return <div key={idx} style={{ marginTop: "0.75rem" }} />;
-          case "prop_title":
-            return (
-              <p key={idx} className="mb-1 fw-bold text-primary">
-                {ln.text}
-              </p>
-            );
-          case "prop_line":
-            return (
-              <p key={idx} className="mb-1 small">
-                {ln.text}
-              </p>
-            );
-          case "prop_cta":
-            return (
-              <p key={idx} className="mb-1 small">
-                <a
-                  href={ln.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn btn-outline-primary btn-sm"
-                >
+                </p>
+              );
+            case "sub":
+              return (
+                <p key={idx} className="fw-semibold mb-2">
                   {ln.text}
-                </a>
-              </p>
-            );
-          default:
-            return (
-              <p key={idx} className="mb-1 small">
-                {ln.text}
-              </p>
-            );
-        }
-      })}
+                </p>
+              );
+            case "link":
+              return (
+                <p key={idx} className="mb-2">
+                  <a
+                    href={ln.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary fw-semibold text-decoration-none"
+                  >
+                    {ln.text}
+                  </a>
+                </p>
+              );
+            case "spacer":
+              return <div key={idx} style={{ marginTop: "0.75rem" }} />;
+            case "prop_title":
+              return (
+                <p key={idx} className="mb-1 fw-bold text-primary">
+                  {ln.text}
+                </p>
+              );
+            case "prop_line":
+              return (
+                <p key={idx} className="mb-1 small">
+                  {ln.text}
+                </p>
+              );
+            case "prop_cta":
+              return (
+                <p key={idx} className="mb-1 small">
+                  <a
+                    href={ln.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn btn-outline-primary btn-sm"
+                  >
+                    {ln.text}
+                  </a>
+                </p>
+              );
+            default:
+              return (
+                <p key={idx} className="mb-1 small">
+                  {ln.text}
+                </p>
+              );
+          }
+        })}
 
       {done && visibleLines.length === lines.length && (
         <p className="text-muted small mt-3">
-          Feel free to open any listing or ask for more options!
+          {t("feelFreeText", { lng: language })}
         </p>
       )}
     </div>

@@ -1,3 +1,4 @@
+
 const endpoints = {
   //User types
   getAllActiveUserType: "/user-type/getall-active-user-type",
@@ -13,6 +14,7 @@ const endpoints = {
   getAllUserForWeb: "/user/all-users",
   getUserAllDetailsForWeb: "/user/get-all-user-details",
   getLikedProperties: "/user/get-all-liked-properties",
+  addPropertiesSuggestionDetails: "/user/get-all-liked-properties",
 
   getUserAllDetailsForWebWithProperties:
     "/user/get-all-user-details-with-properties",

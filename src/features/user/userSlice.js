@@ -19,6 +19,7 @@ import {
   resetPassword,
   createVisitors,
   updateProfilePicture,
+  addPropertiesSuggestionDetails,
 } from "./userAPI";
 
 export const initiateSignupThunk = createAsyncThunk(
@@ -82,18 +83,28 @@ export const userLoginThunk = createAsyncThunk(
     return await userLogin(payload);
   }
 );
+
 export const getUserDetailsThunk = createAsyncThunk(
   "users/getUserDetails",
   async () => {
     return await getUserDetails();
   }
 );
+
 export const getLikedPropertiesThunk = createAsyncThunk(
   "users/getLikedProperties",
   async ({ page, limit }) => {
     return await getLikedProperties(page, limit);
   }
 );
+
+export const addPropertiesSuggestionDetailsThunk = createAsyncThunk(
+  "users/addPropertiesSuggestionDetails",
+  async (payload) => {
+    return await addPropertiesSuggestionDetails(payload);
+  }
+);
+
 // features/user/userSlice.js
 export const getAllUserForWebThunk = createAsyncThunk(
   "users/getAllUserForWeb",
@@ -184,6 +195,7 @@ const usersSlice = createSlice({
   initialState: {
     userData: [],
     likedProperties: [],
+    getPropertySeggestionDetails: {},
     pagination: {},
     agentOrAgencyData: [],
     agentOrAgencyDetails: {},
@@ -433,6 +445,19 @@ const usersSlice = createSlice({
       })
       .addCase(getLikedPropertiesThunk.rejected, (state, action) => {
         state.isLoading = false;
+        state.error = action.error.message;
+      })
+
+      //addPropertiesSuggestionDetailsThunk
+      .addCase(addPropertiesSuggestionDetailsThunk.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(addPropertiesSuggestionDetailsThunk.fulfilled, (state, action) => {
+        state.loading = false;
+        state.getPropertySeggestionDetails = action.payload.data;
+      })
+      .addCase(addPropertiesSuggestionDetailsThunk.rejected, (state, action) => {
+        state.loading = false;
         state.error = action.error.message;
       })
 

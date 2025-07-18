@@ -65,14 +65,16 @@ function Header() {
                 {contactUs?.[0]?.email ?? "info@propertyworld.ae"}
               </div>
             </div>
-            <div className="col-lg-6">
-              <div className="call_us">
-                <i className="ri-phone-line"></i> Call us:{" "}
-                <a href={`tel:+${contactUs?.[0]?.tele_phone || "97143533229"}`}>
-                  +{contactUs?.[0]?.tele_phone || "N/A"}
-                </a>
+            {contactUs?.[0]?.tele_phone && (
+              <div className="col-lg-6">
+                <div className="call_us">
+                  <i className="ri-phone-line"></i> Call us:{" "}
+                  <a href={`tel:+${contactUs?.[0]?.tele_phone}`}>
+                    +{contactUs?.[0]?.tele_phone}
+                  </a>
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
       </div>

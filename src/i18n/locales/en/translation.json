@@ -1,35 +1,35 @@
 {
-  "bot_name": "PropBot",
-  "you": "You",
-  "send": "Send",
-  "type_message": "Type a message...",
-   "language_select_error": "Failed to set language. Try again.",
-  "loading": "Loading...",
-  "continue": "Continue",
-  "login": "Login",
-  "signup": "Signup",
-  "login_prompt": "In order to continue this conversation, please log in to your PropertyWorld account:",
-  "change_language": "Change Language",
-  "language_prompt": "What language would you like to continue in?",
-  "choose_language": "Choose Your Language",
-  "view_details": "View Details",
-  "price_on_request": "Price on request",
-  "property_suggestion": "Here are some properties{{location}} you might like:",
-  "hello_propbot": "Say Hello to PropBot",
-  "chat_intro": "Chat with the UAE’s first AI-Powered property search assistant and browse homes stress free!",
-  "find_property": "Find a Property",
-  "search_location": "Search by Location",
-  "investment_advice": "Investment Advice",
-  "estimate_value": "Estimate Property Value",
-  "compare_properties": "Compare Properties",
-  "request_callback": "Request a Callback",
-  "book_viewing": "Book a Viewing",
-  "ask_question": "Ask a Question",
-  "review_propbot": "Review PropBot",
-  "terms": "Terms",
-  "clear_chat": "Clear Chat",
-  "ask_me_anything": "Ask me anything about UAE real estate.",
-   "location": "Location",
+    "bot_name": "PropBot",
+    "you": "You",
+    "send": "Send",
+    "type_message": "Type a message...",
+    "language_select_error": "Failed to set language. Try again.",
+    "loading": "Loading...",
+    "continue": "Continue",
+    "login": "Login",
+    "signup": "Signup",
+    "login_prompt": "In order to continue this conversation, please log in to your PropertyWorld account:",
+    "change_language": "Change Language",
+    "language_prompt": "What language would you like to continue in?",
+    "choose_language": "Choose Your Language",
+    "view_details": "View Details",
+    "price_on_request": "Price on request",
+    "property_suggestion": "Here are some properties{{location}} you might like:",
+    "hello_propbot": "Say Hello to PropBot",
+    "chat_intro": "Chat with the UAE’s first AI-Powered property search assistant and browse homes stress free!",
+    "find_property": "Find a Property",
+    "search_location": "Search by Location",
+    "investment_advice": "Investment Advice",
+    "estimate_value": "Estimate Property Value",
+    "compare_properties": "Compare Properties",
+    "request_callback": "Request a Callback",
+    "book_viewing": "Book a Viewing",
+    "ask_question": "Ask a Question",
+    "review_propbot": "Review PropBot",
+    "terms": "Terms",
+    "clear_chat": "Clear Chat",
+    "ask_me_anything": "Ask me anything about UAE real estate.",
+    "location": "Location",
     "bedrooms": "Bedrooms",
     "bathrooms": "Bathrooms",
     "size": "Size",
@@ -40,37 +40,38 @@
     "propertiesAvailable_one": "{{count}} Property Available",
     "propertiesAvailable_other": "{{count}} Properties Available",
     "feelFreeText": "Feel free to open any listing or ask for more options!",
-    
-  "lead_capture": {
-    "open_button": "Get Property Suggestions",
-  "title": "Get Better Property Suggestions",
-    "description": "Would you like to provide your details to get better property suggestions?",
-    "fields": {
-      "name": "Name *",
-      "email": "Email *",
-      "phone": "Phone Number *",
-      "budget": "Budget"
-    },
-    "placeholders": {
-      "name": "Enter your name",
-      "email": "Enter your email",
-      "phone": "Enter your phone number",
-      "budget": "e.g., ₹50L - ₹1Cr"
-    },
-    "errors": {
-      "name_required": "Name is required",
-      "email_required": "Email is required",
-      "email_invalid": "Invalid email format",
-      "phone_required": "Phone number is required",
-      "phone_invalid": "Enter a valid phone number"
-    },
-    "buttons": {
-      "skip": "Skip",
-      "submit": "Submit",
-      "submitting": "Submitting..."
+    "lead_capture": {
+        "open_button": "Get Property Suggestions",
+        "title": "Get Better Property Suggestions",
+        "modal_title_update": "Update Your Property Preferences",
+        "description": "Would you like to provide your details to get better property suggestions?",
+        "fields": {
+            "name": "Name *",
+            "email": "Email *",
+            "phone": "Phone Number *",
+            "minimum_budget": "Minimum Budget",
+            "maximum_budget": "Maximum Budget",
+            "budget": "Budget"
+        },
+        "placeholders": {
+            "name": "Enter your name",
+            "email": "Enter your email",
+            "phone": "Enter your phone number",
+            "budget": "e.g., ₹50L - ₹1Cr"
+        },
+        "errors": {
+            "name_required": "Name is required",
+            "email_required": "Email is required",
+            "email_invalid": "Invalid email format",
+            "phone_required": "Phone number is required",
+            "phone_invalid": "Enter a valid phone number"
+        },
+        "buttons": {
+            "skip": "Skip",
+            "submit": "Submit",
+            "submitting": "Submitting...",
+            "update": "Update",
+            "updating": "Updating..."
+        }
     }
-  }
-
-
 }
-

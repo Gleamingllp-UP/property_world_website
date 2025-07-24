@@ -5,6 +5,7 @@ import blog_image from "./Img/blog_image.png";
 
 // common
 import footer_line from "./common/footer_line.png";
+import bot from "./bot.jpeg";
 import home_banner from "./common/bann.jpg";
 import banner_home from "./common/banner_home.png";
 import map from "./common/map.png";
@@ -138,6 +139,7 @@ export {
   default_user,
   video,
   video2,
+  bot,
 
   //property
   propert1,

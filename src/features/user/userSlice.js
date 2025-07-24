@@ -20,6 +20,8 @@ import {
   createVisitors,
   updateProfilePicture,
   addPropertiesSuggestionDetails,
+  getProprtySuggestion,
+  updatePropertySuggestion,
 } from "./userAPI";
 
 export const initiateSignupThunk = createAsyncThunk(
@@ -98,10 +100,24 @@ export const getLikedPropertiesThunk = createAsyncThunk(
   }
 );
 
+export const getProprtySuggestionThunk = createAsyncThunk(
+  "users/getProprtySuggestion",
+  async () => {
+    return await getProprtySuggestion();
+  }
+);
+
 export const addPropertiesSuggestionDetailsThunk = createAsyncThunk(
   "users/addPropertiesSuggestionDetails",
   async (payload) => {
     return await addPropertiesSuggestionDetails(payload);
+  }
+);
+
+export const updatePropertySuggestionThunk = createAsyncThunk(
+  "users/updatePropertySuggestion",
+  async ({ id, data }) => {
+    return await updatePropertySuggestion(id, data);
   }
 );
 
@@ -195,12 +211,13 @@ const usersSlice = createSlice({
   initialState: {
     userData: [],
     likedProperties: [],
-    getPropertySeggestionDetails: {},
+    propertySeggestionDetails: {},
     pagination: {},
     agentOrAgencyData: [],
     agentOrAgencyDetails: {},
     formData: null,
     loginPromptOpen: false,
+    botPromptOpen: false,
     loginPromptText: null,
     loading: false,
     isEmailVerifying: false,
@@ -216,6 +233,12 @@ const usersSlice = createSlice({
     closeLoginPrompt: (state) => {
       state.loginPromptOpen = false;
       state.loginPromptText = null;
+    },
+    openBotPrompt: (state) => {
+      state.botPromptOpen = true;
+    },
+    closeBotPrompt: (state) => {
+      state.botPromptOpen = false;
     },
     getUserFormData: (state) => {
       const formData = JSON.parse(localStorage.getItem("formData"));
@@ -452,11 +475,42 @@ const usersSlice = createSlice({
       .addCase(addPropertiesSuggestionDetailsThunk.pending, (state) => {
         state.loading = true;
       })
-      .addCase(addPropertiesSuggestionDetailsThunk.fulfilled, (state, action) => {
-        state.loading = false;
-        state.getPropertySeggestionDetails = action.payload.data;
+      .addCase(
+        addPropertiesSuggestionDetailsThunk.fulfilled,
+        (state, action) => {
+          state.loading = false;
+          state.propertySeggestionDetails = action.payload.data;
+        }
+      )
+      .addCase(
+        addPropertiesSuggestionDetailsThunk.rejected,
+        (state, action) => {
+          state.loading = false;
+          state.error = action.error.message;
+        }
+      )
+
+      //getProprtySuggestionThunk
+      .addCase(getProprtySuggestionThunk.pending, (state) => {
+        state.isLoading = true;
       })
-      .addCase(addPropertiesSuggestionDetailsThunk.rejected, (state, action) => {
+      .addCase(getProprtySuggestionThunk.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.propertySeggestionDetails = action.payload.data;
+      })
+      .addCase(getProprtySuggestionThunk.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message;
+      })
+
+      .addCase(updatePropertySuggestionThunk.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updatePropertySuggestionThunk.fulfilled, (state, action) => {
+        state.loading = false;
+        state.propertySeggestionDetails = action.payload.data;
+      })
+      .addCase(updatePropertySuggestionThunk.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
       })
@@ -532,5 +586,7 @@ export const {
   userLogOut,
   openLoginPrompt,
   closeLoginPrompt,
+  openBotPrompt,
+  closeBotPrompt
 } = usersSlice.actions;
 export default usersSlice.reducer;

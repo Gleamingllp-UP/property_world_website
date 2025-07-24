@@ -3,9 +3,15 @@ import { Modal, Button, Spinner } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { InputWithLabelForm } from "../../../Custom_Components/InputWithLabelForm";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
-function LeadCaptureModal({ show, onClose, onSubmit, language }) {
-  const { getPropertySeggestionDetails, loading } = useSelector(
+import { useDispatch, useSelector } from "react-redux";
+import {
+  addPropertiesSuggestionDetailsThunk,
+  getProprtySuggestionThunk,
+  updatePropertySuggestionThunk,
+} from "../../../features/user/userSlice";
+import { showToast } from "../../../utils/toast/toast";
+function LeadCaptureModal({ show, onClose, language }) {
+  const { propertySeggestionDetails, loading } = useSelector(
     (store) => store?.user
   );
 
@@ -18,29 +24,69 @@ function LeadCaptureModal({ show, onClose, onSubmit, language }) {
     defaultValues: {
       name: "",
       email: "",
-      phone: "",
-      budget: "",
+      phone_number: "",
+      min_budget: "",
+      max_budget: "",
     },
   });
 
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const isUpdate = Boolean(propertySeggestionDetails?._id);
+
+  useEffect(() => {
+    if(show){
+      dispatch(getProprtySuggestionThunk());
+    }
+  }, [dispatch, show]);
 
   useEffect(() => {
     if (
-      getPropertySeggestionDetails &&
-      Object.keys(getPropertySeggestionDetails)?.length > 0
+      propertySeggestionDetails &&
+      Object.keys(propertySeggestionDetails)?.length > 0
     ) {
       reset({
-        name: getPropertySeggestionDetails?.name,
-        email: getPropertySeggestionDetails?.email,
-        phone: getPropertySeggestionDetails?.phone,
-        budget: getPropertySeggestionDetails?.budget,
+        name: propertySeggestionDetails?.name,
+        email: propertySeggestionDetails?.email,
+        phone_number: propertySeggestionDetails?.phone_number,
+        min_budget: propertySeggestionDetails?.min_budget,
+        max_budget: propertySeggestionDetails?.max_budget,
       });
     }
-  }, [getPropertySeggestionDetails, reset]);
+  }, [propertySeggestionDetails, reset]);
 
-  const submitHandler = (data) => {
-    onSubmit(data);
+  const onSubmit = async (data) => {
+    try {
+      // Determine whether to add or update
+
+      const resultAction = await dispatch(
+        isUpdate
+          ? updatePropertySuggestionThunk({
+              id: propertySeggestionDetails._id,
+              data,
+            })
+          : addPropertiesSuggestionDetailsThunk(data)
+      );
+
+      if (
+        (isUpdate &&
+          updatePropertySuggestionThunk.fulfilled.match(resultAction)) ||
+        (!isUpdate &&
+          addPropertiesSuggestionDetailsThunk.fulfilled.match(resultAction))
+      ) {
+        showToast(
+          isUpdate
+            ? "Your details have been updated successfully"
+            : "Your details have been submitted successfully",
+          "success"
+        );
+        onClose();
+      } else {
+        throw new Error(resultAction?.error?.message);
+      }
+    } catch (error) {
+      showToast(error?.message || "Failed to process your request.", "error");
+    }
   };
 
   return (
@@ -57,7 +103,12 @@ function LeadCaptureModal({ show, onClose, onSubmit, language }) {
     >
       <Modal.Header className="border-0 justify-content-center pb-0">
         <Modal.Title className="fw-semibold text-primary">
-          {t("lead_capture.title", { lng: language })}
+          {t(
+            isUpdate ? "lead_capture.modal_title_update" : "lead_capture.title",
+            {
+              lng: language,
+            }
+          )}
         </Modal.Title>
       </Modal.Header>
 
@@ -66,7 +117,7 @@ function LeadCaptureModal({ show, onClose, onSubmit, language }) {
           {t("lead_capture.description", { lng: language })}
         </p>
 
-        <form onSubmit={handleSubmit(submitHandler)}>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <InputWithLabelForm
             control={control}
             name="name"
@@ -93,7 +144,7 @@ function LeadCaptureModal({ show, onClose, onSubmit, language }) {
                 lng: language,
               }),
               pattern: {
-                value: /^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$/,
+                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
                 message: t("lead_capture.errors.email_invalid", {
                   lng: language,
                 }),
@@ -104,7 +155,7 @@ function LeadCaptureModal({ show, onClose, onSubmit, language }) {
 
           <InputWithLabelForm
             control={control}
-            name="phone"
+            name="phone_number"
             label={t("lead_capture.fields.phone", { lng: language })}
             placeholder={t("lead_capture.placeholders.phone", {
               lng: language,
@@ -125,8 +176,18 @@ function LeadCaptureModal({ show, onClose, onSubmit, language }) {
 
           <InputWithLabelForm
             control={control}
-            name="budget"
-            label={t("lead_capture.fields.budget", { lng: language })}
+            name="min_budget"
+            label={t("lead_capture.fields.minimum_budget", { lng: language })}
+            placeholder={t("lead_capture.placeholders.budget", {
+              lng: language,
+            })}
+            rules={{}}
+            error={errors.budget?.message}
+          />
+          <InputWithLabelForm
+            control={control}
+            name="max_budget"
+            label={t("lead_capture.fields.maximum_budget", { lng: language })}
             placeholder={t("lead_capture.placeholders.budget", {
               lng: language,
             })}
@@ -152,10 +213,20 @@ function LeadCaptureModal({ show, onClose, onSubmit, language }) {
               {loading ? (
                 <>
                   <Spinner animation="border" size="sm" className="me-2" />
-                  {t("lead_capture.buttons.submitting", { lng: language })}
+                  {t(
+                    isUpdate
+                      ? "lead_capture.buttons.updating"
+                      : "lead_capture.buttons.submitting",
+                    { lng: language }
+                  )}
                 </>
               ) : (
-                t("lead_capture.buttons.submit", { lng: language })
+                t(
+                  isUpdate
+                    ? "lead_capture.buttons.update"
+                    : "lead_capture.buttons.submit",
+                  { lng: language }
+                )
               )}
             </Button>
           </div>

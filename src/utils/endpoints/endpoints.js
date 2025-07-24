@@ -1,4 +1,3 @@
-
 const endpoints = {
   //User types
   getAllActiveUserType: "/user-type/getall-active-user-type",
@@ -29,7 +28,7 @@ const endpoints = {
   forgetPassword: "/user/forget-user-password",
   resetPassword: "/user/reset-user-password",
 
-  updateProfilePicture:"/user/update-profile-picture",
+  updateProfilePicture: "/user/update-profile-picture",
 
   createVisitors: "/visitors/log-visitors",
 
@@ -94,6 +93,11 @@ const endpoints = {
   //Stripe payment
   createStripeCheckoutSession: "/payment/create-checkout-session",
   verifyPaymentSession: "/payment/verify-payment-session",
+
+  //chats
+  getProprtySuggestion: "/chat/get-property-suggestion",
+  createProprtySuggestion: "/chat/add-property-suggestion",
+  updatePropertySuggestion: "/chat/update-property-suggestion",
 };
 
 export { endpoints };

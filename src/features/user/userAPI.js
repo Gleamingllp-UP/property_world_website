@@ -348,12 +348,25 @@ export const updateProfilePicture = async (formData) => {
   }
 };
 
+export const getProprtySuggestion = async () => {
+  try {
+    const response = await api.get(endpoints.getProprtySuggestion);
+    return response.data;
+  } catch (error) {
+    if (error?.status !== 401) {
+      throw (
+        error?.response?.data?.message ||
+        "Failed to get, please try again later."
+      );
+    } else {
+      throw error?.message || "Failed to get, please try again later.";
+    }
+  }
+};
+
 export const addPropertiesSuggestionDetails = async (payload) => {
   try {
-    const response = await api.post(
-      endpoints.addPropertiesSuggestionDetails,
-      payload
-    );
+    const response = await api.post(endpoints.createProprtySuggestion, payload);
     return response.data;
   } catch (error) {
     if (error?.status !== 401) {
@@ -363,6 +376,25 @@ export const addPropertiesSuggestionDetails = async (payload) => {
       );
     } else {
       throw error?.message || "Failed to add, please try again later.";
+    }
+  }
+};
+
+export const updatePropertySuggestion = async (id,data) => {
+  try {
+    const response = await api.put(
+      endpoints.updatePropertySuggestion + `/${id}`,
+      data
+    );
+    return response.data;
+  } catch (error) {
+    if (error?.status !== 401) {
+      throw (
+        error?.response?.data?.message ||
+        "Failed to update, please try again later."
+      );
+    } else {
+      throw error?.message || "Failed to update, please try again later.";
     }
   }
 };

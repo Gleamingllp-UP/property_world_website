@@ -1,35 +1,35 @@
 {
-  "bot_name": "प्रॉपबॉट",
-  "you": "आप",
-  "send": "भेजें",
-  "type_message": "संदेश टाइप करें...",
-  "language_prompt": "आप किस भाषा में जारी रखना चाहते हैं?",
-  "choose_language": "अपनी भाषा चुनें",
-  "language_select_error": "भाषा सेट करने में विफल। पुनः प्रयास करें।",
-  "loading": "लोड हो रहा है...",
-  "continue": "जारी रखें",
-   "login": "लॉगिन",
-  "signup": "साइन अप",
-  "login_prompt": "इस बातचीत को जारी रखने के लिए कृपया अपने PropertyWorld खाते में लॉगिन करें:",
-  "change_language": "भाषा बदलें",
-  "view_details": "विवरण देखें",
-  "price_on_request": "मूल्य अनुरोध पर",
-  "property_suggestion": "यहाँ कुछ प्रॉपर्टीज़ हैं{{location}} जो आपको पसंद आ सकती हैं:",
-  "hello_propbot": "प्रॉपबॉट को हैलो कहें",
-  "chat_intro": "यूएई के पहले AI-संचालित प्रॉपर्टी असिस्टेंट से चैट करें और घर खोजने का तनाव खत्म करें!",
-  "find_property": "प्रॉपर्टी खोजें",
-  "search_location": "लोकेशन से खोजें",
-  "investment_advice": "निवेश सलाह",
-  "estimate_value": "प्रॉपर्टी का मूल्य अनुमानित करें",
-  "compare_properties": "प्रॉपर्टी की तुलना करें",
-  "request_callback": "कॉल बैक का अनुरोध करें",
-  "book_viewing": "व्यूइंग बुक करें",
-  "ask_question": "प्रश्न पूछें",
-  "review_propbot": "प्रॉपबॉट की समीक्षा",
-  "terms": "नियम",
-  "clear_chat": "चैट साफ़ करें",
-  "ask_me_anything": "यूएई रियल एस्टेट के बारे में मुझसे कुछ भी पूछें।",
-  "location": "स्थान",
+    "bot_name": "प्रॉपबॉट",
+    "you": "आप",
+    "send": "भेजें",
+    "type_message": "संदेश टाइप करें...",
+    "language_prompt": "आप किस भाषा में जारी रखना चाहते हैं?",
+    "choose_language": "अपनी भाषा चुनें",
+    "language_select_error": "भाषा सेट करने में विफल। पुनः प्रयास करें।",
+    "loading": "लोड हो रहा है...",
+    "continue": "जारी रखें",
+    "login": "लॉगिन",
+    "signup": "साइन अप",
+    "login_prompt": "इस बातचीत को जारी रखने के लिए कृपया अपने PropertyWorld खाते में लॉगिन करें:",
+    "change_language": "भाषा बदलें",
+    "view_details": "विवरण देखें",
+    "price_on_request": "मूल्य अनुरोध पर",
+    "property_suggestion": "यहाँ कुछ प्रॉपर्टीज़ हैं{{location}} जो आपको पसंद आ सकती हैं:",
+    "hello_propbot": "प्रॉपबॉट को हैलो कहें",
+    "chat_intro": "यूएई के पहले AI-संचालित प्रॉपर्टी असिस्टेंट से चैट करें और घर खोजने का तनाव खत्म करें!",
+    "find_property": "प्रॉपर्टी खोजें",
+    "search_location": "लोकेशन से खोजें",
+    "investment_advice": "निवेश सलाह",
+    "estimate_value": "प्रॉपर्टी का मूल्य अनुमानित करें",
+    "compare_properties": "प्रॉपर्टी की तुलना करें",
+    "request_callback": "कॉल बैक का अनुरोध करें",
+    "book_viewing": "व्यूइंग बुक करें",
+    "ask_question": "प्रश्न पूछें",
+    "review_propbot": "प्रॉपबॉट की समीक्षा",
+    "terms": "नियम",
+    "clear_chat": "चैट साफ़ करें",
+    "ask_me_anything": "यूएई रियल एस्टेट के बारे में मुझसे कुछ भी पूछें।",
+    "location": "स्थान",
     "bedrooms": "शयनकक्ष",
     "bathrooms": "स्नानघर",
     "size": "आकार",
@@ -39,38 +39,39 @@
     "propertiesAvailableLabel": "उपलब्ध संपत्तियाँ",
     "propertiesAvailable_one": "{{count}} संपत्ति उपलब्ध",
     "propertiesAvailable_other": "{{count}} संपत्तियाँ उपलब्ध",
-     "feelFreeText": "किसी भी लिस्टिंग को खोलें या और विकल्पों के लिए पूछें!",
-     
-  "lead_capture": {
-     "open_button": "प्रॉपर्टी सुझाव प्राप्त करें",
-    "title": "बेहतर प्रॉपर्टी सुझाव प्राप्त करें",
-    "description": "क्या आप बेहतर प्रॉपर्टी सुझाव पाने के लिए अपनी जानकारी देना चाहेंगे?",
-    "fields": {
-      "name": "नाम *",
-      "email": "ईमेल *",
-      "phone": "फ़ोन नंबर *",
-      "budget": "बजट"
-    },
-    "placeholders": {
-      "name": "अपना नाम दर्ज करें",
-      "email": "अपना ईमेल दर्ज करें",
-      "phone": "अपना फ़ोन नंबर दर्ज करें",
-      "budget": "उदा., ₹50 लाख - ₹1 करोड़"
-    },
-    "errors": {
-      "name_required": "नाम आवश्यक है",
-      "email_required": "ईमेल आवश्यक है",
-      "email_invalid": "अमान्य ईमेल प्रारूप",
-      "phone_required": "फ़ोन नंबर आवश्यक है",
-      "phone_invalid": "मान्य फ़ोन नंबर दर्ज करें"
-    },
-    "buttons": {
-      "skip": "छोड़ें",
-      "submit": "सबमिट करें",
-      "submitting": "सबमिट हो रहा है..."
+    "feelFreeText": "किसी भी लिस्टिंग को खोलें या और विकल्पों के लिए पूछें!",
+    "lead_capture": {
+        "open_button": "प्रॉपर्टी सुझाव प्राप्त करें",
+        "title": "बेहतर प्रॉपर्टी सुझाव प्राप्त करें",
+        "modal_title_update": "अपनी प्रॉपर्टी प्राथमिकताएँ अपडेट करें",
+        "description": "क्या आप बेहतर प्रॉपर्टी सुझाव पाने के लिए अपनी जानकारी देना चाहेंगे?",
+        "fields": {
+            "name": "नाम *",
+            "email": "ईमेल *",
+            "phone": "फ़ोन नंबर *",
+            "minimum_budget": "न्यूनतम बजट",
+            "maximum_budget": "अधिकतम बजट",
+            "budget": "बजट"
+        },
+        "placeholders": {
+            "name": "अपना नाम दर्ज करें",
+            "email": "अपना ईमेल दर्ज करें",
+            "phone": "अपना फ़ोन नंबर दर्ज करें",
+            "budget": "उदा., ₹50 लाख - ₹1 करोड़"
+        },
+        "errors": {
+            "name_required": "नाम आवश्यक है",
+            "email_required": "ईमेल आवश्यक है",
+            "email_invalid": "अमान्य ईमेल प्रारूप",
+            "phone_required": "फ़ोन नंबर आवश्यक है",
+            "phone_invalid": "मान्य फ़ोन नंबर दर्ज करें"
+        },
+        "buttons": {
+            "skip": "छोड़ें",
+            "submit": "सबमिट करें",
+            "submitting": "सबमिट हो रहा है...",
+            "update": "अपडेट करें",
+            "updating": "अपडेट किया जा रहा है..."
+        }
     }
-  }
-
- 
 }
-

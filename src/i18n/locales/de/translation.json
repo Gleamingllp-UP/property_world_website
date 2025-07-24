@@ -1,34 +1,34 @@
 {
-  "bot_name": "PropBot",
-  "you": "Du",
-  "send": "Senden",
-  "type_message": "Nachricht eingeben...",
-  "language_prompt": "In welcher Sprache möchten Sie fortfahren?",
-   "choose_language": "Wähle deine Sprache",
-     "language_select_error": "Sprache konnte nicht festgelegt werden. Bitte erneut versuchen.",
-  "loading": "Wird geladen...",
-  "change_language": "Sprache ändern",
+    "bot_name": "PropBot",
+    "you": "Du",
+    "send": "Senden",
+    "type_message": "Nachricht eingeben...",
+    "language_prompt": "In welcher Sprache möchten Sie fortfahren?",
+    "choose_language": "Wähle deine Sprache",
+    "language_select_error": "Sprache konnte nicht festgelegt werden. Bitte erneut versuchen.",
+    "loading": "Wird geladen...",
+    "change_language": "Sprache ändern",
     "login": "Anmelden",
-  "signup": "Registrieren",
-  "login_prompt": "Um dieses Gespräch fortzusetzen, melden Sie sich bitte bei Ihrem PropertyWorld-Konto an:",
-  "continue": "Fortfahren",
-  "view_details": "Details ansehen",
-  "price_on_request": "Preis auf Anfrage",
-  "property_suggestion": "Hier sind einige Immobilien{{location}}, die Ihnen gefallen könnten:",
-  "hello_propbot": "Sag Hallo zu PropBot",
-  "chat_intro": "Chatten Sie mit dem ersten KI-gestützten Immobilienassistenten der VAE und finden Sie stressfrei Ihr Zuhause!",
-  "find_property": "Immobilie finden",
-  "search_location": "Nach Standort suchen",
-  "investment_advice": "Anlageberatung",
-  "estimate_value": "Immobilienwert schätzen",
-  "compare_properties": "Immobilien vergleichen",
-  "request_callback": "Rückruf anfordern",
-  "book_viewing": "Besichtigung buchen",
-  "ask_question": "Frage stellen",
-  "review_propbot": "PropBot überprüfen",
-  "terms": "Bedingungen",
-  "clear_chat": "Chat löschen",
-  "ask_me_anything": "Frag mich alles über Immobilien in den VAE.",
+    "signup": "Registrieren",
+    "login_prompt": "Um dieses Gespräch fortzusetzen, melden Sie sich bitte bei Ihrem PropertyWorld-Konto an:",
+    "continue": "Fortfahren",
+    "view_details": "Details ansehen",
+    "price_on_request": "Preis auf Anfrage",
+    "property_suggestion": "Hier sind einige Immobilien{{location}}, die Ihnen gefallen könnten:",
+    "hello_propbot": "Sag Hallo zu PropBot",
+    "chat_intro": "Chatten Sie mit dem ersten KI-gestützten Immobilienassistenten der VAE und finden Sie stressfrei Ihr Zuhause!",
+    "find_property": "Immobilie finden",
+    "search_location": "Nach Standort suchen",
+    "investment_advice": "Anlageberatung",
+    "estimate_value": "Immobilienwert schätzen",
+    "compare_properties": "Immobilien vergleichen",
+    "request_callback": "Rückruf anfordern",
+    "book_viewing": "Besichtigung buchen",
+    "ask_question": "Frage stellen",
+    "review_propbot": "PropBot überprüfen",
+    "terms": "Bedingungen",
+    "clear_chat": "Chat löschen",
+    "ask_me_anything": "Frag mich alles über Immobilien in den VAE.",
     "location": "Standort",
     "bedrooms": "Schlafzimmer",
     "bathrooms": "Badezimmer",
@@ -39,36 +39,39 @@
     "propertiesAvailableLabel": "Verfügbare Objekte",
     "propertiesAvailable_one": "{{count}} Objekt verfügbar",
     "propertiesAvailable_other": "{{count}} Objekte verfügbar",
-     "feelFreeText": "Öffnen Sie gerne ein beliebiges Inserat oder fragen Sie nach weiteren Optionen!",
-     
-  "lead_capture": {
-    "open_button": "Immobilienvorschläge erhalten",
-    "title": "Erhalten Sie bessere Immobilienvorschläge",
-    "description": "Möchten Sie Ihre Daten angeben, um bessere Immobilienvorschläge zu erhalten?",
-    "fields": {
-      "name": "Name *",
-      "email": "E-Mail *",
-      "phone": "Telefonnummer *",
-      "budget": "Budget"
-    },
-    "placeholders": {
-      "name": "Geben Sie Ihren Namen ein",
-      "email": "Geben Sie Ihre E-Mail ein",
-      "phone": "Geben Sie Ihre Telefonnummer ein",
-      "budget": "z.B. €500.000 - €1.000.000"
-    },
-    "errors": {
-      "name_required": "Name ist erforderlich",
-      "email_required": "E-Mail ist erforderlich",
-      "email_invalid": "Ungültiges E-Mail-Format",
-      "phone_required": "Telefonnummer ist erforderlich",
-      "phone_invalid": "Geben Sie eine gültige Telefonnummer ein"
-    },
-    "buttons": {
-      "skip": "Überspringen",
-      "submit": "Senden",
-      "submitting": "Wird gesendet..."
+    "feelFreeText": "Öffnen Sie gerne ein beliebiges Inserat oder fragen Sie nach weiteren Optionen!",
+    "lead_capture": {
+        "open_button": "Immobilienvorschläge erhalten",
+        "title": "Erhalten Sie bessere Immobilienvorschläge",
+        "modal_title_update": "Aktualisiere deine Immobilienpräferenzen",
+        "description": "Möchten Sie Ihre Daten angeben, um bessere Immobilienvorschläge zu erhalten?",
+        "fields": {
+            "name": "Name *",
+            "email": "E-Mail *",
+            "phone": "Telefonnummer *",
+            "minimum_budget": "Mindestbudget",
+            "maximum_budget": "Höchstbudget",
+            "budget": "Budget"
+        },
+        "placeholders": {
+            "name": "Geben Sie Ihren Namen ein",
+            "email": "Geben Sie Ihre E-Mail ein",
+            "phone": "Geben Sie Ihre Telefonnummer ein",
+            "budget": "z.B. €500.000 - €1.000.000"
+        },
+        "errors": {
+            "name_required": "Name ist erforderlich",
+            "email_required": "E-Mail ist erforderlich",
+            "email_invalid": "Ungültiges E-Mail-Format",
+            "phone_required": "Telefonnummer ist erforderlich",
+            "phone_invalid": "Geben Sie eine gültige Telefonnummer ein"
+        },
+        "buttons": {
+            "skip": "Überspringen",
+            "submit": "Senden",
+            "update": "Aktualisieren",
+            "updating": "Wird aktualisiert...",
+            "submitting": "Wird gesendet..."
+        }
     }
-  }
-
 }

@@ -32,14 +32,14 @@ function PropBotGPTModal({ show, handleClose }) {
 
   const navigate = useNavigate();
   const quickButtons = [
-    "find_property",
-    "search_location",
-    "investment_advice",
-    "estimate_value",
-    "compare_properties",
-    "request_callback",
-    "book_viewing",
-    "ask_question",
+    { label: "Find Property", value: "find_property" },
+    { label: "Search Location", value: "search_location" },
+    { label: "Investment Advice", value: "investment_advice" },
+    { label: "Estimate Value", value: "estimate_value" },
+    { label: "Compare Properties", value: "compare_properties" },
+    { label: "Request Callback", value: "request_callback" },
+    { label: "Book Viewing", value: "book_viewing" },
+    { label: "Ask Question", value: "ask_question" },
   ];
 
   const handleLogin = () => {
@@ -61,11 +61,13 @@ function PropBotGPTModal({ show, handleClose }) {
 
   // 🔌 Establish socket connection
   useEffect(() => {
-    if (!show || !userId) return;
+    // if (!show || !userId) return;
     if (socketRef.current) return;
     socketRef.current = io(import.meta.env.VITE_SOCKET_IO_URL, {
       transports: ["websocket"],
     });
+
+    const sessionId = localStorage.getItem("sessionId");
 
     socketRef.current.on("connect", () => {
       // console.log("Connected to PropBot:", socketRef.current.id);
@@ -73,7 +75,7 @@ function PropBotGPTModal({ show, handleClose }) {
 
       socketRef.current.emit(
         "chat:init",
-        { userId, language: "en" },
+        { userId, sessionId, language: "en" },
         ({ sessionId, showLanguagePrompt, language: prevLanguage }) => {
           console.log(
             "sessionId, showLanguagePrompt ",
@@ -83,6 +85,7 @@ function PropBotGPTModal({ show, handleClose }) {
           );
 
           setIsBotTyping(true);
+          localStorage.setItem("sessionId", sessionId);
           setSessionId(sessionId);
           i18n.changeLanguage(prevLanguage);
           document.documentElement.dir = prevLanguage === "ar" ? "rtl" : "ltr";
@@ -90,7 +93,7 @@ function PropBotGPTModal({ show, handleClose }) {
 
           socketRef.current.emit(
             "chat:history",
-            { userId },
+            { userId, sessionId },
             ({ messages, isNew }) => {
               console.log("messages", messages);
 
@@ -352,6 +355,17 @@ function PropBotGPTModal({ show, handleClose }) {
     setIsBotTyping(false);
   }, [sessionId, socketRef, setMessages, setShowClearChat]);
 
+  const hanldeQuickButton = (label) => {
+    if (!label.trim() || !sessionId) return;
+
+    const userMsg = { role: "user", message: label, timestamp: new Date() };
+    setMessages((prev) => [...prev, userMsg]);
+
+    // Bot will start streaming soon
+    setIsBotTyping(true);
+
+    socketRef.current.emit("chat:message", { sessionId, message: label });
+  };
   return (
     <Modal
       show={show}
@@ -447,9 +461,10 @@ function PropBotGPTModal({ show, handleClose }) {
                   key={idx}
                   pill
                   bg="light"
+                  onClick={() => hanldeQuickButton(btn?.label)}
                   className="border border-secondary-subtle text-dark fw-bold py-2 px-3 cursor-pointer"
                 >
-                  {t(btn)}
+                  {t(btn?.value)}
                 </Badge>
               ))}
           </div>
@@ -493,11 +508,30 @@ function PropBotGPTModal({ show, handleClose }) {
                           <div className="text-start">
                             {msg.type === "typing" ? (
                               <>
-                                {msg.message}
-                                <span className="typing-dots">...</span>
+                                {msg?.message}
+                                {/* <span className="typing-dots">...</span> */}
                               </>
                             ) : (
-                              msg.message
+                              msg?.message
+                            )}
+                            {msg?.actions?.length > 0 && (
+                              <div className="d-flex flex-wrap gap-2 justify-content-start my-2">
+                                {msg?.actions?.map((btn, idx) => {
+                                  return (
+                                    <Badge
+                                      key={idx}
+                                      pill
+                                      bg="light"
+                                      onClick={() =>
+                                        hanldeQuickButton(btn?.label)
+                                      }
+                                      className="border border-secondary-subtle text-dark fw-bold py-2 px-3 cursor-pointer"
+                                    >
+                                      {btn?.label}
+                                    </Badge>
+                                  );
+                                })}
+                              </div>
                             )}
                           </div>
                         )}

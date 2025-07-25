@@ -28,12 +28,14 @@ function PropBotGPTModal({ show, handleClose }) {
   const [modalShow, setModalShow] = useState(false);
   const [modalShowLead, setModalShowLead] = useState(false);
 
+  const [loading, setLoading] = useState(false);
+
   const [showLanguagePrompt, setShowLanguagePrompt] = useState(true);
 
   const navigate = useNavigate();
   const quickButtons = [
     { label: "Find Property", value: "find_property" },
-    { label: "Search Location", value: "search_location" },
+    { label: "Search Property", value: "search_location" },
     { label: "Investment Advice", value: "investment_advice" },
     { label: "Estimate Value", value: "estimate_value" },
     { label: "Compare Properties", value: "compare_properties" },
@@ -148,7 +150,7 @@ function PropBotGPTModal({ show, handleClose }) {
         // Server manually disconnected client
         socket.connect(); // Try to reconnect manually
       }
-      showWarningToast(`You were disconnected from PropBot.`);
+      // showWarningToast(`You were disconnected from PropBot.`);
     });
 
     return () => {
@@ -336,6 +338,8 @@ function PropBotGPTModal({ show, handleClose }) {
   const handleClearChat = useCallback(() => {
     if (!sessionId || !socketRef.current) return;
     setIsBotTyping(true);
+    setLoading(true);
+
     socketRef.current.emit(
       "chat:clear",
       { sessionId },
@@ -352,6 +356,7 @@ function PropBotGPTModal({ show, handleClose }) {
         setShowClearChat(false);
       }
     );
+    setLoading(false);
     setIsBotTyping(false);
   }, [sessionId, socketRef, setMessages, setShowClearChat]);
 
@@ -621,6 +626,7 @@ function PropBotGPTModal({ show, handleClose }) {
           show={showClearChat}
           onHide={() => setShowClearChat(false)}
           onConfirm={() => handleClearChat()}
+          loading={loading}
         />
         <LoginModal show={modalShow} onHide={() => setModalShow(false)} />
         {showLanguagePrompt && (

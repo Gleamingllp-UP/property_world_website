@@ -40,6 +40,10 @@
     "propertiesAvailable_one": "有 {{count}} 套房源",
     "propertiesAvailable_other": "有 {{count}} 套房源",
     "feelFreeText": "随时打开任何房源或询问更多选项！",
+     "clear_chat_confirmation": "您确定要清除这次对话吗？",
+    "clear_chat_warning": "这将删除该会话中的所有消息。",
+    "cancel": "取消",
+     "terms_modal": "请注意，<strong>PropBot</strong> 是一个人工智能工具，仅用于一般信息用途。PropBot 提供的回答基于：<ul><li>第三方服务的提供</li><li>PropBot 的编程</li><li>其对文本数据的访问</li></ul>因此，这些回答不应被视为专业建议或替代咨询合格专家的意见。<br/><br/>由于工具本身的性质，PropBot 可能无法始终提供准确或完整的回答，并且可能会偶尔生成不适当或错误的回复。<br/><br/>使用 PropBot 及其生成的任何回答完全由用户自行承担风险。<br/><br/><strong>PropBot</strong> 不对根据所提供信息所采取或未采取的任何行为负责，并明确排除因使用而产生的任何损失或损害的责任。",
     "lead_capture": {
         "open_button": "获取房产推荐",
         "title": "获取更好的房产推荐",

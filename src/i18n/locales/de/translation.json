@@ -40,6 +40,10 @@
     "propertiesAvailable_one": "{{count}} Objekt verfügbar",
     "propertiesAvailable_other": "{{count}} Objekte verfügbar",
     "feelFreeText": "Öffnen Sie gerne ein beliebiges Inserat oder fragen Sie nach weiteren Optionen!",
+    "clear_chat_confirmation": "Möchten Sie diesen Chat wirklich löschen?",
+    "clear_chat_warning": "Dadurch werden alle Nachrichten dieser Sitzung gelöscht.",
+    "cancel": "Abbrechen",
+        "terms_modal": "Bitte beachten Sie, dass <strong>PropBot</strong> ein KI-Tool ist, das ausschließlich zu allgemeinen Informationszwecken entwickelt wurde. Die von PropBot bereitgestellten Antworten basieren auf:<ul><li>der Bereitstellung eines Drittanbieterdienstes</li><li>der Programmierung von PropBot</li><li>dem Zugriff auf Textdaten</li></ul>Daher sollten die Antworten nicht als professionelle Beratung oder als Ersatz für eine qualifizierte Fachberatung betrachtet werden.<br/><br/>PropBot liefert möglicherweise nicht immer genaue oder vollständige Antworten und kann gelegentlich unangemessene oder falsche Antworten generieren, da dies in der Natur des Tools liegt.<br/><br/>Die Nutzung und das Vertrauen in PropBot und dessen generierte Antworten erfolgen vollständig auf eigenes Risiko.<br/><br/><strong>PropBot</strong> übernimmt keine Verantwortung für Handlungen, die auf Grundlage der bereitgestellten Informationen getroffen oder unterlassen werden, und schließt jegliche Haftung für Verluste oder Schäden ausdrücklich aus.",
     "lead_capture": {
         "open_button": "Immobilienvorschläge erhalten",
         "title": "Erhalten Sie bessere Immobilienvorschläge",

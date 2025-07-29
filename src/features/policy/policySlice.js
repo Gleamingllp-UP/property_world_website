@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { getPolicyByType } from "./policyAPI";
+import { getPolicyByType, getBotContent } from "./policyAPI";
 
 export const fetchPolicyByTypeThunk = createAsyncThunk(
   "policy/getbytype",
@@ -8,10 +8,18 @@ export const fetchPolicyByTypeThunk = createAsyncThunk(
   }
 );
 
+export const getBotContentTypeThunk = createAsyncThunk(
+  "policy/getBotContent",
+  async ({ type }) => {
+    return await getBotContent(type);
+  }
+);
+
 const PolicySlice = createSlice({
   name: "Policy",
   initialState: {
     policies: [],
+    botContent: {},
     loading: false,
     isLoading: false,
     error: null,
@@ -33,6 +41,20 @@ const PolicySlice = createSlice({
       })
       .addCase(fetchPolicyByTypeThunk.rejected, (state, action) => {
         state.isLoading = false;
+        state.error = action.error.message;
+      })
+
+      // Get getBotContentTypeThunk
+      .addCase(getBotContentTypeThunk.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getBotContentTypeThunk.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.botContent = action.payload.data;
+      })
+      .addCase(getBotContentTypeThunk.rejected, (state, action) => {
+        state.isLoading = false;
+        state.botContent = {};
         state.error = action.error.message;
       });
   },

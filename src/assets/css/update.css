@@ -246,7 +246,7 @@ body {
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
   border: 1px solid #dee2e6;
 }
-.language-modal{
+.language-modal {
   z-index: 1056;
 }
 .custom-modal-content-language {
@@ -473,6 +473,93 @@ input[type="number"] {
 }
 
 @keyframes blink {
-  0%, 50%, 100% { opacity: 1; }
-  25%, 75% { opacity: 0; }
+  0%,
+  50%,
+  100% {
+    opacity: 1;
+  }
+  25%,
+  75% {
+    opacity: 0;
+  }
+}
+
+.bot-button-wrapper {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1050;
+}
+
+.bot-tooltip-left {
+  position: absolute;
+  bottom: 40px;
+  right: 70px;
+  background: white;
+  color: black;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  z-index: 1051;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.bot-tooltip-left::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: -6px;
+  transform: translateY(-50%);
+  border: 6px solid transparent;
+  border-left-color: white;
+}
+
+/* ✅ This class shows it initially */
+.bot-tooltip-left.show-initial {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ✅ Hover brings it back (even after fade-out) */
+.bot-button-wrapper:hover .bot-tooltip-left {
+  opacity: 1 !important;
+  pointer-events: auto;
+}
+
+/* ✅ OPTIONAL: fade it out after 5s */
+@keyframes fadeOutTooltip {
+  0% {
+    opacity: 1;
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.bot-tooltip-left.show-initial.auto-fade {
+  animation: fadeOutTooltip 5s forwards;
+}
+
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(13, 110, 253, 0.7);
+  }
+  70% {
+    transform: scale(1.05);
+    box-shadow: 0 0 0 10px rgba(13, 110, 253, 0);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(13, 110, 253, 0);
+  }
 }

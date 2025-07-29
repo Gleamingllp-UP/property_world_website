@@ -98,6 +98,9 @@ const endpoints = {
   getProprtySuggestion: "/chat/get-property-suggestion",
   createProprtySuggestion: "/chat/add-property-suggestion",
   updatePropertySuggestion: "/chat/update-property-suggestion",
+
+  //bot terms
+  getBotContentForUser: "/botcontent/get-bot-content-for-user",
 };
 
 export { endpoints };

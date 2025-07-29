@@ -33,6 +33,7 @@ function PropBotGPTModal({ show, handleClose }) {
   const [showLanguagePrompt, setShowLanguagePrompt] = useState(true);
 
   const navigate = useNavigate();
+
   const quickButtons = [
     { label: "Find Property", value: "find_property" },
     { label: "Search Property", value: "search_location" },
@@ -58,12 +59,13 @@ function PropBotGPTModal({ show, handleClose }) {
   const [isBotTyping, setIsBotTyping] = useState(false);
 
   const { i18n, t } = useTranslation();
-  const { userData } = useSelector((store) => store?.user);
+  const { userData, botPromptOpen } = useSelector((store) => store?.user);
   const userId = userData?._id;
 
   // 🔌 Establish socket connection
   useEffect(() => {
     // if (!show || !userId) return;
+    if (!botPromptOpen) return;
     if (socketRef.current) return;
     socketRef.current = io(import.meta.env.VITE_SOCKET_IO_URL, {
       transports: ["websocket"],
@@ -651,4 +653,4 @@ function PropBotGPTModal({ show, handleClose }) {
   );
 }
 
-export default PropBotGPTModal;
+export default React.memo(PropBotGPTModal);

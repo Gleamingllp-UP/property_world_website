@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-export default function PropertyListMessage({
-  msg,
-  autoAnimate = true,
-  delay = 250,
-}) {
+function PropertyListMessage({ msg, autoAnimate = true, delay = 250 }) {
   const {
     message,
     subMessage,
@@ -120,6 +116,7 @@ export default function PropertyListMessage({
         });
       });
     return out;
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [message, subMessage, link, linkText, totalProperties, data]);
 
   useEffect(() => {
@@ -209,3 +206,5 @@ export default function PropertyListMessage({
     </div>
   );
 }
+
+export default React.memo(PropertyListMessage);

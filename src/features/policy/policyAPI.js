@@ -19,3 +19,19 @@ export const getPolicyByType = async (type) => {
   }
 };
 
+export const getBotContent = async (type) => {
+  try {
+    const response = await api.get(endpoints.getBotContentForUser + `?type=${type}`);
+    return response.data;
+  } catch (error) {
+    if (error?.status !== 401) {
+      throw (
+        error?.response?.data?.message ||
+        "Failed to get Policy, please try again later."
+      );
+    } else {
+      throw error?.message || "Failed to get Policy, please try again later.";
+    }
+  }
+};
+

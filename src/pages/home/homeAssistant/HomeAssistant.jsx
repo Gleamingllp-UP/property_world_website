@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import ImageWithLoader from "../../../Custom_Components/ImageWithLoader";
 import { chat, city2, map } from "../../../assets/images";
 import { Link } from "react-router-dom";
@@ -6,42 +6,46 @@ import { pageRoutes } from "../../../router/pageRoutes";
 import QuickContactFormModal from "./QuickContactFormModal";
 import PropBotGPTModal from "./PropBotGPTModal";
 import { useDispatch, useSelector } from "react-redux";
-import { openLoginPrompt } from "../../../features/user/userSlice";
+import {
+  closeBotPrompt,
+  openBotPrompt,
+  // openLoginPrompt,
+} from "../../../features/user/userSlice";
 
 function HomeAssistant() {
   const [modalShow, setModalShow] = useState(false);
-  const [modalShow2, setModalShow2] = useState(false);
 
-  const { userData } = useSelector((store) => store?.user);
+  // const { userData } = useSelector((store) => store?.user);
   const { botPromptOpen } = useSelector((state) => state?.user);
 
   const dispatch = useDispatch();
-  const handleAssistantOpen = () => {
-    // if (userData?.role === "guest") {
-    //   dispatch(openLoginPrompt("Log in to your account for access PropBot."));
-    //   return;
-    // }
-    setModalShow2(true);
-    // const agentContainer = document.querySelector(".embedded-agent-container");
-    // const animationContainer = document.querySelector(
-    //   ".ai-agent-chat-animation-container"
-    // );
 
-    // if (agentContainer && animationContainer) {
-    //   agentContainer.classList.toggle("opened");
-    //   animationContainer.classList.toggle("isOpened");
-    // } else {
-    //   console.warn("Chatbot containers not found");
-    // }
+  const handleAssistantOpen = () => {
+    if (botPromptOpen) {
+      dispatch(closeBotPrompt());
+    } else {
+      dispatch(openBotPrompt());
+    }
   };
 
-  useEffect(() => {
-    if (botPromptOpen) {
-      setModalShow2(botPromptOpen);
-    } else {
-      setModalShow2(false);
-    }
-  }, [botPromptOpen]);
+  // const handleAssistantOpen = () => {
+  //   // if (userData?.role === "guest") {
+  //   //   dispatch(openLoginPrompt("Log in to your account for access PropBot."));
+  //   //   return;
+  //   // }
+  //   setModalShow2(true);
+  //   // const agentContainer = document.querySelector(".embedded-agent-container");
+  //   // const animationContainer = document.querySelector(
+  //   //   ".ai-agent-chat-animation-container"
+  //   // );
+
+  //   // if (agentContainer && animationContainer) {
+  //   //   agentContainer.classList.toggle("opened");
+  //   //   animationContainer.classList.toggle("isOpened");
+  //   // } else {
+  //   //   console.warn("Chatbot containers not found");
+  //   // }
+  // };
 
   return (
     <>
@@ -190,10 +194,7 @@ function HomeAssistant() {
           </div>
         </div>
       </section>
-      <PropBotGPTModal
-        show={modalShow2}
-        handleClose={() => setModalShow2(false)}
-      />
+
       <QuickContactFormModal
         show={modalShow}
         onHide={() => setModalShow(false)}

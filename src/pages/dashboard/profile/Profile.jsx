@@ -631,7 +631,7 @@ function Profile() {
                 <input
                   type="submit"
                   defaultValue="Submit"
-                  className="action_btn"
+                  className="rounded-5 action_btn"
                 />
               )}
             </div>

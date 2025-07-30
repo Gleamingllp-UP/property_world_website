@@ -41,10 +41,13 @@
 //   );
 // }
 
-import React from "react";
+import React, { useEffect } from "react";
 import { Controller } from "react-hook-form";
 import { ErrorMessage } from "./ErrorMessage";
 import { ImageIcon } from "lucide-react";
+
+import GLightbox from "glightbox";
+import "glightbox/dist/css/glightbox.css";
 
 export function InputWithLabelForm({
   control,
@@ -55,13 +58,23 @@ export function InputWithLabelForm({
   placeholder = "",
   leftIcon,
   rightIcon,
-  accept="image/*",
+  accept = "image/*",
   previewUrl,
   className = "",
   ...rest
 }) {
   const paddingLeft = leftIcon ? "3rem" : "0.75rem";
   const paddingRight = rightIcon || previewUrl ? "3rem" : "0.75rem";
+
+  useEffect(() => {
+    const lightbox_preview = GLightbox({
+      selector: ".lightbox_preview",
+    });
+
+    return () => {
+      lightbox_preview.destroy();
+    };
+  }, [previewUrl]);
 
   return (
     <div className={`form_gp ${className}`}>
@@ -107,9 +120,10 @@ export function InputWithLabelForm({
             {previewUrl && type === "file" ? (
               <a
                 href={previewUrl}
-                target="_blank"
+                data-glightbox="type: image"
+
                 rel="noopener noreferrer"
-                className="position-absolute top-50 end-0 translate-middle-y pe-3 text-success"
+                className="lightbox_preview position-absolute top-50 end-0 translate-middle-y pe-3 text-success"
                 title="Preview Image"
               >
                 <ImageIcon size={20} strokeWidth={2.2} />

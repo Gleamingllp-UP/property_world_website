@@ -8,11 +8,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { closeBotPrompt } from "./features/user/userSlice";
 import PropBotGPTModal from "./pages/home/homeAssistant/PropBotGPTModal";
 import BotButton from "./BotButton";
+import FullScreenLoader from "./Custom_Components/FullScreenLoader";
 function App() {
   const { isOnline, isSlow, isBackendDown } = useNetworkStatus("/ping");
 
   const dispatch = useDispatch();
-  const { botPromptOpen: show } = useSelector((state) => state?.user);
+  const { botPromptOpen: show, isLoader } = useSelector((state) => state?.user);
 
   if (!isOnline) return <ConnectionStatusPage type="offline" />;
   if (isBackendDown) return <ConnectionStatusPage type="server" />;
@@ -20,6 +21,7 @@ function App() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-svh">
+      {isLoader && <FullScreenLoader />}
       <Path />
       {/* <Assistant/> */}
       <Toaster
@@ -48,7 +50,7 @@ function App() {
       />
 
       <BotButton />
-      
+
       <PropBotGPTModal
         show={show}
         handleClose={() => {

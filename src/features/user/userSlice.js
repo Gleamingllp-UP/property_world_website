@@ -203,6 +203,7 @@ export const logoutUser = createAsyncThunk("users/logout", async () => {
   localStorage.removeItem("userData");
   localStorage.removeItem("formData");
   localStorage.removeItem("userToken");
+  localStorage.removeItem("sessionId");
   return true;
 });
 
@@ -223,9 +224,16 @@ const usersSlice = createSlice({
     isEmailVerifying: false,
     isPhoneVerifying: false,
     isLoading: false,
+    isLoader: false,
     error: null,
   },
   reducers: {
+    showLoader: (state) => {
+      state.isLoading = true;
+    },
+    hideLoader: (state) => {
+      state.isLoading = false;
+    },
     openLoginPrompt: (state, action) => {
       state.loginPromptOpen = true;
       state.loginPromptText = action.payload;
@@ -587,6 +595,8 @@ export const {
   openLoginPrompt,
   closeLoginPrompt,
   openBotPrompt,
-  closeBotPrompt
+  closeBotPrompt,
+  showLoader,
+  hideLoader,
 } = usersSlice.actions;
 export default usersSlice.reducer;

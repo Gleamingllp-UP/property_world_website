@@ -1,5 +1,4 @@
 import React from "react";
-import { TbLoader2 } from "react-icons/tb";
 
 function Loader() {
   return (

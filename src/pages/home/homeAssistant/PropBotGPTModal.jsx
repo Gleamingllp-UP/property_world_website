@@ -80,24 +80,24 @@ function PropBotGPTModal({ show, handleClose }) {
       socketRef.current.emit(
         "chat:init",
         { userId, sessionId, language: "en" },
-        ({ sessionId, showLanguagePrompt, language: prevLanguage }) => {
+        ({ sessionId:newSessionId, showLanguagePrompt, language: prevLanguage }) => {
           console.log(
             "sessionId, showLanguagePrompt ",
-            sessionId,
+            newSessionId,
             showLanguagePrompt,
             prevLanguage
           );
 
           setIsBotTyping(true);
-          localStorage.setItem("sessionId", sessionId);
-          setSessionId(sessionId);
+          localStorage.setItem("sessionId", newSessionId);
+          setSessionId(newSessionId);
           i18n.changeLanguage(prevLanguage);
           document.documentElement.dir = prevLanguage === "ar" ? "rtl" : "ltr";
           setShowLanguagePrompt(showLanguagePrompt);
 
           socketRef.current.emit(
             "chat:history",
-            { userId, sessionId },
+            { userId, newSessionId },
             ({ messages, isNew }) => {
               console.log("messages", messages);
 

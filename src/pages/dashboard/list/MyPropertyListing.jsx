@@ -14,6 +14,7 @@ import { showToast } from "../../../utils/toast/toast";
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 import { debounce } from "lodash";
+import { formatPrice } from "../../../helper/function/formatPrice";
 
 function MyPropertyListing() {
   const dispatch = useDispatch();
@@ -55,7 +56,7 @@ function MyPropertyListing() {
   const handleEyeClick = (id) => {
     navigate(`${pageRoutes.PROPERTY_DETAILS}?id=${id}`);
   };
-  
+
   //Delete Property
   const handleDeleteclick = (id) => {
     setShowModalDelete(true);
@@ -94,26 +95,25 @@ function MyPropertyListing() {
   return (
     <>
       <div className="container mt-4 my_listing_table">
-        {isLoading ? (
-          <p>Loading properties...</p>
-        ) : propertyData?.length === 0 ? (
-          <p>No properties found.</p>
-        ) : (
-          <>
-            <Tabs
-              activeKey={status}
-              onSelect={handleTabSelect}
-              className="mb-3"
-            >
-              <Tab eventKey="" title="All"></Tab>
+        <>
+          <Tabs activeKey={status} onSelect={handleTabSelect} className="mb-3">
+            <Tab eventKey="" title="All"></Tab>
 
-              <Tab eventKey="0" title="Pending"></Tab>
+            <Tab eventKey="0" title="Pending"></Tab>
 
-              <Tab eventKey="1" title="Approved"></Tab>
+            <Tab eventKey="1" title="Approved"></Tab>
 
-              <Tab eventKey="2" title="Rejected"></Tab>
-            </Tabs>
+            <Tab eventKey="2" title="Rejected"></Tab>
+          </Tabs>
 
+          {isLoading ? (
+            <div className="placeholder-glow my-4">
+              <span
+                className="placeholder bg-secondary-subtle rounded col-3"
+                style={{ height: "30px" }}
+              ></span>
+            </div>
+          ) : (
             <h4 className="my-4">
               {status === "0"
                 ? "Pending"
@@ -124,24 +124,50 @@ function MyPropertyListing() {
                 : "All"}{" "}
               Property Listings
             </h4>
+          )}
 
-            <table className="table table-striped table-hover">
-              <thead className="thead-dark">
-                <tr>
-                  <th>S NO</th>
-                  <th>Purpose</th>
-                  <th>Category</th>
-                  <th>Property Type</th>
-                  <th>Title</th>
-                  <th>Bedroom</th>
-                  <th>Bathroom</th>
-                  <th>Price</th>
-                  <th>Status</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {propertyData?.map((item, index) => (
+          <table className="table table-striped table-hover shadow rounded align-middle">
+            <thead className="thead-dark">
+              <tr>
+                <th>S NO</th>
+                <th>Purpose</th>
+                <th>Category</th>
+                <th>Property Type</th>
+                <th>Title</th>
+                <th>Bedroom</th>
+                <th>Bathroom</th>
+                <th>Price</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {isLoading ? (
+                [...Array(5)].map((_, index) => (
+                  <tr key={index}>
+                    {Array(10)
+                      .fill()
+                      .map((_, i) => (
+                        <td key={i}>
+                          <div className="placeholder-glow">
+                            <span
+                              className="placeholder bg-secondary-subtle rounded col-12"
+                              style={{ height: "18px", display: "block" }}
+                            ></span>
+                          </div>
+                        </td>
+                      ))}
+                  </tr>
+                ))
+              ) : propertyData?.length === 0 ? (
+                <div className="col-12">
+                  <div className="text-center border border-light-subtle rounded py-2 bg-light text-muted fw-medium">
+                    No properties found.
+                  </div>
+                </div>
+              ) : (
+                propertyData &&
+                propertyData?.map((item, index) => (
                   <tr key={item?._id}>
                     <td>{getSerialNumber(index, page, limit)}</td>
                     <td>{item?.categoryData?.name || "N/A"}</td>
@@ -150,7 +176,7 @@ function MyPropertyListing() {
                     <td>{item?.title}</td>
                     <td>{item?.bedrooms}</td>
                     <td>{item?.bathrooms}</td>
-                    <td>{`AED ${item?.price}`}</td>
+                    <td>{formatPrice(item?.price)}</td>
                     <td
                       onClick={() => handleClick(item)}
                       style={{
@@ -169,7 +195,11 @@ function MyPropertyListing() {
                         ? "Rejected"
                         : "Pending"}
                     </td>
-                    <td>
+                    <td
+                      style={{
+                        width: "150px",
+                      }}
+                    >
                       <Edit
                         onClick={() =>
                           navigate(
@@ -204,20 +234,22 @@ function MyPropertyListing() {
                       />
                     </td>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </>
-        )}
+                ))
+              )}
+            </tbody>
+          </table>
+        </>
 
         {/* Pagination Controls */}
-        <CustomPagination
-          total={pagination?.total}
-          page={page}
-          limit={limit}
-          onPageChange={(newPage) => setPage(newPage)}
-          className="your-optional-custom-class"
-        />
+        {!isLoading && (
+          <CustomPagination
+            total={pagination?.total}
+            page={page}
+            limit={limit}
+            onPageChange={(newPage) => setPage(newPage)}
+            className="your-optional-custom-class"
+          />
+        )}
       </div>
 
       {/* Rejection Reason Modal */}

@@ -108,22 +108,39 @@ ul.menu {
 }
 .my_listing_table thead tr th {
   text-transform: capitalize;
-  background: #f8b2bf !important;
+  background: #f0f0f0 !important;
   font-weight: 500;
+  white-space: nowrap;
 }
+
 .my_listing_table table.table {
   font-size: 14px;
-  font-weight: 300;
+  font-weight: 400;
+  border-radius: 10px;
+}
+
+.limited_cell {
+  max-width: 250px;               /* Controls how wide it can grow */
+  white-space: normal;            /* Allow wrapping */
+  overflow: hidden;              /* Hide overflowed text */
+  display: -webkit-box;          
+  -webkit-line-clamp: 2;          /* Limit to 2 lines */
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;       /* Show "..." at end of last line */
 }
 
 .my_listing_table .table-striped > tbody > tr:nth-of-type(even) > * {
   --bs-table-color-type: var(--bs-table-striped-color);
-  --bs-table-bg-type: rgb(252 234 234);
+  --bs-table-bg-type: #fff;
 }
 
 .my_listing_table .table-striped > tbody > tr:nth-of-type(odd) > * {
   --bs-table-color-type: var(--bs-table-striped-color);
   --bs-table-bg-type: rgba(252, 234, 234, 0);
+}
+
+.table-hover > tbody > tr:hover > * {
+  --bs-table-bg-state: #f8f9fa !important;
 }
 
 .my_listing input,
@@ -547,7 +564,6 @@ input[type="number"] {
 .bot-tooltip-left.show-initial.auto-fade {
   animation: fadeOutTooltip 5s forwards;
 }
-
 
 @keyframes pulse {
   0% {

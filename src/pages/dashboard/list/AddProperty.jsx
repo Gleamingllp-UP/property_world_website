@@ -246,6 +246,7 @@ const AddProperty = () => {
     if (data?.thumbnail_img?.[0] instanceof File) {
       formData.append("thumbnail_img", data?.thumbnail_img?.[0]);
     }
+    
     if (data?.virtual_tour?.[0] instanceof File) {
       formData.append("virtual_tour", data?.virtual_tour?.[0]);
     }

@@ -174,8 +174,8 @@ function MyPropertyListing() {
                     <td>{item?.subCategoryData?.name || "N/A"}</td>
                     <td>{item?.subSubCategoryData?.name || "N/A"}</td>
                     <td>{item?.title}</td>
-                    <td>{item?.bedrooms}</td>
-                    <td>{item?.bathrooms}</td>
+                    <td>{item?.bedrooms || "N/A"}</td>
+                    <td>{item?.bathrooms || "N/A"}</td>
                     <td>{formatPrice(item?.price)}</td>
                     <td
                       onClick={() => handleClick(item)}

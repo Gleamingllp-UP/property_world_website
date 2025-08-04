@@ -11,6 +11,10 @@ import {
 import React from "react";
 import Slider from "react-slick";
 import "../../../assets/css/customSlick.css";
+import {
+  AgecyPrevArrow,
+  AgencyNextArrow,
+} from "../../../Custom_Components/Arrow";
 const partners = [
   partner1,
   partner2,
@@ -30,6 +34,8 @@ const settings = {
   autoplaySpeed: 2000,
   arrows: true,
   variableWidth: true,
+  nextArrow: <AgencyNextArrow />,
+  prevArrow: <AgecyPrevArrow />,
   responsive: [
     {
       breakpoint: 1024,
@@ -58,20 +64,20 @@ const settings = {
 export default function homeAgency() {
   return (
     <section className="agency_partner">
-    <div className="container">
-      <div className="text-center title_area">
-        <h2>Agency Partners</h2>
+      <div className="container">
+        <div className="text-center title_area">
+          <h2>Agency Partners</h2>
+        </div>
+        <div className="agency_logo slider slik_slider">
+          <Slider {...settings}>
+            {partners?.map((src, index) => (
+              <div key={index}>
+                <img src={src} alt={`Partner ${index + 1}`} />
+              </div>
+            ))}
+          </Slider>
+        </div>
       </div>
-      <div className="agency_logo slider slik_slider">
-        <Slider {...settings}>
-          {partners?.map((src, index) => (
-            <div key={index}>
-              <img src={src} alt={`Partner ${index + 1}`} />
-            </div>
-          ))}
-        </Slider>
-      </div>
-    </div>
-  </section>
+    </section>
   );
 }

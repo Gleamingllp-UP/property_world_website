@@ -14,6 +14,18 @@
   padding: 6px 10px;
   border-radius: 10%;
 }
+
+.custom_arrow_agency {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  cursor: pointer;
+  font-size: 15px;
+color: rgb(0, 0, 0);
+  padding: 6px 10px;
+  border-radius: 10%;
+}
 .custom-arrow:hover {
   background-color: #19aeee; 
 }
@@ -24,6 +36,15 @@
 .custom-arrow.next {
   right: 10px;
 }
+
+.custom_arrow_agency.prev {
+  left: 1px;
+}
+
+.custom_arrow_agency.next {
+  right: 1px;
+}
+
 /* .slick-track {
   display: flex !important;
 } */

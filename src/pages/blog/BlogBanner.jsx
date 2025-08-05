@@ -1,14 +1,29 @@
-import React from "react";
+import React, { useEffect } from "react";
 import about_banner from "../../assets/images/common/Buyer-Guide-Photo.jpg";
+import { useDispatch, useSelector } from "react-redux";
+import { getBannerByTypeThunk } from "../../features/banner/bannerSlice";
 const BlogBanner = ({ scrollRef }) => {
+  
   const scroll = () => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
   };
+
+  const { banners } = useSelector((store) => store?.banner);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getBannerByTypeThunk("news_and_blogs"));
+  }, [dispatch]);
+
   return (
     <>
       <div
         className="inner_banner"
-        style={{ backgroundImage: `url(${about_banner})` }}
+        style={{
+          backgroundImage: `url(${
+            banners["news_and_blogs"]?.imageUrl || about_banner
+          })`,
+        }}
       >
         <div className="container">
           <div className="buyer_d">

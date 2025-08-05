@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import DOMPurify from "dompurify";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -13,7 +13,7 @@ import BigBlogSkeleton, {
 import { CustomPagination } from "../../Custom_Components/CustomPagination";
 
 const Blog = ({ innerRef }) => {
-   useEffect(() => {
+  useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
   const { blogs, isLoading, pagination } = useSelector((store) => store?.blog);
@@ -24,6 +24,14 @@ const Blog = ({ innerRef }) => {
   useEffect(() => {
     dispatch(getAllBlogsThunk({ page, limit }));
   }, [dispatch, page]);
+
+  const scroll = useCallback(() => {
+    innerRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [innerRef]);
+
+  useEffect(() => {
+    scroll();
+  }, [page, scroll]);
 
   return (
     <>
@@ -54,7 +62,9 @@ const Blog = ({ innerRef }) => {
                         <div className="big_content">
                           <p>
                             {item?.author || "N/A"} |{" "}
-                            <a className="text-danger">{item?.blogCategory?.name || "N/A"}</a>
+                            <a className="text-danger">
+                              {item?.blogCategory?.name || "N/A"}
+                            </a>
                           </p>
                           <h2>
                             <Link
@@ -67,7 +77,8 @@ const Blog = ({ innerRef }) => {
                             </Link>
                           </h2>
                           {/* <p>{item?.content || "N/A"}</p> */}
-                          <div className="content-ellipse"
+                          <div
+                            className="content-ellipse"
                             dangerouslySetInnerHTML={{
                               __html: DOMPurify.sanitize(
                                 item?.content || "N/A"
@@ -150,7 +161,6 @@ const Blog = ({ innerRef }) => {
           onPageChange={(newPage) => setPage(newPage)}
           className="your-optional-custom-class"
         />
-        
       </div>
     </>
   );

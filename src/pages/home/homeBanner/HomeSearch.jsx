@@ -436,7 +436,7 @@ function HomeSearch() {
                         )}
                       </div>
                       {subSubCategories?.length > 0 && (
-                        <div className="res_done">
+                        <div className="res_done justify-content-between">
                           <button className="btn" onClick={handleReset}>
                             Reset
                           </button>
@@ -541,7 +541,7 @@ function HomeSearch() {
                         />
                       </div>
                     </div>
-                    <div className="res_done">
+                    <div className="res_done justify-content-between">
                       <button
                         className="btn"
                         type="button"
@@ -715,7 +715,7 @@ function HomeSearch() {
                         }}
                       />
                     </div>
-                    <div className="res_done">
+                    <div className="res_done justify-content-between">
                       <button
                         className="btn"
                         type="button"
@@ -788,7 +788,7 @@ function HomeSearch() {
                       />
                     </div>
                   </div>
-                  <div className="res_done">
+                  <div className="res_done justify-content-between">
                     <button
                       className="btn"
                       type="button"

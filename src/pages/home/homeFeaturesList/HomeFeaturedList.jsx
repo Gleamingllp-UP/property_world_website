@@ -44,7 +44,7 @@ function HomeFeaturedList() {
                 getPaymentPlanBreakdown(item?.payment_plan);
 
               return (
-                <div className="col-sm-4 d-flex" key={index}>
+                <div className="col-lg-4 col-md-6 col-sm-4 d-flex" key={index}>
                   <div className="my_property w-100">
                     <div className="photo_my_photo">
                       <span
@@ -105,7 +105,7 @@ function HomeFeaturedList() {
                         <div className="loction_c">
                           <i className="ri-map-pin-line" /> UAE
                         </div>
-                        <div className="">
+                        <div className="truncate">
                           <i className="ri-eye-line" />
                           {item?.address ?? "N/A"}
                         </div>

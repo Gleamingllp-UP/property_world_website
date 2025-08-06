@@ -310,7 +310,7 @@ function AdvanceSearch({ page, limit, sortBy, features, scrollRef }) {
 
   return (
     <div
-      className="main_search m-0 w-100 my-4 p-0 shadow-none"
+      className="main_search inner_search m-0 w-100 my-4 p-0 shadow-none"
       ref={dropdownRef}
     >
       <CategoryFetcher

@@ -229,7 +229,7 @@ const Archive = ({ isMapView, setIsMapView }) => {
         <ArchiveLocation />
 
         {isMapView && (
-          <div className="d-flex justify-content-end align-items-center my-3">
+          <div className="d-flex justify-content-end align-items-center my-3 switch_button">
             <button
               className="action_btn"
               onClick={() => setIsGridView(!isGridView)}

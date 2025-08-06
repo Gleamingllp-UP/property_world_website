@@ -16,7 +16,7 @@ const Index = () => {
         }}
       >
         {/* <Header /> */}
-        <main className="flex-grow-1 p-4" style={{ marginLeft: "300px" }}>
+        <main className="flex-grow-1 p-4 main_section" style={{ marginLeft: "300px" }}>
           <Outlet />
         </main>
         {/* <Footer /> */}

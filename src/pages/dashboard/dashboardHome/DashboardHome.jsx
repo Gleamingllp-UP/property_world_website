@@ -32,7 +32,7 @@ const DashboardHome = () => {
   );
 
   return (
-    <div className="p-4">
+    <div className="">
       <h2 className="fw-bold text-m">
         Welcome, {`${userData?.first_name} ${userData?.last_name}`}
       </h2>

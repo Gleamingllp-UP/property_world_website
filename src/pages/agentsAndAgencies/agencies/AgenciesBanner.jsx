@@ -85,7 +85,7 @@ function AgenciesBanner({ page, limit }) {
         <div className="container">
           <div className="buyer_d">
             <div className="search_my_agent">
-              <h1>
+              <h1 className="h-1">
                 Find the best real <span>estate companies</span>
               </h1>
               <div className="row">
@@ -101,7 +101,7 @@ function AgenciesBanner({ page, limit }) {
                     <i className="ri-search-line map_iic" />
                   </div>
                 </div>
-                <div className="col-lg-3">
+                <div className="col-lg-3 agency_select_box">
                   <div className="sk_box">
                     <select
                       value={serviceNeed}

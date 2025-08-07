@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { pageRoutes } from "../../../router/pageRoutes";
-import { default_user, user } from "../../../assets/images";
+import { user } from "../../../assets/images";
 import { getUserDetailsThunk } from "../../../features/user/userSlice";
 import ImageWithLoader from "../../../Custom_Components/ImageWithLoader";
 

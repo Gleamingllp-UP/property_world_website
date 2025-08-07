@@ -1,7 +1,7 @@
 export const HomeCategoryPropertySkeleton = () => {
   return Array.from({ length: 6 })?.map((_, i) => {
     return (
-      <div className="col-sm-4" key={i}>
+      <div className="col-lg-4 col-md-6 col-sm-4" key={i}>
         <div className="my_property placeholder-glow ">
           {/* Image Skeleton */}
           <div className="photo_my_photo position-relative">

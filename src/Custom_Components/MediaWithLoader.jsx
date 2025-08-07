@@ -11,6 +11,10 @@ const MediaWithLoader = ({
   alt = "",
   className = "",
   height = 300,
+  controls = true,
+  muted = true,
+  loop = true,
+  autoPlay = true,
   fallbackText = "Media not available",
   ...props
 }) => {
@@ -61,10 +65,10 @@ const MediaWithLoader = ({
     <div className={`position-relative ${className}`} style={{ height }}>
       {loading && (
         <div className="position-absolute top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center bg-dark bg-opacity-50 rounded">
-          <Loader2
+          <span
             className="spinner-border text-white"
             style={{ width: "1.5rem", height: "1.5rem" }}
-          />
+          ></span>
         </div>
       )}
 
@@ -73,10 +77,10 @@ const MediaWithLoader = ({
           src={src}
           height={height}
           width="100%"
-          loop
-          muted
-          autoPlay
-          controls
+          loop={loop}
+          muted={muted}
+          autoPlay={autoPlay}
+          controls={controls}
           onCanPlay={handleLoad}
           onError={handleError}
           className={`w-100 h-100 object-fit-cover rounded transition-opacity ${

@@ -3,7 +3,6 @@ import about_banner from "../../assets/images/common/Buyer-Guide-Photo.jpg";
 import { useDispatch, useSelector } from "react-redux";
 import { getBannerByTypeThunk } from "../../features/banner/bannerSlice";
 const BlogBanner = ({ scrollRef }) => {
-  
   const scroll = () => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
   };
@@ -27,8 +26,8 @@ const BlogBanner = ({ scrollRef }) => {
       >
         <div className="container">
           <div className="buyer_d">
-            <h1>News & Blogs</h1>
-            <p>Latest Articles</p>
+            <h1>{banners["news_and_blogs"]?.title || "News & Blogs"}</h1>
+            <p>{banners["news_and_blogs"]?.description || "Latest Articles"}</p>
           </div>
         </div>
       </div>

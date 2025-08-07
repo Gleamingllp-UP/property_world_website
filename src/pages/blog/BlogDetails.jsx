@@ -38,7 +38,7 @@ export default function BlogDetails() {
         <div className="row justify-content-center ">
           <div className="col-lg-10 ">
             <div className="text-center">
-              <h1>{blogDetails?.title || "N/A"}</h1>
+              <h1 className="h-1">{blogDetails?.title || "N/A"}</h1>
               <p className="uer_inn">
                 <i className="ri-calendar-2-line" />{" "}
                 {formatDate(blogDetails?.createdAt, "date")} |{" "}

@@ -2927,7 +2927,7 @@ a.chat_ptb {
   font-weight: 400;
 }
 
-@media screen and (min-device-width: 200px) and (max-device-width: 768px) {
+@media screen and (min-device-width: 200px) and (max-device-width: 820px) {
   .prox_desktop {
     display: none;
   }

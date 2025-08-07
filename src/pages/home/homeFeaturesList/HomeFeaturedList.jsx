@@ -115,11 +115,11 @@ function HomeFeaturedList() {
                         item?.payment_plan !== null &&
                         item?.handover_by !== null && (
                           <div
-                            className="d-flex bg-light rounded border my-2 flex-wrap align-items-center"
+                            className="payment_plan d-flex bg-light rounded border my-2 flex-wrap align-items-center"
                             style={{ width: "100%" }}
                           >
                             <div
-                              className="rounded px-3 py-2 text-center"
+                              className="rounded px-3 py-2 text-center child_payment_plan "
                               style={{ flex: "0 0 40%" }}
                             >
                               <div className="text-uppercase small text-secondary fw-semibold">
@@ -142,7 +142,7 @@ function HomeFeaturedList() {
                             />
 
                             <div
-                              className=" rounded px-3 py-2 text-center"
+                              className=" rounded px-3 py-2 text-center child_payment_plan "
                               style={{ flex: "0 0 53%" }}
                             >
                               <div className="text-uppercase small text-secondary fw-semibold d-flex justify-content-center align-items-center gap-1">

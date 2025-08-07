@@ -20,7 +20,7 @@ function PrivacyAndPolicyBanner({ scrollRef }) {
       >
         <div className="container">
           <div className="buyer_d">
-            <h1>{banners?.title || "Privacy Policy"}</h1>
+            <h1>{banners["privacy_policy"]?.title || "Privacy Policy"}</h1>
             <p></p>
           </div>
         </div>

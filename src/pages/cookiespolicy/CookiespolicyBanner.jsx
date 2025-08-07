@@ -22,7 +22,7 @@ const CookiespolicyBanner = ({ scrollRef }) => {
       >
         <div className="container">
           <div className="buyer_d">
-            <h1>{banners?.title || "Cookies Policy"}</h1>
+            <h1>{banners["cookies_policy"]?.title || "Cookies Policy"}</h1>
             <p />
           </div>
         </div>

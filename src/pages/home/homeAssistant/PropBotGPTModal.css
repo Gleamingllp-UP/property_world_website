@@ -42,6 +42,7 @@
   .propbot-modal-dialog {
     width: 95vw !important;
     height: 90vh !important;
+    max-width: 100vw!important;
   }
 }
 

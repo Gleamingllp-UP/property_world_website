@@ -115,7 +115,7 @@ function AgentsBanner({ page, limit }) {
         <div className="container">
           <div className="buyer_d">
             <div className="search_my_agent">
-              <h1>
+              <h1 className="h-1">
                 Find your agent to <span>find a home</span>
               </h1>
               <div className="row">
@@ -131,7 +131,7 @@ function AgentsBanner({ page, limit }) {
                     <i className="ri-search-line map_iic" />
                   </div>
                 </div>
-                <div className="col-lg-7">
+                <div className="col-lg-7 select_box">
                   <div className="row">
                     <div className="col-lg-4">
                       <div className="sk_box">

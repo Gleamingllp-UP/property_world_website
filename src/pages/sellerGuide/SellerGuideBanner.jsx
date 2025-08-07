@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { arrow_gif } from "../../assets/images";
+import { arrow_gif, video } from "../../assets/images";
 import { useDispatch, useSelector } from "react-redux";
 import { getBannerByTypeThunk } from "../../features/banner/bannerSlice";
 import MediaWithLoader from "../../Custom_Components/MediaWithLoader";
@@ -21,17 +21,18 @@ function SellerGuideBanner({ scrollRef }) {
       <div className="inner_banner_video">
         <div className="my_video">
           <MediaWithLoader
-            src={banners["seller_guide"]?.imageUrl}
-            height={300}
+            src={banners["seller_guide"]?.imageUrl || video}
+            height={400}
             setIsImgLoaded={setIsImgLoaded}
+            controls={false}
             className="rounded"
           />
         </div>
-        {!isImgLoaded && (
+        {isImgLoaded && (
           <div className="video_data">
             <div className="container">
-              <h1>{banners?.title || "Seller guide"}</h1>
-              <p>Seller’s Guide</p>
+              <h1>{banners["seller_guide"]?.title || "Seller guide"}</h1>
+              <p>{banners["seller_guide"]?.description ?? "Seller’s Guide"}</p>
               <a onClick={scroll}>
                 <img src={arrow_gif} />
               </a>

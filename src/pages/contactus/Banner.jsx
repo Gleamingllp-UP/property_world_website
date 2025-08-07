@@ -7,7 +7,7 @@ const Banner = ({ scrollRef }) => {
   const scroll = () => {
     scrollRef.current.scrollIntoView({ behavior: "smooth" });
   };
-  const { banners } = useSelector((store) => store?.banner);
+  const { banners, isLoading } = useSelector((store) => store?.banner);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -15,26 +15,41 @@ const Banner = ({ scrollRef }) => {
   }, [dispatch]);
   return (
     <>
-      <div
-        className="inner_banner"
-        style={{ backgroundImage: `url(${banners["contact_us"]?.imageUrl || about_banner})` }}
-      >
-        <div className="container">
-          <div className="buyer_d">
-            <h1>Contact us</h1>
-            <p>We Can Help You</p>
-          </div>
+      {isLoading ? (
+        <div className="placeholder-glow mb-5">
+          <div
+            className="placeholder w-100 bg-secondary-subtle rounded"
+            style={{ height: "300px" }}
+          ></div>
         </div>
-      </div>
-      <div className="arrow_section">
-        <div className="container">
-          <div className="arrow_box">
-            <a onClick={scroll}>
-              <i className="ri-arrow-down-long-line"></i>
-            </a>
+      ) : (
+        <>
+          <div
+            className="inner_banner"
+            style={{
+              backgroundImage: `url(${
+                banners["contact_us"]?.imageUrl || about_banner
+              })`,
+            }}
+          >
+            <div className="container">
+              <div className="buyer_d">
+                <h1>{banners["contact_us"]?.title ?? "N/A"}</h1>
+                <p>{banners["contact_us"]?.description ?? "N/A"}</p>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
+          <div className="arrow_section">
+            <div className="container">
+              <div className="arrow_box">
+                <a onClick={scroll}>
+                  <i className="ri-arrow-down-long-line"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
     </>
   );
 };

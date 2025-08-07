@@ -26,7 +26,7 @@ const TermBanner = ({ scrollRef }) => {
       >
         <div className="container">
           <div className="buyer_d">
-            <h1>{banners?.title || "Terms & Conditions"}</h1>
+            <h1>{banners["terms_conditions"]?.title || "Terms & Conditions"}</h1>
             <p />
           </div>
         </div>

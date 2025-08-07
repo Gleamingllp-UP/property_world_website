@@ -1,9 +1,5 @@
 import React, { useEffect } from "react";
-import {
-  bath,
-  bed,
-  ruler,
-} from "../../../assets/images";
+import { bath, bed, ruler } from "../../../assets/images";
 import { useDispatch, useSelector } from "react-redux";
 import { SimilarPropertyCardSkeleton } from "../../../Custom_Components/Skeleton/PropertySkeleton";
 import { Link, useSearchParams } from "react-router-dom";
@@ -54,7 +50,7 @@ const SimlarProperty = () => {
                       <div className="pop_data">
                         <h3>{item?.title ?? "N/A"}</h3>
                         <p>{formatPrice(item?.price || 0)}</p>
-                        <div className="p_info2">
+                        <div className="p_info2 similar_prop">
                           <ul>
                             {(item?.bedrooms != null &&
                               item?.bedrooms !== "") ||
@@ -80,8 +76,8 @@ const SimlarProperty = () => {
 
                             {item?.area && (
                               <li>
-                                <img src={ruler} alt="area" />{" "}
-                                {formatNumberWithCommas(item?.area)}
+                                <img src={ruler} alt="area" />
+                                {formatNumberWithCommas(item?.area) + "sqft"} 
                               </li>
                             )}
                           </ul>

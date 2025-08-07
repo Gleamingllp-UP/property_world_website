@@ -182,7 +182,7 @@ function AgentAgecyPlan() {
 
                       return (
                         <div
-                          className={`pricing-block col-lg-4 col-md-6 col-sm-12 wow fadeInUp ${
+                          className={`pricing-block col-xl-4 col-md-6 col-sm-12 wow fadeInUp ${
                             isActive ? "active-plan" : ""
                           }`}
                           key={index}

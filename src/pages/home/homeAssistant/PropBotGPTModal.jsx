@@ -384,8 +384,8 @@ function PropBotGPTModal({ show, handleClose }) {
       centered={false}
     >
       <Modal.Header className="border-bottom py-2 bg-light">
-        <div className="d-flex align-items-center w-100 justify-content-between">
-          <div className="d-flex align-items-center gap-2">
+        <div className="d-flex align-items-center w-100 justify-content-between inner-header">
+          <div className="d-flex align-items-center gap-2 logo-chat">
             <img
               src={property_world_logo}
               alt="PropBot Logo"
@@ -397,7 +397,7 @@ function PropBotGPTModal({ show, handleClose }) {
               sessionId={sessionId}
             />
           </div>
-          <div className="d-flex align-items-center gap-2">
+          <div className="d-flex align-items-center gap-2 close-chat">
             <Button
               onClick={() => setModalShowLead(true)}
               className="border text-primary fs-6 bg-white language-toggle"
@@ -581,7 +581,7 @@ function PropBotGPTModal({ show, handleClose }) {
       <div className="px-3 py-2 pb-0 d-flex align-items-stretch gap-2">
         <Button
           variant="outline-secondary"
-          className="rounded px-4 d-flex align-items-center justify-content-center gap-2 action_btn"
+          className="rounded px-4 d-flex align-items-center justify-content-center gap-2 action_btn clear_btn"
           style={{ flexBasis: "20%" }}
           onClick={() => setShowClearChat(true)}
         >

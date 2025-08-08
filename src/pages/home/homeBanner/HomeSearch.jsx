@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { pageRoutes } from "../../../router/pageRoutes";
 import CategoryFetcher from "./CategoryFetcher";
 import { openLoginPrompt } from "../../../features/user/userSlice";
+import { showToast } from "../../../utils/toast/toast";
 
 function HomeSearch() {
   const [selectedCategoryId, setSelectedCategoryId] = useState("");
@@ -190,7 +191,7 @@ function HomeSearch() {
   const navigate = useNavigate();
 
   function haldelSearch() {
-    const queryParams = new URLSearchParams({
+    const queryParams = {
       category: selectedCategoryId,
       subCategory: selectedSubCategoryId,
       subSubCategory: selectedSubSubCategoryId,
@@ -205,9 +206,19 @@ function HomeSearch() {
       payment_plan: priceRange,
       handover_by: handOverBy,
       search: location,
-    });
+    };
 
-    navigate(`${pageRoutes.PROPERTY_LISTING}?${queryParams.toString()}`);
+    const hasValue = Object.values(queryParams).some(
+      (val) => val !== null && val !== undefined && val !== "" && val.length > 0
+    );
+
+    if (!hasValue) {
+      showToast("Please select at least one filter before searching.", "error");
+      return;
+    }
+
+    const urlParams = new URLSearchParams(queryParams);
+    navigate(`${pageRoutes.PROPERTY_LISTING}?${urlParams.toString()}`);
   }
 
   return (

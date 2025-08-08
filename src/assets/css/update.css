@@ -950,7 +950,7 @@ input[type="number"] {
   .all_cta1 ul li {
     display: inline-block;
 
-    width: calc(100% / 2);
+    /* width: calc(100% / 2); */
 
     margin-bottom: 10px;
   }
@@ -1013,10 +1013,31 @@ input[type="number"] {
   .key_feature .similar_prop ul li {
     display: flex;
   }
+  .my_form {
+    padding: 10px;
+    margin-top: 20px;
+  }
 }
 
 @media (min-width: 820px) and (max-width: 920px) {
   .main_search {
     width: 86%;
+  }
+}
+
+@media (max-width: 480px) {
+  .main_search {
+    width: 86%;
+  }
+  
+  .my_form .b_1 {
+    display: block !important;
+    margin-bottom: 10px;
+  }
+  .my_form .b_2 {
+    display: none;
+  }
+  .all_cta1 ul li{
+    width: auto;
   }
 }

@@ -10,13 +10,18 @@ function HomeBanner() {
 
   useEffect(() => {
     dispatch(getBannerByTypeThunk("home_page"));
+    window.scrollTo(0, 0);
   }, [dispatch]);
 
   return (
     <div className="main_banner">
       <div
         className="banner position-relative"
-        style={{ backgroundImage: `url(${banners["home_page"]?.imageUrl || banner_home})` }}
+        style={{
+          backgroundImage: `url(${
+            banners["home_page"]?.imageUrl || banner_home
+          })`,
+        }}
       />
       <HomeSearch />
     </div>

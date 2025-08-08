@@ -39,9 +39,11 @@ function SignUpTabs({ innerRef }) {
               </div>
             </div>
             <div className="col-lg-9">
+
               <div className="my_form">
+                  <b className=" d-none b_1">You are</b>
                 <div className="you_are">
-                  <b>You are</b>
+                  <b className="b_2">You are</b>
                   <div className="all_cta1">
                     <ul>
                       {isLoading

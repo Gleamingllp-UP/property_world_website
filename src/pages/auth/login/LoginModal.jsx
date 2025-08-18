@@ -11,6 +11,8 @@ import {
   userLoginThunk,
 } from "../../../features/user/userSlice";
 import ButtonWithSpin from "../../../Custom_Components/ButtonWithSpin";
+import SocialLoginButtons from "./SocialLoginButtons";
+import Divider from "../../../Custom_Components/Divider";
 
 function LoginModal({ show, onHide }) {
   const [type, setType] = useState("password");
@@ -67,6 +69,8 @@ function LoginModal({ show, onHide }) {
       showToast(error?.message || "Failed to send.", "error");
     }
   };
+
+  
 
   return (
     <Modal
@@ -158,6 +162,11 @@ function LoginModal({ show, onHide }) {
               ) : (
                 <button className="action_btn">Login</button>
               )}
+
+              <Divider />
+
+              <SocialLoginButtons />
+
               <div className="no_reg">
                 Not registered yet?{" "}
                 <a

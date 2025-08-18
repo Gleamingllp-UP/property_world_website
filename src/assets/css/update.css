@@ -1041,3 +1041,19 @@ input[type="number"] {
     width: auto;
   }
 }
+.social-btn {
+  width: 45px !important;
+  height: 45px !important;
+  border-radius: 50% !important;
+  padding: 0 !important;
+  border: none;
+  transition: all 0.3s ease-in-out;
+  color: white;
+}
+
+.social-btn:hover {
+  background-color: transparent !important;
+  color: inherit;
+   transform: rotate(360deg);
+  
+}

@@ -247,7 +247,7 @@ const Sidebar = () => {
           <img
             src={property_world_logo}
             alt="Logo"
-            className=""
+            className="m-2"
             style={{
               cursor: "pointer",
               width: "130px",

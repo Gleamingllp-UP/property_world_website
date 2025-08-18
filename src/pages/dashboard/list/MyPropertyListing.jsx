@@ -160,11 +160,13 @@ function MyPropertyListing() {
                   </tr>
                 ))
               ) : propertyData?.length === 0 ? (
-                <div className="col-12">
-                  <div className="text-center border border-light-subtle rounded py-2 bg-light text-muted fw-medium">
-                    No properties found.
-                  </div>
-                </div>
+                <tr>
+                  <td colSpan={10}>
+                    <div className="text-center border border-light-subtle rounded py-2 bg-light text-muted fw-medium">
+                      No properties found.
+                    </div>
+                  </td>
+                </tr>
               ) : (
                 propertyData &&
                 propertyData?.map((item, index) => (

@@ -1,8 +1,42 @@
 import React, { useState } from "react";
 import ManualSignUp from "./ManualSignUp";
+import { loginWithGoogle } from "./socialSignUp/googleHandler";
+import { showToast } from "../../../utils/toast/toast";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { initiateSocialSignupThunk } from "../../../features/user/userSlice";
+import { pageRoutes } from "../../../router/pageRoutes";
 
-function SignUpSocial() {
+function SignUpSocial({ user_type }) {
   const [step, setStep] = useState(1);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const socialSignUp = async () => {
+    try {
+      const result = await loginWithGoogle();
+      if (!result) return;
+
+      const { idToken } = result;
+
+      const data = {
+        id_token: idToken,
+        user_type,
+      };
+      const resultAction = await dispatch(initiateSocialSignupThunk(data));
+      if (initiateSocialSignupThunk.fulfilled.match(resultAction)) {
+        showToast("Social Login Successfull!", "success");
+        setTimeout(() => {
+          navigate(pageRoutes.USER_DASHBOARD);
+        }, 500);
+      } else {
+        throw new Error(resultAction?.error?.message);
+      }
+    } catch (error) {
+
+      showToast(error?.message || "Failed to Login.", "error");
+    }
+  };
   return (
     <>
       {step === 1 && (
@@ -15,7 +49,7 @@ function SignUpSocial() {
             <a href="#">
               <i className="ri-facebook-line" /> Facebook
             </a>
-            <a href="#">
+            <a onClick={() => socialSignUp()}>
               <i className="ri-mail-line" /> Google
             </a>
             <a href="#">

@@ -14,7 +14,7 @@ function SignUpContent({ user_type_id, name }) {
 
   const formComponents = {
     agent: <AgentsSignUpForm />,
-    individual: <SignUpSocial />,
+    individual: <SignUpSocial user_type={user_type_id} />,
   };
 
   return (

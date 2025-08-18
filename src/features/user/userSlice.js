@@ -4,6 +4,8 @@ import {
   verifyCode,
   setPassword,
   userLogin,
+  initiateSocialSignup,
+  userSocialLogin,
   getUserDetails,
   guestUserLogin,
   updateUserDetails,
@@ -83,6 +85,20 @@ export const userLoginThunk = createAsyncThunk(
   "users/userLogin",
   async (payload) => {
     return await userLogin(payload);
+  }
+);
+
+export const userSocialLoginThunk = createAsyncThunk(
+  "users/userSocialLogin",
+  async (payload) => {
+    return await userSocialLogin(payload);
+  }
+);
+
+export const initiateSocialSignupThunk = createAsyncThunk(
+  "users/initiateSocialSignup",
+  async (payload) => {
+    return await initiateSocialSignup(payload);
   }
 );
 
@@ -360,6 +376,42 @@ const usersSlice = createSlice({
       })
       .addCase(userLoginThunk.rejected, (state, action) => {
         state.loading = false;
+        state.error = action.error.message;
+      })
+
+      //User Social Signup
+      .addCase(initiateSocialSignupThunk.pending, (state) => {
+        state.loading = true;
+        state.isLoader = true;
+      })
+      .addCase(initiateSocialSignupThunk.fulfilled, (state, action) => {
+        state.loading = false;
+        state.isLoader = false;
+        state.userData = action.payload.data;
+        localStorage.setItem("userToken", action.payload.token);
+        localStorage.setItem("userData", JSON.stringify(action.payload.data));
+      })
+      .addCase(initiateSocialSignupThunk.rejected, (state, action) => {
+        state.loading = false;
+        state.isLoader = false;
+        state.error = action.error.message;
+      })
+
+      //User Social Login
+      .addCase(userSocialLoginThunk.pending, (state) => {
+        state.loading = true;
+        state.isLoader = true;
+      })
+      .addCase(userSocialLoginThunk.fulfilled, (state, action) => {
+        state.loading = false;
+        state.isLoader = false;
+        state.userData = action.payload.data;
+        localStorage.setItem("userToken", action.payload.token);
+        localStorage.setItem("userData", JSON.stringify(action.payload.data));
+      })
+      .addCase(userSocialLoginThunk.rejected, (state, action) => {
+        state.loading = false;
+        state.isLoader = false;
         state.error = action.error.message;
       })
 

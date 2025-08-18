@@ -6,6 +6,8 @@ const endpoints = {
   initiateSignup: "/user/initiate-signup/",
   verifyCode: "/user/verify-code/",
   userLogin: "/user/login-user/",
+  initiateSocialSignup: "/user/initiate-social-signup",
+  userSocialLogin: "/user/social-login-user",
   setPassword: "/user/set-password/",
   getUserAllDetails: "/user/get-all-user-details",
   guestUserLogin: "/user/guest-user-login",

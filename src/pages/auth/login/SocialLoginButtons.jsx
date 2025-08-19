@@ -14,7 +14,19 @@ const SocialLoginButtons = () => {
 
   const socialLogin = async () => {
     try {
-      const { idToken } = await loginWithGoogle();
+       const result = await loginWithGoogle();
+           if (
+             result === null ||
+             !result ||
+             result === undefined ||
+             !result.idToken
+           ) {
+             showToast("Google login failed or was cancelled.", "error");
+             return;
+           }
+     
+           const { idToken } = result;
+     
       const data = {
         id_token: idToken,
       };

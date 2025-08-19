@@ -15,7 +15,14 @@ function SignUpSocial({ user_type }) {
   const socialSignUp = async () => {
     try {
       const result = await loginWithGoogle();
-      if (!result) return;
+      if (
+        result === null ||
+        !result ||
+        result === undefined ||
+        !result.idToken
+      ) {
+        return;
+      }
 
       const { idToken } = result;
 
@@ -33,7 +40,6 @@ function SignUpSocial({ user_type }) {
         throw new Error(resultAction?.error?.message);
       }
     } catch (error) {
-
       showToast(error?.message || "Failed to Login.", "error");
     }
   };
